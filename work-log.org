@@ -1,6 +1,15 @@
 #+TITLE: Daily Handoff Notes
 #+DATE: 2025-10-19
 
+* 2025-10-28
+** Summary
+- Lightbox now opens full-resolution assets by wiring high-res URLs + intrinsic dimensions through `src/pages/index.astro`.
+- PhotoSwipe configuration updated to honor the new metadata, eliminating tiny previews on open.
+- `npm run build` green post-change.
+
+** Status
+- Ready for preview + deploy when convenient.
+
 * 2025-10-22
 ** Summary
 - RESOLVED mobile gallery gaps issue

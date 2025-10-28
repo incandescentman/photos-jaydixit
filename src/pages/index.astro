@@ -432,16 +432,33 @@ const resolveResponsiveVariant = async (photo: ReturnType<typeof mapSingle>) => 
 
 const sizesFor = (size: HighlightSize) => sizePresets[size]?.sizes ?? sizePresets.portrait.sizes;
 
+const extractLargestSrc = (srcSet?: string) => {
+  if (!srcSet) return undefined;
+  const candidates = srcSet
+    .split(',')
+    .map((entry) => entry.trim())
+    .filter(Boolean);
+  const lastEntry = candidates[candidates.length - 1];
+  if (!lastEntry) return undefined;
+  const [src] = lastEntry.split(/\s+/);
+  return src || undefined;
+};
+
 const responsiveInfoFor = (photo: ReturnType<typeof mapSingle>) => {
   const variant = responsiveVariants.get(photo.filename);
   const sizes = sizesFor(photo.size);
+  const jpegSrcSetAttr = variant?.jpeg.srcSet.attribute;
+  const largestJpegSrc = extractLargestSrc(jpegSrcSetAttr);
+  const preferredHref = largestJpegSrc ?? photo.originalSrc;
   return {
     variant,
     sizes,
-    href: variant?.jpeg.src ?? photo.originalSrc,
-    imgSrc: variant?.jpeg.src ?? photo.originalSrc,
-    jpegSrcSet: variant?.jpeg.srcSet.attribute,
-    webpSrcSet: variant?.webp.srcSet.attribute
+    href: preferredHref,
+    imgSrc: variant?.jpeg.src ?? preferredHref,
+    jpegSrcSet: jpegSrcSetAttr,
+    webpSrcSet: variant?.webp.srcSet.attribute,
+    fullSrc: preferredHref,
+    originalSrc: photo.originalSrc
   };
 };
 
@@ -678,7 +695,11 @@ const criticalStyles = `
               style={`--aspect-ratio: ${containerAspectRatio}`}
             >
               <div class="stacked-pair">
-                <a class="masonry-link portfolio-lightbox" href={aInfo.href}>
+                <a
+                  class="masonry-link portfolio-lightbox"
+                  href={aInfo.href}
+                  data-full-src={aInfo.fullSrc}
+                >
                   <picture>
                     {aInfo.webpSrcSet && (
                       <source type="image/webp" srcset={aInfo.webpSrcSet} sizes={aInfo.sizes} />
@@ -693,13 +714,19 @@ const criticalStyles = `
                       loading="lazy"
                       decoding="async"
                       data-caption={a.caption}
+                      data-full-src={aInfo.fullSrc}
+                      data-original-src={aInfo.originalSrc}
                     />
                   </picture>
                   <div class="caption-overlay">
                     <h3>{a.caption}</h3>
                   </div>
                 </a>
-                <a class="masonry-link portfolio-lightbox" href={bInfo.href}>
+                <a
+                  class="masonry-link portfolio-lightbox"
+                  href={bInfo.href}
+                  data-full-src={bInfo.fullSrc}
+                >
                   <picture>
                     {bInfo.webpSrcSet && (
                       <source type="image/webp" srcset={bInfo.webpSrcSet} sizes={bInfo.sizes} />
@@ -714,6 +741,8 @@ const criticalStyles = `
                       loading="lazy"
                       decoding="async"
                       data-caption={b.caption}
+                      data-full-src={bInfo.fullSrc}
+                      data-original-src={bInfo.originalSrc}
                     />
                   </picture>
                   <div class="caption-overlay">
@@ -751,7 +780,11 @@ const criticalStyles = `
             data-size={photo.size}
             style={`--aspect-ratio: ${aspectRatio}`}
           >
-            <a class="masonry-link portfolio-lightbox" href={photoInfo.href}>
+            <a
+              class="masonry-link portfolio-lightbox"
+              href={photoInfo.href}
+              data-full-src={photoInfo.fullSrc}
+            >
               <picture>
                 {photoInfo.webpSrcSet && (
                   <source type="image/webp" srcset={photoInfo.webpSrcSet} sizes={photoInfo.sizes} />
@@ -769,6 +802,8 @@ const criticalStyles = `
                   data-variant={variant}
                   data-natural-width={meta?.width}
                   data-natural-height={meta?.height}
+                  data-full-src={photoInfo.fullSrc}
+                  data-original-src={photoInfo.originalSrc}
                 />
               </picture>
               <div class="caption-overlay">

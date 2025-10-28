@@ -927,31 +927,43 @@ function setupPhotoSwipe({ container, isAdminMode }: PhotoSwipeOptions) {
     });
 
     if (isAdminMode) {
-      lightbox.on('clickEvent', (event) => {
-        const target = event.originalEvent.target as HTMLElement | null;
-        const item = target?.closest('.masonry-item');
-        if (item && item.classList.contains('is-dragging')) {
-          event.preventDefault();
-        }
-      });
+    lightbox.on('clickEvent', (event) => {
+      const target = event.originalEvent.target as HTMLElement | null;
+      const item = target?.closest('.masonry-item');
+      if (item && item.classList.contains('is-dragging')) {
+        event.preventDefault();
+      }
+    });
+  }
+
+  lightbox.addFilter('itemData', (itemData) => {
+    const linkEl = itemData.element as HTMLElement;
+    const imgEl = linkEl.querySelector('img');
+    const fullSrc =
+      linkEl.getAttribute('data-full-src') ||
+      imgEl?.getAttribute('data-full-src') ||
+      linkEl.getAttribute('href') ||
+      itemData.src;
+
+    if (imgEl) {
+      const dataWidth = parseInt(imgEl.getAttribute('data-natural-width') || '', 10);
+      const dataHeight = parseInt(imgEl.getAttribute('data-natural-height') || '', 10);
+      itemData.w = Number.isFinite(dataWidth) ? dataWidth : imgEl.naturalWidth || imgEl.width || 1600;
+      itemData.h =
+        Number.isFinite(dataHeight) ? dataHeight : imgEl.naturalHeight || imgEl.height || 1200;
+      itemData.alt = imgEl.alt;
+      const caption = imgEl.getAttribute('data-caption') || imgEl.alt || '';
+      if (caption) {
+        itemData.title = caption;
+      }
     }
 
-    lightbox.addFilter('itemData', (itemData) => {
-      const linkEl = itemData.element as HTMLElement;
-      const imgEl = linkEl.querySelector('img');
+    if (fullSrc) {
+      itemData.src = fullSrc;
+    }
 
-      if (imgEl) {
-        itemData.w = imgEl.naturalWidth || imgEl.width || 1600;
-        itemData.h = imgEl.naturalHeight || imgEl.height || 1200;
-        itemData.alt = imgEl.alt;
-        const caption = imgEl.getAttribute('data-caption') || imgEl.alt || '';
-        if (caption) {
-          itemData.title = caption;
-        }
-      }
-
-      return itemData;
-    });
+    return itemData;
+  });
 
     lightbox.on('uiRegister', () => {
       lightbox.pswp.ui.registerElement({
