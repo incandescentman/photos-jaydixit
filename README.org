@@ -1,9 +1,95 @@
-* Jay Dixit Photography Portfolio
+#+TITLE: Jay Dixit Photography Portfolio
+#+AUTHOR: Jay Dixit
+#+DATE: 2025
 
-** What’s New (Early 2025)
-- Home page now serves RSS (`/feed.xml`) and JSON (`/feed.json`) feeds for blog updates, plus `/highlights.json` for hero shots.
-- A press landing page lives at `/press/`, pulling from the `press` content collection (`src/content/press/`).
-- Critical CSS inlining keeps the top nav styled during first paint while deferring Photoswipe until interaction for faster LCP.
+* Overview
+
+This is my personal photography portfolio site at [[https://photos.jaydixit.com][photos.jaydixit.com]], built entirely using [[https://claude.com/claude-code][Claude Code]].
+
+The site is built with [[https://astro.build][Astro]], hosted on Vercel, and powered by Cloudinary for image optimization and delivery.
+
+* About Jay Dixit
+
+Hi, I'm Jay Dixit, a science writer, educator, and red carpet photographer.
+
+As a photographer, my goal is to capture natural, spontaneous moments — those raw, unguarded glimpses of laughter, joy, or surprise that reveal someone's personality in a single frame.
+
+As a press photographer for Wikipedia, I've covered The Nobel Prizes in Stockholm and The Nobel Peace Prize in Oslo, red carpets at Sundance, SXSW, the Toronto International Film Festival, and the New York Film Festival, as well as cultural and literary events in New York, San Francisco, and Toronto.
+
+I was the founding photographer of the WikiPortraits initiative and I contribute actively to Wikimedia Commons, where I help expand the public archive of high-quality images from diverse voices and communities.
+
+In my parallel life as a science writer, writing professor, and AI educator, I specialize in storytelling, psychology, and the ethical use of AI to amplify human creativity. I taught storytelling as a writing professor at Yale, and my work has appeared in The New York Times, Rolling Stone, The Washington Post, Wired, Harvard Business Review, and Psychology Today, where I was a senior editor.
+
+Through my company Socratic AI, I lead AI education workshops and training programs for universities and companies. Most recently, I worked at OpenAI, where I led the writing community, spearheading initiatives to help writers and educators use AI as a thought partner to support the writing process.
+
+* Features
+
+- Lightning-fast performance with Astro static site generation
+- Fully responsive masonry layout (CSS-only, no JS libraries)
+- Cloudinary integration for optimized image delivery
+- Folder-based gallery organization
+- Full-screen lightbox viewer with GLightbox
+- Semantic filename-driven metadata and captions
+- RSS and JSON feeds for blog updates
+- Press landing page
+- Critical CSS inlining for fast initial paint
+- Automatic deployment via Vercel
+
+* Tech Stack
+
+- [[https://astro.build][Astro]] - The web framework for content-driven websites
+- [[https://cloudinary.com][Cloudinary]] - Image optimization and CDN
+- [[https://www.typescriptlang.org/][TypeScript]] - For type safety
+- [[https://tailwindcss.com][TailwindCSS]] - For styling
+- [[https://biati-digital.github.io/glightbox/][GLightbox]] - Responsive lightbox gallery
+- [[https://vercel.com][Vercel]] - Hosting and deployment
+
+* Documentation
+
+For comprehensive documentation, see [[file:docs/CLAUDE.org][docs/CLAUDE.org]].
+
+Key documentation files:
+- [[file:docs/the-photos-approach.org][The Approach]] - Philosophy and project purpose
+- [[file:docs/design-architecture.org][Design Architecture]] - Technical architecture
+- [[file:docs/instructions.org][Instructions]] - How to use and maintain the site
+- [[file:docs/codebase-wisdom.org][Codebase Wisdom]] - Hard-won debugging insights
+
+* What's New (Early 2025)
+
+- Home page now serves RSS (~/feed.xml~) and JSON (~/feed.json~) feeds for blog updates, plus ~/highlights.json~ for hero shots
+- A press landing page lives at ~/press/~, pulling from the ~press~ content collection (~src/content/press/~)
+- Critical CSS inlining keeps the top nav styled during first paint while deferring Photoswipe until interaction for faster LCP
+- Fixed lightbox to load full-resolution photos
+- Logo click enhancement: clickable logo in navbar opens fullscreen modal with larger view
+
+* Development Commands
+
+** Local Development
+#+begin_src bash
+npm run dev      # Start dev server
+npm run build    # Build for production
+npm run preview  # Preview production build
+#+end_src
+
+** Cloudinary Sync
+#+begin_src bash
+npm run sync     # Sync Cloudinary assets to content layer
+#+end_src
+
+** Deployment
+Push to main branch → auto-deploy via Vercel
+
+* Project Structure
+
+#+begin_example
+/src/gallery/photos/          Photo storage organized by gallery
+/src/pages/                   Astro pages and routes
+/src/components/              Reusable UI components
+/src/lib/                     Utilities and helpers
+/docs/                        Documentation
+#+end_example
+
+* Key Technical Notes
 
 ** Image Import Solutions for Astro MDX
 
@@ -12,18 +98,18 @@ When using ImageGallery components or Image components from Astro in MDX files, 
 
 *** Solution: Proper Image Import Pattern
 
-1. **Store images in src/assets folder**
+1. *Store images in src/assets folder*
    - Create folder: ~/src/assets/images/[page-name]/~
    - Copy all images to this folder instead of using ~/public/~
 
-2. **Configure path alias in astro.config.mts**
+2. *Configure path alias in astro.config.mts*
    #+begin_src javascript
    import path from 'path';
    import { fileURLToPath } from 'url';
-   
+
    const __filename = fileURLToPath(import.meta.url);
    const __dirname = path.dirname(__filename);
-   
+
    export default defineConfig({
      vite: {
        resolve: {
@@ -35,19 +121,19 @@ When using ImageGallery components or Image components from Astro in MDX files, 
    });
    #+end_src
 
-3. **Import images in MDX using relative or tilde paths**
+3. *Import images in MDX using relative or tilde paths*
    #+begin_src javascript
    // Using tilde alias (requires config above)
    import heroImg from '~/assets/images/wikiportraits/hero.jpg';
-   
+
    // Using relative paths (works without config)
    import heroImg from '../assets/images/wikiportraits/hero.jpg';
    #+end_src
 
-4. **Use with ImageGallery component**
+4. *Use with ImageGallery component*
    #+begin_src javascript
    import ImageGallery from '@jaydixit/astro-utils/components/ImageGallery.astro';
-   
+
    <ImageGallery
      images={[
        { src: img1, alt: "Description 1" },
@@ -71,15 +157,29 @@ When using ImageGallery components or Image components from Astro in MDX files, 
   3. File exists in src/assets folder
   4. Variable name matches usage in component
 
-** Logo Click Enhancement
-Added clickable logo in navbar that opens a modal with larger view:
-- Logo in navbar now clickable
-- Opens fullscreen modal with larger logo image
-- Uses Alpine.js for interaction
-- Escape key or click outside to close
+* Philosophy
 
-** Recent Updates
-- Fixed all image import issues in wikiportraits-story.mdx
-- Moved images from public to src/assets/images/wikiportraits
-- Updated NavBar component with clickable logo modal
-- Published @jaydixit/astro-utils v1.0.2 with Tailwind v4 compatibility fixes
+** Content First, Code Adapts
+Photography content is the source of truth:
+- *Photos drive the structure* - folder organization determines galleries
+- *Metadata in filenames* - captions extracted from filenames
+- *Code serves content* - parsers and generators adapt to photo organization
+- *Preserve photographer intent* - don't modify photos or organization to fix code
+
+** Static Generation with Dynamic Feel
+- Pre-rendered galleries for speed
+- Progressive enhancement for interactivity
+- Cloudinary for optimization
+- Minimal JavaScript for core functionality
+
+* License
+
+This project is licensed under the MIT License.
+
+* Contact
+
+- Website: [[https://jaydixit.com][jaydixit.com]]
+- Photography Portfolio: [[https://photos.jaydixit.com][photos.jaydixit.com]]
+- Instagram: [[https://instagram.com/jaydixit][@jaydixit]]
+- Twitter: [[https://twitter.com/jaydixit][@jaydixit]]
+- LinkedIn: [[https://linkedin.com/in/jaydixit][linkedin.com/in/jaydixit]]
