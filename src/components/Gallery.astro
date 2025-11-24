@@ -23,8 +23,11 @@ const galleryId = 'cld-gallery';
         <a
           href={href}
           class="block mb-4 break-inside-avoid"
+          data-pswp-item="true"
           data-pswp-width={p.width ?? largeWidth}
           data-pswp-height={p.height ?? Math.round(largeWidth * 0.667)}
+          data-pswp-caption={p.alt || ''}
+          data-pswp-index={i}
         >
           <img
             src={src}
@@ -50,7 +53,7 @@ const galleryId = 'cld-gallery';
   import PhotoSwipeLightbox from 'https://cdn.jsdelivr.net/npm/photoswipe@5/dist/photoswipe-lightbox.esm.min.js';
   const lightbox = new PhotoSwipeLightbox({
     gallery: '#cld-gallery',
-    children: 'a',
+    children: 'a[data-pswp-item]',
     pswpModule: () => import('https://cdn.jsdelivr.net/npm/photoswipe@5/dist/photoswipe.esm.js')
   });
   lightbox.init();
@@ -60,4 +63,3 @@ const galleryId = 'cld-gallery';
 /* Minimal masonry via CSS columns */
 img { display: block; }
 </style>
-
