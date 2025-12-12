@@ -1,0 +1,98 @@
+* Image Handling Strategy
+
+This document details the image handling strategy employed in the `photos-jaydixit` repository, based on the investigation.
+
+**Summary:** The project utilizes a hybrid approach to image handling, adapting its strategy based on the specific page and content requirements. It combines manual optimization for critical pages like the homepage with standard Astro component usage for galleries, all underpinned by a custom content organization and metadata parsing system.
+
+**Key Findings:**
+
+*** 1. Component Usage**
+You employ a *hybrid approach* depending on the page complexity:
+
+**** Homepage (`src/pages/index.astro`):
+***** *Strategy:* Manual Optimization.
+***** *Implementation:* You do *not* use the standard Astro `<Image />` component directly. Instead, you use the low-level `getImage()` function from `astro:assets` to generate optimized URLs for `webp` and `jpeg` formats. You then manually construct standard HTML `<picture>` and `<img>` tags.
+***** *Rationale:* This provides granular control over `srcSet` and sizes, which is crucial for your specific "Masonry" layout types (`portrait`, `landscape`, `xlportrait`) and the homepage's visual requirements.
+
+**** Gallery Pages (`src/pages/gallery/[...folder].astro`):
+***** *Strategy:* Standard Astro Component.
+***** *Implementation:* You use the standard Astro `<Image />` component for these pages.
+#+begin_src javascript
+import { Image } from 'astro:assets';
+// ...
+<Image
+  src={image.metadata}
+  alt={image.caption}
+  width={w} // e.g., 320 or 648
+  height={h}
+  // ...
+/>
+#+end_src
+
+*** 2. Responsive Strategy
+Your responsiveness is heavily driven by *CSS grid logic (Packery.js)* rather than solely `sizes` attributes.
+
+**** Breakpoints:
+- *Mobile:* Screens smaller than `768px` (Forces a single column stack, overriding Packery.js layout).
+- *Tablet/Desktop:* For larger screens, Packery.js manages the dynamic masonry layout.
+
+**** Sizing Logic:
+- *Homepage (`src/pages/index.astro`):* You use a `sizePresets` object with explicit `widths` and `sizes` attributes passed to the manually constructed `<img>` tags.
+  - *Example for Portrait:*
+    #+begin_src javascript
+    portrait: {
+      widths: [360, 540, 720, 900, 1080],
+      sizes: '(max-width: 640px) 90vw, (max-width: 1100px) 45vw, 320px'
+    }
+    #+end_src
+- *Gallery Pages (`src/pages/gallery/[...folder].astro`):* You implement a heuristic based on the image index (e.g., `index % 7 === 0 ? 'wide-tall'`) to determine CSS classes (`regular`, `wide`, `wide_tall`). While the `<Image />` component is passed fixed `width` and `height` attributes (e.g., `320px`), the actual responsive scaling is achieved via CSS (e.g., `width: 100%`) in conjunction with Packery.js.
+
+*** 3. Image Format & Optimization
+**** Formats:
+- *Homepage (`src/pages/index.astro`):* You explicitly generate both `webp` and `jpeg` variants using `getImage()`.
+- *Gallery Pages:* You rely on Astro's default image optimization behavior, which typically converts images to `webp` automatically (unless overridden by explicit configuration).
+
+**** Quality:
+- *Homepage:* You specify `quality: 'mid'` in the `getImage()` calls. This likely maps to Astro's default "mid" quality setting, usually around 75-80.
+- *Script (`scripts/generate-image-metadata.js`):* This script (which processes images in `public/`) explicitly converts images to WebP with `quality: 80`.
+
+*** 4. Metadata Handling (Exif/IPTC)
+Your project uses a custom "Filename Engineering" approach rather than relying on embedded EXIF/IPTC data directly at runtime.
+
+**** Extraction:
+- *Filenames:* In `src/pages/gallery/[...folder].astro`, the `buildCaptionAndTags` function parses filenames based on a convention (e.g., `Subject_Event_Year-Tag.jpg`) to extract captions, subjects, events, and years.
+- *Sidecar Files:* You support `tags.json` files within image directories to provide explicit tag and caption overrides.
+- *Dimensions:* The `scripts/generate-image-metadata.js` script uses the `sharp` library to extract `width` and `height` information from images. This data is then saved into `src/data/image-metadata.json`, which is used at build time to prevent Cumulative Layout Shift (CLS) by providing accurate aspect ratios.
+- *Missing:* There is no apparent extraction or display of technical EXIF data (e.g., ISO, Shutter Speed, Camera model) in the UI.
+
+**** Display:
+- Captions and tags are displayed with images, primarily derived from filenames and `tags.json`.
+
+*** 5. The "Gallery" Pattern
+You utilize a combination of JavaScript libraries and custom logic to render image galleries.
+
+**** Libraries:
+- **Packery.js:** Used for creating the dynamic, responsive masonry grid layout on both the homepage and individual gallery pages.
+- **PhotoSwipe:** Integrated as the lightbox solution for displaying images in a full-screen, interactive modal when clicked.
+
+**** Markup:
+- Galleries are typically structured with a main container `div#masonry.masonry-items`, where each image is enclosed within an `article.masonry-item` element.
+
+**** Logic:
+- *Homepage:* Incorporates a custom `optimizeImageOrder` function to programmatically arrange images (including "stacked" items) to minimize visual gaps and create a cohesive layout.
+- *Gallery Pages:* Employs a simple heuristic (based on the image's position in the array) to assign layout "variants" (`wide-tall`, `wide-short`, `tall`, `wide`, `medium`, `regular`), which are then styled by CSS to create varied item sizes within the Packery grid.
+
+*** 6. Source File Organization
+You maintain a clear, though slightly dual, strategy for image placement:
+
+- *Homepage Highlights:* Image assets explicitly imported from `src/assets/highlights/`.
+- *Gallery Photos:* Image assets explicitly imported from `src/gallery/photos/`.
+- *Public Directory:* The `public/` directory (e.g., `public/highlights/`) appears to house images that are scanned by the `scripts/generate-image-metadata.js` script. This suggests a workflow where images might be copied or symlinked to `public/` for metadata generation, or it serves as a separate storage for certain images (potentially legacy or for direct serving).
+
+*** "Secret Sauce" Files
+
+- `src/pages/index.astro`: Contains the complex `getImage` usage, `sizePresets` definition, and the custom image optimization/arrangement logic for the homepage.
+- `src/scripts/packeryGallery.ts`: Manages the client-side initialization and lifecycle of Packery.js (including Draggabilly for admin reordering) and PhotoSwipe.
+- `src/pages/gallery/[...folder].astro`: Features the `buildCaptionAndTags` function for dynamic caption and tag generation based on filename conventions.
+- `scripts/generate-image-metadata.js`: The script responsible for pre-processing images to extract dimensions for `image-metadata.json`.
+- `src/data/homepage-images.js`: Defines the images and their layout types specifically for the homepage.
