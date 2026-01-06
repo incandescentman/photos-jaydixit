@@ -11,13 +11,15 @@ Ideal for photographers who want to showcase their work through a sleek, perform
 
 - Lightning-fast performance with Astro
 - Fully responsive design
-- Optimized image loading and handling
+- **Cloudinary CDN** for homepage images (automatic format negotiation, edge caching)
+- Optimized image loading with lazy loading and responsive srcsets
 - Easy to customize
 - Easy to organized gallery via a yaml file
 - Multiple albums support
-- Image zoom capabilities
-- Automatic deployment to GitHub pages
-- Script to automatically create a gallery from images
+- PhotoSwipe lightbox for full-screen viewing
+- Packery.js masonry layout
+- Automatic deployment to Vercel
+- Script to upload images to Cloudinary
 
 ## 🚀 Getting Started
 
@@ -97,10 +99,12 @@ other collection.
 ## 🛠️ Built With
 
 - [Astro](https://astro.build) - The web framework for content-driven websites
+- [Cloudinary](https://cloudinary.com) - Image CDN with automatic optimization
 - [TypeScript](https://www.typescriptlang.org/) - For type safety
 - [TailwindCSS](https://tailwindcss.com) - For styling
-- [Sharp](https://sharp.pixelplumbing.com/) - For image optimization
-- [GLightbox](https://biati-digital.github.io/glightbox/) - Responsive lightbox gallery
+- [PhotoSwipe](https://photoswipe.com/) - Full-screen lightbox gallery
+- [Packery](https://packery.metafizzy.co/) - Masonry layout engine
+- [Sharp](https://sharp.pixelplumbing.com/) - For gallery image optimization
 
 ## ⚙️ Provided GitHub actions
 

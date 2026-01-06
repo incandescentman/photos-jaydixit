@@ -1,98 +1,179 @@
 * Image Handling Strategy
 
-This document details the image handling strategy employed in the `photos-jaydixit` repository, based on the investigation.
+This document details the image handling strategy employed in the `photos-jaydixit` repository.
 
-**Summary:** The project utilizes a hybrid approach to image handling, adapting its strategy based on the specific page and content requirements. It combines manual optimization for critical pages like the homepage with standard Astro component usage for galleries, all underpinned by a custom content organization and metadata parsing system.
+*Last Updated:* 2026-01-06
 
-**Key Findings:**
+**Summary:** The project uses a *CDN-first approach* for the homepage (Cloudinary) combined with standard Astro image processing for gallery pages. This hybrid strategy optimizes for fast builds, automatic format negotiation, and edge caching while maintaining simplicity for gallery content.
 
-*** 1. Component Usage**
-You employ a *hybrid approach* depending on the page complexity:
+* 1. Architecture Overview
 
-**** Homepage (`src/pages/index.astro`):
-***** *Strategy:* Manual Optimization.
-***** *Implementation:* You do *not* use the standard Astro `<Image />` component directly. Instead, you use the low-level `getImage()` function from `astro:assets` to generate optimized URLs for `webp` and `jpeg` formats. You then manually construct standard HTML `<picture>` and `<img>` tags.
-***** *Rationale:* This provides granular control over `srcSet` and sizes, which is crucial for your specific "Masonry" layout types (`portrait`, `landscape`, `xlportrait`) and the homepage's visual requirements.
+** Homepage (Cloudinary CDN)
+- Images served directly from Cloudinary
+- No build-time image processing
+- Automatic format negotiation (AVIF/WebP/JPEG)
+- Edge caching via Cloudinary CDN
+- Simple `<img>` tags with srcset
 
-**** Gallery Pages (`src/pages/gallery/[...folder].astro`):
-***** *Strategy:* Standard Astro Component.
-***** *Implementation:* You use the standard Astro `<Image />` component for these pages.
+** Gallery Pages (Astro Image)
+- Standard Astro `<Image />` component
+- Build-time optimization
+- WebP conversion by default
+
+* 2. Homepage Implementation
+
+** Strategy: Cloudinary CDN
+
+The homepage (`src/pages/index.astro`) uses Cloudinary URLs directly instead of build-time processing:
+
+#+begin_src typescript
+// Cloudinary configuration
+const CLOUDINARY_CLOUD = 'dszpm7yps';
+const cldUrl = (publicId: string, width?: number) => {
+  const transforms = width ? `f_auto,q_auto,w_${width}` : 'f_auto,q_auto';
+  return `https://res.cloudinary.com/${CLOUDINARY_CLOUD}/image/upload/${transforms}/${publicId}`;
+};
+const cldSrcset = (publicId: string, widths: number[]) =>
+  widths.map(w => `${cldUrl(publicId, w)} ${w}w`).join(', ');
+#+end_src
+
+** Size Presets
+
+#+begin_src typescript
+const sizePresets = {
+  portrait: { widths: [400, 800, 1200], sizes: '(max-width: 640px) 90vw, (max-width: 1100px) 45vw, 320px' },
+  landscape: { widths: [640, 1000, 1440], sizes: '(max-width: 640px) 100vw, (max-width: 1100px) 90vw, 648px' },
+  xlportrait: { widths: [500, 900, 1400], sizes: '(max-width: 640px) 90vw, (max-width: 1100px) 60vw, 648px' }
+};
+#+end_src
+
+** Benefits
+- *Instant builds:* No image processing during build
+- *Automatic format:* `f_auto` serves AVIF/WebP/JPEG based on browser support
+- *Quality optimization:* `q_auto` automatically optimizes compression
+- *Edge caching:* Images cached at Cloudinary's global CDN
+- *Simpler code:* No `getImage()` calls, no `<picture>` elements
+
+** Image Storage
+- Source images: Uploaded to Cloudinary (folder: `highlights/`)
+- Local files: Removed from repo (added to .gitignore)
+- Public ID format: `highlights/{filename-without-extension}`
+
+* 3. Gallery Pages Implementation
+
+** Strategy: Standard Astro Component
+
+Gallery pages (`src/pages/gallery/[...folder].astro`) use the standard Astro `<Image />` component:
+
 #+begin_src javascript
 import { Image } from 'astro:assets';
-// ...
 <Image
   src={image.metadata}
   alt={image.caption}
-  width={w} // e.g., 320 or 648
+  width={w}
   height={h}
-  // ...
+  loading="lazy"
 />
 #+end_src
 
-*** 2. Responsive Strategy
-Your responsiveness is heavily driven by *CSS grid logic (Packery.js)* rather than solely `sizes` attributes.
+** Sizing Logic
+- Uses heuristic based on image index for layout variants
+- CSS classes: `regular`, `wide`, `wide_tall`
+- Responsive scaling via CSS + Packery.js
 
-**** Breakpoints:
-- *Mobile:* Screens smaller than `768px` (Forces a single column stack, overriding Packery.js layout).
-- *Tablet/Desktop:* For larger screens, Packery.js manages the dynamic masonry layout.
+* 4. Responsive Strategy
 
-**** Sizing Logic:
-- *Homepage (`src/pages/index.astro`):* You use a `sizePresets` object with explicit `widths` and `sizes` attributes passed to the manually constructed `<img>` tags.
-  - *Example for Portrait:*
-    #+begin_src javascript
-    portrait: {
-      widths: [360, 540, 720, 900, 1080],
-      sizes: '(max-width: 640px) 90vw, (max-width: 1100px) 45vw, 320px'
-    }
-    #+end_src
-- *Gallery Pages (`src/pages/gallery/[...folder].astro`):* You implement a heuristic based on the image index (e.g., `index % 7 === 0 ? 'wide-tall'`) to determine CSS classes (`regular`, `wide`, `wide_tall`). While the `<Image />` component is passed fixed `width` and `height` attributes (e.g., `320px`), the actual responsive scaling is achieved via CSS (e.g., `width: 100%`) in conjunction with Packery.js.
+** Breakpoints
+- *Mobile (<768px):* Single column stack, CSS flexbox
+- *Desktop (>=768px):* Packery.js masonry layout
 
-*** 3. Image Format & Optimization
-**** Formats:
-- *Homepage (`src/pages/index.astro`):* You explicitly generate both `webp` and `jpeg` variants using `getImage()`.
-- *Gallery Pages:* You rely on Astro's default image optimization behavior, which typically converts images to `webp` automatically (unless overridden by explicit configuration).
+** Homepage
+- 3 responsive widths per size category (vs 5 previously)
+- Cloudinary generates on-demand
+- ~90% reduction in build artifacts
 
-**** Quality:
-- *Homepage:* You specify `quality: 'mid'` in the `getImage()` calls. This likely maps to Astro's default "mid" quality setting, usually around 75-80.
-- *Script (`scripts/generate-image-metadata.js`):* This script (which processes images in `public/`) explicitly converts images to WebP with `quality: 80`.
+** Gallery Pages
+- Fixed dimensions passed to Astro Image
+- CSS handles responsive scaling
+- Packery.js manages grid layout
 
-*** 4. Metadata Handling (Exif/IPTC)
-Your project uses a custom "Filename Engineering" approach rather than relying on embedded EXIF/IPTC data directly at runtime.
+* 5. Image Format & Quality
 
-**** Extraction:
-- *Filenames:* In `src/pages/gallery/[...folder].astro`, the `buildCaptionAndTags` function parses filenames based on a convention (e.g., `Subject_Event_Year-Tag.jpg`) to extract captions, subjects, events, and years.
-- *Sidecar Files:* You support `tags.json` files within image directories to provide explicit tag and caption overrides.
-- *Dimensions:* The `scripts/generate-image-metadata.js` script uses the `sharp` library to extract `width` and `height` information from images. This data is then saved into `src/data/image-metadata.json`, which is used at build time to prevent Cumulative Layout Shift (CLS) by providing accurate aspect ratios.
-- *Missing:* There is no apparent extraction or display of technical EXIF data (e.g., ISO, Shutter Speed, Camera model) in the UI.
+** Cloudinary (Homepage)
+- `f_auto`: Automatic format selection
+  - AVIF for supported browsers (best compression)
+  - WebP for most modern browsers
+  - JPEG fallback for older browsers
+- `q_auto`: Automatic quality optimization
 
-**** Display:
-- Captions and tags are displayed with images, primarily derived from filenames and `tags.json`.
+** Astro (Galleries)
+- Default WebP conversion
+- Sharp processing at build time
 
-*** 5. The "Gallery" Pattern
-You utilize a combination of JavaScript libraries and custom logic to render image galleries.
+* 6. Metadata Handling
 
-**** Libraries:
-- **Packery.js:** Used for creating the dynamic, responsive masonry grid layout on both the homepage and individual gallery pages.
-- **PhotoSwipe:** Integrated as the lightbox solution for displaying images in a full-screen, interactive modal when clicked.
+** Filename Convention
+Format: `Subject_Event_Year-Tag.jpg`
+Example: `vanessa-kirby_toronto-film-festival_2024.jpg`
 
-**** Markup:
-- Galleries are typically structured with a main container `div#masonry.masonry-items`, where each image is enclosed within an `article.masonry-item` element.
+** Extraction
+- `buildCaptionAndTags` function parses filenames
+- Optional `tags.json` sidecar files for overrides
+- `src/data/image-metadata.json` for dimensions (CLS prevention)
 
-**** Logic:
-- *Homepage:* Incorporates a custom `optimizeImageOrder` function to programmatically arrange images (including "stacked" items) to minimize visual gaps and create a cohesive layout.
-- *Gallery Pages:* Employs a simple heuristic (based on the image's position in the array) to assign layout "variants" (`wide-tall`, `wide-short`, `tall`, `wide`, `medium`, `regular`), which are then styled by CSS to create varied item sizes within the Packery grid.
+* 7. Key Files
 
-*** 6. Source File Organization
-You maintain a clear, though slightly dual, strategy for image placement:
+| File | Purpose |
+|------|---------|
+| `src/pages/index.astro` | Homepage with Cloudinary integration |
+| `src/data/homepage-images.js` | Homepage image configuration |
+| `src/lib/cloudinary.ts` | Cloudinary URL helpers |
+| `scripts/upload-to-cloudinary.js` | Upload script for new images |
+| `src/pages/gallery/[...folder].astro` | Gallery page with Astro Image |
+| `src/scripts/packeryGallery.ts` | Masonry layout + PhotoSwipe |
 
-- *Homepage Highlights:* Image assets explicitly imported from `src/assets/highlights/`.
-- *Gallery Photos:* Image assets explicitly imported from `src/gallery/photos/`.
-- *Public Directory:* The `public/` directory (e.g., `public/highlights/`) appears to house images that are scanned by the `scripts/generate-image-metadata.js` script. This suggests a workflow where images might be copied or symlinked to `public/` for metadata generation, or it serves as a separate storage for certain images (potentially legacy or for direct serving).
+* 8. Adding New Homepage Images
 
-*** "Secret Sauce" Files
+1. Add image to local folder (temporary)
+2. Run upload script:
+   #+begin_src bash
+   node scripts/upload-to-cloudinary.js ./path/to/images highlights
+   #+end_src
+3. Add entry to `src/data/homepage-images.js`
+4. Build and test
 
-- `src/pages/index.astro`: Contains the complex `getImage` usage, `sizePresets` definition, and the custom image optimization/arrangement logic for the homepage.
-- `src/scripts/packeryGallery.ts`: Manages the client-side initialization and lifecycle of Packery.js (including Draggabilly for admin reordering) and PhotoSwipe.
-- `src/pages/gallery/[...folder].astro`: Features the `buildCaptionAndTags` function for dynamic caption and tag generation based on filename conventions.
-- `scripts/generate-image-metadata.js`: The script responsible for pre-processing images to extract dimensions for `image-metadata.json`.
-- `src/data/homepage-images.js`: Defines the images and their layout types specifically for the homepage.
+* 9. Migration History
+
+** Before (Pre-2026-01)
+- Build-time processing with Astro `getImage()`
+- 5 widths × 2 formats = 10 variants per image
+- ~500 generated files for homepage
+- `<picture>` elements with WebP + JPEG sources
+
+** After (2026-01-06)
+- Cloudinary CDN delivery
+- 3 widths, automatic format selection
+- Zero build-time variants for homepage
+- Simple `<img>` with srcset
+- ~200MB removed from repo
+
+* 10. Cloudinary Setup
+
+** Environment Variables
+#+begin_src bash
+PUBLIC_CLOUDINARY_CLOUD_NAME=dszpm7yps
+PUBLIC_CLOUDINARY_TRANSFORM=gallery
+CLOUDINARY_URL=cloudinary://<api_key>:<api_secret>@<cloud_name>
+#+end_src
+
+** Upload Limits
+- Free tier: 10MB per file
+- Oversized files: Convert to WebP locally first
+
+** URL Pattern
+#+begin_example
+https://res.cloudinary.com/{cloud}/image/upload/{transforms}/{publicId}
+
+Example:
+https://res.cloudinary.com/dszpm7yps/image/upload/f_auto,q_auto,w_800/highlights/vanessa-kirby
+#+end_example

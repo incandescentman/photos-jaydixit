@@ -16,6 +16,8 @@ Last Synced for AI Context: 2025-10-04
 The root **CLAUDE.md** file contains legacy documentation. This file (docs/CLAUDE.org) is the canonical documentation entry point. Both should be maintained during transition.
 
 * Recent Updates
+- 2026-01-06: Migrated homepage images to Cloudinary CDN (removed ~200MB from repo)
+- 2026-01-06: Simplified image handling - no build-time processing for homepage
 - 2025-10-04: Created comprehensive documentation system following how-to-document.org
 - 2025-10-04: Added AI assistant navigation and pre-session ritual
 - 2025-10-04: Organized existing documentation into structured /docs directory
@@ -152,13 +154,15 @@ Documentation structure:
 - **~/src/gallery/photos/~** - Photo storage organized by gallery
 - **~/src/pages/~** - Astro pages and routes
 - **~/src/components/~** - Reusable UI components
-- **~/src/lib/~** - Utilities and helpers
+- **~/src/lib/~** - Utilities and helpers (including cloudinary.ts)
 - **~/docs/~** - Documentation (this directory)
 
 *** Key Files
 - **~site.config.mts~** - Site configuration
 - **~astro.config.mts~** - Astro configuration
-- **~.photoconfig.json~** - Photo metadata configuration
+- **~src/data/homepage-images.js~** - Homepage image configuration
+- **~src/lib/cloudinary.ts~** - Cloudinary URL helpers
+- **~scripts/upload-to-cloudinary.js~** - Upload images to Cloudinary
 - **~vercel.json~** - Deployment configuration
 
 ** Key Invariants
@@ -169,11 +173,13 @@ Documentation structure:
 - Metadata extracted from filenames or tags.json
 - Never modify photo organization to fix code issues
 
-*** Cloudinary Integration
-- Images served through Cloudinary for optimization
-- Content layer syncs Cloudinary assets
-- Transformations applied via URL parameters
-- Cache management for API responses
+*** Cloudinary Integration (Homepage)
+- Homepage images served directly from Cloudinary CDN
+- No build-time image processing for homepage
+- URL pattern: `https://res.cloudinary.com/dszpm7yps/image/upload/f_auto,q_auto,w_{width}/highlights/{publicId}`
+- Automatic format negotiation (AVIF/WebP/JPEG)
+- Images uploaded via `scripts/upload-to-cloudinary.js`
+- Local highlight images removed from repo (now in .gitignore)
 
 *** Build Process
 - Static generation for all gallery pages
@@ -281,4 +287,4 @@ Frequency: Very High
 ---
 [[file:the-photos-approach.org][→ Philosophy]] | [[file:design-architecture.org][→ Architecture]] | [[file:../instructions.org][→ Instructions]]
 
-Last Updated: 2025-10-04
+Last Updated: 2026-01-06
