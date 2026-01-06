@@ -21,8 +21,21 @@
 - Edge caching via Cloudinary CDN
 - Simpler, more maintainable code
 
+** Security Fixes (from code review)
+- HIGH: Fixed PhotoSwipe import path (was using /node_modules/ dev-only path)
+- HIGH: Fixed PhotoComments custom element (constructor never ran)
+- MEDIUM: Fixed XSS in lightbox captions (innerHTML → textContent)
+- MEDIUM: Fixed regex injection in save-order.ts (unescaped filenames)
+- LOW: Fixed PhotoLikeButton custom element (constructor never ran)
+
+** Remaining
+- Giscus comments need configuration (placeholder IDs in PhotoComments.astro)
+  - Enable GitHub Discussions on repo
+  - Visit https://giscus.app to get repo-id and category-id
+
 ** Status
 - Homepage functional with Cloudinary images
+- Security issues addressed
 - Ready for production deploy
 
 * 2025-12-12
