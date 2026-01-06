@@ -2,8 +2,9 @@
 
 *Note*: This is legacy documentation. For comprehensive documentation, see [[file:docs/CLAUDE.org][docs/CLAUDE.org]].
 
+** Future Tasks
 
-
+- [ ] Configure Giscus comments: Enable GitHub Discussions on repo, visit https://giscus.app to get repo-id and category-id, then update src/components/PhotoComments.astro with real values (currently has placeholders)
 
 
 ​** Overview
