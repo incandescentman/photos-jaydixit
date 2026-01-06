@@ -916,7 +916,7 @@ function setupPhotoSwipe({ container, isAdminMode }: PhotoSwipeOptions) {
     const lightbox = new PhotoSwipeLightbox({
       gallery: '.masonry-items',
       children: '.portfolio-lightbox',
-      pswpModule: () => import('/node_modules/photoswipe/dist/photoswipe.esm.js'),
+      pswpModule: () => import('photoswipe'),
       padding: { top: 20, bottom: 80, left: 20, right: 20 },
       wheelToZoom: true,
       imageClickAction: 'close',
@@ -990,7 +990,7 @@ function setupPhotoSwipe({ container, isAdminMode }: PhotoSwipeOptions) {
           pswp.on('change', () => {
             const currSlideData = pswp.currSlide?.data;
             if (currSlideData?.title) {
-              el.innerHTML = currSlideData.title;
+              el.textContent = currSlideData.title;
               el.style.display = 'block';
             } else {
               el.style.display = 'none';
@@ -1000,7 +1000,7 @@ function setupPhotoSwipe({ container, isAdminMode }: PhotoSwipeOptions) {
           setTimeout(() => {
             const currSlideData = pswp.currSlide?.data;
             if (currSlideData?.title) {
-              el.innerHTML = currSlideData.title;
+              el.textContent = currSlideData.title;
               el.style.display = 'block';
             }
           }, 0);

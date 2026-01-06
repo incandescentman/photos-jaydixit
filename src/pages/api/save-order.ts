@@ -2,6 +2,11 @@ import type { APIRoute } from 'astro';
 import fs from 'fs/promises';
 import path from 'path';
 
+// Escape special regex characters in a string
+function escapeRegex(str: string): string {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 // This endpoint only works in development mode
 // In production, the site is static and cannot write files
 // Setting to true allows static build to succeed; endpoint won't work in production
@@ -105,7 +110,8 @@ export const POST: APIRoute = async ({ request }) => {
         // Update sizes in the file
         let updatedContent = imagesContent;
         sizeMap.forEach((size, filename) => {
-          const regex = new RegExp(`(filename: '${filename}'[^}]*?size: )'[^']*'`, 'g');
+          const escapedFilename = escapeRegex(filename);
+          const regex = new RegExp(`(filename: '${escapedFilename}'[^}]*?size: )'[^']*'`, 'g');
           updatedContent = updatedContent.replace(regex, `$1'${size}'`);
         });
         

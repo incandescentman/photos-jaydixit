@@ -2,8 +2,8 @@
 const { photoId, className = "" } = Astro.props;
 ---
 
-<button 
-  class={`like-button ${className}`} 
+<button
+  class={`like-button ${className}`}
   data-photo-id={photoId}
   data-initial-count="0"
 >
@@ -15,8 +15,8 @@ const { photoId, className = "" } = Astro.props;
 
 <style>
 .like-button {
-  @apply flex items-center px-3 py-1.5 bg-white bg-opacity-90 hover:bg-opacity-100 
-         border border-gray-200 rounded-full transition-all duration-200 
+  @apply flex items-center px-3 py-1.5 bg-white bg-opacity-90 hover:bg-opacity-100
+         border border-gray-200 rounded-full transition-all duration-200
          hover:scale-105 active:scale-95 backdrop-blur-sm;
 }
 
@@ -34,91 +34,61 @@ const { photoId, className = "" } = Astro.props;
 </style>
 
 <script>
-class PhotoLikeButton extends HTMLElement {
-  constructor() {
-    super();
-    this.photoId = this.dataset.photoId;
-    this.likeCount = this.querySelector('.like-count');
-    this.heart = this.querySelector('.heart');
-    this.isLiked = false;
-    this.currentCount = 0;
-    
-    this.addEventListener('click', this.handleLike.bind(this));
-    this.loadLikeStatus();
-  }
+// Initialize all like buttons on the page
+function initLikeButtons() {
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.like-button[data-photo-id]');
 
-  async loadLikeStatus() {
-    try {
-      // Load from localStorage for now (TODO: Replace with Supabase)
-      const localLikes = JSON.parse(localStorage.getItem('photoLikes') || '{}');
-      const photoData = localLikes[this.photoId] || { count: 0, liked: false };
-      
-      this.currentCount = photoData.count;
-      this.isLiked = photoData.liked;
-      this.updateUI();
-      
-      // TODO: Fetch from Supabase
-      // const response = await fetch(`/api/likes/${this.photoId}`);
-      // const data = await response.json();
-      // this.currentCount = data.count;
-      // this.updateUI();
-    } catch (error) {
-      console.error('Error loading like status:', error);
+  buttons.forEach(button => {
+    if (button.dataset.initialized) return;
+    button.dataset.initialized = 'true';
+
+    const photoId = button.dataset.photoId;
+    const likeCountEl = button.querySelector('.like-count');
+    if (!photoId || !likeCountEl) return;
+
+    let isLiked = false;
+    let currentCount = 0;
+
+    // Load from localStorage
+    const localLikes = JSON.parse(localStorage.getItem('photoLikes') || '{}');
+    const photoData = localLikes[photoId] || { count: 0, liked: false };
+    currentCount = photoData.count;
+    isLiked = photoData.liked;
+    updateUI();
+
+    button.addEventListener('click', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+
+      isLiked = !isLiked;
+      currentCount += isLiked ? 1 : -1;
+      currentCount = Math.max(0, currentCount);
+
+      updateUI();
+      saveLikeStatus();
+
+      // Visual feedback
+      button.classList.add('animate-bounce');
+      setTimeout(() => button.classList.remove('animate-bounce'), 300);
+    });
+
+    function updateUI() {
+      likeCountEl.textContent = String(currentCount);
+      button.classList.toggle('liked', isLiked);
     }
-  }
 
-  async handleLike(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    
-    try {
-      this.isLiked = !this.isLiked;
-      this.currentCount += this.isLiked ? 1 : -1;
-      this.currentCount = Math.max(0, this.currentCount);
-      
-      this.updateUI();
-      await this.saveLikeStatus();
-      
-      // Add visual feedback
-      this.classList.add('animate-bounce');
-      setTimeout(() => this.classList.remove('animate-bounce'), 300);
-      
-    } catch (error) {
-      console.error('Error handling like:', error);
-      // Revert on error
-      this.isLiked = !this.isLiked;
-      this.currentCount += this.isLiked ? 1 : -1;
-      this.updateUI();
-    }
-  }
-
-  async saveLikeStatus() {
-    try {
-      // Save to localStorage for now (TODO: Replace with Supabase)
+    function saveLikeStatus() {
       const localLikes = JSON.parse(localStorage.getItem('photoLikes') || '{}');
-      localLikes[this.photoId] = { 
-        count: this.currentCount, 
-        liked: this.isLiked 
-      };
+      localLikes[photoId] = { count: currentCount, liked: isLiked };
       localStorage.setItem('photoLikes', JSON.stringify(localLikes));
-      
-      // TODO: Save to Supabase
-      // await fetch(`/api/likes/${this.photoId}`, {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ action: this.isLiked ? 'like' : 'unlike' })
-      // });
-    } catch (error) {
-      console.error('Error saving like status:', error);
     }
-  }
-
-  updateUI() {
-    this.likeCount.textContent = this.currentCount;
-    this.classList.toggle('liked', this.isLiked);
-  }
+  });
 }
 
-// Register the custom element
-customElements.define('photo-like-button', PhotoLikeButton);
+// Run on DOM ready and after any dynamic content loads
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initLikeButtons);
+} else {
+  initLikeButtons();
+}
 </script>
