@@ -389,11 +389,10 @@ function restoreSavedOrder(container: HTMLElement, storageKey: string) {
     const filenameMap = new Map<string, HTMLElement>();
     const captionMap = new Map<string, HTMLElement>();
     items.forEach((item) => {
+      // Use data-filename attribute (works with both local and Cloudinary URLs)
+      const filename = item.getAttribute('data-filename') || '';
       const img = item.querySelector('img');
-      if (!img) return;
-      const src = img.getAttribute('src') || '';
-      const filename = src.split('/').pop() || '';
-      const caption = img.getAttribute('alt') || '';
+      const caption = img?.getAttribute('alt') || '';
       if (filename) filenameMap.set(filename, item);
       if (caption) captionMap.set(caption, item);
     });
