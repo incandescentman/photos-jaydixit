@@ -1,6 +1,48 @@
 #+TITLE: Daily Handoff Notes
 #+DATE: 2025-10-19
 
+* 2026-01-06
+** Summary
+- Migrated homepage images from build-time Astro processing to Cloudinary CDN
+- Reduced generated image variants from ~500 to ~90 (remaining are gallery pages)
+- Simplified index.astro: removed getImage() calls, responsiveVariants Map, <picture> elements
+- Images now use simple <img> with srcset pointing to Cloudinary URLs
+- Cloudinary handles format negotiation (f_auto), quality (q_auto), and responsive widths
+
+** Technical Changes
+- Uploaded 33 highlight images to Cloudinary (cloud: dszpm7yps, folder: highlights/)
+- Reduced srcset widths from 5 to 3 per size category (400/800/1200 for portraits)
+- Build time reduced since no image processing needed for homepage
+- 2 oversized JPEGs (>10MB) not uploaded; WebP versions work fine
+
+** Benefits
+- Faster builds (no image processing)
+- Automatic AVIF/WebP/JPEG format negotiation by browser
+- Edge caching via Cloudinary CDN
+- Simpler, more maintainable code
+
+** Status
+- Homepage functional with Cloudinary images
+- Ready for production deploy
+
+* 2025-12-12
+** Summary
+- Redesigned About page with cleaner, more professional layout
+- Replaced Unsplash placeholder images with real photos (jay-anisha-williamsburg, jay-dixit-about)
+- Restructured hero: headline above image, full container width
+- Updated bio text with proper paragraph breaks
+- Replaced gaudy rainbow gradient cards with minimal bordered cards
+- Removed decorative elements (animated blobs, purple glow effects, About Me pill)
+- Updated navigation: moved About to first position, hid Journal link (not yet active)
+
+** Commits
+- ea06777: Add README, staging photos, and image handling docs
+- 2c340d7: Redesign about page with real photos and cleaner layout
+
+** Status
+- Changes committed and pushed to main
+- About page ready for review
+
 * 2025-10-28
 ** Summary
 - Lightbox now opens full-resolution assets by wiring high-res URLs + intrinsic dimensions through `src/pages/index.astro`.

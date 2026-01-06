@@ -2,7 +2,6 @@
 // Mark this page as prerendered (static)
 export const prerender = true;
 
-import { getImage, type GetImageResult, type ImageMetadata } from 'astro:assets';
 import MainLayout from '../layouts/MainLayout.astro';
 import siteConfig from '../../site.config.mts';
 // Import image configuration
@@ -11,18 +10,22 @@ import imageMetadata from '../data/image-metadata.json';
 import fs from 'fs';
 import path from 'path';
 
-const highlightImports = import.meta.glob('../assets/highlights/*.{jpg,jpeg,JPG,JPEG,png,PNG}', {
-  eager: true,
-  import: 'default'
-}) as Record<string, ImageMetadata>;
+// Cloudinary configuration
+const CLOUDINARY_CLOUD = 'dszpm7yps';
+const cldUrl = (publicId: string, width?: number) => {
+  const transforms = width ? `f_auto,q_auto,w_${width}` : 'f_auto,q_auto';
+  return `https://res.cloudinary.com/${CLOUDINARY_CLOUD}/image/upload/${transforms}/${publicId}`;
+};
+const cldSrcset = (publicId: string, widths: number[]) =>
+  widths.map(w => `${cldUrl(publicId, w)} ${w}w`).join(', ');
 
-const highlightImageMap = new Map<string, ImageMetadata>();
-for (const [filePath, mod] of Object.entries(highlightImports)) {
-  const filename = filePath.split('/').pop();
-  if (filename) {
-    highlightImageMap.set(filename, mod as ImageMetadata);
-  }
-}
+// Size presets for responsive images (simplified for Cloudinary)
+const sizePresets = {
+  portrait: { widths: [400, 800, 1200], sizes: '(max-width: 640px) 90vw, (max-width: 1100px) 45vw, 320px' },
+  landscape: { widths: [640, 1000, 1440], sizes: '(max-width: 640px) 100vw, (max-width: 1100px) 90vw, 648px' },
+  xlportrait: { widths: [500, 900, 1400], sizes: '(max-width: 640px) 90vw, (max-width: 1100px) 60vw, 648px' }
+} as const;
+type HighlightSize = keyof typeof sizePresets;
 
 // Load saved order from JSON file if it exists
 function loadSavedOrder() {
@@ -346,17 +349,23 @@ const fallbackDimensions = {
 } as const;
 
 // Helper to map a single image to render data
-type HighlightSize = 'portrait' | 'landscape' | 'xlportrait';
-
-function mapSingle(img) {
+function mapSingle(img: { filename: string; caption?: string; size?: string }) {
   const filename = img.filename;
-  const originalSrc = `/highlights/${filename}`;
+  // Remove extension for Cloudinary public ID
+  const publicId = `highlights/${filename.replace(/\.[^.]+$/, '')}`;
+  const size = (img.size ?? 'portrait') as HighlightSize;
+  const preset = sizePresets[size];
 
   return {
     filename,
+    publicId,
     caption: img.caption || filename.replace(/[-_]/g, ' ').replace(/\.\w+$/, ''),
-    size: (img.size ?? 'portrait') as HighlightSize,
-    originalSrc
+    size,
+    // Cloudinary URLs
+    srcset: cldSrcset(publicId, preset.widths),
+    sizes: preset.sizes,
+    src: cldUrl(publicId, preset.widths[1]), // Medium size as default
+    fullSrc: cldUrl(publicId), // Full quality for lightbox
   };
 }
 
@@ -387,95 +396,12 @@ normalizedPhotos.forEach((photo) => {
 
 const uniquePhotos = Array.from(uniquePhotoMap.values());
 
-type ResponsiveVariant = {
-  webp: GetImageResult;
-  jpeg: GetImageResult;
-  sizes: string;
-};
-
-const sizePresets: Record<HighlightSize, { widths: number[]; sizes: string }> = {
-  portrait: {
-    widths: [360, 540, 720, 900, 1080],
-    sizes: '(max-width: 640px) 90vw, (max-width: 1100px) 45vw, 320px'
-  },
-  landscape: {
-    widths: [640, 900, 1200, 1440],
-    sizes: '(max-width: 640px) 100vw, (max-width: 1100px) 90vw, 648px'
-  },
-  xlportrait: {
-    widths: [480, 720, 960, 1280, 1600],
-    sizes: '(max-width: 640px) 90vw, (max-width: 1100px) 60vw, 648px'
-  }
-};
-
-const responsiveVariants = new Map<string, ResponsiveVariant>();
-
-const resolveResponsiveVariant = async (photo: ReturnType<typeof mapSingle>) => {
-  const preset = sizePresets[photo.size] ?? sizePresets.portrait;
-  const imageModule = highlightImageMap.get(photo.filename);
-
-  if (!imageModule) {
-    throw new Error(`Highlight asset not found for ${photo.filename}`);
-  }
-
-  const [webp, jpeg] = await Promise.all([
-    getImage({ src: imageModule, widths: preset.widths, format: 'webp', quality: 'mid' }),
-    getImage({ src: imageModule, widths: preset.widths, format: 'jpeg', quality: 'mid' })
-  ]);
-
-  return {
-    webp,
-    jpeg,
-    sizes: preset.sizes
-  };
-};
-
-const sizesFor = (size: HighlightSize) => sizePresets[size]?.sizes ?? sizePresets.portrait.sizes;
-
-const extractLargestSrc = (srcSet?: string) => {
-  if (!srcSet) return undefined;
-  const candidates = srcSet
-    .split(',')
-    .map((entry) => entry.trim())
-    .filter(Boolean);
-  const lastEntry = candidates[candidates.length - 1];
-  if (!lastEntry) return undefined;
-  const [src] = lastEntry.split(/\s+/);
-  return src || undefined;
-};
-
-const responsiveInfoFor = (photo: ReturnType<typeof mapSingle>) => {
-  const variant = responsiveVariants.get(photo.filename);
-  const sizes = sizesFor(photo.size);
-  const jpegSrcSetAttr = variant?.jpeg.srcSet.attribute;
-  const largestJpegSrc = extractLargestSrc(jpegSrcSetAttr);
-  const preferredHref = largestJpegSrc ?? photo.originalSrc;
-  return {
-    variant,
-    sizes,
-    href: preferredHref,
-    imgSrc: variant?.jpeg.src ?? preferredHref,
-    jpegSrcSet: jpegSrcSetAttr,
-    webpSrcSet: variant?.webp.srcSet.attribute,
-    fullSrc: preferredHref,
-    originalSrc: photo.originalSrc
-  };
-};
-
-await Promise.all(
-  uniquePhotos.map(async (photo) => {
-    const variant = await resolveResponsiveVariant(photo);
-    responsiveVariants.set(photo.filename, variant);
-  })
-);
-
 const toAbsoluteUrl = (pathSegment: string) => new URL(pathSegment, siteOrigin).toString();
 
 const dimensionForPhoto = (photo: ReturnType<typeof mapSingle>) => {
   const key = `highlights/${photo.filename}`;
   const meta = imageMetadata[key] as { width?: number; height?: number } | undefined;
-  const fallback =
-    fallbackDimensions[photo.size as keyof typeof fallbackDimensions] ?? fallbackDimensions.portrait;
+  const fallback = fallbackDimensions[photo.size as keyof typeof fallbackDimensions] ?? fallbackDimensions.portrait;
   return {
     width: meta?.width ?? fallback.width,
     height: meta?.height ?? fallback.height
@@ -484,40 +410,20 @@ const dimensionForPhoto = (photo: ReturnType<typeof mapSingle>) => {
 
 const imageObjects = uniquePhotos.map((photo) => {
   const { width, height } = dimensionForPhoto(photo);
-  const originalUrl = toAbsoluteUrl(photo.originalSrc);
-  const variant = responsiveVariants.get(photo.filename);
-  const thumbnailUrl = variant ? toAbsoluteUrl(variant.webp.src) : originalUrl;
-  const contentUrl = variant ? toAbsoluteUrl(variant.jpeg.src) : originalUrl;
-  const extension = photo.filename.split('.').pop()?.toLowerCase() ?? 'jpg';
-  const encodingFormat =
-    extension === 'png'
-      ? 'image/png'
-      : extension === 'webp'
-        ? 'image/webp'
-        : extension === 'gif'
-          ? 'image/gif'
-          : 'image/jpeg';
-
   return {
     '@type': 'ImageObject',
-    '@id': `${originalUrl}#image`,
+    '@id': `${photo.fullSrc}#image`,
     name: photo.caption,
     caption: photo.caption,
-    url: originalUrl,
-    contentUrl,
-    thumbnailUrl,
-    encodingFormat,
+    url: photo.fullSrc,
+    contentUrl: photo.fullSrc,
+    thumbnailUrl: photo.src,
+    encodingFormat: 'image/jpeg', // Cloudinary auto-negotiates format
     representativeOfPage: photo.size === 'xlportrait' ? true : undefined,
     width,
     height,
-    author: {
-      '@type': 'Person',
-      name: creatorName
-    },
-    creator: {
-      '@type': 'Person',
-      name: creatorName
-    }
+    author: { '@type': 'Person', name: creatorName },
+    creator: { '@type': 'Person', name: creatorName }
   };
 });
 
@@ -541,10 +447,8 @@ const shareCandidates = featuredPhotos.length > 0 ? featuredPhotos : uniquePhoto
 
 const ogImages = shareCandidates.slice(0, 4).map((photo) => {
   const { width, height } = dimensionForPhoto(photo);
-  const variant = responsiveVariants.get(photo.filename);
-  const ogUrl = variant ? toAbsoluteUrl(variant.jpeg.src) : toAbsoluteUrl(photo.originalSrc);
   return {
-    url: ogUrl,
+    url: photo.fullSrc,
     alt: photo.caption,
     width,
     height
@@ -683,8 +587,6 @@ const criticalStyles = `
         if (item && item.type === 'stacked' && Array.isArray(item.items)) {
           const a = mapSingle(item.items[0]);
           const b = mapSingle(item.items[1] || item.items[0]);
-          const aInfo = responsiveInfoFor(a);
-          const bInfo = responsiveInfoFor(b);
           const containerAspectRatio = 648 / 968;
           return (
             <article
@@ -695,66 +597,41 @@ const criticalStyles = `
               style={`--aspect-ratio: ${containerAspectRatio}`}
             >
               <div class="stacked-pair">
-                <a
-                  class="masonry-link portfolio-lightbox"
-                  href={aInfo.href}
-                  data-full-src={aInfo.fullSrc}
-                >
-                  <picture>
-                    {aInfo.webpSrcSet && (
-                      <source type="image/webp" srcset={aInfo.webpSrcSet} sizes={aInfo.sizes} />
-                    )}
-                    <img
-                      src={aInfo.imgSrc}
-                      srcset={aInfo.jpegSrcSet}
-                      sizes={aInfo.sizes}
-                      alt={a.caption}
-                      width={648}
-                      height={484}
-                      loading="lazy"
-                      decoding="async"
-                      data-caption={a.caption}
-                      data-full-src={aInfo.fullSrc}
-                      data-original-src={aInfo.originalSrc}
-                    />
-                  </picture>
-                  <div class="caption-overlay">
-                    <h3>{a.caption}</h3>
-                  </div>
+                <a class="masonry-link portfolio-lightbox" href={a.fullSrc} data-full-src={a.fullSrc}>
+                  <img
+                    src={a.src}
+                    srcset={a.srcset}
+                    sizes={a.sizes}
+                    alt={a.caption}
+                    width={648}
+                    height={484}
+                    loading="lazy"
+                    decoding="async"
+                    data-caption={a.caption}
+                    data-full-src={a.fullSrc}
+                  />
+                  <div class="caption-overlay"><h3>{a.caption}</h3></div>
                 </a>
-                <a
-                  class="masonry-link portfolio-lightbox"
-                  href={bInfo.href}
-                  data-full-src={bInfo.fullSrc}
-                >
-                  <picture>
-                    {bInfo.webpSrcSet && (
-                      <source type="image/webp" srcset={bInfo.webpSrcSet} sizes={bInfo.sizes} />
-                    )}
-                    <img
-                      src={bInfo.imgSrc}
-                      srcset={bInfo.jpegSrcSet}
-                      sizes={bInfo.sizes}
-                      alt={b.caption}
-                      width={648}
-                      height={484}
-                      loading="lazy"
-                      decoding="async"
-                      data-caption={b.caption}
-                      data-full-src={bInfo.fullSrc}
-                      data-original-src={bInfo.originalSrc}
-                    />
-                  </picture>
-                  <div class="caption-overlay">
-                    <h3>{b.caption}</h3>
-                  </div>
+                <a class="masonry-link portfolio-lightbox" href={b.fullSrc} data-full-src={b.fullSrc}>
+                  <img
+                    src={b.src}
+                    srcset={b.srcset}
+                    sizes={b.sizes}
+                    alt={b.caption}
+                    width={648}
+                    height={484}
+                    loading="lazy"
+                    decoding="async"
+                    data-caption={b.caption}
+                    data-full-src={b.fullSrc}
+                  />
+                  <div class="caption-overlay"><h3>{b.caption}</h3></div>
                 </a>
               </div>
             </article>
           );
         }
         const photo = mapSingle(item);
-        const photoInfo = responsiveInfoFor(photo);
         // Map size to variant names
         let variant = 'regular';
         if (photo.size === 'landscape') variant = 'wide';
@@ -780,37 +657,26 @@ const criticalStyles = `
             data-size={photo.size}
             style={`--aspect-ratio: ${aspectRatio}`}
           >
-            <a
-              class="masonry-link portfolio-lightbox"
-              href={photoInfo.href}
-              data-full-src={photoInfo.fullSrc}
-            >
-              <picture>
-                {photoInfo.webpSrcSet && (
-                  <source type="image/webp" srcset={photoInfo.webpSrcSet} sizes={photoInfo.sizes} />
-                )}
-                <img
-                  src={photoInfo.imgSrc}
-                  srcset={photoInfo.jpegSrcSet ?? undefined}
-                  sizes={photoInfo.sizes}
-                  alt={photo.caption}
-                  width={imageWidth}
-                  height={imageHeight}
-                  loading="lazy"
-                  decoding="async"
-                  data-caption={photo.caption}
-                  data-variant={variant}
-                  data-natural-width={meta?.width}
-                  data-natural-height={meta?.height}
-                  data-full-src={photoInfo.fullSrc}
-                  data-original-src={photoInfo.originalSrc}
-                />
-              </picture>
+            <a class="masonry-link portfolio-lightbox" href={photo.fullSrc} data-full-src={photo.fullSrc}>
+              <img
+                src={photo.src}
+                srcset={photo.srcset}
+                sizes={photo.sizes}
+                alt={photo.caption}
+                width={imageWidth}
+                height={imageHeight}
+                loading="lazy"
+                decoding="async"
+                data-caption={photo.caption}
+                data-variant={variant}
+                data-natural-width={meta?.width}
+                data-natural-height={meta?.height}
+                data-full-src={photo.fullSrc}
+              />
               <div class="caption-overlay">
                 <h3>{photo.caption}</h3>
               </div>
             </a>
-            <!-- Admin controls removed - using double-click instead -->
           </article>
         );
       })}
