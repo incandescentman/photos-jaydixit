@@ -6,6 +6,10 @@ dist/
 .env
 coverage/
 
+# Homepage images now served from Cloudinary
+public/highlights/
+src/assets/highlights/
+
 # Pywikibot
 user-config.py
 apicache/
