@@ -129,6 +129,7 @@ Example: `vanessa-kirby_toronto-film-festival_2024.jpg`
 | `src/data/homepage-images.js` | Homepage image configuration |
 | `src/lib/cloudinary.ts` | Cloudinary URL helpers |
 | `scripts/upload-to-cloudinary.js` | Upload script for new images |
+| `scripts/sync-captions-to-cloudinary.js` | Sync captions to Cloudinary metadata |
 | `src/pages/gallery/[...folder].astro` | Gallery page with Astro Image |
 | `src/scripts/packeryGallery.ts` | Masonry layout + PhotoSwipe |
 
@@ -139,8 +140,12 @@ Example: `vanessa-kirby_toronto-film-festival_2024.jpg`
    #+begin_src bash
    node scripts/upload-to-cloudinary.js ./path/to/images highlights
    #+end_src
-3. Add entry to `src/data/homepage-images.js`
-4. Build and test
+3. Add entry to `src/data/homepage-images.js` with filename, size, and caption
+4. (Optional) Sync captions to Cloudinary for searchability:
+   #+begin_src bash
+   node scripts/sync-captions-to-cloudinary.js
+   #+end_src
+5. Build and test
 
 * 9. Migration History
 
