@@ -24,9 +24,15 @@
 ** Security Fixes (from code review)
 - HIGH: Fixed PhotoSwipe import path (was using /node_modules/ dev-only path)
 - HIGH: Fixed PhotoComments custom element (constructor never ran)
+- MEDIUM: Fixed admin order restore for Cloudinary URLs (was parsing img.src, now uses data-filename)
 - MEDIUM: Fixed XSS in lightbox captions (innerHTML → textContent)
 - MEDIUM: Fixed regex injection in save-order.ts (unescaped filenames)
 - LOW: Fixed PhotoLikeButton custom element (constructor never ran)
+
+** Cloudinary Metadata Sync
+- Created scripts/sync-captions-to-cloudinary.js
+- Synced all 32 captions to Cloudinary's Title/Description fields
+- Local homepage-images.js remains source of truth
 
 ** Remaining
 - Giscus comments need configuration (placeholder IDs in PhotoComments.astro)
