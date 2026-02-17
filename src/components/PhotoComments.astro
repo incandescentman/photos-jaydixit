@@ -23,12 +23,11 @@ function loadGiscusComments() {
   // Create Giscus script element
   const script = document.createElement('script');
   script.src = 'https://giscus.app/client.js';
-  script.setAttribute('data-repo', 'incandescentman/jaydixit-photos');
-  // NOTE: Replace these with actual values from https://giscus.app
-  // After enabling Discussions on the repo, visit giscus.app to get the IDs
-  script.setAttribute('data-repo-id', 'REPLACE_WITH_YOUR_REPO_ID');
+  script.setAttribute('data-repo', 'incandescentman/photos-jaydixit');
+  script.setAttribute('data-repo-id', 'R_kgDOPg12Gg');
+  // TODO: Enable Discussions on the repo, then get category-id from https://giscus.app
   script.setAttribute('data-category', 'General');
-  script.setAttribute('data-category-id', 'REPLACE_WITH_YOUR_CATEGORY_ID');
+  script.setAttribute('data-category-id', 'REPLACE_WITH_CATEGORY_ID');
   script.setAttribute('data-mapping', 'specific');
   script.setAttribute('data-term', term);
   script.setAttribute('data-strict', '0');
