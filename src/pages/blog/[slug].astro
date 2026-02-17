@@ -1,15 +1,17 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
+import SocialShare from '../../components/SocialShare.astro';
 import { getCollection } from 'astro:content';
 import { smartQuotes } from '@jaydixit/astro-utils';
 import { cldUrl, cldSrcset, cldSizes } from '../../lib/cloudinary';
+import siteConfig from '../../../site.config.mts';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog', (entry) => !entry.data.draft);
-  return posts.map((post) => ({
-    params: { slug: post.slug },
-    props: { post },
-  }));
+	const posts = await getCollection('blog', (entry) => !entry.data.draft);
+	return posts.map((post) => ({
+		params: { slug: post.slug },
+		props: { post },
+	}));
 }
 
 const { post } = Astro.props;
@@ -17,57 +19,103 @@ const { Content } = await post.render();
 const data = post.data;
 const publishDate = data.publishDate ? new Date(data.publishDate) : undefined;
 const formattedDate = publishDate
-  ? publishDate.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    })
-  : null;
-const heroImage = data.imagePublicId ? cldUrl(data.imagePublicId, 2000) : data.image ?? null;
+	? publishDate.toLocaleDateString('en-US', {
+			year: 'numeric',
+			month: 'long',
+			day: 'numeric',
+		})
+	: null;
+const heroImage = data.imagePublicId ? cldUrl(data.imagePublicId, 2000) : (data.image ?? null);
 const heroSrcset = data.imagePublicId ? cldSrcset(data.imagePublicId) : undefined;
 const excerpt = data.excerpt ? smartQuotes(data.excerpt) : null;
+const siteUrl = Astro.site?.origin ?? siteConfig.siteUrl ?? 'https://photos.jaydixit.com';
+const canonicalUrl = new URL(`/blog/${post.slug}/`, siteUrl).toString();
+const blogStructuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'BlogPosting',
+	headline: data.title,
+	description: data.excerpt ?? '',
+	datePublished: publishDate?.toISOString(),
+	dateModified: (data.updateDate ?? data.publishDate)?.toISOString(),
+	author: {
+		'@type': 'Person',
+		name: siteConfig.owner,
+	},
+	publisher: {
+		'@type': 'Person',
+		name: siteConfig.owner,
+	},
+	mainEntityOfPage: canonicalUrl,
+	image: heroImage ? [new URL(heroImage, siteUrl).toString()] : undefined,
+	keywords: data.tags?.join(', '),
+};
 ---
 
-<MainLayout title={data.title} description={data.excerpt}>
-  <article class="mx-auto max-w-3xl px-6 pb-24 pt-44 md:pt-56">
-    {heroImage && (
-      <figure class="relative mb-12 overflow-hidden rounded-[2.5rem] bg-slate-100 shadow-[0_25px_70px_-30px_rgba(15,23,42,0.35)]">
-        <img
-          src={heroImage}
-          srcset={heroSrcset}
-          sizes={cldSizes('(max-width: 900px) 100vw, 80vw')}
-          alt={data.imageAlt ?? data.title}
-          loading="eager"
-          decoding="async"
-          class="h-full w-full object-cover"
-        />
-      </figure>
-    )}
+<MainLayout
+	title={data.title}
+	description={data.excerpt}
+	canonical={canonicalUrl}
+	image={heroImage ?? undefined}
+	imageAlt={data.imageAlt ?? data.title}
+	ogType="article"
+	structuredData={blogStructuredData}
+>
+	<article class="mx-auto max-w-3xl px-6 pb-24 pt-44 md:pt-56">
+		{
+			heroImage && (
+				<figure class="relative mb-12 overflow-hidden rounded-[2.5rem] bg-slate-100 shadow-[0_25px_70px_-30px_rgba(15,23,42,0.35)]">
+					<img
+						src={heroImage}
+						srcset={heroSrcset}
+						sizes={cldSizes('(max-width: 900px) 100vw, 80vw')}
+						alt={data.imageAlt ?? data.title}
+						loading="eager"
+						decoding="async"
+						class="h-full w-full object-cover"
+					/>
+				</figure>
+			)
+		}
 
-    <header class="mb-12 space-y-4 text-center">
-      <p class="text-xs uppercase tracking-[0.35em] text-slate-400">Essay</p>
-      <h1 class="text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">{data.title}</h1>
-      {formattedDate && (
-        <time datetime={publishDate?.toISOString()} class="block text-sm uppercase tracking-[0.3em] text-slate-500">
-          {formattedDate}
-        </time>
-      )}
-      {data.tags && (
-        <ul class="flex flex-wrap justify-center gap-3 text-xs uppercase tracking-[0.2em] text-slate-500">
-          {data.tags.map((tag) => (
-            <li class="rounded-full border border-slate-200 px-4 py-1">{tag}</li>
-          ))}
-        </ul>
-      )}
-      {excerpt && (
-        <p class="mx-auto max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
-          {excerpt}
-        </p>
-      )}
-    </header>
+		<header class="mb-12 space-y-4 text-center">
+			<p class="text-xs uppercase tracking-[0.35em] text-slate-400">Essay</p>
+			<h1 class="text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">{data.title}</h1>
+			{
+				formattedDate && (
+					<time
+						datetime={publishDate?.toISOString()}
+						class="block text-sm uppercase tracking-[0.3em] text-slate-500"
+					>
+						{formattedDate}
+					</time>
+				)
+			}
+			{
+				data.tags && (
+					<ul class="flex flex-wrap justify-center gap-3 text-xs uppercase tracking-[0.2em] text-slate-500">
+						{data.tags.map((tag) => (
+							<li class="rounded-full border border-slate-200 px-4 py-1">{tag}</li>
+						))}
+					</ul>
+				)
+			}
+			{
+				excerpt && (
+					<p class="mx-auto max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
+						{excerpt}
+					</p>
+				)
+			}
+		</header>
 
-    <div class="prose prose-lg prose-slate mx-auto max-w-none">
-      <Content />
-    </div>
-  </article>
+		<SocialShare
+			title={data.title}
+			text={data.excerpt ?? `Read ${data.title} on ${siteConfig.title}`}
+			className="mb-10"
+		/>
+
+		<div class="prose prose-lg prose-slate mx-auto max-w-none">
+			<Content />
+		</div>
+	</article>
 </MainLayout>

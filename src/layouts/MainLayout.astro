@@ -6,13 +6,91 @@ import siteConfig from '../../site.config.mts';
 import Footer from '../components/Footer.astro';
 import NavBar from '../components/NavBar.astro';
 
+type JsonLd = Record<string, unknown> | Array<Record<string, unknown>>;
+type LayoutProps = {
+	frontmatter?: Record<string, unknown>;
+	title?: string;
+	description?: string;
+	canonical?: string;
+	image?: string;
+	imageAlt?: string;
+	ogType?: string;
+	noindex?: boolean;
+	twitterCard?: string;
+	structuredData?: JsonLd;
+};
+
 const owner = siteConfig.owner;
 const favicon = siteConfig.favicon;
 const base = import.meta.env.BASE_URL;
-const { frontmatter } = Astro.props as { frontmatter?: Record<string, any> };
-const pageTitle = frontmatter?.title ? `${frontmatter.title} — ${owner}` : owner;
-const pageDescription = frontmatter?.description as string | undefined;
-const canonicalUrl = frontmatter?.canonical as string | undefined;
+const siteUrl = Astro.site?.origin ?? siteConfig.siteUrl ?? 'https://photos.jaydixit.com';
+const props = Astro.props as LayoutProps;
+const frontmatter = props.frontmatter ?? {};
+
+const pageTitleSource =
+	props.title ?? (typeof frontmatter.title === 'string' ? frontmatter.title : undefined);
+const pageTitle = pageTitleSource ? `${pageTitleSource} — ${owner}` : owner;
+const pageDescription =
+	props.description ??
+	(typeof frontmatter.description === 'string' ? frontmatter.description : undefined);
+const canonicalSource =
+	props.canonical ??
+	(typeof frontmatter.canonical === 'string' ? frontmatter.canonical : undefined);
+const canonicalUrl = canonicalSource
+	? new URL(canonicalSource, siteUrl).toString()
+	: new URL(Astro.url.pathname, siteUrl).toString();
+
+const rawImage =
+	props.image ?? (typeof frontmatter.image === 'string' ? frontmatter.image : undefined);
+const ogImage = rawImage
+	? new URL(rawImage, siteUrl).toString()
+	: new URL('/jaydixit-photos-logo.png', siteUrl).toString();
+const ogImageAlt =
+	props.imageAlt ??
+	(typeof frontmatter.imageAlt === 'string' ? frontmatter.imageAlt : undefined) ??
+	`${owner} photography`;
+const ogType =
+	props.ogType ?? (typeof frontmatter.ogType === 'string' ? frontmatter.ogType : 'website');
+const twitterCard =
+	props.twitterCard ??
+	(typeof frontmatter.twitterCard === 'string' ? frontmatter.twitterCard : 'summary_large_image');
+const twitterHandle = siteConfig.twitterHandle;
+const noindex =
+	props.noindex ?? (typeof frontmatter.noindex === 'boolean' ? frontmatter.noindex : false);
+const structuredData = props.structuredData ?? (frontmatter.structuredData as JsonLd | undefined);
+const safeStructuredData = structuredData
+	? JSON.stringify(structuredData)
+			.replace(/</g, '\\u003c')
+			.replace(/>/g, '\\u003e')
+			.replace(/&/g, '\\u0026')
+	: null;
+
+const websiteStructuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'WebSite',
+	name: siteConfig.title,
+	url: siteUrl,
+	description: pageDescription ?? `${owner} photography portfolio`,
+	publisher: {
+		'@type': 'Person',
+		name: owner,
+	},
+};
+const websiteStructuredDataJson = JSON.stringify(websiteStructuredData)
+	.replace(/</g, '\\u003c')
+	.replace(/>/g, '\\u003e')
+	.replace(/&/g, '\\u0026');
+
+const gaMeasurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
+const gaBootstrapScript = gaMeasurementId
+	? `
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${gaMeasurementId}', {
+  anonymize_ip: true
+});`
+	: null;
 ---
 
 <html lang="en" class="h-full">
@@ -32,7 +110,35 @@ const canonicalUrl = frontmatter?.canonical as string | undefined;
 		<meta name="generator" content={Astro.generator} />
 		<title>{pageTitle}</title>
 		{pageDescription && <meta name="description" content={pageDescription} />}
-		{canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+		<link rel="canonical" href={canonicalUrl} />
+		<link
+			rel="alternate"
+			type="application/rss+xml"
+			title={`${owner} RSS Feed`}
+			href={new URL('/feed.xml', siteUrl).toString()}
+		/>
+		<meta property="og:type" content={ogType} />
+		<meta property="og:title" content={pageTitle} />
+		{pageDescription && <meta property="og:description" content={pageDescription} />}
+		<meta property="og:url" content={canonicalUrl} />
+		<meta property="og:image" content={ogImage} />
+		<meta property="og:image:alt" content={ogImageAlt} />
+		<meta name="twitter:card" content={twitterCard} />
+		<meta name="twitter:title" content={pageTitle} />
+		{pageDescription && <meta name="twitter:description" content={pageDescription} />}
+		<meta name="twitter:image" content={ogImage} />
+		<meta name="twitter:image:alt" content={ogImageAlt} />
+		{twitterHandle && <meta name="twitter:site" content={twitterHandle} />}
+		{twitterHandle && <meta name="twitter:creator" content={twitterHandle} />}
+		{noindex && <meta name="robots" content="noindex, nofollow" />}
+		<script type="application/ld+json" set:html={websiteStructuredDataJson} />
+		{safeStructuredData && <script type="application/ld+json" set:html={safeStructuredData} />}
+		{
+			gaMeasurementId && (
+				<script async src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`} />
+			)
+		}
+		{gaBootstrapScript && <script is:inline set:html={gaBootstrapScript} />}
 		<slot name="head" />
 	</head>
 	<body>

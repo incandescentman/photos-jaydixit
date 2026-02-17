@@ -3,6 +3,8 @@ import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro:assets';
 import MainLayout from '../../layouts/MainLayout.astro';
 import PhotoComments from '../../components/PhotoComments.astro';
+import SocialShare from '../../components/SocialShare.astro';
+import siteConfig from '../../../site.config.mts';
 
 const { folder } = Astro.params;
 
@@ -13,503 +15,555 @@ type TagMapping = Record<string, string[]>;
 type TagsByFolder = Record<string, TagMapping>;
 
 const imageModules = import.meta.glob<{ default: ImageMetadata }>(
-  '../../gallery/photos/**/*.{jpg,jpeg,png,webp,gif}',
-  {
-    eager: true
-  }
+	'../../gallery/photos/**/*.{jpg,jpeg,png,webp,gif}',
+	{
+		eager: true,
+	},
 );
 
-const tagModules = import.meta.glob<TagMapping>(
-  '../../gallery/photos/**/tags.json',
-  { import: 'default', eager: true }
-);
+const tagModules = import.meta.glob<TagMapping>('../../gallery/photos/**/tags.json', {
+	import: 'default',
+	eager: true,
+});
 
 const tagsByFolder = Object.entries(tagModules).reduce<TagsByFolder>((acc, [key, value]) => {
-  const relativeFolder = key
-    .replace('../../gallery/photos/', '')
-    .replace(/\/tags\.json$/, '');
-  acc[relativeFolder] = value;
-  return acc;
+	const relativeFolder = key.replace('../../gallery/photos/', '').replace(/\/tags\.json$/, '');
+	acc[relativeFolder] = value;
+	return acc;
 }, {});
 
 function capitalize(word: string) {
-  return word.charAt(0).toUpperCase() + word.slice(1);
+	return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
 function buildCaptionAndTags(filename: string, folderSlug: string) {
-  const baseName = filename.replace(/\.[^/.]+$/, '');
-  const parts = baseName.split('_');
-  let subject = '';
-  let event = '';
-  let year = '';
+	const baseName = filename.replace(/\.[^/.]+$/, '');
+	const parts = baseName.split('_');
+	let subject = '';
+	let event = '';
+	let year = '';
 
-  if (parts.length > 0) {
-    subject = parts[0].split('-').map(capitalize).join(' ');
-  }
+	if (parts.length > 0) {
+		subject = parts[0].split('-').map(capitalize).join(' ');
+	}
 
-  if (parts.length > 1) {
-    const lastPart = parts[parts.length - 1];
-    if (/^\d{4}$/.test(lastPart)) {
-      year = lastPart;
-      if (parts.length > 2) {
-        event = parts.slice(1, -1).join(' ').split('-').map(capitalize).join(' ');
-      }
-    } else {
-      event = parts.slice(1).join(' ').split('-').map(capitalize).join(' ');
-    }
-  }
+	if (parts.length > 1) {
+		const lastPart = parts[parts.length - 1];
+		if (/^\d{4}$/.test(lastPart)) {
+			year = lastPart;
+			if (parts.length > 2) {
+				event = parts.slice(1, -1).join(' ').split('-').map(capitalize).join(' ');
+			}
+		} else {
+			event = parts.slice(1).join(' ').split('-').map(capitalize).join(' ');
+		}
+	}
 
-  let caption = subject;
-  if (event) caption += ` at ${event}`;
-  if (year) caption += ` in ${year}`;
-  if (!caption) {
-    caption = subject || baseName.replace(/[-_]/g, ' ');
-  }
+	let caption = subject;
+	if (event) caption += ` at ${event}`;
+	if (year) caption += ` in ${year}`;
+	if (!caption) {
+		caption = subject || baseName.replace(/[-_]/g, ' ');
+	}
 
-  const overrides = tagsByFolder[folderSlug]?.[filename] ?? [];
-  let tags = [...overrides];
+	const overrides = tagsByFolder[folderSlug]?.[filename] ?? [];
+	let tags = [...overrides];
 
-  if (tags.length === 0) {
-    const tagMatch = baseName.match(/_([^_]+)$/);
-    if (tagMatch) {
-      tags = tagMatch[1].split('-');
-    }
-    if (folderSlug) {
-      tags.push(...folderSlug.split('/'));
-    }
-  }
+	if (tags.length === 0) {
+		const tagMatch = baseName.match(/_([^_]+)$/);
+		if (tagMatch) {
+			tags = tagMatch[1].split('-');
+		}
+		if (folderSlug) {
+			tags.push(...folderSlug.split('/'));
+		}
+	}
 
-  return {
-    caption,
-    tags: [...new Set(tags)]
-  };
+	return {
+		caption,
+		tags: [...new Set(tags)],
+	};
 }
 
 const images = Object.entries(imageModules)
-  .map(([key, module]) => {
-    const metadata = module.default;
-    const relativePath = key.replace('../../gallery/photos/', '');
-    const segments = relativePath.split('/');
-    const filename = segments.pop();
-    if (!filename) return null;
-    const imageFolder = segments.join('/');
+	.map(([key, module]) => {
+		const metadata = module.default;
+		const relativePath = key.replace('../../gallery/photos/', '');
+		const segments = relativePath.split('/');
+		const filename = segments.pop();
+		if (!filename) return null;
+		const imageFolder = segments.join('/');
 
-    if (imageFolder !== folderPath) return null;
+		if (imageFolder !== folderPath) return null;
 
-    const { caption, tags } = buildCaptionAndTags(filename, imageFolder);
+		const { caption, tags } = buildCaptionAndTags(filename, imageFolder);
 
-    return {
-      metadata,
-      filename,
-      caption,
-      tags,
-      originalSrc: metadata.src
-    };
-  })
-  .filter((entry): entry is {
-    metadata: ImageMetadata;
-    filename: string;
-    caption: string;
-    tags: string[];
-    originalSrc: string;
-  } => entry !== null)
-  .sort((a, b) => a.filename.localeCompare(b.filename));
+		return {
+			metadata,
+			filename,
+			caption,
+			tags,
+			originalSrc: metadata.src,
+		};
+	})
+	.filter(
+		(
+			entry,
+		): entry is {
+			metadata: ImageMetadata;
+			filename: string;
+			caption: string;
+			tags: string[];
+			originalSrc: string;
+		} => entry !== null,
+	)
+	.sort((a, b) => a.filename.localeCompare(b.filename));
 
 if (images.length === 0) {
-  return Astro.redirect('/404');
+	return Astro.redirect('/404');
 }
 
 // Get all unique tags for filtering
-const allTags = [...new Set(images.flatMap(img => img.tags))];
+const allTags = [...new Set(images.flatMap((img) => img.tags))];
 
 // Display name for the gallery
-const displayName = folderPath.split('/').map(part => 
-  part.split('-').map(capitalize).join(' ')
-).join(' → ');
+const displayName = folderPath
+	.split('/')
+	.map((part) => part.split('-').map(capitalize).join(' '))
+	.join(' → ');
+
+const siteUrl = Astro.site?.origin ?? siteConfig.siteUrl ?? 'https://photos.jaydixit.com';
+const canonicalUrl = new URL(`/gallery/${folderPath}`, siteUrl).toString();
+const pageTitle = `${displayName} Gallery`;
+const pageDescription = `${images.length} ${images.length === 1 ? 'photo' : 'photos'} in the ${displayName} gallery by ${siteConfig.owner}.`;
+const primaryImage = images[0]?.originalSrc;
+const imageObjects = images.slice(0, 48).map((image) => ({
+	'@type': 'ImageObject',
+	contentUrl: new URL(image.originalSrc, siteUrl).toString(),
+	caption: image.caption,
+	keywords: image.tags.length > 0 ? image.tags.join(', ') : undefined,
+}));
+
+const galleryStructuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'ImageGallery',
+	name: `${displayName} — ${siteConfig.owner}`,
+	description: pageDescription,
+	url: canonicalUrl,
+	creator: { '@type': 'Person', name: siteConfig.owner },
+	image: imageObjects.map((image) => image.contentUrl),
+	hasPart: imageObjects,
+};
 
 export const getStaticPaths = () => {
-  const folders = new Set<string>();
+	const folders = new Set<string>();
 
-  const staticModules = import.meta.glob<{ default: ImageMetadata }>(
-    '../../gallery/photos/**/*.{jpg,jpeg,png,webp,gif}',
-    {
-      eager: true
-    }
-  );
+	const staticModules = import.meta.glob<{ default: ImageMetadata }>(
+		'../../gallery/photos/**/*.{jpg,jpeg,png,webp,gif}',
+		{
+			eager: true,
+		},
+	);
 
-  Object.keys(staticModules).forEach(key => {
-    const relativePath = key.replace('../../gallery/photos/', '');
-    const folderSlug = relativePath.split('/').slice(0, -1).join('/');
-    if (folderSlug) {
-      folders.add(folderSlug);
-    }
-  });
+	Object.keys(staticModules).forEach((key) => {
+		const relativePath = key.replace('../../gallery/photos/', '');
+		const folderSlug = relativePath.split('/').slice(0, -1).join('/');
+		if (folderSlug) {
+			folders.add(folderSlug);
+		}
+	});
 
-  return Array.from(folders).map(folderSlug => ({
-    params: {
-      folder: folderSlug
-    }
-  }));
+	return Array.from(folders).map((folderSlug) => ({
+		params: {
+			folder: folderSlug,
+		},
+	}));
 };
 ---
 
-<MainLayout>
-  <section class="py-16 pt-24">
-    <div class="container mx-auto px-4 max-w-7xl">
-      <!-- Gallery Header -->
-      <div class="mb-8 text-center">
-        <h1 class="text-3xl md:text-4xl font-bold mb-2">{displayName}</h1>
-        <p class="text-gray-600">{images.length} {images.length === 1 ? 'photo' : 'photos'}</p>
-      </div>
+<MainLayout
+	title={pageTitle}
+	description={pageDescription}
+	canonical={canonicalUrl}
+	image={primaryImage}
+	imageAlt={images[0]?.caption}
+	structuredData={galleryStructuredData}
+>
+	<section class="py-16 pt-24">
+		<div class="container mx-auto px-4 max-w-7xl">
+			<!-- Gallery Header -->
+			<div class="mb-8 text-center">
+				<h1 class="text-3xl md:text-4xl font-bold mb-2">{displayName}</h1>
+				<p class="text-gray-600">{images.length} {images.length === 1 ? 'photo' : 'photos'}</p>
+			</div>
 
-      <!-- Search and Filter -->
-      <div class="mb-8">
-        <div class="max-w-md mx-auto mb-6">
-          <input
-            type="text"
-            id="search"
-            placeholder="Search photos..."
-            class="w-full px-4 py-3 border rounded-xl text-sm shadow-sm hover:shadow-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2"
-            style="border-color: var(--neutral-200); background-color: white;"
-          />
-        </div>
-        
-        {allTags.length > 0 && (
-          <div class="flex flex-wrap gap-2 justify-center mb-6">
-            <button
-              class="tag-filter-all inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-full border transition-all duration-200"
-              style="border-color: var(--neutral-200); color: var(--neutral-700); background: white;"
-            >
-              All
-            </button>
-            {allTags.map(tag => (
-              <button
-                class="tag-filter inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-full border transition-all duration-200"
-                data-tag={tag}
-                style="border-color: var(--neutral-200); color: var(--neutral-700); background: white;"
-              >
-                {tag}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
+			<SocialShare
+				title={`${displayName} Gallery`}
+				text={`Explore ${displayName} photography by ${siteConfig.owner}`}
+			/>
 
-      <!-- Masonry Gallery -->
-      <div id="masonry" class="masonry-items" data-gutter="8px">
-        <div class="grid-sizer"></div>
-        {images.map((image, index) => {
-          const heuristic = index % 7 === 0 ? 'wide-tall'
-            : index % 5 === 0 ? 'wide-short'
-            : index % 4 === 1 ? 'tall'
-            : index % 6 === 2 ? 'wide'
-            : index % 8 === 3 ? 'medium'
-            : 'regular';
+			<!-- Search and Filter -->
+			<div class="mb-8">
+				<div class="max-w-md mx-auto mb-6">
+					<input
+						type="text"
+						id="search"
+						placeholder="Search photos..."
+						class="w-full px-4 py-3 border rounded-xl text-sm shadow-sm hover:shadow-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2"
+						style="border-color: var(--neutral-200); background-color: white;"
+					/>
+				</div>
 
-          let variant = 'regular';
-          let dataSize = 'portrait';
-          if (heuristic === 'wide' || heuristic === 'wide-short') {
-            variant = 'wide';
-            dataSize = 'landscape';
-          } else if (heuristic === 'wide-tall' || heuristic === 'tall') {
-            variant = 'wide_tall';
-            dataSize = 'xlportrait';
-          }
+				{
+					allTags.length > 0 && (
+						<div class="flex flex-wrap gap-2 justify-center mb-6">
+							<button
+								class="tag-filter-all inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-full border transition-all duration-200"
+								style="border-color: var(--neutral-200); color: var(--neutral-700); background: white;"
+							>
+								All
+							</button>
+							{allTags.map((tag) => (
+								<button
+									class="tag-filter inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-full border transition-all duration-200"
+									data-tag={tag}
+									style="border-color: var(--neutral-200); color: var(--neutral-700); background: white;"
+								>
+									{tag}
+								</button>
+							))}
+						</div>
+					)
+				}
+			</div>
 
-          // Calculate dimensions based on size
-          const dimensions = {
-            portrait: { w: 320, h: 480 },
-            landscape: { w: 648, h: 480 },
-            xlportrait: { w: 648, h: 968 }
-          };
-          const { w, h } = dimensions[dataSize];
+			<!-- Masonry Gallery -->
+			<div id="masonry" class="masonry-items" data-gutter="8px">
+				<div class="grid-sizer"></div>
+				{
+					images.map((image, index) => {
+						const heuristic =
+							index % 7 === 0
+								? 'wide-tall'
+								: index % 5 === 0
+									? 'wide-short'
+									: index % 4 === 1
+										? 'tall'
+										: index % 6 === 2
+											? 'wide'
+											: index % 8 === 3
+												? 'medium'
+												: 'regular';
 
-          return (
-            <article
-              class={`masonry-item ${variant}`}
-              data-idx={index}
-              data-filename={image.filename}
-              data-size={dataSize}
-              data-caption={image.caption}
-              data-tags={JSON.stringify(image.tags)}
-            >
-              <a class="masonry-link portfolio-lightbox" href={image.originalSrc}>
-                <Image
-                  src={image.metadata}
-                  alt={image.caption}
-                  width={w}
-                  height={h}
-                  fit="cover"
-                  position="attention"
-                  loading="lazy"
-                  data-caption={image.caption}
-                />
-                <div class="caption-overlay">
-                  <h3>{image.caption}</h3>
-                </div>
-              </a>
-            </article>
-          );
-        })}
-      </div>
+						let variant = 'regular';
+						let dataSize = 'portrait';
+						if (heuristic === 'wide' || heuristic === 'wide-short') {
+							variant = 'wide';
+							dataSize = 'landscape';
+						} else if (heuristic === 'wide-tall' || heuristic === 'tall') {
+							variant = 'wide_tall';
+							dataSize = 'xlportrait';
+						}
 
-      <!-- Comments Section -->
-      <PhotoComments galleryName={folderPath} />
-    </div>
-  </section>
-<style>
-.masonry-items {
-  position: relative;
-  width: 100%;
-  margin: 0 auto;
-  padding: 0;
-  min-height: 400px;
-}
+						// Calculate dimensions based on size
+						const dimensions = {
+							portrait: { w: 320, h: 480 },
+							landscape: { w: 648, h: 480 },
+							xlportrait: { w: 648, h: 968 },
+						};
+						const { w, h } = dimensions[dataSize];
 
-.masonry-item {
-  box-sizing: border-box;
-  padding: 0;
-  opacity: 0;
-  transform: translateY(12px);
-  position: absolute;
-  overflow: hidden;
-}
+						return (
+							<article
+								class={`masonry-item ${variant}`}
+								data-idx={index}
+								data-filename={image.filename}
+								data-size={dataSize}
+								data-caption={image.caption}
+								data-tags={JSON.stringify(image.tags)}
+							>
+								<a class="masonry-link portfolio-lightbox" href={image.originalSrc}>
+									<Image
+										src={image.metadata}
+										alt={image.caption}
+										width={w}
+										height={h}
+										fit="cover"
+										position="attention"
+										loading="lazy"
+										data-caption={image.caption}
+									/>
+									<div class="caption-overlay">
+										<h3>{image.caption}</h3>
+									</div>
+								</a>
+							</article>
+						);
+					})
+				}
+			</div>
 
-.masonry-item.animated-in {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity .35s ease, transform .35s ease;
-}
+			<!-- Comments Section -->
+			<PhotoComments galleryName={folderPath} />
+		</div>
+	</section>
+	<style>
+		.masonry-items {
+			position: relative;
+			width: 100%;
+			margin: 0 auto;
+			padding: 0;
+			min-height: 400px;
+		}
 
-.grid-sizer {
-  width: 320px;
-}
+		.masonry-item {
+			box-sizing: border-box;
+			padding: 0;
+			opacity: 0;
+			transform: translateY(12px);
+			position: absolute;
+			overflow: hidden;
+		}
 
-.masonry-item.regular {
-  width: 320px;
-}
+		.masonry-item.animated-in {
+			opacity: 1;
+			transform: translateY(0);
+			transition:
+				opacity 0.35s ease,
+				transform 0.35s ease;
+		}
 
-.masonry-item.wide,
-.masonry-item.wide_tall {
-  width: 648px;
-}
+		.grid-sizer {
+			width: 320px;
+		}
 
-@media only screen and (max-width: 1300px) {
-  .grid-sizer,
-  .masonry-item.regular {
-    width: 25%;
-  }
-  .masonry-item.wide,
-  .masonry-item.wide_tall {
-    width: 50%;
-  }
-}
+		.masonry-item.regular {
+			width: 320px;
+		}
 
-@media only screen and (max-width: 768px) {
-  .grid-sizer,
-  .masonry-item.regular {
-    width: 50%;
-  }
-  .masonry-item.wide,
-  .masonry-item.wide_tall {
-    width: 100%;
-  }
-}
+		.masonry-item.wide,
+		.masonry-item.wide_tall {
+			width: 648px;
+		}
 
-@media only screen and (max-width: 480px) {
-  .masonry-items {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 8px !important;
-    position: relative !important;
-  }
+		@media only screen and (max-width: 1300px) {
+			.grid-sizer,
+			.masonry-item.regular {
+				width: 25%;
+			}
+			.masonry-item.wide,
+			.masonry-item.wide_tall {
+				width: 50%;
+			}
+		}
 
-  .grid-sizer {
-    display: none !important;
-  }
+		@media only screen and (max-width: 768px) {
+			.grid-sizer,
+			.masonry-item.regular {
+				width: 50%;
+			}
+			.masonry-item.wide,
+			.masonry-item.wide_tall {
+				width: 100%;
+			}
+		}
 
-  .masonry-item {
-    position: relative !important;
-    width: 100% !important;
-    height: auto !important;
-    transform: none !important;
-    left: auto !important;
-    top: auto !important;
-  }
+		@media only screen and (max-width: 480px) {
+			.masonry-items {
+				display: flex !important;
+				flex-direction: column !important;
+				gap: 8px !important;
+				position: relative !important;
+			}
 
-  .masonry-item img {
-    object-fit: contain !important;
-    width: 100% !important;
-    height: auto !important;
-  }
-}
+			.grid-sizer {
+				display: none !important;
+			}
 
-.masonry-item img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
+			.masonry-item {
+				position: relative !important;
+				width: 100% !important;
+				height: auto !important;
+				transform: none !important;
+				left: auto !important;
+				top: auto !important;
+			}
 
-.masonry-item a {
-  display: block;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  overflow: hidden;
-}
+			.masonry-item img {
+				object-fit: contain !important;
+				width: 100% !important;
+				height: auto !important;
+			}
+		}
 
-.masonry-item a::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0.3) 40%,
-    rgba(0, 0, 0, 0.7) 100%
-  );
-  opacity: 0;
-  transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  z-index: 1;
-  pointer-events: none;
-}
+		.masonry-item img {
+			display: block;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+		}
 
-.masonry-item:hover img {
-  transform: scale(1.03);
-}
+		.masonry-item a {
+			display: block;
+			width: 100%;
+			height: 100%;
+			position: relative;
+			overflow: hidden;
+		}
 
-.masonry-item:hover a::before {
-  opacity: 1;
-}
+		.masonry-item a::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background: linear-gradient(
+				180deg,
+				rgba(0, 0, 0, 0) 0%,
+				rgba(0, 0, 0, 0.3) 40%,
+				rgba(0, 0, 0, 0.7) 100%
+			);
+			opacity: 0;
+			transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+			z-index: 1;
+			pointer-events: none;
+		}
 
-.caption-overlay {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-  text-align: center;
-  width: 85%;
-  max-width: 500px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-  z-index: 2;
-  padding: 0 10px;
-}
+		.masonry-item:hover img {
+			transform: scale(1.03);
+		}
 
-.caption-overlay h3 {
-  margin: 0;
-  font-size: clamp(18px, 3vw, 24px);
-  font-weight: 500;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-  letter-spacing: -0.02em;
-  line-height: 1.25;
-}
+		.masonry-item:hover a::before {
+			opacity: 1;
+		}
 
-.masonry-item:hover .caption-overlay {
-  opacity: 1;
-}
+		.caption-overlay {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			color: white;
+			text-align: center;
+			width: 85%;
+			max-width: 500px;
+			opacity: 0;
+			transition: opacity 0.3s ease;
+			pointer-events: none;
+			z-index: 2;
+			padding: 0 10px;
+		}
 
-.tag-filter:hover {
-  background-color: var(--neutral-50) !important;
-  border-color: var(--neutral-300) !important;
-}
+		.caption-overlay h3 {
+			margin: 0;
+			font-size: clamp(18px, 3vw, 24px);
+			font-weight: 500;
+			text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+			letter-spacing: -0.02em;
+			line-height: 1.25;
+		}
 
-.tag-filter.active,
-.tag-filter.is-active {
-  background: var(--neutral-900) !important;
-  color: #fff !important;
-  border-color: var(--neutral-900) !important;
-}
+		.masonry-item:hover .caption-overlay {
+			opacity: 1;
+		}
 
-.tag-filter-all:hover {
-  background-color: var(--neutral-50) !important;
-}
+		.tag-filter:hover {
+			background-color: var(--neutral-50) !important;
+			border-color: var(--neutral-300) !important;
+		}
 
-.tag-filter-all.is-active {
-  background: var(--neutral-900) !important;
-  color: #fff !important;
-  border-color: var(--neutral-900) !important;
-}
-</style>
+		.tag-filter.active,
+		.tag-filter.is-active {
+			background: var(--neutral-900) !important;
+			color: #fff !important;
+			border-color: var(--neutral-900) !important;
+		}
 
-<script hoist>
-  import initPackeryGallery from '../../scripts/packeryGallery.ts';
-  initPackeryGallery({
-    container: '#masonry',
-    adminMode: false,
-    enableToolbar: false,
-  });
+		.tag-filter-all:hover {
+			background-color: var(--neutral-50) !important;
+		}
 
-  const activeTags = new Set();
+		.tag-filter-all.is-active {
+			background: var(--neutral-900) !important;
+			color: #fff !important;
+			border-color: var(--neutral-900) !important;
+		}
+	</style>
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const searchInput = document.getElementById('search');
-    const tagButtons = Array.from(document.querySelectorAll('.tag-filter'));
-    const allButton = document.querySelector('.tag-filter-all');
-    const items = Array.from(document.querySelectorAll('.masonry-item'));
+	<script hoist>
+		import initPackeryGallery from '../../scripts/packeryGallery.ts';
+		initPackeryGallery({
+			container: '#masonry',
+			adminMode: false,
+			enableToolbar: false,
+		});
 
-    const applyFilters = () => {
-      const searchTerm = searchInput && 'value' in searchInput ? searchInput.value.toLowerCase() : '';
+		const activeTags = new Set();
 
-      items.forEach((item) => {
-        const caption = item.getAttribute('data-caption')?.toLowerCase() || '';
-        const tags = JSON.parse(item.getAttribute('data-tags') || '[]');
+		document.addEventListener('DOMContentLoaded', () => {
+			const searchInput = document.getElementById('search');
+			const tagButtons = Array.from(document.querySelectorAll('.tag-filter'));
+			const allButton = document.querySelector('.tag-filter-all');
+			const items = Array.from(document.querySelectorAll('.masonry-item'));
 
-        const matchesSearch = !searchTerm || caption.includes(searchTerm);
-        const matchesTags = activeTags.size === 0 || Array.from(activeTags).every((tag) => tags.includes(tag));
+			const applyFilters = () => {
+				const searchTerm =
+					searchInput && 'value' in searchInput ? searchInput.value.toLowerCase() : '';
 
-        item.style.display = matchesSearch && matchesTags ? '' : 'none';
-      });
+				items.forEach((item) => {
+					const caption = item.getAttribute('data-caption')?.toLowerCase() || '';
+					const tags = JSON.parse(item.getAttribute('data-tags') || '[]');
 
-      const packery = window.pckry;
-      if (packery) {
-        try {
-          packery.layout();
-          if (typeof (packery as any).shiftLayout === 'function') {
-            (packery as any).shiftLayout();
-          }
-        } catch (error) {
-          console.warn('Packery relayout after filter failed', error);
-        }
-      }
-    };
+					const matchesSearch = !searchTerm || caption.includes(searchTerm);
+					const matchesTags =
+						activeTags.size === 0 || Array.from(activeTags).every((tag) => tags.includes(tag));
 
-    searchInput?.addEventListener('input', applyFilters);
+					item.style.display = matchesSearch && matchesTags ? '' : 'none';
+				});
 
-    tagButtons.forEach((button) => {
-      button.addEventListener('click', () => {
-        const tag = button.dataset.tag;
-        if (!tag) return;
+				const packery = window.pckry;
+				if (packery) {
+					try {
+						packery.layout();
+						if (typeof (packery as any).shiftLayout === 'function') {
+							(packery as any).shiftLayout();
+						}
+					} catch (error) {
+						console.warn('Packery relayout after filter failed', error);
+					}
+				}
+			};
 
-        if (activeTags.has(tag)) {
-          activeTags.delete(tag);
-          button.classList.remove('is-active');
-        } else {
-          activeTags.add(tag);
-          button.classList.add('is-active');
-        }
+			searchInput?.addEventListener('input', applyFilters);
 
-        if (allButton) allButton.classList.remove('is-active');
-        applyFilters();
-      });
-    });
+			tagButtons.forEach((button) => {
+				button.addEventListener('click', () => {
+					const tag = button.dataset.tag;
+					if (!tag) return;
 
-    allButton?.addEventListener('click', () => {
-      activeTags.clear();
-      tagButtons.forEach((btn) => btn.classList.remove('is-active'));
-      allButton.classList.add('is-active');
-      applyFilters();
-    });
+					if (activeTags.has(tag)) {
+						activeTags.delete(tag);
+						button.classList.remove('is-active');
+					} else {
+						activeTags.add(tag);
+						button.classList.add('is-active');
+					}
 
-    allButton?.classList.add('is-active');
-    applyFilters();
-  });
-</script>
+					if (allButton) allButton.classList.remove('is-active');
+					applyFilters();
+				});
+			});
+
+			allButton?.addEventListener('click', () => {
+				activeTags.clear();
+				tagButtons.forEach((btn) => btn.classList.remove('is-active'));
+				allButton.classList.add('is-active');
+				applyFilters();
+			});
+
+			allButton?.classList.add('is-active');
+			applyFilters();
+		});
+	</script>
 </MainLayout>

@@ -1,0 +1,153 @@
+---
+type Props = {
+	url?: string;
+	title?: string;
+	text?: string;
+	className?: string;
+};
+
+const {
+	url,
+	title = 'Check this out',
+	text = 'Take a look at this page',
+	className = '',
+} = Astro.props as Props;
+
+const siteUrl = Astro.site?.origin ?? 'https://photos.jaydixit.com';
+const shareUrl = new URL(url ?? Astro.url.pathname, siteUrl).toString();
+const encodedUrl = encodeURIComponent(shareUrl);
+const encodedTitle = encodeURIComponent(title);
+const encodedText = encodeURIComponent(text);
+---
+
+<div
+	class={`social-share ${className}`}
+	data-share-url={shareUrl}
+	data-share-title={title}
+	data-share-text={text}
+>
+	<div class="social-share-actions">
+		<button type="button" class="social-share-button" data-action="native">Share</button>
+		<button type="button" class="social-share-button" data-action="copy">Copy Link</button>
+		<a
+			class="social-share-link"
+			href={`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedText}`}
+			target="_blank"
+			rel="noopener noreferrer"
+		>
+			X
+		</a>
+		<a
+			class="social-share-link"
+			href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
+			target="_blank"
+			rel="noopener noreferrer"
+		>
+			Facebook
+		</a>
+		<a
+			class="social-share-link"
+			href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=${encodedTitle}`}
+			target="_blank"
+			rel="noopener noreferrer"
+		>
+			LinkedIn
+		</a>
+	</div>
+	<p class="social-share-status" aria-live="polite"></p>
+</div>
+
+<script is:inline>
+	const roots = document.querySelectorAll('.social-share');
+
+	roots.forEach((root) => {
+		const element = root;
+		if (element.dataset.bound === 'true') return;
+		element.dataset.bound = 'true';
+
+		const status = element.querySelector('.social-share-status');
+		const shareUrl = element.dataset.shareUrl || window.location.href;
+		const shareTitle = element.dataset.shareTitle || document.title;
+		const shareText = element.dataset.shareText || '';
+
+		const setStatus = (message) => {
+			if (status) status.textContent = message;
+		};
+
+		element.querySelectorAll('[data-action]').forEach((button) => {
+			button.addEventListener('click', async (event) => {
+				const action = event.currentTarget?.getAttribute('data-action');
+				if (!action) return;
+
+				if (action === 'native' && navigator.share) {
+					try {
+						await navigator.share({
+							title: shareTitle,
+							text: shareText,
+							url: shareUrl,
+						});
+						setStatus('Shared.');
+					} catch {
+						setStatus('');
+					}
+					return;
+				}
+
+				if (action === 'copy') {
+					try {
+						await navigator.clipboard.writeText(shareUrl);
+						setStatus('Link copied.');
+					} catch {
+						setStatus('Unable to copy link.');
+					}
+				}
+			});
+		});
+	});
+</script>
+
+<style>
+	.social-share {
+		margin: 1.25rem 0 1.5rem;
+	}
+
+	.social-share-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		align-items: center;
+	}
+
+	.social-share-button,
+	.social-share-link {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.5rem 0.8rem;
+		border: 1px solid #d1d5db;
+		border-radius: 9999px;
+		background: #fff;
+		color: #111827;
+		font-size: 0.8rem;
+		font-weight: 600;
+		line-height: 1;
+		text-decoration: none;
+		cursor: pointer;
+		transition:
+			background-color 0.2s ease,
+			border-color 0.2s ease;
+	}
+
+	.social-share-button:hover,
+	.social-share-link:hover {
+		background-color: #f3f4f6;
+		border-color: #9ca3af;
+	}
+
+	.social-share-status {
+		min-height: 1rem;
+		margin-top: 0.5rem;
+		font-size: 0.75rem;
+		color: #4b5563;
+	}
+</style>

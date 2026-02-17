@@ -9,8 +9,10 @@ export interface SocialLink {
 
 export default {
 	title: 'Jay Dixit Photos',
+	siteUrl: 'https://photos.jaydixit.com',
 	favicon: 'favicon.ico',
 	owner: 'Jay Dixit',
+	twitterHandle: '@jaydixit',
 	profileImage: 'profile.webp',
 	socialLinks: [
 		{
