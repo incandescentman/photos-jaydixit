@@ -143,6 +143,18 @@ const canonicalUrl = new URL(`/gallery/${folderPath}`, siteUrl).toString();
 const pageTitle = `${displayName} Gallery`;
 const pageDescription = `${images.length} ${images.length === 1 ? 'photo' : 'photos'} in the ${displayName} gallery by ${siteConfig.owner}.`;
 const primaryImage = images[0]?.originalSrc;
+const folderSegments = folderPath.split('/').filter(Boolean);
+const breadcrumbs = [
+	{ name: 'Home', url: '/' },
+	{ name: 'Gallery', url: '/gallery' },
+	...folderSegments.map((segment, index) => ({
+		name: segment.split('-').map(capitalize).join(' '),
+		url: `/gallery/${folderSegments
+			.slice(0, index + 1)
+			.map((part) => encodeURIComponent(part))
+			.join('/')}`,
+	})),
+];
 const imageObjects = images.slice(0, 48).map((image) => ({
 	'@type': 'ImageObject',
 	contentUrl: new URL(image.originalSrc, siteUrl).toString(),
@@ -159,6 +171,16 @@ const galleryStructuredData = {
 	creator: { '@type': 'Person', name: siteConfig.owner },
 	image: imageObjects.map((image) => image.contentUrl),
 	hasPart: imageObjects,
+};
+const breadcrumbStructuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'BreadcrumbList',
+	itemListElement: breadcrumbs.map((crumb, index) => ({
+		'@type': 'ListItem',
+		position: index + 1,
+		name: crumb.name,
+		item: new URL(crumb.url, siteUrl).toString(),
+	})),
 };
 
 export const getStaticPaths = () => {
@@ -193,10 +215,29 @@ export const getStaticPaths = () => {
 	canonical={canonicalUrl}
 	image={primaryImage}
 	imageAlt={images[0]?.caption}
-	structuredData={galleryStructuredData}
+	structuredData={[galleryStructuredData, breadcrumbStructuredData]}
 >
 	<section class="py-16 pt-24">
 		<div class="container mx-auto px-4 max-w-7xl">
+			<nav aria-label="Breadcrumb" class="mb-6">
+				<ol class="flex flex-wrap items-center gap-2 text-sm text-gray-500">
+					{
+						breadcrumbs.map((crumb, index) => (
+							<li class="inline-flex items-center gap-2">
+								{index > 0 && <span aria-hidden="true">/</span>}
+								{index === breadcrumbs.length - 1 ? (
+									<span class="text-gray-700">{crumb.name}</span>
+								) : (
+									<a href={crumb.url} class="hover:text-gray-900 hover:underline">
+										{crumb.name}
+									</a>
+								)}
+							</li>
+						))
+					}
+				</ol>
+			</nav>
+
 			<!-- Gallery Header -->
 			<div class="mb-8 text-center">
 				<h1 class="text-3xl md:text-4xl font-bold mb-2">{displayName}</h1>

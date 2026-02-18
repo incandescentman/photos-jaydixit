@@ -272,6 +272,19 @@ const displayName = formatFolderName(folderPath);
 const pageTitle = currentPhoto.caption;
 const pageDescription = `${currentPhoto.caption} from ${displayName} by ${siteConfig.owner}.`;
 const canonicalUrl = new URL(currentPhoto.detailHref, siteUrl).toString();
+const folderSegments = folderPath.split('/').filter(Boolean);
+const breadcrumbs = [
+	{ name: 'Home', url: '/' },
+	{ name: 'Gallery', url: '/gallery' },
+	...folderSegments.map((segment, index) => ({
+		name: segment.split('-').map(capitalize).join(' '),
+		url: `/gallery/${folderSegments
+			.slice(0, index + 1)
+			.map((part) => encodeURIComponent(part))
+			.join('/')}`,
+	})),
+	{ name: currentPhoto.caption, url: currentPhoto.detailHref },
+];
 
 const photoStructuredData = {
 	'@context': 'https://schema.org',
@@ -291,6 +304,16 @@ const photoStructuredData = {
 		name: displayName,
 		url: new URL(`/gallery/${folderPath}`, siteUrl).toString(),
 	},
+};
+const breadcrumbStructuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'BreadcrumbList',
+	itemListElement: breadcrumbs.map((crumb, index) => ({
+		'@type': 'ListItem',
+		position: index + 1,
+		name: crumb.name,
+		item: new URL(crumb.url, siteUrl).toString(),
+	})),
 };
 
 export const getStaticPaths = () => {
@@ -325,10 +348,29 @@ export const getStaticPaths = () => {
 	image={currentPhoto.originalSrc}
 	imageAlt={currentPhoto.caption}
 	ogType="article"
-	structuredData={photoStructuredData}
+	structuredData={[photoStructuredData, breadcrumbStructuredData]}
 >
 	<section class="py-16 pt-24">
 		<div class="container mx-auto px-4 max-w-5xl">
+			<nav aria-label="Breadcrumb" class="mb-5">
+				<ol class="flex flex-wrap items-center gap-2 text-sm text-gray-500">
+					{
+						breadcrumbs.map((crumb, index) => (
+							<li class="inline-flex items-center gap-2">
+								{index > 0 && <span aria-hidden="true">/</span>}
+								{index === breadcrumbs.length - 1 ? (
+									<span class="text-gray-700">{crumb.name}</span>
+								) : (
+									<a href={crumb.url} class="hover:text-gray-900 hover:underline">
+										{crumb.name}
+									</a>
+								)}
+							</li>
+						))
+					}
+				</ol>
+			</nav>
+
 			<nav class="mb-6 flex flex-wrap items-center gap-3 text-sm">
 				<a
 					href={`/gallery/${folderPath}`}
