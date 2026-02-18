@@ -1,0 +1,276 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro:assets';
+import MainLayout from '../../../layouts/MainLayout.astro';
+import PhotoComments from '../../../components/PhotoComments.astro';
+import SocialShare from '../../../components/SocialShare.astro';
+import siteConfig from '../../../../site.config.mts';
+
+type TagMapping = Record<string, string[]>;
+type TagsByFolder = Record<string, TagMapping>;
+
+const { photo } = Astro.params;
+const photoPath = Array.isArray(photo) ? photo.join('/') : photo;
+
+if (!photoPath) {
+	return Astro.redirect('/404');
+}
+
+const segments = photoPath.split('/');
+const filename = segments.pop();
+const folderPath = segments.join('/');
+
+if (!filename || !folderPath) {
+	return Astro.redirect('/404');
+}
+
+const imageModules = import.meta.glob<{ default: ImageMetadata }>(
+	'../../../gallery/photos/**/*.{jpg,jpeg,png,webp,gif}',
+	{
+		eager: true,
+	},
+);
+
+const tagModules = import.meta.glob<TagMapping>('../../../gallery/photos/**/tags.json', {
+	import: 'default',
+	eager: true,
+});
+
+const tagsByFolder = Object.entries(tagModules).reduce<TagsByFolder>((acc, [key, value]) => {
+	const relativeFolder = key.replace('../../../gallery/photos/', '').replace(/\/tags\.json$/, '');
+	acc[relativeFolder] = value;
+	return acc;
+}, {});
+
+function capitalize(word: string) {
+	return word.charAt(0).toUpperCase() + word.slice(1);
+}
+
+function buildCaptionAndTags(file: string, folderSlug: string) {
+	const baseName = file.replace(/\.[^/.]+$/, '');
+	const parts = baseName.split('_');
+	let subject = '';
+	let event = '';
+	let year = '';
+
+	if (parts.length > 0) {
+		subject = parts[0].split('-').map(capitalize).join(' ');
+	}
+
+	if (parts.length > 1) {
+		const lastPart = parts[parts.length - 1];
+		if (/^\d{4}$/.test(lastPart)) {
+			year = lastPart;
+			if (parts.length > 2) {
+				event = parts.slice(1, -1).join(' ').split('-').map(capitalize).join(' ');
+			}
+		} else {
+			event = parts.slice(1).join(' ').split('-').map(capitalize).join(' ');
+		}
+	}
+
+	let caption = subject;
+	if (event) caption += ` at ${event}`;
+	if (year) caption += ` in ${year}`;
+	if (!caption) {
+		caption = subject || baseName.replace(/[-_]/g, ' ');
+	}
+
+	const overrides = tagsByFolder[folderSlug]?.[file] ?? [];
+	let tags = [...overrides];
+
+	if (tags.length === 0) {
+		const tagMatch = baseName.match(/_([^_]+)$/);
+		if (tagMatch) {
+			tags = tagMatch[1].split('-');
+		}
+		if (folderSlug) {
+			tags.push(...folderSlug.split('/'));
+		}
+	}
+
+	return {
+		caption,
+		tags: [...new Set(tags)],
+	};
+}
+
+function formatFolderName(folderSlug: string) {
+	return folderSlug
+		.split('/')
+		.map((part) => part.split('-').map(capitalize).join(' '))
+		.join(' → ');
+}
+
+function toPhotoHref(folderSlug: string, file: string) {
+	const encodedPath = [...folderSlug.split('/'), file].map(encodeURIComponent).join('/');
+	return `/gallery/photo/${encodedPath}`;
+}
+
+const images = Object.entries(imageModules)
+	.map(([key, module]) => {
+		const metadata = module.default;
+		const relativePath = key.replace('../../../gallery/photos/', '');
+		const pathParts = relativePath.split('/');
+		const imageFilename = pathParts.pop();
+		if (!imageFilename) return null;
+
+		const imageFolder = pathParts.join('/');
+		if (imageFolder !== folderPath) return null;
+
+		const { caption, tags } = buildCaptionAndTags(imageFilename, imageFolder);
+
+		return {
+			metadata,
+			filename: imageFilename,
+			folder: imageFolder,
+			caption,
+			tags,
+			originalSrc: metadata.src,
+			detailHref: toPhotoHref(imageFolder, imageFilename),
+		};
+	})
+	.filter(
+		(
+			entry,
+		): entry is {
+			metadata: ImageMetadata;
+			filename: string;
+			folder: string;
+			caption: string;
+			tags: string[];
+			originalSrc: string;
+			detailHref: string;
+		} => entry !== null,
+	)
+	.sort((a, b) => a.filename.localeCompare(b.filename));
+
+const currentIndex = images.findIndex((image) => image.filename === filename);
+if (currentIndex === -1) {
+	return Astro.redirect('/404');
+}
+
+const currentPhoto = images[currentIndex];
+const prevPhoto = currentIndex > 0 ? images[currentIndex - 1] : null;
+const nextPhoto = currentIndex < images.length - 1 ? images[currentIndex + 1] : null;
+
+const siteUrl = Astro.site?.origin ?? siteConfig.siteUrl ?? 'https://photos.jaydixit.com';
+const displayName = formatFolderName(folderPath);
+const pageTitle = currentPhoto.caption;
+const pageDescription = `${currentPhoto.caption} from ${displayName} by ${siteConfig.owner}.`;
+const canonicalUrl = new URL(currentPhoto.detailHref, siteUrl).toString();
+
+const photoStructuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'Photograph',
+	name: currentPhoto.caption,
+	description: pageDescription,
+	url: canonicalUrl,
+	contentUrl: new URL(currentPhoto.originalSrc, siteUrl).toString(),
+	thumbnailUrl: new URL(currentPhoto.originalSrc, siteUrl).toString(),
+	creator: {
+		'@type': 'Person',
+		name: siteConfig.owner,
+	},
+	keywords: currentPhoto.tags.join(', '),
+	isPartOf: {
+		'@type': 'ImageGallery',
+		name: displayName,
+		url: new URL(`/gallery/${folderPath}`, siteUrl).toString(),
+	},
+};
+
+export const getStaticPaths = () => {
+	const staticModules = import.meta.glob<{ default: ImageMetadata }>(
+		'../../../gallery/photos/**/*.{jpg,jpeg,png,webp,gif}',
+		{
+			eager: true,
+		},
+	);
+
+	return Object.keys(staticModules).map((key) => {
+		const relativePath = key.replace('../../../gallery/photos/', '');
+		return {
+			params: { photo: relativePath },
+		};
+	});
+};
+---
+
+<MainLayout
+	title={pageTitle}
+	description={pageDescription}
+	canonical={canonicalUrl}
+	image={currentPhoto.originalSrc}
+	imageAlt={currentPhoto.caption}
+	ogType="article"
+	structuredData={photoStructuredData}
+>
+	<section class="py-16 pt-24">
+		<div class="container mx-auto px-4 max-w-5xl">
+			<nav class="mb-6 flex flex-wrap items-center gap-3 text-sm">
+				<a
+					href={`/gallery/${folderPath}`}
+					class="rounded-full border border-gray-300 px-3 py-1.5 hover:bg-gray-50"
+				>
+					Back to {displayName}
+				</a>
+				{
+					prevPhoto && (
+						<a
+							href={prevPhoto.detailHref}
+							class="rounded-full border border-gray-300 px-3 py-1.5 hover:bg-gray-50"
+						>
+							Previous
+						</a>
+					)
+				}
+				{
+					nextPhoto && (
+						<a
+							href={nextPhoto.detailHref}
+							class="rounded-full border border-gray-300 px-3 py-1.5 hover:bg-gray-50"
+						>
+							Next
+						</a>
+					)
+				}
+			</nav>
+
+			<header class="mb-8">
+				<h1 class="text-3xl md:text-4xl font-bold mb-2">{currentPhoto.caption}</h1>
+				<p class="text-gray-600">{displayName}</p>
+			</header>
+
+			<div class="overflow-hidden rounded-2xl bg-gray-100 shadow-sm">
+				<Image
+					src={currentPhoto.metadata}
+					alt={currentPhoto.caption}
+					width={currentPhoto.metadata.width}
+					height={currentPhoto.metadata.height}
+					loading="eager"
+					decoding="async"
+					class="w-full h-auto object-contain"
+				/>
+			</div>
+
+			<div class="mt-6 flex flex-wrap gap-2">
+				{
+					currentPhoto.tags.map((tag) => (
+						<span class="inline-flex items-center rounded-full border border-gray-300 px-3 py-1 text-xs text-gray-700">
+							{tag}
+						</span>
+					))
+				}
+			</div>
+
+			<SocialShare
+				url={canonicalUrl}
+				title={currentPhoto.caption}
+				text={`View this photo from ${displayName}`}
+			/>
+
+			<PhotoComments galleryName={folderPath} photoId={currentPhoto.filename} />
+		</div>
+	</section>
+</MainLayout>

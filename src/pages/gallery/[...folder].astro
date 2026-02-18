@@ -36,6 +36,11 @@ function capitalize(word: string) {
 	return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
+function toPhotoHref(folderSlug: string, file: string) {
+	const encodedPath = [...folderSlug.split('/'), file].map(encodeURIComponent).join('/');
+	return `/gallery/photo/${encodedPath}`;
+}
+
 function buildCaptionAndTags(filename: string, folderSlug: string) {
 	const baseName = filename.replace(/\.[^/.]+$/, '');
 	const parts = baseName.split('_');
@@ -297,6 +302,13 @@ export const getStaticPaths = () => {
 										<h3>{image.caption}</h3>
 									</div>
 								</a>
+								<a
+									class="photo-detail-link"
+									href={toPhotoHref(folderPath, image.filename)}
+									aria-label={`Open details for ${image.caption}`}
+								>
+									Details
+								</a>
 							</article>
 						);
 					})
@@ -404,7 +416,7 @@ export const getStaticPaths = () => {
 			transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 		}
 
-		.masonry-item a {
+		.masonry-item .masonry-link {
 			display: block;
 			width: 100%;
 			height: 100%;
@@ -412,7 +424,7 @@ export const getStaticPaths = () => {
 			overflow: hidden;
 		}
 
-		.masonry-item a::before {
+		.masonry-item .masonry-link::before {
 			content: '';
 			position: absolute;
 			top: 0;
@@ -435,7 +447,7 @@ export const getStaticPaths = () => {
 			transform: scale(1.03);
 		}
 
-		.masonry-item:hover a::before {
+		.masonry-item:hover .masonry-link::before {
 			opacity: 1;
 		}
 
@@ -466,6 +478,43 @@ export const getStaticPaths = () => {
 
 		.masonry-item:hover .caption-overlay {
 			opacity: 1;
+		}
+
+		.photo-detail-link {
+			position: absolute;
+			right: 0.75rem;
+			bottom: 0.75rem;
+			z-index: 3;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			padding: 0.35rem 0.7rem;
+			border-radius: 9999px;
+			background: rgba(17, 24, 39, 0.78);
+			color: #fff;
+			font-size: 0.75rem;
+			font-weight: 600;
+			text-decoration: none;
+			border: 1px solid rgba(255, 255, 255, 0.25);
+			backdrop-filter: blur(4px);
+			opacity: 0;
+			transition:
+				opacity 0.2s ease,
+				background-color 0.2s ease;
+		}
+
+		.photo-detail-link:hover {
+			background: rgba(17, 24, 39, 0.92);
+		}
+
+		.masonry-item:hover .photo-detail-link {
+			opacity: 1;
+		}
+
+		@media only screen and (max-width: 768px) {
+			.photo-detail-link {
+				opacity: 1;
+			}
 		}
 
 		.tag-filter:hover {
