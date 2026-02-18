@@ -4,6 +4,7 @@ import type { ImageMetadata } from 'astro:assets';
 import MainLayout from '../../layouts/MainLayout.astro';
 import PhotoComments from '../../components/PhotoComments.astro';
 import SocialShare from '../../components/SocialShare.astro';
+import PhotoLikeButton from '../../components/PhotoLikeButton.astro';
 import siteConfig from '../../../site.config.mts';
 
 const { folder } = Astro.params;
@@ -351,6 +352,10 @@ export const getStaticPaths = () => {
 								>
 									Details
 								</a>
+								<PhotoLikeButton
+									photoId={`${folderPath}/${image.filename.replace(/\.[^/.]+$/, '')}`}
+									className="photo-like-button"
+								/>
 							</article>
 						);
 					})
@@ -555,6 +560,26 @@ export const getStaticPaths = () => {
 
 		@media only screen and (max-width: 768px) {
 			.photo-detail-link {
+				opacity: 1;
+			}
+		}
+
+		.photo-like-button {
+			position: absolute;
+			left: 0.75rem;
+			bottom: 0.75rem;
+			z-index: 3;
+			backdrop-filter: blur(4px);
+			opacity: 0;
+			transition: opacity 0.2s ease;
+		}
+
+		.masonry-item:hover .photo-like-button {
+			opacity: 1;
+		}
+
+		@media only screen and (max-width: 768px) {
+			.photo-like-button {
 				opacity: 1;
 			}
 		}

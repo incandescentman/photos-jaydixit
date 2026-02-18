@@ -1,94 +1,245 @@
 ---
-const { photoId, className = "" } = Astro.props;
+const { photoId, className = '' } = Astro.props;
 ---
 
-<button
-  class={`like-button ${className}`}
-  data-photo-id={photoId}
-  data-initial-count="0"
->
-  <svg class="heart w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-  </svg>
-  <span class="like-count ml-1 text-sm">0</span>
+<button class={`like-button ${className}`} data-photo-id={photoId} data-initial-count="0">
+	<svg class="heart w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+		<path
+			d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+		></path>
+	</svg>
+	<span class="like-count ml-1 text-sm">0</span>
 </button>
 
 <style>
-.like-button {
-  @apply flex items-center px-3 py-1.5 bg-white bg-opacity-90 hover:bg-opacity-100
-         border border-gray-200 rounded-full transition-all duration-200
-         hover:scale-105 active:scale-95 backdrop-blur-sm;
-}
+	.like-button {
+		display: inline-flex;
+		align-items: center;
+		padding: 0.35rem 0.65rem;
+		background: rgba(255, 255, 255, 0.92);
+		border: 1px solid #e5e7eb;
+		border-radius: 9999px;
+		color: #1f2937;
+		transition:
+			transform 0.2s ease,
+			box-shadow 0.2s ease,
+			background-color 0.2s ease;
+		backdrop-filter: blur(4px);
+	}
 
-.like-button:hover {
-  @apply shadow-md;
-}
+	.like-button:hover {
+		background: rgba(255, 255, 255, 1);
+		box-shadow: 0 4px 14px -9px rgba(15, 23, 42, 0.45);
+		transform: translateY(-1px);
+	}
 
-.like-button.liked {
-  @apply bg-red-500 text-white border-red-500;
-}
+	.like-button.liked {
+		background: #ef4444;
+		color: #fff;
+		border-color: #ef4444;
+	}
 
-.like-button.liked .heart {
-  @apply animate-pulse;
-}
+	.like-button.liked .heart {
+		animation: pulse-heart 1.1s ease-in-out infinite;
+	}
+
+	@keyframes pulse-heart {
+		0%,
+		100% {
+			transform: scale(1);
+		}
+		50% {
+			transform: scale(1.08);
+		}
+	}
 </style>
 
 <script>
-// Initialize all like buttons on the page
-function initLikeButtons() {
-  const buttons = document.querySelectorAll<HTMLButtonElement>('.like-button[data-photo-id]');
+	import { createClient } from '@supabase/supabase-js';
 
-  buttons.forEach(button => {
-    if (button.dataset.initialized) return;
-    button.dataset.initialized = 'true';
+	const visitorStorageKey = 'photoLikesVisitorId';
+	const likesStorageKey = 'photoLikes';
+	const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+	const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+	const supabase =
+		typeof supabaseUrl === 'string' &&
+		typeof supabaseAnonKey === 'string' &&
+		supabaseUrl.length > 0 &&
+		supabaseAnonKey.length > 0
+			? createClient(supabaseUrl, supabaseAnonKey)
+			: null;
 
-    const photoId = button.dataset.photoId;
-    const likeCountEl = button.querySelector('.like-count');
-    if (!photoId || !likeCountEl) return;
+	function getVisitorId() {
+		const existing = localStorage.getItem(visitorStorageKey);
+		if (existing) return existing;
+		const generated =
+			typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+				? crypto.randomUUID()
+				: `visitor-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+		localStorage.setItem(visitorStorageKey, generated);
+		return generated;
+	}
 
-    let isLiked = false;
-    let currentCount = 0;
+	function getLocalLikeState(photoId) {
+		const localLikes = JSON.parse(localStorage.getItem(likesStorageKey) || '{}');
+		return localLikes[photoId] || { count: 0, liked: false };
+	}
 
-    // Load from localStorage
-    const localLikes = JSON.parse(localStorage.getItem('photoLikes') || '{}');
-    const photoData = localLikes[photoId] || { count: 0, liked: false };
-    currentCount = photoData.count;
-    isLiked = photoData.liked;
-    updateUI();
+	function setLocalLikeState(photoId, state) {
+		const localLikes = JSON.parse(localStorage.getItem(likesStorageKey) || '{}');
+		localLikes[photoId] = state;
+		localStorage.setItem(likesStorageKey, JSON.stringify(localLikes));
+	}
 
-    button.addEventListener('click', (e) => {
-      e.stopPropagation();
-      e.preventDefault();
+	async function fetchSupabaseCount(photoId) {
+		if (!supabase) return null;
+		const { count, error } = await supabase
+			.from('photo_user_likes')
+			.select('*', { count: 'exact', head: true })
+			.eq('photo_id', photoId);
+		if (error) return null;
+		return count ?? 0;
+	}
 
-      isLiked = !isLiked;
-      currentCount += isLiked ? 1 : -1;
-      currentCount = Math.max(0, currentCount);
+	async function fetchSupabaseLiked(photoId, visitorId) {
+		if (!supabase) return null;
+		const { data, error } = await supabase
+			.from('photo_user_likes')
+			.select('photo_id')
+			.eq('photo_id', photoId)
+			.eq('visitor_id', visitorId)
+			.limit(1);
+		if (error) return null;
+		return Array.isArray(data) && data.length > 0;
+	}
 
-      updateUI();
-      saveLikeStatus();
+	async function toggleSupabaseLike(photoId, visitorId, liked) {
+		if (!supabase) return { ok: false };
+		if (liked) {
+			const { error } = await supabase
+				.from('photo_user_likes')
+				.delete()
+				.eq('photo_id', photoId)
+				.eq('visitor_id', visitorId);
+			return { ok: !error, error };
+		}
 
-      // Visual feedback
-      button.classList.add('animate-bounce');
-      setTimeout(() => button.classList.remove('animate-bounce'), 300);
-    });
+		const { error } = await supabase
+			.from('photo_user_likes')
+			.insert({ photo_id: photoId, visitor_id: visitorId });
+		return { ok: !error, error };
+	}
 
-    function updateUI() {
-      likeCountEl.textContent = String(currentCount);
-      button.classList.toggle('liked', isLiked);
-    }
+	// Initialize all like buttons on the page
+	function initLikeButtons() {
+		const buttons = document.querySelectorAll('.like-button[data-photo-id]');
 
-    function saveLikeStatus() {
-      const localLikes = JSON.parse(localStorage.getItem('photoLikes') || '{}');
-      localLikes[photoId] = { count: currentCount, liked: isLiked };
-      localStorage.setItem('photoLikes', JSON.stringify(localLikes));
-    }
-  });
-}
+		buttons.forEach((button) => {
+			const element = button;
+			if (element.dataset.initialized) return;
+			element.dataset.initialized = 'true';
 
-// Run on DOM ready and after any dynamic content loads
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initLikeButtons);
-} else {
-  initLikeButtons();
-}
+			const photoId = element.dataset.photoId;
+			const likeCountEl = element.querySelector('.like-count');
+			if (!photoId || !likeCountEl) return;
+
+			const visitorId = getVisitorId();
+			let isLiked = false;
+			let currentCount = 0;
+			let isPending = false;
+
+			const updateUI = () => {
+				likeCountEl.textContent = String(currentCount);
+				element.classList.toggle('liked', isLiked);
+				element.disabled = isPending;
+			};
+
+			const loadInitialState = async () => {
+				if (!supabase) {
+					const localState = getLocalLikeState(photoId);
+					currentCount = localState.count;
+					isLiked = localState.liked;
+					updateUI();
+					return;
+				}
+
+				const [count, liked] = await Promise.all([
+					fetchSupabaseCount(photoId),
+					fetchSupabaseLiked(photoId, visitorId),
+				]);
+
+				if (count === null || liked === null) {
+					const localState = getLocalLikeState(photoId);
+					currentCount = localState.count;
+					isLiked = localState.liked;
+					element.dataset.likeSource = 'local-fallback';
+				} else {
+					currentCount = count;
+					isLiked = liked;
+					setLocalLikeState(photoId, { count: currentCount, liked: isLiked });
+					element.dataset.likeSource = 'supabase';
+				}
+
+				updateUI();
+			};
+
+			element.addEventListener('click', async (event) => {
+				event.stopPropagation();
+				event.preventDefault();
+				if (isPending) return;
+
+				const nextLiked = !isLiked;
+				const localBefore = { count: currentCount, liked: isLiked };
+				const optimisticCount = Math.max(0, currentCount + (nextLiked ? 1 : -1));
+
+				isPending = true;
+				isLiked = nextLiked;
+				currentCount = optimisticCount;
+				updateUI();
+
+				if (!supabase) {
+					setLocalLikeState(photoId, { count: currentCount, liked: isLiked });
+					isPending = false;
+					updateUI();
+					element.classList.add('animate-bounce');
+					setTimeout(() => element.classList.remove('animate-bounce'), 300);
+					return;
+				}
+
+				const toggleResult = await toggleSupabaseLike(photoId, visitorId, !nextLiked);
+				if (!toggleResult.ok) {
+					// Revert and keep app responsive even if policies/env are not ready.
+					isLiked = localBefore.liked;
+					currentCount = localBefore.count;
+					isPending = false;
+					updateUI();
+					return;
+				}
+
+				const [count, liked] = await Promise.all([
+					fetchSupabaseCount(photoId),
+					fetchSupabaseLiked(photoId, visitorId),
+				]);
+
+				if (count !== null && liked !== null) {
+					currentCount = count;
+					isLiked = liked;
+					setLocalLikeState(photoId, { count: currentCount, liked: isLiked });
+				}
+
+				isPending = false;
+				updateUI();
+				element.classList.add('animate-bounce');
+				setTimeout(() => element.classList.remove('animate-bounce'), 300);
+			});
+
+			loadInitialState();
+		});
+	}
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', initLikeButtons);
+	} else {
+		initLikeButtons();
+	}
 </script>

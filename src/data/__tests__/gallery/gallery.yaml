@@ -1,8 +1,8 @@
 collections:
-  - id: kuku
-    name: Hello Kuku
   - id: popo
     name: Popo
+  - id: kuku
+    name: Hello Kuku
 images:
   - path: landscape.jpg
     meta:
@@ -17,6 +17,20 @@ images:
       model: LEICA Q3
       shutterSpeed: 1000
       lensModel: SUMMILUX 1:1.7/28 ASPH.
+  - path: popo/popo-view.jpg
+    meta:
+      title: Popo View
+      description: ''
+      collections:
+        - popo
+    exif:
+      captureDate: 2025-02-24T10:39:25.000Z
+      fNumber: 2.8
+      focalLength: 9
+      iso: 32
+      model: iPhone 13 Pro Max
+      shutterSpeed: 240
+      lensModel: iPhone 13 Pro Max back triple camera 9mm f/2.8
   - path: kuku/kuku-bubble.jpg
     meta:
       title: Kuku Bubble
@@ -45,17 +59,3 @@ images:
       model: LEICA Q3
       shutterSpeed: 640
       lensModel: SUMMILUX 1:1.7/28 ASPH.
-  - path: popo/popo-view.jpg
-    meta:
-      title: Popo View
-      description: ''
-      collections:
-        - popo
-    exif:
-      captureDate: 2025-02-24T10:39:25.000Z
-      fNumber: 2.8
-      focalLength: 9
-      iso: 32
-      model: iPhone 13 Pro Max
-      shutterSpeed: 240
-      lensModel: iPhone 13 Pro Max back triple camera 9mm f/2.8

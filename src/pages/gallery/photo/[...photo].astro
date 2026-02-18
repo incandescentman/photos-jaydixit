@@ -5,6 +5,7 @@ import path from 'node:path';
 import exifr from 'exifr';
 import MainLayout from '../../../layouts/MainLayout.astro';
 import PhotoComments from '../../../components/PhotoComments.astro';
+import PhotoLikeButton from '../../../components/PhotoLikeButton.astro';
 import SocialShare from '../../../components/SocialShare.astro';
 import siteConfig from '../../../../site.config.mts';
 
@@ -425,6 +426,10 @@ export const getStaticPaths = () => {
 						</span>
 					))
 				}
+			</div>
+
+			<div class="mt-4">
+				<PhotoLikeButton photoId={`${folderPath}/${currentPhoto.slug}`} />
 			</div>
 
 			{

@@ -1,0 +1,303 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro:assets';
+import MainLayout from '../layouts/MainLayout.astro';
+import siteConfig from '../../site.config.mts';
+import PhotoLikeButton from '../components/PhotoLikeButton.astro';
+
+type TagMapping = Record<string, string[]>;
+type TagsByFolder = Record<string, TagMapping>;
+
+const imageModules = import.meta.glob<{ default: ImageMetadata }>(
+	'../gallery/photos/**/*.{jpg,jpeg,png,webp,gif}',
+	{
+		eager: true,
+	},
+);
+
+const tagModules = import.meta.glob<TagMapping>('../gallery/photos/**/tags.json', {
+	import: 'default',
+	eager: true,
+});
+
+const tagsByFolder = Object.entries(tagModules).reduce<TagsByFolder>((acc, [key, value]) => {
+	const relativeFolder = key.replace('../gallery/photos/', '').replace(/\/tags\.json$/, '');
+	acc[relativeFolder] = value;
+	return acc;
+}, {});
+
+function capitalize(word: string) {
+	return word.charAt(0).toUpperCase() + word.slice(1);
+}
+
+function buildCaptionAndTags(filename: string, folderSlug: string) {
+	const baseName = filename.replace(/\.[^/.]+$/, '');
+	const parts = baseName.split('_');
+	let subject = '';
+	let event = '';
+	let year = '';
+
+	if (parts.length > 0) {
+		subject = parts[0].split('-').map(capitalize).join(' ');
+	}
+
+	if (parts.length > 1) {
+		const lastPart = parts[parts.length - 1];
+		if (/^\d{4}$/.test(lastPart)) {
+			year = lastPart;
+			if (parts.length > 2) {
+				event = parts.slice(1, -1).join(' ').split('-').map(capitalize).join(' ');
+			}
+		} else {
+			event = parts.slice(1).join(' ').split('-').map(capitalize).join(' ');
+		}
+	}
+
+	let caption = subject;
+	if (event) caption += ` at ${event}`;
+	if (year) caption += ` in ${year}`;
+	if (!caption) {
+		caption = subject || baseName.replace(/[-_]/g, ' ');
+	}
+
+	const overrides = tagsByFolder[folderSlug]?.[filename] ?? [];
+	let tags = [...overrides];
+
+	if (tags.length === 0) {
+		const tagMatch = baseName.match(/_([^_]+)$/);
+		if (tagMatch) {
+			tags = tagMatch[1].split('-');
+		}
+		if (folderSlug) {
+			tags.push(...folderSlug.split('/'));
+		}
+	}
+
+	return {
+		caption,
+		tags: [...new Set(tags)],
+	};
+}
+
+function toPhotoHref(folderSlug: string, slug: string) {
+	const encodedPath = [...folderSlug.split('/'), slug].map(encodeURIComponent).join('/');
+	return `/gallery/photo/${encodedPath}`;
+}
+
+const extensionPriority = ['jpg', 'jpeg', 'webp', 'png', 'gif'];
+
+function extensionRank(file: string) {
+	const extension = file.split('.').pop()?.toLowerCase() ?? '';
+	const rank = extensionPriority.indexOf(extension);
+	return rank === -1 ? extensionPriority.length : rank;
+}
+
+type PhotoEntry = {
+	id: string;
+	slug: string;
+	folder: string;
+	filename: string;
+	caption: string;
+	tags: string[];
+	metadata: ImageMetadata;
+	detailHref: string;
+};
+
+const groupedPhotos = Object.entries(imageModules)
+	.map(([key, module]) => {
+		const metadata = module.default;
+		const relativePath = key.replace('../gallery/photos/', '');
+		const segments = relativePath.split('/');
+		const filename = segments.pop();
+		if (!filename) return null;
+		const folder = segments.join('/');
+		if (!folder) return null;
+		const slug = filename.replace(/\.[^/.]+$/, '');
+		const { caption, tags } = buildCaptionAndTags(filename, folder);
+
+		const entry: PhotoEntry = {
+			id: `${folder}/${slug}`,
+			slug,
+			folder,
+			filename,
+			caption,
+			tags,
+			metadata,
+			detailHref: toPhotoHref(folder, slug),
+		};
+
+		return entry;
+	})
+	.filter((entry): entry is PhotoEntry => entry !== null)
+	.reduce<Record<string, PhotoEntry[]>>((acc, entry) => {
+		if (!acc[entry.id]) {
+			acc[entry.id] = [];
+		}
+		acc[entry.id].push(entry);
+		return acc;
+	}, {});
+
+const photos = Object.values(groupedPhotos)
+	.map(
+		(variants) =>
+			variants.slice().sort((a, b) => {
+				const rankDiff = extensionRank(a.filename) - extensionRank(b.filename);
+				if (rankDiff !== 0) return rankDiff;
+				return a.filename.localeCompare(b.filename);
+			})[0],
+	)
+	.sort((a, b) => a.caption.localeCompare(b.caption));
+
+const siteUrl = Astro.site?.origin ?? siteConfig.siteUrl ?? 'https://photos.jaydixit.com';
+const canonicalUrl = new URL('/popular', siteUrl).toString();
+const pageDescription = 'Most-liked photographs across the portfolio.';
+
+const initialStructuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'CollectionPage',
+	name: `Most-Liked Photos — ${siteConfig.owner}`,
+	description: pageDescription,
+	url: canonicalUrl,
+};
+---
+
+<MainLayout
+	title="Most-Liked Photos"
+	description={pageDescription}
+	canonical={canonicalUrl}
+	structuredData={initialStructuredData}
+>
+	<section class="py-16 pt-24">
+		<div class="container mx-auto px-4 max-w-7xl">
+			<header class="mb-8 text-center">
+				<h1 class="text-3xl md:text-4xl font-bold mb-2">Most-Liked Photos</h1>
+				<p class="text-gray-600">Live ranking powered by Supabase likes.</p>
+			</header>
+
+			<p id="popular-status" class="mb-6 text-sm text-gray-500">Loading likes...</p>
+
+			<div id="popular-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+				{
+					photos.map((photo) => (
+						<article
+							class="popular-card rounded-2xl border border-gray-200 bg-white shadow-sm overflow-hidden"
+							data-photo-id={photo.id}
+							data-likes="0"
+							data-caption={photo.caption}
+						>
+							<a href={photo.detailHref} class="block">
+								<Image
+									src={photo.metadata}
+									alt={photo.caption}
+									width={640}
+									height={420}
+									fit="cover"
+									loading="lazy"
+									class="w-full h-72 object-cover"
+								/>
+							</a>
+							<div class="p-4 space-y-3">
+								<div class="flex items-start justify-between gap-3">
+									<h2 class="text-base font-semibold leading-tight">{photo.caption}</h2>
+									<span class="likes-chip text-xs font-semibold px-2 py-1 rounded-full bg-gray-100 text-gray-700">
+										<span data-like-count>0</span> likes
+									</span>
+								</div>
+								<div class="flex flex-wrap gap-2">
+									{photo.tags.slice(0, 3).map((tag) => (
+										<span class="text-xs px-2 py-1 rounded-full border border-gray-200 text-gray-600">
+											{tag}
+										</span>
+									))}
+								</div>
+								<div class="flex items-center justify-between">
+									<a
+										href={photo.detailHref}
+										class="text-sm font-medium text-slate-800 hover:text-slate-600"
+									>
+										View photo
+									</a>
+									<PhotoLikeButton photoId={photo.id} />
+								</div>
+							</div>
+						</article>
+					))
+				}
+			</div>
+		</div>
+	</section>
+</MainLayout>
+
+<script>
+	const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+	const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+	const statusEl = document.getElementById('popular-status');
+	const gridEl = document.getElementById('popular-grid');
+
+	async function loadLikes() {
+		if (!supabaseUrl || !supabaseAnonKey) {
+			if (statusEl) {
+				statusEl.textContent =
+					'Set PUBLIC_SUPABASE_URL and PUBLIC_SUPABASE_ANON_KEY to load live rankings.';
+			}
+			return;
+		}
+
+		try {
+			const { createClient } = await import('@supabase/supabase-js');
+			const supabase = createClient(supabaseUrl, supabaseAnonKey);
+			const { data, error } = await supabase.from('photo_user_likes').select('photo_id');
+
+			if (error) {
+				if (statusEl) statusEl.textContent = 'Could not load likes from Supabase.';
+				return;
+			}
+
+			const counts = new Map();
+			(data || []).forEach((row) => {
+				const current = counts.get(row.photo_id) || 0;
+				counts.set(row.photo_id, current + 1);
+			});
+
+			const cards = Array.from(document.querySelectorAll('.popular-card'));
+			cards.forEach((card) => {
+				const photoId = card.getAttribute('data-photo-id');
+				if (!photoId) return;
+				const count = counts.get(photoId) || 0;
+				card.setAttribute('data-likes', String(count));
+				const countNode = card.querySelector('[data-like-count]');
+				if (countNode) countNode.textContent = String(count);
+				// Hide zero-like items for the popular page.
+				card.style.display = count > 0 ? '' : 'none';
+			});
+
+			const sortedCards = cards
+				.filter((card) => Number(card.getAttribute('data-likes') || '0') > 0)
+				.sort((a, b) => {
+					const countDiff =
+						Number(b.getAttribute('data-likes') || '0') -
+						Number(a.getAttribute('data-likes') || '0');
+					if (countDiff !== 0) return countDiff;
+					const aCaption = a.getAttribute('data-caption') || '';
+					const bCaption = b.getAttribute('data-caption') || '';
+					return aCaption.localeCompare(bCaption);
+				});
+
+			if (gridEl) {
+				sortedCards.forEach((card) => gridEl.appendChild(card));
+			}
+
+			if (statusEl) {
+				statusEl.textContent =
+					sortedCards.length > 0
+						? `Showing ${sortedCards.length} liked photos.`
+						: 'No likes yet. Be the first to like a photo.';
+			}
+		} catch (error) {
+			console.error('Failed loading popular photos:', error);
+			if (statusEl) statusEl.textContent = 'Unexpected error loading likes.';
+		}
+	}
+
+	loadLikes();
+</script>
