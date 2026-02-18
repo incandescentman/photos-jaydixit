@@ -1,7 +1,7 @@
 ---
 const menuItems = [
+	{ name: 'About', link: `/about` },
 	{ name: 'Red Carpet Photos', link: `/gallery` },
-	{ name: 'Most Liked', link: `/popular` },
 	{ name: 'The Story of WikiPortraits', link: `/blog/wikiportraits-story` },
 	{ name: 'Contact', link: `/contact` },
 	{ name: 'jaydixit.com', link: 'https://jaydixit.com' },
@@ -48,13 +48,13 @@ const socialLinks = [
 			</div>
 			<a href="/" class="flex flex-col md:flex-row md:items-baseline md:gap-2">
 				<span
-					class="text-2xl md:text-3xl font-black tracking-tight text-gray-900"
+					class="text-2xl md:text-3xl font-bold tracking-tight text-gray-900"
 					style="font-family: 'Inter', system-ui, -apple-system, sans-serif;"
 				>
 					Jay Dixit
 				</span>
 				<span
-					class="text-2xl md:text-3xl font-black tracking-tight text-gray-900"
+					class="text-2xl md:text-3xl font-bold tracking-tight text-gray-900"
 					style="font-family: 'Inter', system-ui, -apple-system, sans-serif;"
 				>
 					Photos
@@ -68,7 +68,7 @@ const socialLinks = [
 				menuItems.map((item, index) => (
 					<a
 						href={item.link}
-						class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ease-out active:scale-95"
+						class="px-4 py-2 rounded-lg text-base font-medium transition-all duration-200 ease-out active:scale-95"
 						style={`color: ${index === 0 ? '#0ea5e9' : 'var(--neutral-700)'};`}
 						target={item.link.startsWith('http') ? '_blank' : '_self'}
 					>
@@ -132,7 +132,7 @@ const socialLinks = [
 				menuItems.map((item, index) => (
 					<a
 						href={item.link}
-						class={`px-4 py-3 rounded-lg text-base font-medium transition-all duration-300 hover:bg-gray-50 ${
+						class={`px-4 py-3 rounded-lg text-lg font-medium transition-all duration-300 hover:bg-gray-50 ${
 							index === 0 ? 'text-blue-600' : 'text-gray-700'
 						}`}
 						@click="isOpen = false"

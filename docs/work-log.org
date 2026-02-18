@@ -1,6 +1,36 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-02-18 - About Funnel Rewrite + Nav Cleanup + WikiPortraits Story Refresh
+
+** Status
+- Reworked About page messaging to better convert photography visitors into writing/AI workshop leads, simplified nav, and replaced the WikiPortraits story draft.
+
+** Shipped
+- About route restored and re-linked
+  - Restored ~src/pages/about.astro~ after temporary deletion.
+  - Re-added ~About~ in ~src/components/NavBar.astro~.
+- Navigation typography and cleanup
+  - Switched nav + wordmark to ~Inter~.
+  - Reduced wordmark weight from extra-heavy to ~font-bold~.
+  - Increased nav item size for desktop/mobile legibility.
+  - Removed ~Most Liked~ nav item.
+- About page content updates
+  - Replaced opening narrative with first-person funnel-oriented copy.
+  - Updated photography subtitle to emphasize red carpet/Wikipedia context.
+  - Removed the Writing & Teaching pull quote and tightened card copy:
+    - Yale card now references ~"The Art of Storytelling"~ and distinctive teaching angle.
+    - Psychology Today card now states role and scope directly.
+  - Updated pullquote to:
+    - ~"The feeling I'm chasing is that moment when I show someone a photo I just took and they say, 'Oh my God, I love this picture of me, you really captured who I am!'"~
+  - Rewrote CTA copy to explicitly bridge photo discovery -> AI workshop/writing/consulting inquiry.
+- Blog article refresh
+  - Replaced ~src/content/blog/wikiportraits-story.mdx~ body with the new longform draft.
+  - Normalized links to Markdown format for MDX rendering.
+
+** Validation
+- ~npm run build~ passed after each major update.
+
 * 2026-02-18 - Supabase Likes + Popular Page + PhotoSwipe Ratio Fix
 
 ** Status

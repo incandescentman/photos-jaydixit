@@ -1,0 +1,277 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout>
+	<!-- Hero Section -->
+	<section class="pt-16 bg-white">
+		<div class="max-w-4xl mx-auto px-6">
+			<h1 class="text-3xl md:text-4xl font-black text-gray-900 font-sans mb-8">About</h1>
+			<img
+				src="/images/jay-anisha-williamsburg_jay-dixit-photos_lighter.jpg"
+				alt="Jay Dixit"
+				class="w-full rounded-2xl shadow-xl"
+			/>
+		</div>
+	</section>
+
+	<!-- Introduction Section -->
+	<section class="py-16 bg-white">
+		<div class="max-w-4xl mx-auto px-6">
+			<div class="max-w-none">
+				<p class="text-xl text-gray-600 leading-relaxed font-sans mb-6">
+					As a writer, I relate to the world through words, stories, and ideas. But writing is
+					also static: It's sitting at a desk typing sentences on a screen.
+				</p>
+				<p class="text-xl text-gray-600 leading-relaxed font-sans mb-6">
+					Photography is embodied, visceral, spontaneous. After a day of staring at a screen, I
+					love how different it feels from writing. I'm huddling in the photo pit, crouching
+					trying to get a better angle, literally running after a movie star calling their name
+					trying to get them to look back. It's physical and chaotic and exhausting. It's like
+					being a sniper, looking through the telephoto lens, waiting and breathing, finger on
+					the shutter ready to fire the instant the celebrity glances your way.
+				</p>
+				<p class="text-xl text-gray-600 leading-relaxed font-sans mb-6">
+					Like writing, photography is all craft and strategy. It's about making decisions. But I
+					feel like I'm using an entirely different part of my brain.
+				</p>
+				<p class="text-xl text-gray-600 leading-relaxed font-sans mb-6">
+					It's also immediate gratification. If I write an article for a magazine, I might get an
+					email from someone weeks later when it's published. More likely I never hear about it.
+					With a photo I can show it to someone and right away they might say, "Oh my god, I love
+					it, you totally captured my personality!"
+				</p>
+				<p class="text-xl text-gray-600 leading-relaxed font-sans my-10">
+					It's making someone feel seen. That never happens with writing.
+				</p>
+
+				<div class="mt-12 pt-10 border-t border-gray-200 space-y-5">
+					<p class="text-xl text-gray-500 leading-relaxed font-sans">
+						I'm a press photographer for Wikipedia and the founding photographer of the WikiPortraits
+						initiative. I've covered the Nobel Prizes in Stockholm and Oslo, Sundance, SXSW, the
+						Toronto International Film Festival, the New York Film Festival, and cultural events in
+						New York, San Francisco, and Toronto.
+					</p>
+					<p class="text-xl text-gray-500 leading-relaxed font-sans mb-8">
+						I'm also a writer, writing professor, and AI educator. I taught storytelling at Yale. My
+						work has appeared in The New York Times, Rolling Stone, The Washington Post, Wired,
+						Harvard Business Review, and Psychology Today, where I was a senior editor. Most recently
+						I worked at OpenAI, where I led the writing community.
+					</p>
+				</div>
+				</div>
+				<div class="flex gap-4">
+					<a href="#photography" class="px-6 py-3 bg-gray-900 text-white rounded-full font-semibold hover:bg-gray-800 transition-all duration-300">
+						View My Work
+					</a>
+					<a href="mailto:jay@jaydixit.com" class="px-6 py-3 border-2 border-gray-900 text-gray-900 rounded-full font-semibold hover:bg-gray-100 transition-all duration-300">
+						Get In Touch
+					</a>
+				</div>
+			</div>
+		</section>
+
+	<!-- Photography Section -->
+	<section id="photography" class="py-24 bg-white">
+		<div class="max-w-7xl mx-auto px-6">
+				<div class="text-center mb-16">
+					<h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4 font-sans">Photography</h2>
+					<p class="text-xl text-gray-600 max-w-3xl mx-auto font-sans">
+						Red carpet photography for Wikipedia, shot at film festivals, Nobel ceremonies, and cultural events around the world.
+					</p>
+				</div>
+
+			<div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+				<a href="/gallery" class="block border border-gray-200 rounded-xl p-6 hover:border-gray-400 hover:shadow-md transition-all duration-200">
+					<h3 class="text-lg font-bold text-gray-900 mb-2 font-sans">Wikipedia Press</h3>
+					<p class="text-gray-600 text-sm font-sans">Contributing high-quality portraits to improve Wikipedia</p>
+				</a>
+
+				<a href="/gallery/events/nobel" class="block border border-gray-200 rounded-xl p-6 hover:border-gray-400 hover:shadow-md transition-all duration-200">
+					<h3 class="text-lg font-bold text-gray-900 mb-2 font-sans">Nobel Prizes</h3>
+					<p class="text-gray-600 text-sm font-sans">Documenting laureates in Stockholm and Oslo</p>
+				</a>
+
+				<a href="/gallery/red-carpet" class="block border border-gray-200 rounded-xl p-6 hover:border-gray-400 hover:shadow-md transition-all duration-200">
+					<h3 class="text-lg font-bold text-gray-900 mb-2 font-sans">Film Festivals</h3>
+					<p class="text-gray-600 text-sm font-sans">Red carpet coverage at Sundance, SXSW, TIFF</p>
+				</a>
+
+				<a href="/blog/wikiportraits-story" class="block border border-gray-200 rounded-xl p-6 hover:border-gray-400 hover:shadow-md transition-all duration-200">
+					<h3 class="text-lg font-bold text-gray-900 mb-2 font-sans">WikiPortraits</h3>
+					<p class="text-gray-600 text-sm font-sans">Founded initiative fixing Wikipedia's celebrity portraits</p>
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<!-- Writing & Teaching Section - University Syllabus Design -->
+	<section class="py-32 bg-white">
+		<div class="max-w-7xl mx-auto px-6">
+				<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-4 border-b border-neutral-100 pb-12">
+					<div class="max-w-2xl">
+						<p class="text-xs uppercase tracking-[0.3em] text-neutral-400 font-semibold mb-4">Academic & Editorial</p>
+						<h2 class="text-4xl md:text-5xl lg:text-6xl font-serif text-neutral-900 leading-tight">Writing & Teaching</h2>
+					</div>
+				</div>
+
+			<div class="grid md:grid-cols-3 gap-12">
+					<div>
+						<h3 class="text-2xl font-serif text-neutral-900 mb-4">Yale University</h3>
+						<div class="h-px w-8 bg-neutral-300 mb-6"></div>
+						<p class="text-neutral-600 leading-relaxed font-sans">
+							"The Art of Storytelling" - teaching writers how to make readers actually want to
+							keep reading, using suspense, curiosity, and narrative structure.
+						</p>
+					</div>
+
+				<div>
+					<h3 class="text-2xl font-serif text-neutral-900 mb-4">Major Publications</h3>
+					<div class="h-px w-8 bg-neutral-300 mb-6"></div>
+					<p class="text-neutral-600 leading-relaxed font-sans">
+						Contributor to The New York Times, Rolling Stone, and Harvard Business Review.
+					</p>
+				</div>
+
+					<div>
+						<h3 class="text-2xl font-serif text-neutral-900 mb-4">Psychology Today</h3>
+						<div class="h-px w-8 bg-neutral-300 mb-6"></div>
+						<p class="text-neutral-600 leading-relaxed font-sans">
+							Senior editor for eight years, covering psychology, behavior, and what makes people
+							tick.
+						</p>
+					</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- AI Work Section -->
+	<section class="py-24 bg-[#f5f1e8]">
+		<div class="max-w-7xl mx-auto px-6">
+			<div class="max-w-3xl mb-14">
+				<p class="text-xs uppercase tracking-[0.22em] text-neutral-500 font-semibold mb-3">AI Work</p>
+				<h2 class="text-4xl md:text-5xl font-bold text-neutral-900 mb-5 leading-tight font-sans">
+					Practical AI for writers, educators, and creative teams
+				</h2>
+				<p class="text-lg text-neutral-700 leading-relaxed font-sans">
+					My focus is hands-on: helping people use AI as a thought partner without losing voice,
+					judgment, or craft.
+				</p>
+			</div>
+
+			<div class="grid lg:grid-cols-2 gap-8">
+				<article class="rounded-2xl border border-neutral-300/80 bg-white p-8 shadow-sm">
+					<div class="flex items-center justify-between gap-4 mb-6">
+						<h3 class="text-2xl font-bold text-neutral-900 font-sans">Socratic AI</h3>
+						<span class="text-xs uppercase tracking-[0.16em] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-3 py-1">
+							Current
+						</span>
+					</div>
+					<p class="text-sm uppercase tracking-[0.14em] text-neutral-500 font-semibold mb-5">
+						Founder and Educator
+					</p>
+					<ul class="space-y-3 text-neutral-700 font-sans">
+						<li class="border-l-2 border-neutral-200 pl-4">
+							Design and lead AI education workshops for organizations
+						</li>
+						<li class="border-l-2 border-neutral-200 pl-4">
+							Train teams to use AI for thinking, drafting, and revision
+						</li>
+						<li class="border-l-2 border-neutral-200 pl-4">
+							Advise on practical, responsible AI adoption in creative workflows
+						</li>
+					</ul>
+				</article>
+
+				<article class="rounded-2xl border border-neutral-300/80 bg-white p-8 shadow-sm">
+					<div class="flex items-center justify-between gap-4 mb-6">
+						<h3 class="text-2xl font-bold text-neutral-900 font-sans">OpenAI</h3>
+						<span class="text-xs uppercase tracking-[0.16em] font-semibold text-neutral-700 bg-neutral-100 border border-neutral-200 rounded-full px-3 py-1">
+							Previous
+						</span>
+					</div>
+					<p class="text-sm uppercase tracking-[0.14em] text-neutral-500 font-semibold mb-5">
+						Community Lead
+					</p>
+					<ul class="space-y-3 text-neutral-700 font-sans">
+						<li class="border-l-2 border-neutral-200 pl-4">Led the writing community</li>
+						<li class="border-l-2 border-neutral-200 pl-4">
+							Built educator-focused programs and resources
+						</li>
+						<li class="border-l-2 border-neutral-200 pl-4">
+							Developed frameworks for creative and ethical AI use
+						</li>
+					</ul>
+				</article>
+			</div>
+		</div>
+	</section>
+
+	<!-- Philosophy Quote - Editorial Serif Design -->
+	<section class="py-32" style="background-color: var(--neutral-50);">
+		<div class="max-w-4xl mx-auto px-6">
+			<div class="flex flex-col md:flex-row gap-12 items-start">
+				<!-- Elegant thin accent line -->
+				<div class="hidden md:block w-px h-64 bg-neutral-300 mt-4"></div>
+				
+				<div class="flex-1">
+						<blockquote class="text-3xl md:text-4xl lg:text-5xl font-serif italic text-neutral-900 leading-tight mb-10">
+							"The feeling I'm chasing is that moment when I show someone a photo I just took and they say, 'Oh my God, I love this picture of me, you really captured who I am!'"
+						</blockquote>
+					<div class="flex items-center gap-4">
+						<div class="w-8 h-px bg-neutral-400"></div>
+						<cite class="text-xl font-medium tracking-tight text-neutral-600 not-italic font-sans uppercase">Jay Dixit</cite>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+		<!-- Contact CTA -->
+		<section class="py-24 bg-white">
+			<div class="max-w-4xl mx-auto px-6 text-center">
+					<p class="text-2xl md:text-3xl text-gray-600 mb-12 font-sans leading-snug">
+						Most people land here looking for my photos. But I also teach AI workshops, write, and
+						do consulting. If you want to talk about photography, writing, or what AI can actually
+						do for your team, I'd love to hear from you.
+					</p>
+			<div class="flex gap-4 justify-center">
+				<a href="mailto:jay@jaydixit.com" class="px-8 py-4 bg-gray-900 text-white rounded-full font-semibold hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 shadow-lg">
+					Get In Touch
+				</a>
+				<a href="/gallery" class="px-8 py-4 bg-gray-200 text-gray-800 rounded-full font-semibold hover:bg-gray-300 transition-all duration-300">
+					View Portfolio
+				</a>
+			</div>
+		</div>
+	</section>
+</MainLayout>
+
+<style>
+	@keyframes blob {
+		0% {
+			transform: translate(0px, 0px) scale(1);
+		}
+		33% {
+			transform: translate(30px, -50px) scale(1.1);
+		}
+		66% {
+			transform: translate(-20px, 20px) scale(0.9);
+		}
+		100% {
+			transform: translate(0px, 0px) scale(1);
+		}
+	}
+
+	.animate-blob {
+		animation: blob 7s infinite;
+	}
+
+	.animation-delay-2000 {
+		animation-delay: 2s;
+	}
+
+	.animation-delay-4000 {
+		animation-delay: 4s;
+	}
+</style>
