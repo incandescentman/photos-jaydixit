@@ -1,6 +1,29 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-02-18 - EXIF Display + Formspree Contact
+
+** Status
+- Added EXIF display on per-photo pages and launched a dedicated contact page with Formspree.
+
+** Shipped
+- EXIF display on photo detail pages in ~src/pages/gallery/photo/[...photo].astro~
+  - Reads EXIF at build time with ~exifr~.
+  - Shows Camera, Lens, Aperture, Shutter, ISO, Focal Length, and Capture Date when available.
+- Contact page in ~src/pages/contact.astro~
+  - Form posts to ~https://formspree.io/f/xeelzjpn~.
+  - Added hidden honeypot field and direct email fallback text.
+- Navigation update in ~src/components/NavBar.astro~
+  - Contact menu item now points to ~/contact~ instead of ~mailto:~.
+
+** Validation
+- ~npm run build~ passed.
+- ~npx eslint src/pages/contact.astro src/components/NavBar.astro~ passed.
+
+** Commits
+- ~2e62933~ Display EXIF metadata on per-photo pages
+- ~b0142d2~ Add Formspree contact page and nav link
+
 * 2026-02-18 - SEO/Sharing Rollout + Canonical Per-Photo Pages
 
 ** Status
