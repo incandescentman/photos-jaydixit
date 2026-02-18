@@ -1,6 +1,37 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-02-18 - SEO/Sharing Rollout + Canonical Per-Photo Pages
+
+** Status
+- Implemented approved roadmap items for SEO, social sharing, sitemap, analytics wiring, and per-photo pages.
+
+** Shipped
+- Site-wide metadata and social cards in ~src/layouts/MainLayout.astro~
+  - Canonical, OpenGraph, Twitter cards, RSS discovery link, optional GA bootstrap.
+- Structured data
+  - WebSite (site-wide), Blog/BlogPosting, ImageGallery, Photograph.
+- Social sharing
+  - New reusable ~src/components/SocialShare.astro~.
+- Sitemap
+  - Added ~@astrojs/sitemap~ and enabled it in ~astro.config.mts~.
+- Per-photo pages
+  - New route: ~src/pages/gallery/photo/[...photo].astro~.
+  - Route shape: ~/gallery/photo/<folder>/<photo-slug>~.
+  - Added prev/next, social share, and per-photo Giscus thread.
+- Canonicalized photo URLs across formats
+  - Deduped .jpg/.webp variants to one slug URL per photo subject.
+  - Gallery “Details” links point to canonical slug URLs.
+
+** Validation
+- ~npm run build~ passed.
+- ~npm run test -- --run~ passed (21/21 tests).
+
+** Commits
+- ~e3bf67f~ Implement SEO, sharing, analytics, and sitemap features
+- ~5f34cd3~ Add per-photo gallery pages with navigation and comments
+- ~db8dba9~ Canonicalize per-photo URLs across image formats
+
 * 2025-10-21 - KNOWN GOOD STATE ✅ (Production-Ready Baseline)
 ** Status: ✅✅✅ STABLE - VERIFIED WORKING - USE THIS AS REFERENCE
 ** Tag: stable-known-good

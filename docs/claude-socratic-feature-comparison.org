@@ -1,0 +1,288 @@
+:PROPERTIES:
+:ID: photos-jaydixit-socratic-comparison
+:END:
+#+title: Socratic Feature Comparison for photos-jaydixit
+#+date: 2026-02-17
+#+author: Claude
+
+* Overview
+
+This document compares features from the socratic app that could benefit photos-jaydixit, a photography portfolio site.
+All feature decisions in this document are owner decisions (Jay).
+
+* Implementation Snapshot (2026-02-18)
+
+** Completed Decisions
+- Structured data (JSON-LD): IMPLEMENTED
+  - Site-level WebSite JSON-LD plus page-level Blog, BlogPosting, ImageGallery, and Photograph schemas.
+- Twitter cards: IMPLEMENTED
+  - Centralized twitter:* meta tags in MainLayout with per-page overrides.
+- Social share button: IMPLEMENTED
+  - New reusable component on gallery and blog detail pages.
+- RSS feed: IMPLEMENTED
+  - Existing /feed.xml retained; discovery link now emitted globally in head.
+- Analytics: IMPLEMENTED (env-gated)
+  - Google Analytics wiring added; activate with PUBLIC_GA_MEASUREMENT_ID.
+- Sitemap: IMPLEMENTED
+  - @astrojs/sitemap integrated in Astro config.
+- Per-photo pages: IMPLEMENTED
+  - Canonical route: /gallery/photo/<folder>/<photo-slug>
+  - Canonical URL dedupes .jpg/.webp variants to one photo URL.
+- Per-photo comment threads: IMPLEMENTED
+  - Giscus term now uses canonical per-photo slug on photo detail pages.
+
+** Recent Commits
+- e3bf67f - Implement SEO, sharing, analytics, and sitemap features
+- 5f34cd3 - Add per-photo gallery pages with navigation and comments
+- db8dba9 - Canonicalize per-photo URLs across image formats
+
+** Remaining High-Value Open Items
+- Dark mode (deferred)
+- Most-liked photos page (deferred until Supabase)
+- Pagination (deferred)
+- EXIF display (approved, pending implementation)
+- Breadcrumb navigation (approved, pending implementation)
+
+* High Priority Features
+
+** Dark Mode Support
+- Status: MISSING
+- Socratic has: ApplyColorMode component, CSS variables, theme toggle
+- photos-jaydixit has: None
+- Impact: Critical for photography portfolio - viewers often prefer dark backgrounds
+- Approach: Port ApplyColorMode.astro pattern, add CSS variables for theme colors
+
+Decision: DEFER 
+
+** Structured Data (JSON-LD)
+- Status: MISSING
+- Socratic has: Person, Article, Organization, FAQPage schemas
+- photos-jaydixit has: None
+- Impact: SEO boost for image search, Google Images integration
+- Approach: Add ImageGallery, ImageObject, Photograph schemas for albums/photos
+
+Decision: add 
+
+
+** Twitter Cards
+- Status: PARTIAL
+- Socratic has: Full twitter:card, twitter:image, twitter:creator tags
+- photos-jaydixit has: Only basic OpenGraph tags
+- Impact: Better sharing previews on Twitter/X
+- Approach: Add twitter meta tags to BaseHead component
+
+
+Decision: add
+
+
+
+** Social Share Button
+- Status: MISSING
+- Socratic has: SocialShare.astro with copy-to-clipboard, glass-morphism UI
+- photos-jaydixit has: None
+- Impact: Easy sharing of albums and individual photos
+- Approach: Port SocialShare.astro component, adapt for photo context
+
+
+Decision: add
+
+
+
+* Medium Priority Features
+
+** RSS Feed
+- Status: MISSING
+- Socratic has: Sitemap integration
+- photos-jaydixit has: None (has blog collection but no feed)
+- Impact: Subscribers notified of new galleries
+- Approach: Add @astrojs/rss, create /rss.xml endpoint for blog posts
+
+
+Decision: add
+
+
+** Analytics
+- Status: MISSING
+- Socratic has: Google Analytics via @astrolib/analytics, Partytown
+- photos-jaydixit has: None
+- Impact: Track gallery views, popular photos, engagement
+- Approach: Add @astrolib/analytics integration
+
+
+Decision: add
+
+
+
+** Sitemap
+- Status: MISSING
+- Socratic has: @astrojs/sitemap with exclusion filtering
+- photos-jaydixit has: None
+- Impact: Better SEO indexing
+- Approach: Add @astrojs/sitemap to astro.config
+
+
+Decision: add
+
+
+
+** Pagination
+- Status: MISSING
+- Socratic has: Pagination component for blog lists
+- photos-jaydixit has: All photos load at once
+- Impact: Performance for large galleries
+- Approach: Add pagination component, lazy load photo grids
+
+
+Decision: defer
+
+
+* Nice-to-Have Features
+
+** Per-Photo Pages
+- Status: MISSING
+- Socratic has: Individual post pages with slug routing
+- photos-jaydixit has: Gallery pages only, no individual photo routes
+- Impact: Deep-linking to specific photos, better SEO for individual images
+- Approach: Add /gallery/[folder]/[photo].astro dynamic route
+
+** Per-Photo Comment Threads
+- Status: PARTIAL
+- Socratic has: Comments per post
+- photos-jaydixit has: Giscus comments per gallery only
+- Impact: Discussions about specific photos rather than entire galleries
+- Approach: Pass photo filename to Giscus data-term on per-photo pages
+
+
+Decision: REJECT
+
+
+** Most-Liked Photos Page
+- Status: MISSING
+- Socratic has: N/A
+- photos-jaydixit has: Like button infrastructure ready
+- Impact: Surface popular content, encourage engagement
+- Approach: Query Supabase for top-liked photos, create /popular page
+
+Decision: defer until we have supabase 
+
+** Tag Analytics & Popularity Ranking
+- Status: MISSING
+- Socratic has: Tag pages with counts
+- photos-jaydixit has: Tags extracted but no analytics
+- Impact: Show trending tags, popular subjects/events
+- Approach: Aggregate likes by tag, display tag cloud with popularity weighting
+
+** Location/Date Metadata
+- Status: PARTIAL
+- Socratic has: Post dates
+- photos-jaydixit has: Year from filename, no location
+- Impact: Filter by date range, map view of photos
+- Approach: Extend filename convention or use JSON sidecar files
+
+** Image Upload UI
+- Status: MISSING
+- Socratic has: N/A (content in repo)
+- photos-jaydixit has: Manual folder management
+- Impact: Easier photo management for non-technical workflow
+- Approach: Admin page with drag-and-drop upload to Cloudinary
+
+** EXIF Data Display
+- Status: DEPENDENCY EXISTS, UNUSED
+- Socratic has: N/A
+- photos-jaydixit has: exifr package installed but not used
+- Impact: Show camera, lens, aperture, shutter speed
+- Approach: Extract EXIF on build, display in photo detail view
+
+Decision: add
+
+** Related Albums
+- Status: MISSING
+- Socratic has: RelatedPosts component
+- photos-jaydixit has: None
+- Impact: Keep visitors exploring
+- Approach: Adapt RelatedPosts pattern for albums by tag/theme
+
+** Reading Time for Blog
+- Status: MISSING
+- Socratic has: readingTimeRemarkPlugin
+- photos-jaydixit has: Blog collection but no reading time
+- Impact: Minor UX improvement
+- Approach: Already available in @jaydixit/astro-utils, add to config
+
+Decision: reject 
+
+** Breadcrumb Navigation
+- Status: MISSING
+- Socratic has: AnchorHeading pattern
+- photos-jaydixit has: Basic nav only
+- Impact: Better navigation in nested galleries
+- Approach: Add breadcrumb component
+
+Decision: add 
+
+* Already Implemented (No Action Needed)
+
+** Cloudinary Integration
+- photos-jaydixit has superior implementation with cldUrl/cldSrcset helpers
+- Better than socratic's generic unpic approach for this use case
+
+** Gallery Components
+- PhotoSwipe 5 with touch navigation
+- GLightbox for masonry galleries
+- Swipe gestures, zoom, fullscreen
+
+** Like Button Infrastructure
+- PhotoLikeButton component with local state
+- Ready for Supabase backend integration
+
+** Giscus Comments
+- Just configured with GitHub Discussions
+- Category: General, theme: GitHub Light
+
+** Shared Utils
+- Using @jaydixit/astro-utils v1.0.2
+- Access to typography, formatters, remark plugins
+
+* Implementation Priority
+
+** Phase 1: Core UX
+1. Dark mode (ApplyColorMode)
+2. Social share button
+3. Per-photo pages (enables many other features)
+
+** Phase 2: SEO
+4. Structured data (JSON-LD)
+5. Twitter cards
+6. Sitemap
+
+** Phase 3: Engagement
+7. RSS feed
+8. Analytics
+9. Most-liked photos page
+10. Per-photo comment threads
+11. Pagination
+
+** Phase 4: Data & Discovery
+12. Tag analytics & popularity ranking
+13. Location/date metadata
+14. EXIF display
+15. Related albums
+
+** Phase 5: Polish
+16. Reading time
+17. Breadcrumbs
+18. Image upload UI (admin)
+
+* Reference Files
+
+** From socratic (to port)
+- [[file+emacs:/Users/jay/Dropbox/github/astro-monorepo/apps/socratic/src/components/common/SocialShare.astro][SocialShare.astro]]
+- [[file+emacs:/Users/jay/Dropbox/github/astro-monorepo/apps/socratic/src/components/common/ApplyColorMode.astro][ApplyColorMode.astro]]
+- [[file+emacs:/Users/jay/Dropbox/github/astro-monorepo/apps/socratic/src/components/seo/StructuredData.astro][StructuredData.astro]]
+- [[file+emacs:/Users/jay/Dropbox/github/astro-monorepo/apps/socratic/astro.config.ts][astro.config.ts]] (analytics, sitemap setup)
+
+** In photos-jaydixit (existing)
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/Gallery.astro][Gallery.astro]] (PhotoSwipe)
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/PhotoLikeButton.astro][PhotoLikeButton.astro]]
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/PhotoComments.astro][PhotoComments.astro]] (Giscus)
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/package.json][package.json]] (has exifr, photoswipe, glightbox)
