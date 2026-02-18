@@ -1,6 +1,5 @@
 ---
 const menuItems = [
-	{ name: 'About', link: `/about` },
 	{ name: 'Red Carpet Photos', link: `/gallery` },
 	{ name: 'Most Liked', link: `/popular` },
 	{ name: 'The Story of WikiPortraits', link: `/blog/wikiportraits-story` },
@@ -18,7 +17,7 @@ const socialLinks = [
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
-	href="https://fonts.googleapis.com/css2?family=Karla:wght@400;500;600;700;800&family=Dancing+Script:wght@400..700&display=swap"
+	href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Dancing+Script:wght@400..700&display=swap"
 	rel="stylesheet"
 />
 
@@ -28,7 +27,7 @@ const socialLinks = [
 	@scroll.window="scrolled = window.scrollY > 20"
 	class="fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out"
 	:class="scrolled ? 'bg-white/80 backdrop-blur-xl shadow-sm-refined py-4' : 'bg-white/70 backdrop-blur-lg py-6'"
-	style="border-bottom: 1px solid rgba(229, 229, 229, 0.6);"
+	style="border-bottom: 1px solid rgba(229, 229, 229, 0.6); font-family: 'Inter', system-ui, -apple-system, sans-serif;"
 >
 	<div
 		data-critical-nav-inner
@@ -50,13 +49,13 @@ const socialLinks = [
 			<a href="/" class="flex flex-col md:flex-row md:items-baseline md:gap-2">
 				<span
 					class="text-2xl md:text-3xl font-black tracking-tight text-gray-900"
-					style="font-family: 'Karla', system-ui, -apple-system, sans-serif;"
+					style="font-family: 'Inter', system-ui, -apple-system, sans-serif;"
 				>
 					Jay Dixit
 				</span>
 				<span
 					class="text-2xl md:text-3xl font-black tracking-tight text-gray-900"
-					style="font-family: 'Karla', system-ui, -apple-system, sans-serif;"
+					style="font-family: 'Inter', system-ui, -apple-system, sans-serif;"
 				>
 					Photos
 				</span>
