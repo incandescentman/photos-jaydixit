@@ -1,0 +1,449 @@
+---
+/**
+ * About Page Prototype: Karla body font
+ * Testing the "quick win" typography swap
+ */
+export const prerender = true;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About (Karla Prototype) — Jay Dixit</title>
+
+  <!-- Karla + Cormorant Garamond -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --font-body: 'Karla', sans-serif;
+      --font-display: 'Cormorant Garamond', serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: #ffffff;
+      color: #111827;
+      line-height: 1.6;
+    }
+
+    /* Prototype badge */
+    .prototype-badge {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1f2937;
+      color: white;
+      padding: 8px 16px;
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 600;
+      z-index: 1000;
+      border-radius: 4px;
+    }
+
+    .prototype-badge a {
+      color: #93c5fd;
+      margin-left: 12px;
+    }
+
+    /* Layout */
+    .container {
+      max-width: 896px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .container-wide {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 64px 0 0;
+    }
+
+    .hero h1 {
+      font-family: var(--font-body);
+      font-size: 1.875rem;
+      font-weight: 900;
+      color: #111827;
+      margin-bottom: 8px;
+    }
+
+    @media (min-width: 768px) {
+      .hero h1 {
+        font-size: 2.25rem;
+      }
+    }
+
+    .hero .tagline {
+      font-size: 1.125rem;
+      color: #4b5563;
+      margin-bottom: 32px;
+    }
+
+    .hero img {
+      width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Introduction */
+    .intro {
+      padding: 64px 0;
+    }
+
+    .intro h2 {
+      font-family: var(--font-display);
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 32px;
+      line-height: 1.2;
+    }
+
+    @media (min-width: 768px) {
+      .intro h2 {
+        font-size: 3rem;
+      }
+    }
+
+    .intro p {
+      font-size: 1.25rem;
+      color: #4b5563;
+      line-height: 1.75;
+      margin-bottom: 16px;
+    }
+
+    .intro p:last-of-type {
+      margin-bottom: 32px;
+    }
+
+    /* Buttons */
+    .btn-group {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 9999px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: #111827;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #1f2937;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: #111827;
+      border: 2px solid #111827;
+    }
+
+    .btn-secondary:hover {
+      background: #f3f4f6;
+    }
+
+    /* Photography Section */
+    .photography {
+      padding: 96px 0;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .section-header h2 {
+      font-family: var(--font-display);
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 16px;
+    }
+
+    @media (min-width: 768px) {
+      .section-header h2 {
+        font-size: 3rem;
+      }
+    }
+
+    .section-header p {
+      font-size: 1.25rem;
+      color: #4b5563;
+      max-width: 768px;
+      margin: 0 auto;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 24px;
+    }
+
+    @media (min-width: 768px) {
+      .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .card-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .card {
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 24px;
+      transition: border-color 0.2s ease;
+    }
+
+    .card:hover {
+      border-color: #d1d5db;
+    }
+
+    .card h3 {
+      font-family: var(--font-body);
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      font-size: 0.875rem;
+      color: #4b5563;
+    }
+
+    /* Quote Section */
+    .quote-section {
+      padding: 96px 0;
+      background: linear-gradient(to right, #2563eb, #9333ea);
+      color: white;
+      text-align: center;
+    }
+
+    .quote-section blockquote {
+      font-family: var(--font-body);
+      font-size: 1.5rem;
+      font-weight: 300;
+      line-height: 1.6;
+      max-width: 896px;
+      margin: 0 auto 32px;
+    }
+
+    @media (min-width: 768px) {
+      .quote-section blockquote {
+        font-size: 1.875rem;
+      }
+    }
+
+    .quote-section cite {
+      font-size: 1.125rem;
+      opacity: 0.9;
+      font-style: normal;
+    }
+
+    /* CTA Section */
+    .cta {
+      padding: 96px 0;
+      text-align: center;
+    }
+
+    .cta h2 {
+      font-family: var(--font-display);
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 24px;
+    }
+
+    @media (min-width: 768px) {
+      .cta h2 {
+        font-size: 3rem;
+      }
+    }
+
+    .cta p {
+      font-size: 1.25rem;
+      color: #4b5563;
+      margin-bottom: 48px;
+    }
+
+    .cta .btn-group {
+      justify-content: center;
+    }
+
+    /* Font comparison panel */
+    .font-compare {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 16px 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      z-index: 1000;
+      max-width: 300px;
+    }
+
+    .font-compare h4 {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+
+    .font-compare .sample {
+      font-size: 18px;
+      font-weight: 500;
+      color: #111827;
+      margin-bottom: 4px;
+    }
+
+    .font-compare .note {
+      font-size: 13px;
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+  <div class="prototype-badge">
+    Cormorant + Karla Prototype
+    <a href="/about">← View Original</a>
+  </div>
+
+  <div class="font-compare">
+    <h4>Typography</h4>
+    <div class="sample">Cormorant + Karla</div>
+    <div class="note">Elegant serif headlines, warm humanist body text</div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <h1>Jay Dixit</h1>
+      <p class="tagline">Photographer • Writer • AI Educator</p>
+      <img
+        src="/images/jay-anisha-williamsburg_jay-dixit-photos_lighter.jpg"
+        alt="Jay Dixit"
+      />
+    </div>
+  </section>
+
+  <!-- Introduction Section -->
+  <section class="intro">
+    <div class="container">
+      <h2>Capturing Authentic Moments & Telling Compelling Stories</h2>
+      <p>
+        Hi, I'm Jay Dixit, a writer, educator, and red carpet photographer.
+        As a photographer, my goal is to capture natural, spontaneous moments — those raw, unguarded glimpses of laughter, joy, or surprise that reveal someone's personality in a single frame.
+      </p>
+      <p>
+        As a press photographer for Wikipedia, I've covered The Nobel Prizes in Stockholm and The Nobel Peace Prize in Oslo, red carpets at Sundance, SXSW, the Toronto International Film Festival, and the New York Film Festival, as well as cultural and literary events in New York, San Francisco, and Toronto.
+      </p>
+      <p>
+        I was the founding photographer of the WikiPortraits initiative and I contribute actively to Wikimedia Commons, where I help expand the public archive of high-quality images from diverse voices and communities.
+      </p>
+      <p>
+        In my parallel life as a writer, writing professor, and AI educator, I specialize in storytelling, psychology, and the ethical use of AI to amplify human creativity. I taught storytelling as a writing professor at Yale, and my work has appeared in The New York Times, Rolling Stone, The Washington Post, Wired, Harvard Business Review, and Psychology Today, where I was a senior editor.
+      </p>
+      <p>
+        Through my company Socratic AI, I lead AI education workshops and training programs for universities and companies. Most recently, I worked at OpenAI, where I led the writing community, spearheading initiatives to help writers and educators use AI as a thought partner to support the writing process.
+      </p>
+      <div class="btn-group">
+        <a href="#photography" class="btn btn-primary">View My Work</a>
+        <a href="mailto:jay@jaydixit.com" class="btn btn-secondary">Get In Touch</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photography Section -->
+  <section id="photography" class="photography">
+    <div class="container-wide">
+      <div class="section-header">
+        <h2>Photography</h2>
+        <p>Focusing on spontaneous, natural moments that reveal personality</p>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <h3>Wikipedia Press</h3>
+          <p>Contributing high-quality portraits to improve Wikipedia</p>
+        </div>
+        <div class="card">
+          <h3>Nobel Prizes</h3>
+          <p>Documenting laureates in Stockholm and Oslo</p>
+        </div>
+        <div class="card">
+          <h3>Film Festivals</h3>
+          <p>Red carpet coverage at Sundance, SXSW, TIFF</p>
+        </div>
+        <div class="card">
+          <h3>WikiPortraits</h3>
+          <p>Founded initiative fixing Wikipedia's celebrity portraits</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quote -->
+  <section class="quote-section">
+    <div class="container">
+      <blockquote>
+        "I believe in using technology and creativity to amplify human expression. Whether through a camera lens, the written word, or AI tools, my work focuses on revealing authentic human moments and helping others tell their stories more effectively."
+      </blockquote>
+      <cite>— Jay Dixit</cite>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="container">
+      <h2>Let's Work Together</h2>
+      <p>
+        Based in New York City, available for photography assignments, writing projects, and AI education workshops worldwide.
+      </p>
+      <div class="btn-group">
+        <a href="mailto:jay@jaydixit.com" class="btn btn-primary">Get In Touch</a>
+        <a href="/gallery" class="btn btn-secondary">View Portfolio</a>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

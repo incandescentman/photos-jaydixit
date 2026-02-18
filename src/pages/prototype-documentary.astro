@@ -1,0 +1,494 @@
+---
+/**
+ * Typography Prototype: Editorial
+ * Display: Cormorant Garamond | Body: Source Sans 3
+ * Vibe: Magazine-quality, refined
+ */
+export const prerender = true;
+
+import siteConfig from '../../site.config.mts';
+
+const CLOUDINARY_CLOUD = 'dszpm7yps';
+const cldUrl = (publicId: string, width?: number) => {
+  const transforms = width ? `f_auto,q_auto,w_${width}` : 'f_auto,q_auto';
+  return `https://res.cloudinary.com/${CLOUDINARY_CLOUD}/image/upload/${transforms}/${publicId}`;
+};
+
+// Sample images for the prototype
+const sampleImages = [
+  { publicId: 'highlights/vanessa-kirby_tiff_2024', caption: 'Vanessa Kirby at TIFF' },
+  { publicId: 'highlights/ana-de-armas_locarno_2024', caption: 'Ana de Armas at Locarno' },
+  { publicId: 'highlights/maria-bakalova_locarno_2024', caption: 'Maria Bakalova at Locarno' },
+  { publicId: 'highlights/greta-gerwig_cannes_2024', caption: 'Greta Gerwig at Cannes' },
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Typography Prototype: Warm Documentary — {siteConfig.owner}</title>
+
+  <!-- Editorial Typography: Cormorant Garamond + Source Sans 3 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      /* Warm Film Stock palette */
+      --bg-primary: #FAF8F5;
+      --bg-secondary: #F3EDE4;
+      --text-primary: #2C2825;
+      --text-muted: #6B635A;
+      --accent: #C4A77D;
+      --accent-dark: #8B7355;
+      --border: rgba(107, 99, 90, 0.15);
+
+      /* Typography */
+      --font-display: 'Cormorant Garamond', serif;
+      --font-body: 'Source Sans 3', sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    /* Badge */
+    .prototype-badge {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--accent-dark);
+      color: white;
+      padding: 8px 16px;
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      z-index: 1000;
+      border-radius: 2px;
+    }
+
+    /* Header */
+    header {
+      padding: 100px 48px 80px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 500;
+      font-style: italic;
+      color: var(--accent-dark);
+      margin-bottom: 48px;
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(44px, 7vw, 84px);
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 28px;
+    }
+
+    h1 em {
+      font-style: italic;
+      font-weight: 500;
+    }
+
+    .subtitle {
+      font-family: var(--font-body);
+      font-size: 17px;
+      font-weight: 300;
+      color: var(--text-muted);
+      max-width: 520px;
+      line-height: 1.7;
+    }
+
+    /* Typography specimen */
+    .specimen {
+      padding: 80px 48px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .specimen-label {
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-dark);
+      margin-bottom: 28px;
+    }
+
+    .specimen h2 {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 4.5vw, 48px);
+      font-weight: 500;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 20px;
+    }
+
+    .specimen h3 {
+      font-family: var(--font-display);
+      font-size: clamp(18px, 2.5vw, 24px);
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.3;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+
+    .specimen p {
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.75;
+      color: var(--text-muted);
+      max-width: 640px;
+    }
+
+    .specimen .body-sample {
+      margin-top: 36px;
+      padding: 36px;
+      background: var(--bg-secondary);
+      border-radius: 4px;
+    }
+
+    /* Gallery section */
+    .gallery-section {
+      padding: 80px 48px;
+    }
+
+    .gallery-section .specimen-label {
+      margin-bottom: 40px;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+      background: var(--bg-secondary);
+      border-radius: 3px;
+      box-shadow: 0 4px 20px rgba(44, 40, 37, 0.08);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.03);
+    }
+
+    .gallery-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 24px;
+      background: linear-gradient(transparent, rgba(44, 40, 37, 0.85));
+      color: white;
+      transform: translateY(100%);
+      transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .gallery-item:hover .gallery-caption {
+      transform: translateY(0);
+    }
+
+    .gallery-caption h4 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .gallery-caption span {
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 400;
+      opacity: 0.8;
+    }
+
+    /* Navigation elements */
+    .nav-demo {
+      padding: 48px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      gap: 36px;
+      flex-wrap: wrap;
+    }
+
+    .nav-link {
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+      position: relative;
+      padding-bottom: 4px;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .nav-link:hover {
+      color: var(--text-primary);
+    }
+
+    /* Button styles */
+    .button-demo {
+      padding: 60px 48px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .btn {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      padding: 14px 28px;
+      border: 2px solid var(--accent);
+      background: transparent;
+      color: var(--accent-dark);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-radius: 3px;
+    }
+
+    .btn:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .btn-filled {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .btn-filled:hover {
+      background: var(--accent-dark);
+      border-color: var(--accent-dark);
+    }
+
+    /* Comparison footer */
+    .comparison-footer {
+      padding: 60px 48px;
+      background: var(--bg-secondary);
+      text-align: center;
+    }
+
+    .comparison-footer p {
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .comparison-footer a {
+      color: var(--accent-dark);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      text-decoration-color: var(--accent);
+    }
+
+    .comparison-footer a:hover {
+      color: var(--text-primary);
+    }
+
+    /* Font info panel */
+    .font-info {
+      padding: 44px 48px;
+      background: var(--accent-dark);
+      color: white;
+    }
+
+    .font-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+    }
+
+    .font-info h5 {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.7;
+      margin-bottom: 8px;
+    }
+
+    .font-info .font-name {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 500;
+    }
+
+    .font-info .font-name.sans {
+      font-family: var(--font-body);
+      font-size: 22px;
+      font-weight: 400;
+    }
+
+    /* Decorative quote */
+    .quote-section {
+      padding: 80px 48px;
+      border-bottom: 1px solid var(--border);
+      max-width: 800px;
+    }
+
+    blockquote {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 3.5vw, 32px);
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--text-primary);
+      position: relative;
+      padding-left: 32px;
+      border-left: 3px solid var(--accent);
+    }
+
+    blockquote cite {
+      display: block;
+      margin-top: 20px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="prototype-badge">Prototype: Editorial</div>
+
+  <header>
+    <div class="brand">Jay Dixit Photography</div>
+    <h1>Red Carpet<br/><em>Highlights</em></h1>
+    <p class="subtitle">Portraits captured at international film festivals, cultural premieres, and creative events. A collection of moments from Cannes, Toronto, Locarno, and beyond.</p>
+  </header>
+
+  <div class="font-info">
+    <div class="font-info-grid">
+      <div>
+        <h5>Display Font</h5>
+        <div class="font-name">Cormorant Garamond</div>
+      </div>
+      <div>
+        <h5>Body Font</h5>
+        <div class="font-name sans">Source Sans 3</div>
+      </div>
+      <div>
+        <h5>Aesthetic</h5>
+        <div class="font-name sans" style="font-size: 14px; opacity: 0.85;">Magazine-quality, refined</div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="nav-demo">
+    <a href="#" class="nav-link">Home</a>
+    <a href="#" class="nav-link">Gallery</a>
+    <a href="#" class="nav-link">Albums</a>
+    <a href="#" class="nav-link">About</a>
+    <a href="#" class="nav-link">Contact</a>
+  </nav>
+
+  <section class="quote-section">
+    <blockquote>
+      "Every portrait tells a story—not just of the subject, but of the fleeting moment when camera and soul briefly align."
+      <cite>— On capturing authentic moments</cite>
+    </blockquote>
+  </section>
+
+  <section class="specimen">
+    <div class="specimen-label">Typography Specimen</div>
+    <h2>Intimate Portraits from the<br/>World's Film Festivals</h2>
+    <h3>Capturing authentic moments behind the spotlight</h3>
+    <div class="body-sample">
+      <p>These photographs represent a decade of documenting the film industry's most compelling figures. Each portrait aims to capture something beyond the polished facade—a moment of genuine connection, vulnerability, or joy that emerges between the flashbulbs.</p>
+      <p style="margin-top: 16px;">Cormorant Garamond brings elegance and refinement to headlines—its graceful serifs evoke classical typography while remaining contemporary. Paired with Source Sans 3, the result is sophisticated yet approachable.</p>
+    </div>
+  </section>
+
+  <section class="gallery-section">
+    <div class="specimen-label">Gallery Preview</div>
+    <div class="gallery-grid">
+      {sampleImages.map((img) => (
+        <div class="gallery-item">
+          <img
+            src={cldUrl(img.publicId, 600)}
+            alt={img.caption}
+            loading="lazy"
+          />
+          <div class="gallery-caption">
+            <h4>{img.caption.split(' at ')[0]}</h4>
+            <span>{img.caption.split(' at ')[1] || 'Film Festival'}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <div class="button-demo">
+    <button class="btn">View Gallery</button>
+    <button class="btn btn-filled">Contact</button>
+  </div>
+
+  <footer class="comparison-footer">
+    <p>Compare with other typography options:</p>
+    <p>
+      <a href="/prototype-contemporary">Option B: Contemporary (Syne + Space Mono)</a>
+    </p>
+  </footer>
+</body>
+</html>
