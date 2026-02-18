@@ -330,7 +330,12 @@ export const getStaticPaths = () => {
 								data-caption={image.caption}
 								data-tags={JSON.stringify(image.tags)}
 							>
-								<a class="masonry-link portfolio-lightbox" href={image.originalSrc}>
+								<a
+									class="masonry-link portfolio-lightbox"
+									href={image.originalSrc}
+									data-pswp-width={image.metadata.width}
+									data-pswp-height={image.metadata.height}
+								>
 									<Image
 										src={image.metadata}
 										alt={image.caption}
@@ -339,6 +344,8 @@ export const getStaticPaths = () => {
 										fit="cover"
 										position="attention"
 										loading="lazy"
+										data-natural-width={image.metadata.width}
+										data-natural-height={image.metadata.height}
 										data-caption={image.caption}
 									/>
 									<div class="caption-overlay">

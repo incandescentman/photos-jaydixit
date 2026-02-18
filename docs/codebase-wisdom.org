@@ -1,6 +1,30 @@
 #+TITLE: Codebase Wisdom
 #+DATE: 2025-10-03
 
+* 2026-02-18 - PhotoSwipe Can Distort If It Uses Cropped Thumbnail Dimensions
+
+** Trigger
+On gallery folder pages (example: ~/gallery/events/nobel~), images opened in PhotoSwipe looked squeezed/distorted even though thumbnails looked fine.
+
+** Mechanism
+Masonry thumbnails are rendered with heuristic crop sizes (~320x480~, ~648x480~, etc.) for layout, but PhotoSwipe was using those thumbnail dimensions to calculate slide ratio while loading the full image.
+
+If PhotoSwipe receives the crop dimensions instead of the full source dimensions, slide geometry is wrong and images appear stretched.
+
+** Fix
+Always pass true source dimensions to PhotoSwipe, not masonry crop dimensions:
+
+- Add ~data-pswp-width~ and ~data-pswp-height~ to the gallery link from ~image.metadata.width~ / ~image.metadata.height~ in ~src/pages/gallery/[...folder].astro~.
+- Add ~data-natural-width~ and ~data-natural-height~ on the ~<Image>~ element using the same metadata dimensions.
+- In ~src/scripts/packeryGallery.ts~, resolve dimensions in this order:
+  1. link attrs (~data-pswp-width/height~)
+  2. img attrs (~data-natural-width/height~)
+  3. existing PhotoSwipe itemData values
+  4. runtime image dimensions / fallback defaults
+
+** Rule of Thumb
+If a lightbox opens a different asset than the thumbnail (or a cropped thumbnail variant), width/height metadata must come from the full asset, never from the layout thumbnail.
+
 * 2025-10-22 - CSS Specificity Beats JavaScript Every Time
 
 ** Trigger
