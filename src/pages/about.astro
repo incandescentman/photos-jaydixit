@@ -62,25 +62,25 @@ import MainLayout from '../layouts/MainLayout.astro';
 			</div>
 
 			<div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-				<div class="border border-gray-200 rounded-xl p-6 hover:border-gray-300 transition-colors">
+				<a href="/gallery" class="block border border-gray-200 rounded-xl p-6 hover:border-gray-400 hover:shadow-md transition-all duration-200">
 					<h3 class="text-lg font-bold text-gray-900 mb-2 font-sans">Wikipedia Press</h3>
 					<p class="text-gray-600 text-sm font-sans">Contributing high-quality portraits to improve Wikipedia</p>
-				</div>
+				</a>
 
-				<div class="border border-gray-200 rounded-xl p-6 hover:border-gray-300 transition-colors">
+				<a href="/gallery/events/nobel" class="block border border-gray-200 rounded-xl p-6 hover:border-gray-400 hover:shadow-md transition-all duration-200">
 					<h3 class="text-lg font-bold text-gray-900 mb-2 font-sans">Nobel Prizes</h3>
 					<p class="text-gray-600 text-sm font-sans">Documenting laureates in Stockholm and Oslo</p>
-				</div>
+				</a>
 
-				<div class="border border-gray-200 rounded-xl p-6 hover:border-gray-300 transition-colors">
+				<a href="/gallery/red-carpet" class="block border border-gray-200 rounded-xl p-6 hover:border-gray-400 hover:shadow-md transition-all duration-200">
 					<h3 class="text-lg font-bold text-gray-900 mb-2 font-sans">Film Festivals</h3>
 					<p class="text-gray-600 text-sm font-sans">Red carpet coverage at Sundance, SXSW, TIFF</p>
-				</div>
+				</a>
 
-				<div class="border border-gray-200 rounded-xl p-6 hover:border-gray-300 transition-colors">
+				<a href="/blog/wikiportraits-story" class="block border border-gray-200 rounded-xl p-6 hover:border-gray-400 hover:shadow-md transition-all duration-200">
 					<h3 class="text-lg font-bold text-gray-900 mb-2 font-sans">WikiPortraits</h3>
 					<p class="text-gray-600 text-sm font-sans">Founded initiative fixing Wikipedia's celebrity portraits</p>
-				</div>
+				</a>
 			</div>
 		</div>
 	</section>
@@ -149,88 +149,85 @@ import MainLayout from '../layouts/MainLayout.astro';
 		</div>
 	</section>
 
-	<!-- AI & Innovation Section -->
-	<section class="py-24 bg-gradient-to-br from-gray-900 to-black text-white">
+	<!-- AI Work Section -->
+	<section class="py-24 bg-[#f5f1e8]">
 		<div class="max-w-7xl mx-auto px-6">
-			<div class="text-center mb-16">
-				<h2 class="text-4xl md:text-5xl font-bold mb-4 font-sans">AI & Innovation</h2>
-				<p class="text-xl text-gray-300 max-w-3xl mx-auto font-sans">
-					Bridging creativity and technology to amplify human potential
+			<div class="max-w-3xl mb-14">
+				<p class="text-xs uppercase tracking-[0.22em] text-neutral-500 font-semibold mb-3">AI Work</p>
+				<h2 class="text-4xl md:text-5xl font-bold text-neutral-900 mb-5 leading-tight font-sans">
+					Practical AI for writers, educators, and creative teams
+				</h2>
+				<p class="text-lg text-neutral-700 leading-relaxed font-sans">
+					My focus is hands-on: helping people use AI as a thought partner without losing voice,
+					judgment, or craft.
 				</p>
 			</div>
 
-			<div class="grid lg:grid-cols-2 gap-12">
-				<!-- Socratic AI -->
-				<div class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg rounded-2xl p-8 border border-white/10">
-					<div class="flex items-center gap-4 mb-6">
-						<div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center">
-							<svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-							</svg>
-						</div>
-						<div>
-							<h3 class="text-2xl font-bold font-sans">Socratic AI</h3>
-							<p class="text-gray-400 font-sans">Current • Founder & Educator</p>
-						</div>
+			<div class="grid lg:grid-cols-2 gap-8">
+				<article class="rounded-2xl border border-neutral-300/80 bg-white p-8 shadow-sm">
+					<div class="flex items-center justify-between gap-4 mb-6">
+						<h3 class="text-2xl font-bold text-neutral-900 font-sans">Socratic AI</h3>
+						<span class="text-xs uppercase tracking-[0.16em] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-3 py-1">
+							Current
+						</span>
 					</div>
-					<ul class="space-y-3 text-gray-300">
-						<li class="flex gap-2 font-sans">
-							<span class="text-blue-400 mt-1">•</span>
-							<span>AI education workshops for organizations</span>
+					<p class="text-sm uppercase tracking-[0.14em] text-neutral-500 font-semibold mb-5">
+						Founder and Educator
+					</p>
+					<ul class="space-y-3 text-neutral-700 font-sans">
+						<li class="border-l-2 border-neutral-200 pl-4">
+							Design and lead AI education workshops for organizations
 						</li>
-						<li class="flex gap-2 font-sans">
-							<span class="text-blue-400 mt-1">•</span>
-							<span>Training on using AI as a creative tool</span>
+						<li class="border-l-2 border-neutral-200 pl-4">
+							Train teams to use AI for thinking, drafting, and revision
 						</li>
-						<li class="flex gap-2 font-sans">
-							<span class="text-blue-400 mt-1">•</span>
-							<span>Strategic guidance on AI implementation</span>
+						<li class="border-l-2 border-neutral-200 pl-4">
+							Advise on practical, responsible AI adoption in creative workflows
 						</li>
 					</ul>
-				</div>
+				</article>
 
-				<!-- OpenAI -->
-				<div class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg rounded-2xl p-8 border border-white/10">
-					<div class="flex items-center gap-4 mb-6">
-						<div class="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center">
-							<svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-							</svg>
-						</div>
-						<div>
-							<h3 class="text-2xl font-bold font-sans">OpenAI</h3>
-							<p class="text-gray-400 font-sans">Previous • Community Lead</p>
-						</div>
+				<article class="rounded-2xl border border-neutral-300/80 bg-white p-8 shadow-sm">
+					<div class="flex items-center justify-between gap-4 mb-6">
+						<h3 class="text-2xl font-bold text-neutral-900 font-sans">OpenAI</h3>
+						<span class="text-xs uppercase tracking-[0.16em] font-semibold text-neutral-700 bg-neutral-100 border border-neutral-200 rounded-full px-3 py-1">
+							Previous
+						</span>
 					</div>
-					<ul class="space-y-3 text-gray-300">
-						<li class="flex gap-2 font-sans">
-							<span class="text-green-400 mt-1">•</span>
-							<span>Led the writing community</span>
+					<p class="text-sm uppercase tracking-[0.14em] text-neutral-500 font-semibold mb-5">
+						Community Lead
+					</p>
+					<ul class="space-y-3 text-neutral-700 font-sans">
+						<li class="border-l-2 border-neutral-200 pl-4">Led the writing community</li>
+						<li class="border-l-2 border-neutral-200 pl-4">
+							Built educator-focused programs and resources
 						</li>
-						<li class="flex gap-2 font-sans">
-							<span class="text-green-400 mt-1">•</span>
-							<span>Developed educator AI initiatives</span>
-						</li>
-						<li class="flex gap-2 font-sans">
-							<span class="text-green-400 mt-1">•</span>
-							<span>Created frameworks for creative AI use</span>
+						<li class="border-l-2 border-neutral-200 pl-4">
+							Developed frameworks for creative and ethical AI use
 						</li>
 					</ul>
-				</div>
+				</article>
 			</div>
 		</div>
 	</section>
 
-	<!-- Philosophy Quote -->
-	<section class="py-24 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
-		<div class="max-w-4xl mx-auto px-6 text-center">
-			<svg class="w-12 h-12 mx-auto mb-6 opacity-50" fill="currentColor" viewBox="0 0 24 24">
-				<path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-			</svg>
-			<blockquote class="text-2xl md:text-3xl font-light mb-8 leading-relaxed font-sans">
-				"I believe in using technology and creativity to amplify human expression. Whether through a camera lens, the written word, or AI tools, my work focuses on revealing authentic human moments and helping others tell their stories more effectively."
-			</blockquote>
-			<cite class="text-lg opacity-90 font-sans">— Jay Dixit</cite>
+	<!-- Philosophy Quote - Editorial Serif Design -->
+	<section class="py-32" style="background-color: var(--neutral-50);">
+		<div class="max-w-4xl mx-auto px-6">
+			<div class="flex flex-col md:flex-row gap-12 items-start">
+				<!-- Elegant thin accent line -->
+				<div class="hidden md:block w-px h-64 bg-neutral-300 mt-4"></div>
+				
+				<div class="flex-1">
+					<blockquote class="text-3xl md:text-4xl lg:text-5xl font-serif italic text-neutral-900 leading-tight mb-10">
+						"I believe in using technology and creativity to amplify human expression. Whether through a camera lens, the written word, or AI tools, my work focuses on revealing authentic human moments and helping others tell their stories more effectively."
+					</blockquote>
+					<div class="flex items-center gap-4">
+						<div class="w-8 h-px bg-neutral-400"></div>
+						<cite class="text-xl font-medium tracking-tight text-neutral-600 not-italic font-sans uppercase">Jay Dixit</cite>
+					</div>
+				</div>
+			</div>
 		</div>
 	</section>
 
