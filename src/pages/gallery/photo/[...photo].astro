@@ -17,10 +17,10 @@ if (!photoPath) {
 }
 
 const segments = photoPath.split('/');
-const filename = segments.pop();
+const photoSlug = segments.pop();
 const folderPath = segments.join('/');
 
-if (!filename || !folderPath) {
+if (!photoSlug || !folderPath) {
 	return Astro.redirect('/404');
 }
 
@@ -103,11 +103,20 @@ function formatFolderName(folderSlug: string) {
 }
 
 function toPhotoHref(folderSlug: string, file: string) {
-	const encodedPath = [...folderSlug.split('/'), file].map(encodeURIComponent).join('/');
+	const slug = file.replace(/\.[^/.]+$/, '');
+	const encodedPath = [...folderSlug.split('/'), slug].map(encodeURIComponent).join('/');
 	return `/gallery/photo/${encodedPath}`;
 }
 
-const images = Object.entries(imageModules)
+const extensionPriority = ['jpg', 'jpeg', 'webp', 'png', 'gif'];
+
+function extensionRank(file: string) {
+	const extension = file.split('.').pop()?.toLowerCase() ?? '';
+	const rank = extensionPriority.indexOf(extension);
+	return rank === -1 ? extensionPriority.length : rank;
+}
+
+const groupedImages = Object.entries(imageModules)
 	.map(([key, module]) => {
 		const metadata = module.default;
 		const relativePath = key.replace('../../../gallery/photos/', '');
@@ -127,6 +136,7 @@ const images = Object.entries(imageModules)
 			caption,
 			tags,
 			originalSrc: metadata.src,
+			slug: imageFilename.replace(/\.[^/.]+$/, ''),
 			detailHref: toPhotoHref(imageFolder, imageFilename),
 		};
 	})
@@ -140,12 +150,44 @@ const images = Object.entries(imageModules)
 			caption: string;
 			tags: string[];
 			originalSrc: string;
+			slug: string;
 			detailHref: string;
 		} => entry !== null,
 	)
-	.sort((a, b) => a.filename.localeCompare(b.filename));
+	.reduce<
+		Record<
+			string,
+			Array<{
+				metadata: ImageMetadata;
+				filename: string;
+				folder: string;
+				caption: string;
+				tags: string[];
+				originalSrc: string;
+				slug: string;
+				detailHref: string;
+			}>
+		>
+	>((acc, image) => {
+		if (!acc[image.slug]) {
+			acc[image.slug] = [];
+		}
+		acc[image.slug].push(image);
+		return acc;
+	}, {});
 
-const currentIndex = images.findIndex((image) => image.filename === filename);
+const images = Object.values(groupedImages)
+	.map(
+		(variants) =>
+			variants.slice().sort((a, b) => {
+				const rankDiff = extensionRank(a.filename) - extensionRank(b.filename);
+				if (rankDiff !== 0) return rankDiff;
+				return a.filename.localeCompare(b.filename);
+			})[0],
+	)
+	.sort((a, b) => a.slug.localeCompare(b.slug));
+
+const currentIndex = images.findIndex((image) => image.slug === photoSlug);
 if (currentIndex === -1) {
 	return Astro.redirect('/404');
 }
@@ -188,12 +230,20 @@ export const getStaticPaths = () => {
 		},
 	);
 
-	return Object.keys(staticModules).map((key) => {
+	const canonicalPaths = new Set<string>();
+
+	Object.keys(staticModules).forEach((key) => {
 		const relativePath = key.replace('../../../gallery/photos/', '');
-		return {
-			params: { photo: relativePath },
-		};
+		const parts = relativePath.split('/');
+		const file = parts.pop();
+		if (!file || parts.length === 0) return;
+		const slug = file.replace(/\.[^/.]+$/, '');
+		canonicalPaths.add([...parts, slug].join('/'));
 	});
+
+	return Array.from(canonicalPaths).map((canonicalPath) => ({
+		params: { photo: canonicalPath },
+	}));
 };
 ---
 
@@ -270,7 +320,7 @@ export const getStaticPaths = () => {
 				text={`View this photo from ${displayName}`}
 			/>
 
-			<PhotoComments galleryName={folderPath} photoId={currentPhoto.filename} />
+			<PhotoComments galleryName={folderPath} photoId={currentPhoto.slug} />
 		</div>
 	</section>
 </MainLayout>

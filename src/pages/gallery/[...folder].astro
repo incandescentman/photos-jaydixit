@@ -37,7 +37,8 @@ function capitalize(word: string) {
 }
 
 function toPhotoHref(folderSlug: string, file: string) {
-	const encodedPath = [...folderSlug.split('/'), file].map(encodeURIComponent).join('/');
+	const slug = file.replace(/\.[^/.]+$/, '');
+	const encodedPath = [...folderSlug.split('/'), slug].map(encodeURIComponent).join('/');
 	return `/gallery/photo/${encodedPath}`;
 }
 
