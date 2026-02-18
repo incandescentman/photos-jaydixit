@@ -1,6 +1,52 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-02-18 - Supabase Likes + Popular Page + PhotoSwipe Ratio Fix
+
+** Status
+- Shipped Supabase-backed likes, a new Most Liked page, and fixed distorted PhotoSwipe rendering caused by incorrect dimension metadata.
+
+** Shipped
+- Likes integration
+  - Added Supabase client dependency (~@supabase/supabase-js~).
+  - Reworked ~src/components/PhotoLikeButton.astro~ to read/write likes from ~photo_user_likes~ using ~photo_id~ + ~visitor_id~.
+  - Preserved localStorage fallback when Supabase env/policies are unavailable.
+- New Most Liked route
+  - Added ~src/pages/popular.astro~.
+  - Aggregates likes from Supabase and sorts photos by like count.
+  - Added nav link in ~src/components/NavBar.astro~ to ~/popular~.
+- Gallery and photo detail wiring
+  - Added like buttons in ~src/pages/gallery/[...folder].astro~.
+  - Added like button in ~src/pages/gallery/photo/[...photo].astro~.
+- PhotoSwipe distortion fix
+  - Root cause: PhotoSwipe was using cropped masonry thumbnail dimensions instead of true source dimensions.
+  - Added ~data-pswp-width~ / ~data-pswp-height~ and natural dimension attrs in ~src/pages/gallery/[...folder].astro~.
+  - Updated ~src/scripts/packeryGallery.ts~ dimension resolution order to prefer full-source metadata.
+- Documentation
+  - Added gotcha entry in ~docs/codebase-wisdom.org~ to prevent regressions.
+
+** Supabase Setup Notes
+- Required public env vars:
+  - ~PUBLIC_SUPABASE_URL~
+  - ~PUBLIC_SUPABASE_ANON_KEY~
+- Required RLS behavior on ~photo_user_likes~:
+  - public read
+  - public insert (non-empty ~photo_id~ and ~visitor_id~)
+  - public delete
+
+** Validation
+- ~npm run build~ passed.
+- ~npm run test -- --run~ passed (21/21).
+- ~npm run lint~ has pre-existing unrelated failures in:
+  - ~src/pages/index.astro~
+  - ~src/scripts/packeryGallery.ts~
+  - ~src/scripts/photo-grid.ts~
+
+** Commits
+- ~725fe5d~ Add Supabase likes and popular photos page
+- ~8057a5d~ Update Astro dependencies and test gallery fixture order
+- ~4592032~ Fix PhotoSwipe aspect ratio in gallery lightbox
+
 * 2026-02-18 - EXIF Display + Formspree Contact
 
 ** Status

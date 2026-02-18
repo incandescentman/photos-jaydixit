@@ -25,10 +25,14 @@ Through my company Socratic AI, I lead AI education workshops and training progr
 * Features
 
 - Lightning-fast performance with Astro static site generation
-- Fully responsive masonry layout (CSS-only, no JS libraries)
+- Fully responsive masonry layout (Packery on desktop with mobile fallback)
 - Cloudinary integration for optimized image delivery
 - Folder-based gallery organization
-- Full-screen lightbox viewer with GLightbox
+- Full-screen PhotoSwipe lightbox viewer with captions
+- Per-photo detail pages with EXIF metadata
+- Supabase-backed likes with local fallback
+- Most Liked gallery page at ~/popular~
+- Contact page with Formspree integration
 - Semantic filename-driven metadata and captions
 - RSS and JSON feeds for blog updates
 - Press landing page
@@ -39,9 +43,11 @@ Through my company Socratic AI, I lead AI education workshops and training progr
 
 - [[https://astro.build][Astro]] - The web framework for content-driven websites
 - [[https://cloudinary.com][Cloudinary]] - Image optimization and CDN
+- [[https://supabase.com][Supabase]] - Public likes data store (RLS-protected)
 - [[https://www.typescriptlang.org/][TypeScript]] - For type safety
 - [[https://tailwindcss.com][TailwindCSS]] - For styling
-- [[https://biati-digital.github.io/glightbox/][GLightbox]] - Responsive lightbox gallery
+- [[https://photoswipe.com][PhotoSwipe]] - Lightbox and zoom experience
+- [[https://formspree.io][Formspree]] - Contact form handling
 - [[https://vercel.com][Vercel]] - Hosting and deployment
 
 * Documentation
@@ -61,6 +67,14 @@ Key documentation files:
 - Critical CSS inlining keeps the top nav styled during first paint while deferring Photoswipe until interaction for faster LCP
 - Fixed lightbox to load full-resolution photos
 - Logo click enhancement: clickable logo in navbar opens fullscreen modal with larger view
+
+* What's New (2026-02-18)
+
+- Added photo likes on gallery cards and per-photo pages via Supabase (~photo_user_likes~ table)
+- Added Most Liked page at ~/popular~ and nav link in ~src/components/NavBar.astro~
+- Added contact form page at ~/contact~ posting to Formspree endpoint ~https://formspree.io/f/xeelzjpn~
+- Added EXIF metadata display on per-photo pages
+- Fixed PhotoSwipe distortion by passing full-source dimensions (~data-pswp-width~ / ~data-pswp-height~) instead of cropped masonry thumbnail sizes
 
 * Development Commands
 
