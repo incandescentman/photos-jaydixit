@@ -64,7 +64,7 @@ import MainLayout from '../layouts/MainLayout.astro';
 					<a href="#photography" class="px-6 py-3 bg-gray-900 text-white rounded-full font-semibold hover:bg-gray-800 transition-all duration-300">
 						View My Work
 					</a>
-					<a href="mailto:jay@jaydixit.com" class="px-6 py-3 border-2 border-gray-900 text-gray-900 rounded-full font-semibold hover:bg-gray-100 transition-all duration-300">
+					<a href="/contact" class="px-6 py-3 border-2 border-gray-900 text-gray-900 rounded-full font-semibold hover:bg-gray-100 transition-all duration-300">
 						Get In Touch
 					</a>
 				</div>
@@ -103,10 +103,49 @@ import MainLayout from '../layouts/MainLayout.astro';
 				</a>
 			</div>
 		</div>
-	</section>
+		</section>
 
-	<!-- Writing & Teaching Section - University Syllabus Design -->
-	<section class="py-32 bg-white">
+		<!-- Philosophy Quote - Editorial Serif Design -->
+		<section class="py-32" style="background-color: var(--neutral-50);">
+			<div class="max-w-4xl mx-auto px-6">
+				<div class="flex flex-col md:flex-row gap-12 items-start">
+					<!-- Elegant thin accent line -->
+					<div class="hidden md:block w-px h-64 bg-neutral-300 mt-4"></div>
+
+					<div class="flex-1">
+						<blockquote class="text-3xl md:text-4xl lg:text-5xl font-serif italic text-neutral-900 leading-tight mb-10">
+							"The feeling I'm chasing is that moment when I show someone a photo I just took and they say, 'Oh my God, I love this picture of me, you really captured who I am!'"
+						</blockquote>
+						<div class="flex items-center gap-4">
+							<div class="w-8 h-px bg-neutral-400"></div>
+							<cite class="text-xl font-medium tracking-tight text-neutral-600 not-italic font-sans uppercase">Jay Dixit</cite>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Contact CTA -->
+		<section class="py-24 bg-white">
+			<div class="max-w-4xl mx-auto px-6 text-center">
+				<p class="text-2xl md:text-3xl text-gray-600 mb-12 font-sans leading-snug">
+					Most people land here looking for my photos. But I also teach AI workshops, write, and do
+					consulting. If you want to talk about photography, writing, or what AI can actually do for
+					your team, I'd love to hear from you.
+				</p>
+				<div class="flex gap-4 justify-center">
+					<a href="/contact" class="px-8 py-4 bg-gray-900 text-white rounded-full font-semibold hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 shadow-lg">
+						Get In Touch
+					</a>
+					<a href="/gallery" class="px-8 py-4 bg-gray-200 text-gray-800 rounded-full font-semibold hover:bg-gray-300 transition-all duration-300">
+						View Portfolio
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<!-- Writing & Teaching Section - University Syllabus Design -->
+		<section class="py-32 bg-white">
 		<div class="max-w-7xl mx-auto px-6">
 				<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-4 border-b border-neutral-100 pb-12">
 					<div class="max-w-2xl">
@@ -137,7 +176,7 @@ import MainLayout from '../layouts/MainLayout.astro';
 						<h3 class="text-2xl font-serif text-neutral-900 mb-4">Psychology Today</h3>
 						<div class="h-px w-8 bg-neutral-300 mb-6"></div>
 						<p class="text-neutral-600 leading-relaxed font-sans">
-							Senior editor for eight years, covering psychology, behavior, and what makes people
+								Senior editor for four years, covering psychology, behavior, and what makes people
 							tick.
 						</p>
 					</div>
@@ -205,47 +244,8 @@ import MainLayout from '../layouts/MainLayout.astro';
 				</article>
 			</div>
 		</div>
-	</section>
-
-	<!-- Philosophy Quote - Editorial Serif Design -->
-	<section class="py-32" style="background-color: var(--neutral-50);">
-		<div class="max-w-4xl mx-auto px-6">
-			<div class="flex flex-col md:flex-row gap-12 items-start">
-				<!-- Elegant thin accent line -->
-				<div class="hidden md:block w-px h-64 bg-neutral-300 mt-4"></div>
-				
-				<div class="flex-1">
-						<blockquote class="text-3xl md:text-4xl lg:text-5xl font-serif italic text-neutral-900 leading-tight mb-10">
-							"The feeling I'm chasing is that moment when I show someone a photo I just took and they say, 'Oh my God, I love this picture of me, you really captured who I am!'"
-						</blockquote>
-					<div class="flex items-center gap-4">
-						<div class="w-8 h-px bg-neutral-400"></div>
-						<cite class="text-xl font-medium tracking-tight text-neutral-600 not-italic font-sans uppercase">Jay Dixit</cite>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-
-		<!-- Contact CTA -->
-		<section class="py-24 bg-white">
-			<div class="max-w-4xl mx-auto px-6 text-center">
-					<p class="text-2xl md:text-3xl text-gray-600 mb-12 font-sans leading-snug">
-						Most people land here looking for my photos. But I also teach AI workshops, write, and
-						do consulting. If you want to talk about photography, writing, or what AI can actually
-						do for your team, I'd love to hear from you.
-					</p>
-			<div class="flex gap-4 justify-center">
-				<a href="mailto:jay@jaydixit.com" class="px-8 py-4 bg-gray-900 text-white rounded-full font-semibold hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 shadow-lg">
-					Get In Touch
-				</a>
-				<a href="/gallery" class="px-8 py-4 bg-gray-200 text-gray-800 rounded-full font-semibold hover:bg-gray-300 transition-all duration-300">
-					View Portfolio
-				</a>
-			</div>
-		</div>
-	</section>
-</MainLayout>
+		</section>
+	</MainLayout>
 
 <style>
 	@keyframes blob {
