@@ -1,0 +1,56 @@
+#+TITLE: Design & Aesthetic Enhancement Proposals 2026
+#+DATE: 2026-02-17
+#+AUTHOR: Gemini CLI
+#+CATEGORY: Design
+#+TAGS: UI UX Design Premium Polish Modern
+
+* Overview
+This document outlines a series of visual and experiential improvements to elevate the Jay Dixit Photos portfolio to a world-class, premium standard. These suggestions build upon previous design iterations, focusing on consistency, modern UI patterns, and "editorial" photography presentation.
+
+* 1. UNIFIED VISUAL DESIGN LANGUAGE
+** Current Gap
+Many premium patterns (HSL variables, refined shadows) are defined in ~global.css~ but overridden by legacy inline styles in components.
+** Proposed Changes
+- [ ] *Component Audit*: Remove inline CSS from ~index.astro~ and ~[...folder].astro~ that conflicts with global tokens.
+- [ ] *Utility-First Refactor*: Ensure all components use the ~--neutral-~ and ~--spacing-~ variables for a mathematically consistent rhythm.
+
+* 2. ELEVATED IMAGE PRESENTATION
+** Concept: "The Digital Print"
+Move away from the "web grid" feel toward something that feels like a physical gallery or a high-end magazine.
+** Proposed Changes
+- [ ] *Rounded Corners*: Apply ~rounded-xl~ (12px) to all gallery articles for a softer, more modern aesthetic.
+- [ ] *Refined Shadows*: Use the ~shadow-sm-refined~ on rest and ~shadow-xl-refined~ on hover.
+- [ ] *Inner Border*: Add a faint ~1px~ inner border (~inset~ shadow or ~border-neutral-200/20~) to simulate paper edges.
+- [ ] *Dynamic Gaps*: Increase masonry gap to ~16px~ or ~20px~ on desktop to let images "breathe."
+
+* 3. LOADING & PERFORMANCE EXPERIENCE
+** Concept: "Graceful Reveal"
+Photography sites depend on perceived speed. Images should not "pop" in; they should "arrive."
+** Proposed Changes
+- [ ] *Shimmer Skeletons*: Implement a subtle HSL-based shimmer animation as a placeholder before ~imagesLoaded~ triggers.
+- [ ] *Staggered Entrance*: Use CSS variables to calculate an ~animation-delay~ based on index, creating a "waterfall" reveal effect.
+- [ ] *Blur-Up*: If possible, use low-resolution Cloudinary placeholders as a background-image before the high-res source swaps in.
+
+* 4. TYPOGRAPHY & EDITORIAL POLISH
+** Concept: "Editorial Authority"
+** Proposed Changes
+- [ ] *Text Balancing*: Apply ~text-wrap: balance~ to headings to prevent "widows" in captions.
+- [ ] *Letter Spacing*: Slightly increase ~tracking-widest~ for all-caps labels to evoke luxury branding.
+- [ ] *Fluid Type*: Implement ~clamp()~ for headings so they scale smoothly between mobile and 4K displays.
+
+* 5. INTERACTION DESIGN (MICRO-INTERACTIONS)
+** Concept: "Tactile Digital"
+** Proposed Changes
+- [ ] *Scale Feedback*: Add ~active:scale-95~ to all interactive elements for tactile mobile feedback.
+- [ ] *Glassmorphism*: Upgrade ~NavBar~ and Detail Links to use ~backdrop-blur-2xl~ with a higher saturation (180%) for a premium Apple-style look.
+- [ ] *Hover Depth*: Soften the scale effect from ~1.07~ to ~1.03~ for a more elegant, less aggressive zoom.
+
+* 6. ADVANCED "PRO" FEATURES
+** Concept: "The Photographer's Tool"
+** Proposed Changes
+- [ ] *EXIF Overlay*: Add a toggle or secondary hover state to show Camera/Lens data (Cloudinary can provide this via metadata).
+- [ ] *Lights Out Mode*: A toggle to switch between a clean "Paper" background and a "Darkroom" background.
+- [ ] *Immersive Lightbox*: Ensure PhotoSwipe 5 is fully utilizing the "Deep Zoom" capability for high-resolution Cloudinary assets.
+
+* 7. TECHNICAL DEBT & CLEANUP
+- [ ] *Tailwind 4 Migration*: Consider fully adopting Tailwind 4's new CSS-first configuration for better performance.

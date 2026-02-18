@@ -1,0 +1,329 @@
+#+title: Visual Design Enhancement Recommendations
+#+author: Claude (Frontend Design Analysis)
+#+date: 2026-02-17
+#+startup: overview
+
+* Overview
+
+This document captures recommendations for elevating the visual design of [[file:///Users/jay/Dropbox/github/photos-jaydixit][photos.jaydixit.com]] from "clean and functional" to "distinctive and memorable."
+
+** Current Assessment
+
+The site has solid foundations:
+- Elegant Playfair Display headlines
+- Clean Inter body text
+- Smooth micro-interactions
+- Refined light aesthetic
+
+However, it reads as *polished but safe*---the typography pairing is common, the color palette is neutral, and the overall feel lacks a distinctive signature.
+
+* Typography Upgrade
+:PROPERTIES:
+:PRIORITY: High
+:EFFORT: Low
+:END:
+
+** Current State
+Playfair Display + Inter (common pairing)
+
+** Proposed Options
+
+*** Option A: Editorial
+- Display: Cormorant Garamond
+- Body: Karla
+- Vibe: Magazine-quality, refined
+
+*** Option B: Contemporary
+- Display: Syne
+- Body: Space Mono
+- Vibe: Art-world, gallery feel
+
+*** Option C: Warm Documentary
+- Display: Fraunces
+- Body: Source Sans 3
+- Vibe: Humanist, storytelling
+
+** Quick Win
+Replace Inter with *Karla* (more personality, still readable) and keep Playfair, or swap Playfair for *Cormorant Garamond* (more elegant, less overused).
+
+* Color System with Intention
+:PROPERTIES:
+:PRIORITY: High
+:EFFORT: Low
+:END:
+
+** Current State
+- Neutral off-white (#f9f9f9)
+- Near-black text
+- Scattered blue/red accents
+
+** Proposed: Warm Film Stock Palette
+
+Creates a *warm, tactile feeling* like handling printed photographs---distinct from the cold minimalism of most portfolio sites.
+
+#+begin_src css
+/* Warm Film Stock palette */
+--bg-primary: #FAF8F5;        /* Warm paper white */
+--bg-secondary: #F3EDE4;      /* Cream shadow */
+--text-primary: #2C2825;      /* Warm charcoal */
+--text-muted: #6B635A;        /* Stone gray */
+--accent: #C4A77D;            /* Brass/bronze */
+--accent-hover: #8B7355;      /* Aged bronze */
+#+end_src
+
+* Gallery Layout Enhancement
+:PROPERTIES:
+:PRIORITY: Medium
+:EFFORT: Medium
+:END:
+
+** Current State
+CSS columns (works but static)
+
+** Proposed Enhancements
+
+*** Hero Image Treatment
+First photo in each gallery spans 2 columns, larger scale.
+
+*** Varied Spacing
+Intentional gaps (~1.25rem~ on some rows, ~0.75rem~ on others).
+
+*** Asymmetric Touches
+Let some images break the grid slightly with negative margins.
+
+#+begin_src css
+/* Featured image treatment */
+.gallery-item:first-child {
+  column-span: all;
+  margin-bottom: 2rem;
+}
+
+.gallery-item:nth-child(5n+2) {
+  transform: translateX(-4px);
+}
+#+end_src
+
+* Immersive Lightbox Experience
+:PROPERTIES:
+:PRIORITY: Medium
+:EFFORT: Medium
+:END:
+
+** Current State
+GLightbox with standard dark overlay
+
+** Proposed: Full Cinematic Treatment
+
+#+begin_src css
+/* Deeper blacks, slower transitions */
+.glightbox-container {
+  background: #0a0a0a;
+}
+
+.gslide-media {
+  animation: subtle-focus 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes subtle-focus {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Caption treatment */
+.gslide-description {
+  font-family: 'Karla', sans-serif;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.6);
+}
+#+end_src
+
+* Hover States with Depth
+:PROPERTIES:
+:PRIORITY: High
+:EFFORT: Low
+:END:
+
+** Current State
+Subtle lift + shadow increase
+
+** Proposed: Tactile Photo Interactions
+
+Creates a *"picking up a photo"* feeling and draws focus to the hovered image.
+
+#+begin_src css
+.gallery-item {
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.gallery-item:hover {
+  transform: translateY(-6px) rotate(-0.5deg);
+  box-shadow:
+    0 25px 50px -12px rgba(0,0,0,0.15),
+    0 0 0 1px rgba(255,255,255,0.1) inset;
+}
+
+/* Subtle desaturation on non-hovered items */
+.gallery:hover .gallery-item:not(:hover) {
+  filter: saturate(0.7);
+  opacity: 0.85;
+}
+#+end_src
+
+* Page Transitions & Entry Animations
+:PROPERTIES:
+:PRIORITY: Medium
+:EFFORT: Low
+:END:
+
+** Current State
+Minimal animation on load
+
+** Proposed: Staggered Reveal
+
+#+begin_src css
+.gallery-item {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: reveal 0.5s ease-out forwards;
+}
+
+.gallery-item:nth-child(1) { animation-delay: 0.1s; }
+.gallery-item:nth-child(2) { animation-delay: 0.15s; }
+.gallery-item:nth-child(3) { animation-delay: 0.2s; }
+/* ... continue pattern */
+
+@keyframes reveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+#+end_src
+
+* Header Refinement
+:PROPERTIES:
+:PRIORITY: Low
+:EFFORT: Medium
+:END:
+
+** Current State
+Standard sticky header with blur
+
+** Proposed: Editorial Presence
+
+- Reduce logo size slightly and add more breathing room
+- Add a subtle bottom border that appears on scroll (not shadow)
+- Consider split navigation: Logo left, links right with generous spacing
+- On gallery pages: Header could be transparent initially, solidifying on scroll
+
+#+begin_src css
+/* Editorial header feel */
+.header {
+  border-bottom: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.header.scrolled {
+  border-bottom-color: rgba(0,0,0,0.08);
+  backdrop-filter: blur(12px) saturate(1.2);
+}
+#+end_src
+
+* Distinctive Details
+:PROPERTIES:
+:PRIORITY: Low
+:EFFORT: Low
+:END:
+
+Small touches that create memorability:
+
+** Cursor
+- Current: Default
+- Proposed: Custom minimal cursor on gallery items
+
+** Selection Color
+- Current: Default blue
+- Proposed: Match accent color
+
+#+begin_src css
+::selection {
+  background: #C4A77D;
+  color: #fff;
+}
+#+end_src
+
+** Scrollbar
+- Current: System default
+- Proposed: Thin, styled to match palette
+
+** Loading State
+- Current: None
+- Proposed: Elegant skeleton with subtle shimmer
+
+* Gallery Index Page
+:PROPERTIES:
+:PRIORITY: Medium
+:EFFORT: Medium
+:END:
+
+** Current State
+Grid of folder thumbnails
+
+** Proposed: Editorial Gallery Listing
+
+- Large featured gallery at top (hero treatment)
+- Rest in staggered grid with varied thumbnail sizes
+- Gallery descriptions visible on hover or below
+- Date/location metadata in small caps
+
+* Mobile-Specific Polish
+:PROPERTIES:
+:PRIORITY: Medium
+:EFFORT: Medium
+:END:
+
+** Edge-to-Edge Images
+Remove padding on mobile gallery for full-width impact.
+
+** Swipe Hints
+Subtle animated arrow on first visit.
+
+** Tap-to-Expand Captions
+Rather than always visible.
+
+** Pull-to-Refresh Feel
+Overscroll effect on gallery scroll.
+
+* Implementation Priority
+:PROPERTIES:
+:VISIBILITY: all
+:END:
+
+Ordered by impact vs effort:
+
+1. [ ] *Typography swap* (highest impact, lowest effort)
+2. [ ] *Color palette update* (warm paper tones)
+3. [ ] *Hover state enhancement* (tactile photo feeling)
+4. [ ] *Lightbox refinement* (cinematic focus)
+5. [ ] *Entry animations* (staggered reveal)
+6. [ ] *Header polish* (editorial presence)
+7. [ ] *Gallery index redesign*
+8. [ ] *Mobile polish*
+9. [ ] *Distinctive details* (cursor, selection, scrollbar)
+
+* Related Files
+
+- [[file:///Users/jay/Dropbox/github/photos-jaydixit/src/styles/global.css][Global Styles]]
+- [[file:///Users/jay/Dropbox/github/photos-jaydixit/src/components/MasonryGallery.astro][MasonryGallery Component]]
+- [[file:///Users/jay/Dropbox/github/photos-jaydixit/src/layouts/Layout.astro][Main Layout]]
+- [[file:///Users/jay/Dropbox/github/photos-jaydixit/docs/design-architecture.org][Design Architecture]]
