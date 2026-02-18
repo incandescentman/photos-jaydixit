@@ -1,6 +1,28 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-02-18 - About Positioning + Footer Link/Icon Polish
+
+** Status
+- Reordered the About conversion flow and polished nav/footer behavior to align with the latest messaging direction.
+
+** Shipped
+- ~src/pages/about.astro~
+  - Moved the pull quote and "Most people land here..." CTA block above the ~Writing & Teaching~ (~Academic & Editorial~) section.
+  - Updated both ~Get In Touch~ buttons to link to ~/contact~.
+  - Changed Psychology Today card copy to: ~Senior editor for four years...~
+  - Updated body copy line to: ~But it's a completely different part of my brain.~
+- ~src/components/NavBar.astro~
+  - Renamed nav item ~About~ to ~Why I Photograph~ (link remains ~/about~).
+- ~site.config.mts~
+  - Replaced the footer GitHub repo URL with ~https://jaydixit.com~.
+  - Updated the footer website icon to Lucide ~PawPrint~.
+- Cleanup
+  - Removed accidental empty ~src/content/blog/wikiportraits-story.md~ so only the real ~wikiportraits-story.mdx~ entry remains.
+
+** Validation
+- ~npm run build~ passed.
+
 * 2026-02-18 - About Funnel Rewrite + Nav Cleanup + WikiPortraits Story Refresh
 
 ** Status
