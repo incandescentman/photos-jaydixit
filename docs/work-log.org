@@ -1,6 +1,22 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-02-19 - Fix Nav Item Wrapping
+
+** Status
+- Fixed bizarre wrapping behavior in navigation where menu items and wordmark were breaking onto multiple lines.
+
+** Shipped
+- ~src/components/NavBar.astro~
+  - Added ~flex-shrink-0~ to the brand container to prevent compression.
+  - Combined "Jay Dixit" and "Photos" into a single span with ~whitespace-nowrap~.
+  - Added ~flex-nowrap~ to the desktop menu container.
+  - Added ~whitespace-nowrap~ to each menu link.
+  - Added ~flex-shrink-0~ to the social links container.
+
+** Validation
+- Visual inspection confirms nav items no longer wrap.
+
 * 2026-02-18 - About Positioning + Footer Link/Icon Polish
 
 ** Status
