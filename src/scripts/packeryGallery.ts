@@ -75,7 +75,6 @@ export default function initPackeryGallery(options: PackeryGalleryOptions) {
 				container: containerEl,
 				pckry: null,
 				mobileBreakpoint,
-				localStorageKey,
 				initialLayout: 'mobile',
 			});
 
@@ -128,7 +127,6 @@ export default function initPackeryGallery(options: PackeryGalleryOptions) {
 			container: containerEl,
 			pckry,
 			mobileBreakpoint,
-			localStorageKey,
 			initialLayout: 'packery',
 		});
 	};
@@ -885,7 +883,6 @@ type ResponsiveLayoutHandlerOptions = {
 	container: HTMLElement;
 	pckry: PackeryInstance | null;
 	mobileBreakpoint: number;
-	localStorageKey: string;
 	initialLayout: 'packery' | 'mobile';
 };
 
@@ -893,7 +890,6 @@ function setupResponsiveLayoutHandler({
 	container,
 	pckry,
 	mobileBreakpoint,
-	localStorageKey,
 	initialLayout,
 }: ResponsiveLayoutHandlerOptions) {
 	let currentLayout: 'packery' | 'mobile' = initialLayout;

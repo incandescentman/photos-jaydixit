@@ -396,8 +396,6 @@ normalizedPhotos.forEach((photo) => {
 
 const uniquePhotos = Array.from(uniquePhotoMap.values());
 
-const toAbsoluteUrl = (pathSegment: string) => new URL(pathSegment, siteOrigin).toString();
-
 const dimensionForPhoto = (photo: ReturnType<typeof mapSingle>) => {
   const key = `highlights/${photo.filename}`;
   const meta = imageMetadata[key] as { width?: number; height?: number } | undefined;

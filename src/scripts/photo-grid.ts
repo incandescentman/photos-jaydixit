@@ -166,7 +166,7 @@ function applyMobileLayout(
 	container.style.position = 'relative';
 	container.style.height = 'auto';
 
-	imageLinks.forEach((el, index) => {
+	imageLinks.forEach((el) => {
 		el.style.position = 'relative';
 		el.style.left = '0';
 		el.style.top = '0';
