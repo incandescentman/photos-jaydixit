@@ -1,7 +1,9 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { glob } from 'astro/loaders';
+import { z } from 'astro/zod';
 
 const blogPosts = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/blog' }),
   schema: z.object({
     title: z.string(),
     excerpt: z.string().optional(),
@@ -17,7 +19,7 @@ const blogPosts = defineCollection({
 });
 
 const albums = defineCollection({
-  type: 'data',
+  loader: glob({ pattern: '**/*.{json,yaml,yml,toml}', base: './src/content/albums' }),
   schema: z.object({
     title: z.string(),
     date: z.string().optional(),
@@ -35,7 +37,7 @@ const albums = defineCollection({
 });
 
 const pressKit = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/press' }),
   schema: z.object({
     title: z.string(),
     subtitle: z.string().optional(),

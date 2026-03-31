@@ -56,7 +56,7 @@ const blogIndexStructuredData = {
 
 		<div class="grid gap-12">
 			{
-				sortedPosts.map(({ data, slug }) => {
+			sortedPosts.map(({ data, id }) => {
 					const publishDate = data.publishDate ? new Date(data.publishDate) : undefined;
 					const formattedDate = publishDate
 						? publishDate.toLocaleDateString('en-US', {
@@ -74,7 +74,7 @@ const blogIndexStructuredData = {
 
 					return (
 						<article class="group overflow-hidden rounded-3xl border border-black/5 bg-white/90 shadow-[0_25px_70px_-30px_rgba(15,23,42,0.35)] transition hover:-translate-y-1 hover:bg-white">
-							<a href={`/blog/${slug}/`} class="block no-underline">
+							<a href={`/blog/${id}/`} class="block no-underline">
 								{heroImage && (
 									<figure class="relative aspect-[3/2] overflow-hidden bg-slate-100">
 										<img

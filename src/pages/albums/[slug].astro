@@ -13,11 +13,10 @@ if (!album) {
 
 export const getStaticPaths = async () => {
   const albums = await getCollection('albums');
-  return albums.map((a) => ({ params: { slug: a.slug } }));
+  return albums.map((a) => ({ params: { slug: a.id } }));
 };
 ---
 
 <MainLayout>
   <Gallery album={album} />
 </MainLayout>
-

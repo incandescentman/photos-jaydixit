@@ -1,0 +1,173 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro:assets';
+import MainLayout from '../../layouts/MainLayout.astro';
+import siteConfig from '../../../site.config.mts';
+import rawPeople from '../../data/people.json';
+
+interface Person {
+	slug: string;
+	name: string;
+	match: string[];
+	bio?: string;
+	wikipedia?: string;
+}
+
+const people = rawPeople as Person[];
+
+const imageModules = import.meta.glob<{ default: ImageMetadata }>(
+	'../../gallery/photos/**/*.{jpg,jpeg,png,webp,gif}',
+	{ eager: true },
+);
+
+function getSubjectSlug(filename: string): string {
+	const baseName = filename.replace(/\.[^/.]+$/, '');
+	return baseName.split('_')[0];
+}
+
+function matchesPerson(subjectSlug: string, patterns: string[]): boolean {
+	return patterns.some((pattern) => {
+		if (subjectSlug === pattern) return true;
+		if (subjectSlug.startsWith(pattern + '-')) {
+			const suffix = subjectSlug.slice(pattern.length + 1);
+			return /^\d+$/.test(suffix);
+		}
+		return false;
+	});
+}
+
+const extensionPriority = ['jpg', 'jpeg', 'webp', 'png', 'gif'];
+
+function extensionRank(file: string) {
+	const ext = file.split('.').pop()?.toLowerCase() ?? '';
+	const rank = extensionPriority.indexOf(ext);
+	return rank === -1 ? extensionPriority.length : rank;
+}
+
+const personEntries = people
+	.map((person) => {
+		const matchingPhotos: { metadata: ImageMetadata; filename: string; slug: string; folder: string }[] = [];
+
+		Object.entries(imageModules).forEach(([key, module]) => {
+			const relativePath = key.replace('../../gallery/photos/', '');
+			const segments = relativePath.split('/');
+			const filename = segments.pop();
+			if (!filename) return;
+			const folder = segments.join('/');
+			const subjectSlug = getSubjectSlug(filename);
+
+			if (matchesPerson(subjectSlug, person.match)) {
+				matchingPhotos.push({
+					metadata: module.default,
+					filename,
+					slug: filename.replace(/\.[^/.]+$/, ''),
+					folder,
+				});
+			}
+		});
+
+		const grouped = matchingPhotos.reduce<Record<string, typeof matchingPhotos>>((acc, photo) => {
+			const key = `${photo.folder}/${photo.slug}`;
+			if (!acc[key]) acc[key] = [];
+			acc[key].push(photo);
+			return acc;
+		}, {});
+
+		const deduplicated = Object.values(grouped).map(
+			(variants) => variants.sort((a, b) => extensionRank(a.filename) - extensionRank(b.filename))[0],
+		);
+
+		if (deduplicated.length === 0) return null;
+
+		return {
+			...person,
+			photoCount: deduplicated.length,
+			sampleImage: deduplicated[0].metadata,
+		};
+	})
+	.filter(
+		(entry): entry is Person & { photoCount: number; sampleImage: ImageMetadata } => entry !== null,
+	)
+	.sort((a, b) => a.name.localeCompare(b.name));
+
+const siteUrl = Astro.site?.origin ?? siteConfig.siteUrl ?? 'https://photos.jaydixit.com';
+const canonicalUrl = new URL('/portraits/', siteUrl).toString();
+const pageDescription = `Browse portraits of ${personEntries.length} subjects photographed by ${siteConfig.owner}.`;
+
+const portraitsStructuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'CollectionPage',
+	name: `Portraits — ${siteConfig.owner}`,
+	description: pageDescription,
+	url: canonicalUrl,
+	hasPart: personEntries.map((person) => ({
+		'@type': 'CollectionPage',
+		name: person.name,
+		url: new URL(`/portraits/${person.slug}`, siteUrl).toString(),
+	})),
+};
+---
+
+<MainLayout
+	title="Portraits"
+	description={pageDescription}
+	canonical={canonicalUrl}
+	structuredData={portraitsStructuredData}
+>
+	<section class="py-16 pt-24">
+		<div class="container mx-auto px-4 max-w-7xl">
+			<div class="mb-16 text-center">
+				<h1 class="text-4xl md:text-5xl font-bold mb-4">Portraits</h1>
+				<p class="text-gray-600 max-w-xl mx-auto">
+					Browse portraits by subject
+				</p>
+			</div>
+
+			{
+				personEntries.length > 0 ? (
+					<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+						{personEntries.map((person) => (
+							<a
+								href={`/portraits/${person.slug}`}
+								class="group block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
+							>
+								<div class="aspect-[3/4] bg-gray-200 overflow-hidden">
+									<Image
+										src={person.sampleImage}
+										alt={person.name}
+										width={480}
+										height={640}
+										fit="cover"
+										position="attention"
+										class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+										loading="lazy"
+									/>
+								</div>
+								<div class="p-4">
+									<h3 class="text-lg font-semibold mb-1 group-hover:text-blue-600 transition-colors">
+										{person.name}
+									</h3>
+									{person.bio && (
+										<p class="text-gray-500 text-sm mb-1">{person.bio}</p>
+									)}
+									<p class="text-gray-400 text-sm">
+										{person.photoCount} {person.photoCount === 1 ? 'photo' : 'photos'}
+									</p>
+								</div>
+							</a>
+						))}
+					</div>
+				) : (
+					<div class="text-center py-16">
+						<h3 class="text-xl font-semibold mb-2">No portraits found</h3>
+						<p class="text-gray-600">
+							Add people to{' '}
+							<code class="bg-gray-100 px-2 py-1 rounded text-sm">src/data/people.json</code> to get
+							started.
+						</p>
+					</div>
+				)
+			}
+		</div>
+	</section>
+</MainLayout>

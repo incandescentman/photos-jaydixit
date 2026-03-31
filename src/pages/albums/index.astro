@@ -15,7 +15,7 @@ const albums = await getCollection('albums');
         <ul class="space-y-3">
           {albums.map((a) => (
             <li class="border rounded-md p-4 hover:bg-gray-50 transition">
-              <a href={`/albums/${a.slug}`} class="font-semibold">{a.data.title || a.slug}</a>
+              <a href={`/albums/${a.id}`} class="font-semibold">{a.data.title || a.id}</a>
               {a.data.tags && a.data.tags.length > 0 && (
                 <span class="ml-2 text-sm text-gray-500">[{a.data.tags.join(', ')}]</span>
               )}
@@ -26,4 +26,3 @@ const albums = await getCollection('albums');
     </div>
   </section>
 </MainLayout>
-

@@ -1,0 +1,37 @@
+[
+  {
+    "slug": "conan-obrien",
+    "name": "Conan O'Brien",
+    "match": ["conan-obrien"],
+    "bio": "Comedian and talk show host",
+    "wikipedia": "https://en.wikipedia.org/wiki/Conan_O%27Brien"
+  },
+  {
+    "slug": "jeremy-strong",
+    "name": "Jeremy Strong",
+    "match": ["jeremy-strong", "jeremy"],
+    "bio": "Actor, known for Succession",
+    "wikipedia": "https://en.wikipedia.org/wiki/Jeremy_Strong_(actor)"
+  },
+  {
+    "slug": "john-hopfield",
+    "name": "John Hopfield",
+    "match": ["john-hopfield"],
+    "bio": "Physicist, 2024 Nobel Prize in Physics",
+    "wikipedia": "https://en.wikipedia.org/wiki/John_Hopfield"
+  },
+  {
+    "slug": "judd-apatow",
+    "name": "Judd Apatow",
+    "match": ["judd-apatow"],
+    "bio": "Filmmaker and comedian",
+    "wikipedia": "https://en.wikipedia.org/wiki/Judd_Apatow"
+  },
+  {
+    "slug": "vanessa-kirby",
+    "name": "Vanessa Kirby",
+    "match": ["vanessa-kirby"],
+    "bio": "Actress, known for The Crown",
+    "wikipedia": "https://en.wikipedia.org/wiki/Vanessa_Kirby"
+  }
+]

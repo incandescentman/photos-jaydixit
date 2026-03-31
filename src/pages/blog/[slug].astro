@@ -1,7 +1,7 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
 import SocialShare from '../../components/SocialShare.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import { smartQuotes } from '@jaydixit/astro-utils';
 import { cldUrl, cldSrcset, cldSizes } from '../../lib/cloudinary';
 import siteConfig from '../../../site.config.mts';
@@ -9,13 +9,13 @@ import siteConfig from '../../../site.config.mts';
 export async function getStaticPaths() {
 	const posts = await getCollection('blog', (entry) => !entry.data.draft);
 	return posts.map((post) => ({
-		params: { slug: post.slug },
+		params: { slug: post.id },
 		props: { post },
 	}));
 }
 
 const { post } = Astro.props;
-const { Content } = await post.render();
+const { Content } = await render(post);
 const data = post.data;
 const publishDate = data.publishDate ? new Date(data.publishDate) : undefined;
 const formattedDate = publishDate
@@ -29,7 +29,7 @@ const heroImage = data.imagePublicId ? cldUrl(data.imagePublicId, 2000) : (data.
 const heroSrcset = data.imagePublicId ? cldSrcset(data.imagePublicId) : undefined;
 const excerpt = data.excerpt ? smartQuotes(data.excerpt) : null;
 const siteUrl = Astro.site?.origin ?? siteConfig.siteUrl ?? 'https://photos.jaydixit.com';
-const canonicalUrl = new URL(`/blog/${post.slug}/`, siteUrl).toString();
+const canonicalUrl = new URL(`/blog/${post.id}/`, siteUrl).toString();
 const blogStructuredData = {
 	'@context': 'https://schema.org',
 	'@type': 'BlogPosting',

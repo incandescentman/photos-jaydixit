@@ -12,9 +12,10 @@
 This is a static photography portfolio site built with Astro, hosted on
 Vercel at photos.jaydixit.com. It supports automatic gallery generation
 from folders, responsive masonry layout, full-screen lightbox viewing,
-keyword search, tag-based filtering, per-photo liking, and optional
-commenting via Giscus. All metadata is derived from filenames or
-per-folder tags.json files.
+keyword search, tag-based filtering, per-photo liking, per-person
+portrait pages, and optional commenting via Giscus. All metadata is
+derived from filenames, per-folder tags.json files, or the people.json
+manifest.
 
 
 
@@ -97,6 +98,23 @@ per-folder tags.json files.
 
 - If tags.json exists, it overrides filename tags
 
+
+
+​*** 👤 Portraits (Per-Person Pages)
+
+- Each person in src/data/people.json gets a page at /portraits/[slug]
+
+- Index page at /portraits/ lists all people alphabetically with sample photos
+
+- people.json fields: slug, name, match (filename patterns), bio (optional), wikipedia (optional)
+
+- Match logic: subject slug (part before first _ in filename) checked against match patterns
+
+- Numbered variants supported: match pattern "jeremy" also matches "jeremy-3", "jeremy-11"
+
+- Photos can live in any gallery folder — portraits aggregates across all galleries
+
+- To add a person: add entry to people.json, ensure matching photos exist in any gallery
 
 
 ​*** ❤️ Likes

@@ -10,7 +10,7 @@ export const GET: APIRoute = async ({ site }) => {
   const items = posts
     .map((entry) => {
       const publishDate = entry.data.publishDate ?? entry.data.updateDate ?? new Date(0);
-      const url = new URL(`/blog/${entry.slug}/`, siteUrl).toString();
+      const url = new URL(`/blog/${entry.id}/`, siteUrl).toString();
       return {
         id: url,
         url,

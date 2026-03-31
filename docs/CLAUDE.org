@@ -16,6 +16,7 @@ Last Synced for AI Context: 2025-10-04
 The root **CLAUDE.md** file contains legacy documentation. This file (docs/CLAUDE.org) is the canonical documentation entry point. Both should be maintained during transition.
 
 * Recent Updates
+- 2026-03-30: Added Portraits feature - per-person pages with people.json manifest
 - 2026-01-06: Migrated homepage images to Cloudinary CDN (removed ~200MB from repo)
 - 2026-01-06: Simplified image handling - no build-time processing for homepage
 - 2025-10-04: Created comprehensive documentation system following how-to-document.org
@@ -161,6 +162,7 @@ Documentation structure:
 - **~site.config.mts~** - Site configuration
 - **~astro.config.mts~** - Astro configuration
 - **~src/data/homepage-images.js~** - Homepage image configuration
+- **~src/data/people.json~** - Portraits manifest (person slugs, names, match patterns, bios, Wikipedia links)
 - **~src/lib/cloudinary.ts~** - Cloudinary URL helpers
 - **~scripts/upload-to-cloudinary.js~** - Upload images to Cloudinary
 - **~vercel.json~** - Deployment configuration
@@ -239,6 +241,22 @@ Frequency: Very High
 3. Create `tags.json` for gallery metadata (optional)
 4. Run build to generate gallery page
 5. Test gallery at `/gallery/[gallery-name]`
+
+*** To add a portrait (person page):
+1. Ensure photos of the person exist in any gallery folder (filename must start with subject slug, e.g. =ray-kurzweil_event_2024.jpg=)
+2. Add an entry to =src/data/people.json=:
+   #+begin_src json
+   {
+     "slug": "ray-kurzweil",
+     "name": "Ray Kurzweil",
+     "match": ["ray-kurzweil"],
+     "bio": "Inventor, author, and futurist",
+     "wikipedia": "https://en.wikipedia.org/wiki/Ray_Kurzweil"
+   }
+   #+end_src
+3. The =match= array controls which filenames map to this person (matches the subject slug, i.e. the part before the first =_= in the filename). Also matches numbered variants (e.g. =["jeremy"]= matches =jeremy-3.jpg=, =jeremy-11.jpg=).
+4. Build/dev to generate the page at =/portraits/ray-kurzweil=
+5. The person also appears in the Portraits directory at =/portraits/=
 
 *** To modify gallery layout:
 1. Check [[file:design-architecture.org::*Masonry Layout][design-architecture.org::*Masonry Layout]] first

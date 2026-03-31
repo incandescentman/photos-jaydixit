@@ -1,5 +1,5 @@
 ---
-import { getEntry } from 'astro:content';
+import { getEntry, render } from 'astro:content';
 import MainLayout from '../layouts/MainLayout.astro';
 
 const pressEntry = await getEntry('press', 'media-kit');
@@ -8,7 +8,7 @@ if (!pressEntry) {
 }
 
 const { data } = pressEntry;
-const { Content } = await pressEntry.render();
+const { Content } = await render(pressEntry);
 
 const subtitle = data.subtitle ?? 'Official media resources and fast facts.';
 const heroShots = data.heroShots ?? [];
