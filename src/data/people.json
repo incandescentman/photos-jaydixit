@@ -7,9 +7,23 @@
     "wikipedia": "https://en.wikipedia.org/wiki/Conan_O%27Brien"
   },
   {
+    "slug": "dave-franco",
+    "name": "Dave Franco",
+    "match": ["dave-franco"],
+    "bio": "Actor",
+    "wikipedia": "https://en.wikipedia.org/wiki/Dave_Franco"
+  },
+  {
+    "slug": "himesh-patel",
+    "name": "Himesh Patel",
+    "match": ["himesh-patel"],
+    "bio": "Actor",
+    "wikipedia": "https://en.wikipedia.org/wiki/Himesh_Patel"
+  },
+  {
     "slug": "jeremy-strong",
     "name": "Jeremy Strong",
-    "match": ["jeremy-strong", "jeremy"],
+    "match": ["jeremy-strong"],
     "bio": "Actor, known for Succession",
     "wikipedia": "https://en.wikipedia.org/wiki/Jeremy_Strong_(actor)"
   },
@@ -26,6 +40,13 @@
     "match": ["judd-apatow"],
     "bio": "Filmmaker and comedian",
     "wikipedia": "https://en.wikipedia.org/wiki/Judd_Apatow"
+  },
+  {
+    "slug": "sebastian-stan",
+    "name": "Sebastian Stan",
+    "match": ["sebastian-stan"],
+    "bio": "Actor",
+    "wikipedia": "https://en.wikipedia.org/wiki/Sebastian_Stan"
   },
   {
     "slug": "vanessa-kirby",

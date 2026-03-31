@@ -7,10 +7,10 @@ import { Image } from 'astro:assets';
 import ImageGallery from '@jaydixit/astro-utils/components/ImageGallery.astro';
 
 // Import images for Problem section gallery
-import jeremyImg from '../assets/images/wikiportraits/jeremy-3.jpg';
+import daveFrancoImg from '../assets/images/wikiportraits/dave-franco_sundance_2025.jpg';
 import frankOzImg from '../assets/images/wikiportraits/Frank_Oz_2024_Cropped.jpg';
-import conanImg from '../assets/images/wikiportraits/conan.jpg';
-import vanessaKirbyImg from '../assets/images/wikiportraits/vanessa-kirby.jpg';
+import conanImg from '../assets/images/wikiportraits/conan-obrien_sundance_2024.jpg';
+import vanessaKirbyImg from '../assets/images/wikiportraits/vanessa-kirby_tiff_2024.jpg';
 
 // Import images for Events gallery
 import conanSundanceImg from '../assets/images/wikiportraits/conan-obrien_sundance_2024.jpg';
@@ -18,11 +18,11 @@ import vanessaTiffImg from '../assets/images/wikiportraits/vanessa-kirby_tiff_20
 import nobelImg from '../assets/images/wikiportraits/john-hopfield_nobel-physics_2024.jpg';
 import lisaSxswImg from '../assets/images/wikiportraits/Lisa_Gilroy_at_SXSW_in_2025-1.jpg';
 import anaAndSydneyImg from '../assets/images/wikiportraits/Ana_de_Armas_and_Sydney_Sweeney_at_the_2024_Toronto_International_Film_Festival_04.jpg';
-import juddImg from '../assets/images/wikiportraits/judd-apatow.jpg';
+import juddImg from '../assets/images/wikiportraits/judd-apatow_sxsw_2024.jpg';
 
 // Import Jeremy Strong before/after images
 import jeremyBeforeImg from '../assets/images/wikiportraits/jeremy-strong-before.jpg';
-import jeremyAfterImg from '../assets/images/wikiportraits/jeremy-strong_studio-session_2024.jpg';
+import jeremyAfterImg from '../assets/images/wikiportraits/jeremy-strong_the-apprentice-premiere_2024.jpg';
 
 // Import hero image
 import sxswHeroImg from '../assets/images/wikiportraits/2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07310.jpg';
@@ -95,7 +95,7 @@ import sxswHeroImg from '../assets/images/wikiportraits/2024-03-09_SXSW_Conan_Ni
         </div>
         <ImageGallery
           images={[
-            { src: jeremyImg, alt: "Jeremy Strong portrait" },
+            { src: daveFrancoImg, alt: "Dave Franco portrait" },
             { src: frankOzImg, alt: "Frank Oz at TIFF" },
             { src: conanImg, alt: "Conan O'Brien at Sundance" },
             { src: vanessaKirbyImg, alt: "Vanessa Kirby at TIFF" }

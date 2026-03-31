@@ -17,26 +17,26 @@
 export const images = [
   {
     order: 1,
-    filename: 'dixit_nobel-physics.jpg',
+    filename: 'john-hopfield_nobel-physics_2024.jpg',
     size: 'portrait', // 2048x2560 (0.8 ratio - portrait)
     caption: 'Nobel Prize in Physics Ceremony'
   },
   {
     order: 2,
-    filename: 'judd-apatow.jpg',
+    filename: 'judd-apatow_sxsw_2024.jpg',
     size: 'portrait', // 1519x2560 (0.59 ratio - portrait)
-    caption: 'Judd Apatow'
+    caption: 'Judd Apatow at SXSW'
   },
   {
     order: 3,
-    filename: 'vanessa-kirby.jpg',
+    filename: 'vanessa-kirby_tiff_2024.jpg',
     size: 'xlportrait', // 1978x2560 (0.77 ratio - portrait, featured)
-    caption: 'Vanessa Kirby'
+    caption: 'Vanessa Kirby at TIFF 2024'
   },
   {
-    filename: 'jeremy.jpg',
+    filename: 'jeremy-strong_the-apprentice-premiere_2024.jpg',
     size: 'portrait', // 2048x2560 (0.8 ratio - portrait)
-    caption: 'Jeremy Strong at the New York Premiere of The Apprentice'
+    caption: 'Jeremy Strong at the New York red carpet premiere of The Apprentice'
   },
   {
     filename: 'Lisa_Gilroy_at_SXSW_in_2025-1.jpg',
@@ -44,19 +44,19 @@ export const images = [
     caption: 'Lisa Gilroy at SXSW in 2025'
   },
   {
-    filename: 'jeremy-3.jpg',
+    filename: 'dave-franco_sundance_2025.jpg',
     size: 'portrait', // 2048x2560 (0.8 ratio - portrait)
     caption: 'Dave Franco at Sundance 2025'
   },
   {
-    filename: 'conan.jpg',
+    filename: 'conan-obrien_sundance_2024.jpg',
     size: 'portrait', // 1707x2560 (0.67 ratio - portrait)
-    caption: "Conan O'Brien"
+    caption: "Conan O'Brien at Sundance 2024"
   },
   {
-    filename: 'jeremy-6.jpg',
+    filename: 'sebastian-stan.jpg',
     size: 'portrait', // 1707x2560 (0.67 ratio - portrait)
-    caption: 'Jeremy'
+    caption: 'Sebastian Stan'
   },
   {
     filename: 'jay-dixit_red-carpet_01130.jpg',
@@ -64,14 +64,14 @@ export const images = [
     caption: 'Jay Dixit on the Red Carpet'
   },
   {
-    filename: 'jeremy-11.jpg',
+    filename: 'group-portrait_ana-de-armas-sydney-sweeney-ron-howard_2024.jpg',
     size: 'landscape', // 2560x1707 (1.5 ratio - landscape)
-    caption: 'Jeremy'
+    caption: 'Ana de Armas, Sydney Sweeney, and Ron Howard'
   },
   {
-    filename: 'vinod.jpg',
+    filename: 'vinod-khosla_sxsw.jpg',
     size: 'landscape', // 2560x1707 (1.5 ratio - landscape)
-    caption: 'Vinod'
+    caption: 'Vinod Khosla at SXSW'
   },
   {
     filename: 'jay-dixit_red-carpet_05923-1.jpg',
@@ -79,24 +79,24 @@ export const images = [
     caption: 'Emma Stone'
   },
   {
-    filename: 'jeremy-4.jpg',
+    filename: 'himesh-patel.jpg',
     size: 'portrait', // 2266x2560 (0.89 ratio - portrait)
-    caption: 'Jeremy'
+    caption: 'Himesh Patel'
   },
   {
-    filename: 'vinod-4.jpg',
+    filename: 'ella-hunt_toronto-film-festival.jpg',
     size: 'portrait', // 1707x2560 (0.67 ratio - portrait)
-    caption: 'Vinod'
+    caption: 'Ella Hunt at the Toronto Film Festival'
   },
   {
-    filename: 'jeremy-9.jpg',
+    filename: 'kaia-gerber_cory-michael-smith_saturday-night-sundance-premiere.jpg',
     size: 'portrait', // 1707x2560 (0.67 ratio - portrait)
-    caption: 'Jeremy Strong'
+    caption: 'Kaia Gerber and Cory Michael Smith at the Sundance premiere of Saturday Night'
   },
   {
-    filename: 'vinod-3.jpg',
+    filename: 'nicholas-braun_toronto-film-festival.jpg',
     size: 'portrait', // 1707x2560 (0.67 ratio - portrait, NOT landscape)
-    caption: 'Vinod'
+    caption: 'Nicholas Braun at the Toronto Film Festival'
   },
   {
     filename: 'jay-dixit_red-carpet_05456.jpg',
@@ -114,9 +114,9 @@ export const images = [
     caption: 'Jason Collett at Ottawa Jazz Festival in 2025'
   },
   {
-    filename: 'jeremy-7.jpg',
+    filename: 'kieran-culkin_new-york-film-festival.jpg',
     size: 'portrait', // 1707x2560 (0.67 ratio - portrait, featured)
-    caption: 'Steven Yeun'
+    caption: 'Kieran Culkin at the New York Film Festival'
   },
   {
     filename: 'jay-dixit_red-carpet_08042.jpg',
@@ -124,9 +124,9 @@ export const images = [
     caption: 'Jay Dixit Red Carpet'
   },
   {
-    filename: 'jeremy-2.jpg',
+    filename: 'steven-yeun_sundance_2025.jpg',
     size: 'portrait', // 2048x2560 (0.8 ratio - portrait)
-    caption: 'Jeremy Strong'
+    caption: 'Steven Yeun at Sundance 2025'
   },
   {
     filename: 'Sydney_Sweeney_at_the_2024_Toronto_International_Film_Festival_(cropped_2).jpg',
