@@ -1,5 +1,17 @@
 [
   {
+    "slug": "ana-de-armas",
+    "name": "Ana de Armas",
+    "match": ["ana-de-armas"],
+    "photoSlugs": [
+      "group-portrait_ana-de-armas-sydney-sweeney-ron-howard_2024",
+      "Ana_de_Armas_at_the_2024_Toronto_International_Film_Festival_02_(cropped2)",
+      "Ana_de_Armas_and_Sydney_Sweeney_at_the_2024_Toronto_International_Film_Festival_04"
+    ],
+    "bio": "Actor",
+    "wikipedia": "https://en.wikipedia.org/wiki/Ana_de_Armas"
+  },
+  {
     "slug": "conan-obrien",
     "name": "Conan O'Brien",
     "match": ["conan-obrien"],
@@ -7,11 +19,35 @@
     "wikipedia": "https://en.wikipedia.org/wiki/Conan_O%27Brien"
   },
   {
+    "slug": "cory-michael-smith",
+    "name": "Cory Michael Smith",
+    "match": ["cory-michael-smith"],
+    "photoSlugs": [
+      "kaia-gerber_cory-michael-smith_saturday-night-sundance-premiere"
+    ],
+    "bio": "Actor",
+    "wikipedia": "https://en.wikipedia.org/wiki/Cory_Michael_Smith"
+  },
+  {
     "slug": "dave-franco",
     "name": "Dave Franco",
     "match": ["dave-franco"],
     "bio": "Actor",
     "wikipedia": "https://en.wikipedia.org/wiki/Dave_Franco"
+  },
+  {
+    "slug": "ella-hunt",
+    "name": "Ella Hunt",
+    "match": ["ella-hunt"],
+    "bio": "Actor and singer-songwriter",
+    "wikipedia": "https://en.wikipedia.org/wiki/Ella_Hunt"
+  },
+  {
+    "slug": "emma-stone",
+    "name": "Emma Stone",
+    "match": ["emma-stone"],
+    "bio": "Actor",
+    "wikipedia": "https://en.wikipedia.org/wiki/Emma_Stone"
   },
   {
     "slug": "himesh-patel",
@@ -42,6 +78,55 @@
     "wikipedia": "https://en.wikipedia.org/wiki/Judd_Apatow"
   },
   {
+    "slug": "kaia-gerber",
+    "name": "Kaia Gerber",
+    "match": ["kaia-gerber"],
+    "bio": "Model and actor",
+    "wikipedia": "https://en.wikipedia.org/wiki/Kaia_Gerber"
+  },
+  {
+    "slug": "kieran-culkin",
+    "name": "Kieran Culkin",
+    "match": ["kieran-culkin"],
+    "bio": "Actor",
+    "wikipedia": "https://en.wikipedia.org/wiki/Kieran_Culkin"
+  },
+  {
+    "slug": "lisa-gilroy",
+    "name": "Lisa Gilroy",
+    "match": ["lisa-gilroy"],
+    "bio": "Comedian and actor"
+  },
+  {
+    "slug": "nicholas-braun",
+    "name": "Nicholas Braun",
+    "match": ["nicholas-braun"],
+    "bio": "Actor",
+    "wikipedia": "https://en.wikipedia.org/wiki/Nicholas_Braun"
+  },
+  {
+    "slug": "nick-kroll",
+    "name": "Nick Kroll",
+    "match": ["nick-kroll"],
+    "photoSlugs": [
+      "2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07141",
+      "2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07162",
+      "2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07310"
+    ],
+    "bio": "Comedian, actor, and writer",
+    "wikipedia": "https://en.wikipedia.org/wiki/Nick_Kroll"
+  },
+  {
+    "slug": "ron-howard",
+    "name": "Ron Howard",
+    "match": ["ron-howard"],
+    "photoSlugs": [
+      "group-portrait_ana-de-armas-sydney-sweeney-ron-howard_2024"
+    ],
+    "bio": "Filmmaker and actor",
+    "wikipedia": "https://en.wikipedia.org/wiki/Ron_Howard"
+  },
+  {
     "slug": "sebastian-stan",
     "name": "Sebastian Stan",
     "match": ["sebastian-stan"],
@@ -49,10 +134,36 @@
     "wikipedia": "https://en.wikipedia.org/wiki/Sebastian_Stan"
   },
   {
+    "slug": "sydney-sweeney",
+    "name": "Sydney Sweeney",
+    "match": ["sydney-sweeney"],
+    "photoSlugs": [
+      "group-portrait_ana-de-armas-sydney-sweeney-ron-howard_2024",
+      "Sydney_Sweeney_at_the_2024_Toronto_International_Film_Festival_(cropped_2)",
+      "Ana_de_Armas_and_Sydney_Sweeney_at_the_2024_Toronto_International_Film_Festival_04"
+    ],
+    "bio": "Actor",
+    "wikipedia": "https://en.wikipedia.org/wiki/Sydney_Sweeney"
+  },
+  {
+    "slug": "steven-yeun",
+    "name": "Steven Yeun",
+    "match": ["steven-yeun"],
+    "bio": "Actor",
+    "wikipedia": "https://en.wikipedia.org/wiki/Steven_Yeun"
+  },
+  {
     "slug": "vanessa-kirby",
     "name": "Vanessa Kirby",
     "match": ["vanessa-kirby"],
     "bio": "Actress, known for The Crown",
     "wikipedia": "https://en.wikipedia.org/wiki/Vanessa_Kirby"
+  },
+  {
+    "slug": "vinod-khosla",
+    "name": "Vinod Khosla",
+    "match": ["vinod-khosla"],
+    "bio": "Venture capitalist and technology entrepreneur",
+    "wikipedia": "https://en.wikipedia.org/wiki/Vinod_Khosla"
   }
 ]

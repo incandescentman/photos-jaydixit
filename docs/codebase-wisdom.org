@@ -1,6 +1,31 @@
 #+TITLE: Codebase Wisdom
 #+DATE: 2025-10-03
 
+* 2026-03-31 - Portrait Pages Need Explicit Photo Mappings For Group Shots And Legacy Filenames
+
+** Trigger
+Portrait pages initially worked only when the filename started with the subject slug, which left highlight-only people, group portraits, and event-style filenames invisible or stuck on ~/404~ pages.
+
+** Mechanism
+The original portraits matcher only looked at the subject slug, defined as the part of the filename before the first ~=_=. That works for files like ~dave-franco_sundance_2025.jpg~, but it fails for cases like:
+
+- ~group-portrait_ana-de-armas-sydney-sweeney-ron-howard_2024.jpg~
+- ~2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07141.jpg~
+- legacy highlight filenames that do not begin with the person slug
+
+Highlight-only pages also need the underlying image files to exist locally in ~/src/gallery/highlights/~. Metadata entries in ~src/data/homepage-images.js~ and ~src/data/image-metadata.json~ are not enough by themselves.
+
+** Fix
+Keep the simple ~=match= prefix logic for normal filenames, but add explicit ~=photoSlugs= overrides in ~/src/data/people.json~ for exceptions.
+
+- Portrait routes should scan both ~/src/gallery/photos/~ and ~/src/gallery/highlights/~
+- Exact ~=photoSlugs= matches should be checked before prefix-based subject matching
+- Person-page captions should reuse homepage captions from ~/src/data/homepage-images.js~ when available, especially for group shots and event-style filenames
+- If a portrait page is backed only by highlights, render the card without forcing a broken gallery detail link
+
+** Rule of Thumb
+If a person is visible on the site but their filename does not cleanly start with their slug, do not invent more filename parsing. Add an explicit ~=photoSlugs= mapping and make sure the corresponding file exists locally.
+
 * 2026-02-18 - PhotoSwipe Can Distort If It Uses Cropped Thumbnail Dimensions
 
 ** Trigger

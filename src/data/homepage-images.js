@@ -39,9 +39,9 @@ export const images = [
     caption: 'Jeremy Strong at the New York red carpet premiere of The Apprentice'
   },
   {
-    filename: 'Lisa_Gilroy_at_SXSW_in_2025-1.jpg',
+    filename: 'lisa-gilroy_sxsw_2025.jpg',
     size: 'xlportrait', // 1707x2560 (0.67 ratio - portrait)
-    caption: 'Lisa Gilroy at SXSW in 2025'
+    caption: 'Lisa Gilroy at SXSW 2025'
   },
   {
     filename: 'dave-franco_sundance_2025.jpg',
@@ -74,9 +74,9 @@ export const images = [
     caption: 'Vinod Khosla at SXSW'
   },
   {
-    filename: 'jay-dixit_red-carpet_05923-1.jpg',
+    filename: 'emma-stone_nyff.jpg',
     size: 'portrait', // 1707x2560 (0.67 ratio - portrait)
-    caption: 'Emma Stone'
+    caption: 'Emma Stone at the New York Film Festival'
   },
   {
     filename: 'himesh-patel.jpg',

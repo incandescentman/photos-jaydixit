@@ -23,8 +23,16 @@ const photoUrls = [
   'https://photos.jaydixit.com/wp-content/uploads/2025/07/jay-dixit_red-carpet_05923-1-scaled.jpg',
   'https://photos.jaydixit.com/wp-content/uploads/2025/07/jeremy-6-scaled.jpg',
   'https://photos.jaydixit.com/wp-content/uploads/2025/07/jeremy-4-scaled.jpg',
-  'https://photos.jaydixit.com/wp-content/uploads/2025/07/vinod-4-scaled.jpg'
+  'https://photos.jaydixit.com/wp-content/uploads/2025/07/vinod-4-scaled.jpg',
+  'https://res.cloudinary.com/dszpm7yps/image/upload/highlights/2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07141',
+  'https://res.cloudinary.com/dszpm7yps/image/upload/highlights/2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07162',
+  'https://res.cloudinary.com/dszpm7yps/image/upload/highlights/2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07310'
 ];
+
+const filenameOverrides = {
+  'Lisa_Gilroy_at_SXSW_in_2025-1.jpg': 'lisa-gilroy_sxsw_2025.jpg',
+  'jay-dixit_red-carpet_05923-1.jpg': 'emma-stone_nyff.jpg'
+};
 
 async function downloadImage(url, filepath) {
   return new Promise((resolve, reject) => {
@@ -58,7 +66,8 @@ async function downloadLivePhotos() {
   
   for (let i = 0; i < photoUrls.length; i++) {
     const url = photoUrls[i];
-    const filename = path.basename(url).replace('-scaled', '');
+    const sourceFilename = path.basename(url).replace('-scaled', '');
+    const filename = filenameOverrides[sourceFilename] ?? sourceFilename;
     const filepath = path.join(highlightsDir, filename);
     
     // Skip if file already exists

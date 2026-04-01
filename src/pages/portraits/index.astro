@@ -9,14 +9,20 @@ interface Person {
 	slug: string;
 	name: string;
 	match: string[];
+	photoSlugs?: string[];
 	bio?: string;
 	wikipedia?: string;
 }
 
 const people = rawPeople as Person[];
 
-const imageModules = import.meta.glob<{ default: ImageMetadata }>(
+const galleryImageModules = import.meta.glob<{ default: ImageMetadata }>(
 	'../../gallery/photos/**/*.{jpg,jpeg,png,webp,gif}',
+	{ eager: true },
+);
+
+const highlightImageModules = import.meta.glob<{ default: ImageMetadata }>(
+	'../../gallery/highlights/**/*.{jpg,jpeg,png,webp,gif}',
 	{ eager: true },
 );
 
@@ -25,11 +31,24 @@ function getSubjectSlug(filename: string): string {
 	return baseName.split('_')[0];
 }
 
-function matchesPerson(subjectSlug: string, patterns: string[]): boolean {
-	return patterns.some((pattern) => {
-		if (subjectSlug === pattern) return true;
-		if (subjectSlug.startsWith(pattern + '-')) {
-			const suffix = subjectSlug.slice(pattern.length + 1);
+function normalizeMatchValue(value: string) {
+	return value.trim().toLowerCase();
+}
+
+function matchesPerson(subjectSlug: string, photoSlug: string, person: Person): boolean {
+	const normalizedSubjectSlug = normalizeMatchValue(subjectSlug);
+	const normalizedPhotoSlug = normalizeMatchValue(photoSlug);
+	const explicitPhotoSlugs = new Set((person.photoSlugs ?? []).map(normalizeMatchValue));
+
+	if (explicitPhotoSlugs.has(normalizedPhotoSlug)) {
+		return true;
+	}
+
+	return person.match.some((pattern) => {
+		const normalizedPattern = normalizeMatchValue(pattern);
+		if (normalizedSubjectSlug === normalizedPattern) return true;
+		if (normalizedSubjectSlug.startsWith(normalizedPattern + '-')) {
+			const suffix = normalizedSubjectSlug.slice(normalizedPattern.length + 1);
 			return /^\d+$/.test(suffix);
 		}
 		return false;
@@ -37,6 +56,7 @@ function matchesPerson(subjectSlug: string, patterns: string[]): boolean {
 }
 
 const extensionPriority = ['jpg', 'jpeg', 'webp', 'png', 'gif'];
+const sourcePriority = { gallery: 0, highlights: 1 } as const;
 
 function extensionRank(file: string) {
 	const ext = file.split('.').pop()?.toLowerCase() ?? '';
@@ -46,35 +66,54 @@ function extensionRank(file: string) {
 
 const personEntries = people
 	.map((person) => {
-		const matchingPhotos: { metadata: ImageMetadata; filename: string; slug: string; folder: string }[] = [];
+		const matchingPhotos: {
+			metadata: ImageMetadata;
+			filename: string;
+			slug: string;
+			source: keyof typeof sourcePriority;
+		}[] = [];
 
-		Object.entries(imageModules).forEach(([key, module]) => {
-			const relativePath = key.replace('../../gallery/photos/', '');
-			const segments = relativePath.split('/');
-			const filename = segments.pop();
-			if (!filename) return;
-			const folder = segments.join('/');
-			const subjectSlug = getSubjectSlug(filename);
+		const collectMatchingPhotos = (
+			modules: Record<string, { default: ImageMetadata }>,
+			basePath: string,
+			source: keyof typeof sourcePriority,
+		) => {
+			Object.entries(modules).forEach(([key, module]) => {
+				const relativePath = key.replace(basePath, '');
+				const segments = relativePath.split('/');
+				const filename = segments.pop();
+				if (!filename) return;
+				const subjectSlug = getSubjectSlug(filename);
+				const photoSlug = filename.replace(/\.[^/.]+$/, '');
 
-			if (matchesPerson(subjectSlug, person.match)) {
-				matchingPhotos.push({
-					metadata: module.default,
-					filename,
-					slug: filename.replace(/\.[^/.]+$/, ''),
-					folder,
-				});
-			}
-		});
+				if (matchesPerson(subjectSlug, photoSlug, person)) {
+					matchingPhotos.push({
+						metadata: module.default,
+						filename,
+						slug: photoSlug,
+						source,
+					});
+				}
+			});
+		};
+
+		collectMatchingPhotos(galleryImageModules, '../../gallery/photos/', 'gallery');
+		collectMatchingPhotos(highlightImageModules, '../../gallery/highlights/', 'highlights');
 
 		const grouped = matchingPhotos.reduce<Record<string, typeof matchingPhotos>>((acc, photo) => {
-			const key = `${photo.folder}/${photo.slug}`;
+			const key = photo.slug;
 			if (!acc[key]) acc[key] = [];
 			acc[key].push(photo);
 			return acc;
 		}, {});
 
 		const deduplicated = Object.values(grouped).map(
-			(variants) => variants.sort((a, b) => extensionRank(a.filename) - extensionRank(b.filename))[0],
+			(variants) =>
+				variants.slice().sort((a, b) => {
+					const sourceDiff = sourcePriority[a.source] - sourcePriority[b.source];
+					if (sourceDiff !== 0) return sourceDiff;
+					return extensionRank(a.filename) - extensionRank(b.filename);
+				})[0],
 		);
 
 		if (deduplicated.length === 0) return null;

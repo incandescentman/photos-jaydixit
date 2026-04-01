@@ -76,6 +76,13 @@ Key documentation files:
 - Added EXIF metadata display on per-photo pages
 - Fixed PhotoSwipe distortion by passing full-source dimensions (~data-pswp-width~ / ~data-pswp-height~) instead of cropped masonry thumbnail sizes
 
+* What's New (2026-03-31)
+
+- Portrait pages now scan both ~/src/gallery/photos/~ and ~/src/gallery/highlights/~, so highlight-only subjects can appear under ~/portraits/~
+- The portraits manifest at ~/src/data/people.json~ now supports explicit ~photoSlugs~ overrides for group shots and irregular filenames
+- Added portrait pages for Emma Stone, Lisa Gilroy, Ella Hunt, Kaia Gerber, Kieran Culkin, Nicholas Braun, Steven Yeun, Vinod Khosla, Ana de Armas, Cory Michael Smith, Nick Kroll, Ron Howard, and Sydney Sweeney
+- Normalized highlight filenames for Emma Stone and Lisa Gilroy to match the site naming convention
+
 * Development Commands
 
 ** Local Development

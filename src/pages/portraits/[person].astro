@@ -4,11 +4,13 @@ import type { ImageMetadata } from 'astro:assets';
 import MainLayout from '../../layouts/MainLayout.astro';
 import siteConfig from '../../../site.config.mts';
 import rawPeople from '../../data/people.json';
+import { images as homepageImages } from '../../data/homepage-images.js';
 
 interface Person {
 	slug: string;
 	name: string;
 	match: string[];
+	photoSlugs?: string[];
 	bio?: string;
 	wikipedia?: string;
 }
@@ -22,10 +24,17 @@ if (!personData) {
 	return Astro.redirect('/404');
 }
 
-const imageModules = import.meta.glob<{ default: ImageMetadata }>(
+const galleryImageModules = import.meta.glob<{ default: ImageMetadata }>(
 	'../../gallery/photos/**/*.{jpg,jpeg,png,webp,gif}',
 	{ eager: true },
 );
+
+const highlightImageModules = import.meta.glob<{ default: ImageMetadata }>(
+	'../../gallery/highlights/**/*.{jpg,jpeg,png,webp,gif}',
+	{ eager: true },
+);
+
+const captionByFilename = new Map(homepageImages.map((image) => [image.filename, image.caption]));
 
 function formatWord(word: string) {
 	const normalized = word.toLowerCase();
@@ -54,11 +63,24 @@ function getSubjectSlug(filename: string): string {
 	return baseName.split('_')[0];
 }
 
-function matchesPerson(subjectSlug: string, patterns: string[]): boolean {
-	return patterns.some((pattern) => {
-		if (subjectSlug === pattern) return true;
-		if (subjectSlug.startsWith(pattern + '-')) {
-			const suffix = subjectSlug.slice(pattern.length + 1);
+function normalizeMatchValue(value: string) {
+	return value.trim().toLowerCase();
+}
+
+function matchesPerson(subjectSlug: string, photoSlug: string, person: Person): boolean {
+	const normalizedSubjectSlug = normalizeMatchValue(subjectSlug);
+	const normalizedPhotoSlug = normalizeMatchValue(photoSlug);
+	const explicitPhotoSlugs = new Set((person.photoSlugs ?? []).map(normalizeMatchValue));
+
+	if (explicitPhotoSlugs.has(normalizedPhotoSlug)) {
+		return true;
+	}
+
+	return person.match.some((pattern) => {
+		const normalizedPattern = normalizeMatchValue(pattern);
+		if (normalizedSubjectSlug === normalizedPattern) return true;
+		if (normalizedSubjectSlug.startsWith(normalizedPattern + '-')) {
+			const suffix = normalizedSubjectSlug.slice(normalizedPattern.length + 1);
 			return /^\d+$/.test(suffix);
 		}
 		return false;
@@ -105,6 +127,7 @@ function toPhotoHref(folderSlug: string, file: string) {
 }
 
 const extensionPriority = ['jpg', 'jpeg', 'webp', 'png', 'gif'];
+const sourcePriority = { gallery: 0, highlights: 1 } as const;
 
 function extensionRank(file: string) {
 	const ext = file.split('.').pop()?.toLowerCase() ?? '';
@@ -120,50 +143,74 @@ type PhotoEntry = {
 	caption: string;
 	galleryName: string;
 	originalSrc: string;
-	detailHref: string;
+	detailHref: string | null;
+	source: keyof typeof sourcePriority;
 };
 
-const allMatches: PhotoEntry[] = Object.entries(imageModules)
-	.map(([key, module]) => {
-		const metadata = module.default;
-		const relativePath = key.replace('../../gallery/photos/', '');
-		const segments = relativePath.split('/');
-		const filename = segments.pop();
-		if (!filename) return null;
-		const folder = segments.join('/');
-		const subjectSlug = getSubjectSlug(filename);
+function collectMatchingPhotos(
+	modules: Record<string, { default: ImageMetadata }>,
+	basePath: string,
+	source: keyof typeof sourcePriority,
+): PhotoEntry[] {
+	return Object.entries(modules)
+		.map(([key, module]) => {
+			const metadata = module.default;
+			const relativePath = key.replace(basePath, '');
+			const segments = relativePath.split('/');
+			const filename = segments.pop();
+			if (!filename) return null;
+			const folder = segments.join('/');
+			const subjectSlug = getSubjectSlug(filename);
+			const photoSlug = filename.replace(/\.[^/.]+$/, '');
 
-		if (!matchesPerson(subjectSlug, personData.match)) return null;
+			if (!matchesPerson(subjectSlug, photoSlug, personData)) return null;
 
-		const slug = filename.replace(/\.[^/.]+$/, '');
-		const caption = buildCaption(filename, personData.name);
-		const galleryName = folder
-			.split('/')
-			.map((part) => formatPhrase(part))
-			.join(' / ');
+			const slug = photoSlug;
+			const caption = captionByFilename.get(filename) ?? buildCaption(filename, personData.name);
+			const galleryName =
+				source === 'highlights'
+					? 'Highlights'
+					: folder
+							.split('/')
+							.map((part) => formatPhrase(part))
+							.join(' / ');
 
-		return {
-			metadata,
-			filename,
-			folder,
-			slug,
-			caption,
-			galleryName,
-			originalSrc: metadata.src,
-			detailHref: toPhotoHref(folder, filename),
-		};
-	})
-	.filter((entry): entry is PhotoEntry => entry !== null);
+			return {
+				metadata,
+				filename,
+				folder,
+				slug,
+				caption,
+				galleryName,
+				originalSrc: metadata.src,
+				detailHref: source === 'gallery' ? toPhotoHref(folder, filename) : null,
+				source,
+			};
+		})
+		.filter((entry): entry is PhotoEntry => entry !== null);
+}
+
+const allMatches: PhotoEntry[] = [
+	...collectMatchingPhotos(galleryImageModules, '../../gallery/photos/', 'gallery'),
+	...collectMatchingPhotos(highlightImageModules, '../../gallery/highlights/', 'highlights'),
+];
 
 const grouped = allMatches.reduce<Record<string, PhotoEntry[]>>((acc, photo) => {
-	const key = `${photo.folder}/${photo.slug}`;
+	const key = photo.slug;
 	if (!acc[key]) acc[key] = [];
 	acc[key].push(photo);
 	return acc;
 }, {});
 
 const photos = Object.values(grouped)
-	.map((variants) => variants.sort((a, b) => extensionRank(a.filename) - extensionRank(b.filename))[0])
+	.map(
+		(variants) =>
+			variants.slice().sort((a, b) => {
+				const sourceDiff = sourcePriority[a.source] - sourcePriority[b.source];
+				if (sourceDiff !== 0) return sourceDiff;
+				return extensionRank(a.filename) - extensionRank(b.filename);
+			})[0],
+	)
 	.sort((a, b) => a.filename.localeCompare(b.filename));
 
 if (photos.length === 0) {
@@ -266,28 +313,49 @@ export function getStaticPaths() {
 
 			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 				{
-					photos.map((photo) => (
-						<a href={photo.detailHref} class="group block">
-							<div class="aspect-[3/4] overflow-hidden rounded-xl bg-gray-100 shadow-sm">
-								<Image
-									src={photo.metadata}
-									alt={photo.caption}
-									width={480}
-									height={640}
-									fit="cover"
-									position="attention"
-									loading="lazy"
-									class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-								/>
+					photos.map((photo) =>
+						photo.detailHref ? (
+							<a href={photo.detailHref} class="group block">
+								<div class="aspect-[3/4] overflow-hidden rounded-xl bg-gray-100 shadow-sm">
+									<Image
+										src={photo.metadata}
+										alt={photo.caption}
+										width={480}
+										height={640}
+										fit="cover"
+										position="attention"
+										loading="lazy"
+										class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+									/>
+								</div>
+								<div class="mt-3 px-1">
+									<p class="text-sm font-medium text-gray-800 group-hover:text-gray-900">
+										{photo.caption}
+									</p>
+									<p class="text-xs text-gray-400 mt-0.5">{photo.galleryName}</p>
+								</div>
+							</a>
+						) : (
+							<div class="group block">
+								<div class="aspect-[3/4] overflow-hidden rounded-xl bg-gray-100 shadow-sm">
+									<Image
+										src={photo.metadata}
+										alt={photo.caption}
+										width={480}
+										height={640}
+										fit="cover"
+										position="attention"
+										loading="lazy"
+										class="w-full h-full object-cover"
+									/>
+								</div>
+								<div class="mt-3 px-1">
+									<p class="text-sm font-medium text-gray-800">{photo.caption}</p>
+									<p class="text-xs text-gray-400 mt-0.5">{photo.galleryName}</p>
+								</div>
 							</div>
-							<div class="mt-3 px-1">
-								<p class="text-sm font-medium text-gray-800 group-hover:text-gray-900">
-									{photo.caption}
-								</p>
-								<p class="text-xs text-gray-400 mt-0.5">{photo.galleryName}</p>
-							</div>
-						</a>
-					))
+						),
+					)
 				}
 			</div>
 		</div>
