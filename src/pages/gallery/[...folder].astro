@@ -16,7 +16,7 @@ type TagMapping = Record<string, string[]>;
 type TagsByFolder = Record<string, TagMapping>;
 
 const imageModules = import.meta.glob<{ default: ImageMetadata }>(
-	'../../gallery/photos/**/*.{jpg,jpeg,png,webp,gif}',
+	'../../gallery/photos/**/*.{jpg,jpeg,png,gif}',
 	{
 		eager: true,
 	},
@@ -35,6 +35,14 @@ const tagsByFolder = Object.entries(tagModules).reduce<TagsByFolder>((acc, [key,
 
 function capitalize(word: string) {
 	return word.charAt(0).toUpperCase() + word.slice(1);
+}
+
+const extensionPriority = ['jpg', 'jpeg', 'webp', 'png', 'gif'];
+
+function extensionRank(file: string) {
+	const extension = file.split('.').pop()?.toLowerCase() ?? '';
+	const rank = extensionPriority.indexOf(extension);
+	return rank === -1 ? extensionPriority.length : rank;
 }
 
 function toPhotoHref(folderSlug: string, file: string) {
@@ -92,7 +100,7 @@ function buildCaptionAndTags(filename: string, folderSlug: string) {
 	};
 }
 
-const images = Object.entries(imageModules)
+const groupedImages = Object.entries(imageModules)
 	.map(([key, module]) => {
 		const metadata = module.default;
 		const relativePath = key.replace('../../gallery/photos/', '');
@@ -108,6 +116,7 @@ const images = Object.entries(imageModules)
 		return {
 			metadata,
 			filename,
+			slug: filename.replace(/\.[^/.]+$/, ''),
 			caption,
 			tags,
 			originalSrc: metadata.src,
@@ -119,10 +128,40 @@ const images = Object.entries(imageModules)
 		): entry is {
 			metadata: ImageMetadata;
 			filename: string;
+			slug: string;
 			caption: string;
 			tags: string[];
 			originalSrc: string;
 		} => entry !== null,
+	)
+	.reduce<
+		Record<
+			string,
+			Array<{
+				metadata: ImageMetadata;
+				filename: string;
+				slug: string;
+				caption: string;
+				tags: string[];
+				originalSrc: string;
+			}>
+		>
+	>((acc, entry) => {
+		if (!acc[entry.slug]) {
+			acc[entry.slug] = [];
+		}
+		acc[entry.slug].push(entry);
+		return acc;
+	}, {});
+
+const images = Object.values(groupedImages)
+	.map(
+		(variants) =>
+			variants.slice().sort((a, b) => {
+				const rankDiff = extensionRank(a.filename) - extensionRank(b.filename);
+				if (rankDiff !== 0) return rankDiff;
+				return a.filename.localeCompare(b.filename);
+			})[0],
 	)
 	.sort((a, b) => a.filename.localeCompare(b.filename));
 
@@ -188,7 +227,7 @@ export const getStaticPaths = () => {
 	const folders = new Set<string>();
 
 	const staticModules = import.meta.glob<{ default: ImageMetadata }>(
-		'../../gallery/photos/**/*.{jpg,jpeg,png,webp,gif}',
+		'../../gallery/photos/**/*.{jpg,jpeg,png,gif}',
 		{
 			eager: true,
 		},
