@@ -18,10 +18,25 @@ const imageModules = import.meta.glob<{ default: ImageMetadata }>(
 	{ eager: true },
 );
 
-function toTitleCase(slug: string) {
+function formatWord(word: string) {
+	const normalized = word.toLowerCase();
+	const acronymMap: Record<string, string> = {
+		sxsw: 'SXSW',
+		tiff: 'TIFF',
+		nyff: 'NYFF',
+		ucb: 'UCB',
+		wikiportraits: 'WikiPortraits',
+	};
+
+	if (acronymMap[normalized]) return acronymMap[normalized];
+	return normalized.charAt(0).toUpperCase() + normalized.slice(1);
+}
+
+function formatPhrase(slug: string) {
 	return slug
-		.split('-')
-		.map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+		.split(/[\s-]+/)
+		.filter(Boolean)
+		.map(formatWord)
 		.join(' ');
 }
 
@@ -45,7 +60,7 @@ const galleries = Array.from(grouped.entries())
 	.map(([folder, images]) => {
 		if (images.length === 0) return null;
 
-		const displayName = folder.split('/').map(toTitleCase).join(' → ');
+		const displayName = folder.split('/').map(formatPhrase).join(' → ');
 
 		const entry: GalleryEntry = {
 			name: folder,

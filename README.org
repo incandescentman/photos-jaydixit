@@ -83,6 +83,15 @@ Key documentation files:
 - Added portrait pages for Emma Stone, Lisa Gilroy, Ella Hunt, Kaia Gerber, Kieran Culkin, Nicholas Braun, Steven Yeun, Vinod Khosla, Ana de Armas, Cory Michael Smith, Nick Kroll, Ron Howard, and Sydney Sweeney
 - Normalized highlight filenames for Emma Stone and Lisa Gilroy to match the site naming convention
 
+* What's New (2026-04-01)
+
+- Renamed the public people directory from ~/portraits/~ to ~/red-carpet/~ while keeping ~/portraits/~ as a compatibility redirect
+- Simplified page sharing to a single polished copy-link button in ~/src/components/SocialShare.astro~
+- Added a recognition section to ~/src/pages/about.astro~ highlighting publications, institutions, and festivals
+- Added related essays to blog posts in ~/src/pages/blog/[slug].astro~
+- Centralized JSON-LD and metadata helpers in ~/src/components/StructuredData.astro~ and ~/src/lib/seo.ts~
+- Refined the Giscus shell in ~/src/components/PhotoComments.astro~ so comment threads feel more editorial
+
 * Development Commands
 
 ** Local Development

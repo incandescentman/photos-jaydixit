@@ -3,19 +3,22 @@ const { galleryName, photoId = null } = Astro.props;
 const discussionTerm = photoId ? `${galleryName}-${photoId}` : galleryName;
 ---
 
-<div class="comments-section mt-16 pt-8 border-t border-gray-200">
-  <h3 class="text-2xl font-bold mb-6 text-center">Comments</h3>
+<section class="comments-section" aria-label="Comments">
+	<div class="comments-header">
+		<p class="comments-kicker">Discussion</p>
+		<h2 class="comments-title">Comments</h2>
+		<p class="comments-subtitle">Join the conversation on GitHub.</p>
+	</div>
 
-  <div class="max-w-4xl mx-auto">
-    <div id="giscus-container" data-term={discussionTerm}></div>
-  </div>
-</div>
+	<div class="comments-frame">
+		<div id="giscus-container" data-term={discussionTerm}></div>
+	</div>
+</section>
 
-<script>
-// Load Giscus comments on page load
+<script is:inline>
 function loadGiscusComments() {
   const container = document.getElementById('giscus-container');
-  if (!container) return;
+  if (!container || container.dataset.loaded === 'true') return;
 
   const term = container.dataset.term;
   if (!term) return;
@@ -35,15 +38,15 @@ function loadGiscusComments() {
   script.setAttribute('data-input-position', 'bottom');
   script.setAttribute('data-theme', 'light');
   script.setAttribute('data-lang', 'en');
+  script.setAttribute('data-loading', 'lazy');
   script.crossOrigin = 'anonymous';
   script.async = true;
 
-  // Clear container and append script
   container.innerHTML = '';
   container.appendChild(script);
+  container.dataset.loaded = 'true';
 }
 
-// Run on DOM ready
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', loadGiscusComments);
 } else {
@@ -53,19 +56,54 @@ if (document.readyState === 'loading') {
 
 <style>
 .comments-section {
-  background: #fafafa;
-  margin-top: 2rem;
-  padding: 2rem 1rem;
+  margin-top: 4rem;
+  padding: 2rem;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: 2rem;
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.98), rgba(255, 255, 255, 1));
+  box-shadow: 0 30px 80px -55px rgba(15, 23, 42, 0.45);
+}
+
+.comments-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.comments-kicker {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+.comments-title {
+  font-size: clamp(1.6rem, 2.2vw, 2rem);
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.comments-subtitle {
+  font-size: 1rem;
+  color: #64748b;
+}
+
+.comments-frame {
+  max-width: 64rem;
+  margin: 0 auto;
 }
 
 #giscus-container {
   min-height: 200px;
 }
 
-/* Dark mode support for Giscus */
-@media (prefers-color-scheme: dark) {
+@media (max-width: 768px) {
   .comments-section {
-    background: #1a1a1a;
+    padding: 1.5rem;
+    border-radius: 1.5rem;
   }
 }
 </style>

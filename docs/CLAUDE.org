@@ -16,6 +16,7 @@ Last Synced for AI Context: 2025-10-04
 The root **CLAUDE.md** file contains legacy documentation. This file (docs/CLAUDE.org) is the canonical documentation entry point. Both should be maintained during transition.
 
 * Recent Updates
+- 2026-04-01: Renamed the public people directory to ~/red-carpet/~, added recognition + related-essays sections, and standardized metadata helpers
 - 2026-03-30: Added Portraits feature - per-person pages with people.json manifest
 - 2026-01-06: Migrated homepage images to Cloudinary CDN (removed ~200MB from repo)
 - 2026-01-06: Simplified image handling - no build-time processing for homepage
@@ -264,9 +265,10 @@ Frequency: Very High
    #+end_src
 3. The =match= array controls which filenames map to this person (matches the subject slug, i.e. the part before the first =_= in the filename). For example, =["dave-franco"]= matches =dave-franco_sundance_2025.jpg=.
 4. For group shots and non-standard filenames, use =photoSlugs= for explicit file-to-person mapping. These appear on person pages but not the index.
-5. Build/dev to generate the page at =/portraits/ray-kurzweil=
-6. The person appears on the =/portraits/= index only if they have at least one solo photo (matched by =match= pattern, with no other person's slug in the filename). People with only group shots or =photoSlugs= have person pages but are excluded from the index.
-7. Bio guidelines: omit bio for household names. Use achievement-first descriptors for less recognizable people (e.g., "Nobel Prize-winning physicist"). Avoid generic labels like "Actor".
+5. Build/dev to generate the page at =/red-carpet/ray-kurzweil=
+6. The person appears on the =/red-carpet/= index only if they have at least one solo photo (matched by =match= pattern, with no other person's slug in the filename). People with only group shots or =photoSlugs= have person pages but are excluded from the index.
+7. Legacy =/portraits/= URLs now redirect to =/red-carpet/= and should be treated as compatibility paths, not the primary public route.
+8. Bio guidelines: omit bio for household names. Use achievement-first descriptors for less recognizable people (e.g., "Nobel Prize-winning physicist"). Avoid generic labels like "Actor".
 
 *** To modify gallery layout:
 1. Check [[file:design-architecture.org::*Masonry Layout][design-architecture.org::*Masonry Layout]] first

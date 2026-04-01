@@ -7,6 +7,19 @@ import { smartQuotes } from '@jaydixit/astro-utils';
 import { cldUrl, cldSrcset, cldSizes } from '../../lib/cloudinary';
 import siteConfig from '../../../site.config.mts';
 
+function formatTagLabel(tag: string) {
+	const normalized = tag.trim().toLowerCase();
+	const labelMap: Record<string, string> = {
+		wikiportraits: 'WikiPortraits',
+		sxsw: 'SXSW',
+		tiff: 'TIFF',
+		nyff: 'NYFF',
+		ucb: 'UCB',
+	};
+
+	return labelMap[normalized] ?? tag;
+}
+
 export async function getStaticPaths() {
 	const posts = await getCollection('blog', (entry) => !entry.data.draft);
 	return posts.map((post) => ({
@@ -31,6 +44,7 @@ const heroSrcset = data.imagePublicId ? cldSrcset(data.imagePublicId) : undefine
 const excerpt = data.excerpt ? smartQuotes(data.excerpt) : null;
 const siteUrl = Astro.site?.origin ?? siteConfig.siteUrl ?? 'https://photos.jaydixit.com';
 const canonicalUrl = new URL(`/blog/${post.id}/`, siteUrl).toString();
+const showRelatedPosts = post.id !== 'wikiportraits-story';
 const blogStructuredData = {
 	'@context': 'https://schema.org',
 	'@type': 'BlogPosting',
@@ -59,6 +73,9 @@ const blogStructuredData = {
 	image={heroImage ?? undefined}
 	imageAlt={data.imageAlt ?? data.title}
 	ogType="article"
+	publishedTime={publishDate}
+	modifiedTime={data.updateDate ?? data.publishDate}
+	keywords={data.tags}
 	structuredData={blogStructuredData}
 >
 	<article class="mx-auto max-w-3xl px-6 pb-24 pt-44 md:pt-56">
@@ -95,7 +112,7 @@ const blogStructuredData = {
 				data.tags && (
 					<ul class="flex flex-wrap justify-center gap-3 text-xs uppercase tracking-[0.2em] text-slate-500">
 						{data.tags.map((tag) => (
-							<li class="rounded-full border border-slate-200 px-4 py-1">{tag}</li>
+							<li class="rounded-full border border-slate-200 px-4 py-1">{formatTagLabel(tag)}</li>
 						))}
 					</ul>
 				)
@@ -119,7 +136,7 @@ const blogStructuredData = {
 			<Content />
 		</div>
 
-		<RelatedPosts currentSlug={post.id} currentTags={data.tags ?? []} />
+		{showRelatedPosts && <RelatedPosts currentSlug={post.id} currentTags={data.tags ?? []} />}
 	</article>
 </MainLayout>
 

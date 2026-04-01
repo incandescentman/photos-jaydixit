@@ -26,8 +26,26 @@ const tagsByFolder = Object.entries(tagModules).reduce<TagsByFolder>((acc, [key,
 	return acc;
 }, {});
 
-function capitalize(word: string) {
-	return word.charAt(0).toUpperCase() + word.slice(1);
+function formatWord(word: string) {
+	const normalized = word.toLowerCase();
+	const acronymMap: Record<string, string> = {
+		sxsw: 'SXSW',
+		tiff: 'TIFF',
+		nyff: 'NYFF',
+		ucb: 'UCB',
+		wikiportraits: 'WikiPortraits',
+	};
+
+	if (acronymMap[normalized]) return acronymMap[normalized];
+	return normalized.charAt(0).toUpperCase() + normalized.slice(1);
+}
+
+function formatPhrase(value: string) {
+	return value
+		.split(/[\s-]+/)
+		.filter(Boolean)
+		.map(formatWord)
+		.join(' ');
 }
 
 function buildCaptionAndTags(filename: string, folderSlug: string) {
@@ -38,7 +56,7 @@ function buildCaptionAndTags(filename: string, folderSlug: string) {
 	let year = '';
 
 	if (parts.length > 0) {
-		subject = parts[0].split('-').map(capitalize).join(' ');
+		subject = formatPhrase(parts[0]);
 	}
 
 	if (parts.length > 1) {
@@ -46,10 +64,10 @@ function buildCaptionAndTags(filename: string, folderSlug: string) {
 		if (/^\d{4}$/.test(lastPart)) {
 			year = lastPart;
 			if (parts.length > 2) {
-				event = parts.slice(1, -1).join(' ').split('-').map(capitalize).join(' ');
+				event = formatPhrase(parts.slice(1, -1).join(' '));
 			}
 		} else {
-			event = parts.slice(1).join(' ').split('-').map(capitalize).join(' ');
+			event = formatPhrase(parts.slice(1).join(' '));
 		}
 	}
 

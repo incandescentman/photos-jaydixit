@@ -5,6 +5,19 @@ import { smartQuotes } from '@jaydixit/astro-utils';
 import { cldUrl, cldSrcset, cldSizes } from '../../lib/cloudinary';
 import siteConfig from '../../../site.config.mts';
 
+function formatTagLabel(tag: string) {
+	const normalized = tag.trim().toLowerCase();
+	const labelMap: Record<string, string> = {
+		wikiportraits: 'WikiPortraits',
+		sxsw: 'SXSW',
+		tiff: 'TIFF',
+		nyff: 'NYFF',
+		ucb: 'UCB',
+	};
+
+	return labelMap[normalized] ?? tag;
+}
+
 const posts = await getCollection('blog', ({ data }) => !data.draft);
 const sortedPosts = posts
 	.map((entry) => ({
@@ -112,7 +125,7 @@ const blogIndexStructuredData = {
 										<ul class="mt-6 flex flex-wrap gap-2">
 											{data.tags.map((tag) => (
 												<li class="rounded-full bg-slate-900 px-3 py-1 text-xs uppercase tracking-[0.2em] text-white/90">
-													{tag}
+													{formatTagLabel(tag)}
 												</li>
 											))}
 										</ul>

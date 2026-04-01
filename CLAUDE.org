@@ -4,7 +4,7 @@
 
 ** Future Tasks
 
-- [ ] Configure Giscus comments: Enable GitHub Discussions on repo, visit https://giscus.app to get repo-id and category-id, then update src/components/PhotoComments.astro with real values (currently has placeholders)
+- [ ] Review Giscus configuration if the repo or Discussions category changes; current values live in src/components/PhotoComments.astro
 - [ ] More portrait coverage: Download local highlight files for people who only have Cloudinary assets (Willem Dafoe, Gabriel LaBelle, Rose Byrne, Sydney Sweeney solo, Ana de Armas solo, Jason Collett, Kaia Gerber solo). These are referenced in src/data/homepage-images.js but have no files in src/gallery/highlights/, so they don't appear on portrait pages.
 - [ ] Before-and-after page expansion: src/pages/before-after.astro currently showcases 4 people. More Wikipedia-upgraded portraits are now available and could be added.
 - [ ] Albums: The content collection at src/content/albums/ is scaffolded but empty. Could be used for curated sets (e.g., "SXSW 2024", "Nobel Laureates").
@@ -106,11 +106,13 @@ manifest.
 
 
 
-​*** 👤 Portraits (Per-Person Pages)
+​*** 👤 Red Carpet Photos (Per-Person Pages)
 
-- Each person in src/data/people.json gets a page at /portraits/[slug]
+- Each person in src/data/people.json gets a page at /red-carpet/[slug]
 
-- Index page at /portraits/ lists all people alphabetically with sample photos
+- Index page at /red-carpet/ lists all people alphabetically with sample photos
+
+- Legacy /portraits/ routes exist only as redirects to /red-carpet/
 
 - people.json fields: slug, name, match (filename patterns), photoSlugs (optional explicit mappings), bio (optional), wikipedia (optional)
 
@@ -156,6 +158,8 @@ manifest.
 - Optional comment thread per gallery or per photo
 
 - Uses GitHub Discussions via Giscus
+
+- Comments render inside a more polished editorial shell in PhotoComments.astro
 
 - Enabled with Discussions on GitHub repo:
 
@@ -213,9 +217,11 @@ manifest.
 
 - src/pages/gallery/photo/[...photo].astro → individual photo detail with EXIF, likes, comments
 
-- src/pages/portraits/index.astro → alphabetical directory of all people
+- src/pages/red-carpet/index.astro → alphabetical directory of all people
 
-- src/pages/portraits/[person].astro → per-person page aggregating their photos
+- src/pages/red-carpet/[person].astro → per-person page aggregating their photos
+
+- src/pages/portraits/index.astro and src/pages/portraits/[person].astro → legacy redirects to /red-carpet
 
 - src/pages/about.astro → bio and photography philosophy
 
@@ -223,7 +229,7 @@ manifest.
 
 - src/pages/blog/index.astro and src/pages/blog/[slug].astro → blog with MDX
 
-- src/pages/contact.astro → contact form via Formspree
+- src/pages/contact.astro → contact form (Formspree-backed)
 
 - src/pages/press.astro → press kit / media resources
 
@@ -254,9 +260,15 @@ manifest.
 
 - PhotoLikeButton.astro → Supabase like button
 
-- PhotoComments.astro → Giscus comments integration
+- PhotoComments.astro → Giscus comments integration with polished editorial shell
 
-- SocialShare.astro → social sharing buttons
+- SocialShare.astro → single copy-link share button
+
+- RecognitionSection.astro → publications, institutions, and festival credibility block
+
+- RelatedPosts.astro → related essays on blog posts
+
+- StructuredData.astro → centralized JSON-LD rendering
 
 - SocialIcon.astro → social media icons
 
@@ -326,7 +338,9 @@ manifest.
 
 - Two gallery modes exist: YAML (src/gallery/gallery.yaml) and filesystem (src/gallery/photos/**). Avoid route conflicts; prefer one source per route.
 
-- Highlights are part of the real photo system: homepage and portrait pages also read from src/gallery/highlights/
+- Highlights are part of the real photo system: homepage and red-carpet pages also read from src/gallery/highlights/
+
+- Shared metadata helpers now live in src/lib/seo.ts, and JSON-LD rendering is centralized in src/components/StructuredData.astro
 
 - Page-level scripts that import npm packages must use hoisted Astro scripts so Vite bundles them. If built HTML leaves bare imports instead of a bundled /_astro/*.js asset, browser-side features like PhotoSwipe will break.
 
