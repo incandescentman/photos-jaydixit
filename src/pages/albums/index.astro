@@ -2,7 +2,7 @@
 import MainLayout from '../../layouts/MainLayout.astro';
 import { getCollection } from 'astro:content';
 
-const albums = await getCollection('albums');
+const albums = (await getCollection('albums')).filter((album) => !album.data.draft);
 ---
 
 <MainLayout>

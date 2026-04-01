@@ -391,8 +391,8 @@ const sizeClass = index % 7 === 0 ? 'wide-tall' :
 #+BEGIN_EXAMPLE
 public/
 ├── highlights/           # Main page masonry photos
-│   ├── vanessa-kirby.jpg
-│   ├── conan.jpg
+│   ├── vanessa-kirby_tiff_2024.jpg
+│   ├── conan-obrien_sundance_2024.jpg
 │   └── ...
 └── photos/              # Gallery system
     ├── red-carpet/
@@ -403,13 +403,13 @@ public/
     │       └── conan-obrien_sundance_2024.jpg
     ├── portraits/
     │   └── studio/
-    │       └── jeremy-strong_studio-session_2024.jpg
+    │       └── jeremy-strong_the-apprentice-premiere_2024.jpg
     ├── events/
     │   └── nobel/
     │       └── john-hopfield_nobel-physics_2024.jpg
     └── themes/
         └── fashion/
-            └── judd-apatow_fashion-shoot_2024.jpg
+            └── judd-apatow_sxsw_2024.jpg
 #+END_EXAMPLE
 
 *** Filename Convention

@@ -1,33 +1,42 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
+import { Image } from 'astro:assets';
+import vanessaBeforeImg from '../assets/images/wikiportraits/vanessa-kirby-before-2018.jpg';
+import vanessaAfterImg from '../assets/images/wikiportraits/vanessa-kirby_tiff_2024.jpg';
+import johnBeforeImg from '../assets/images/wikiportraits/john-hopfield-before-2016.jpg';
+import johnAfterImg from '../assets/images/wikiportraits/john-hopfield_nobel-physics_2024.jpg';
+import jeremyBeforeImg from '../assets/images/wikiportraits/jeremy-strong-before.jpg';
+import jeremyAfterImg from '../assets/images/wikiportraits/jeremy-strong_the-apprentice-premiere_2024.jpg';
+import conanBeforeImg from '../assets/images/wikiportraits/conan-obrien-before.jpg';
+import conanAfterImg from '../assets/images/wikiportraits/conan-obrien_sundance_2024.jpg';
 
 // Before/after pairs - Wikipedia portrait upgrades
 const comparisons = [
 	{
 		name: 'Vanessa Kirby',
-		beforeUrl: 'https://upload.wikimedia.org/wikipedia/commons/d/d1/Vanessa_Kirby_2018.jpg',
-		afterUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Vanessa_Kirby_at_the_2024_Toronto_International_Film_Festival_08_%28Cropped%29.jpg/800px-Vanessa_Kirby_at_the_2024_Toronto_International_Film_Festival_08_%28Cropped%29.jpg',
+		beforeImage: vanessaBeforeImg,
+		afterImage: vanessaAfterImg,
 		article: 'https://en.wikipedia.org/wiki/Vanessa_Kirby',
 		event: 'Toronto International Film Festival 2024',
 	},
 	{
 		name: 'John Hopfield',
-		beforeUrl: 'https://upload.wikimedia.org/wikipedia/commons/1/1e/John_Hopfield_2016.jpg',
-		afterUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/John_Hopfield_at_the_2024_Nobel_Lectures_%28cropped%29.jpg/800px-John_Hopfield_at_the_2024_Nobel_Lectures_%28cropped%29.jpg',
+		beforeImage: johnBeforeImg,
+		afterImage: johnAfterImg,
 		article: 'https://en.wikipedia.org/wiki/John_Hopfield',
 		event: 'Nobel Prize Lectures, Stockholm 2024',
 	},
 	{
 		name: 'Jeremy Strong',
-		beforeUrl: 'https://upload.wikimedia.org/wikipedia/commons/7/75/Jeremy_Strong_2014.jpg',
-		afterUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Jeremy_Strong_Springsteen-48.jpg/800px-Jeremy_Strong_Springsteen-48.jpg',
+		beforeImage: jeremyBeforeImg,
+		afterImage: jeremyAfterImg,
 		article: 'https://en.wikipedia.org/wiki/Jeremy_Strong',
 		event: 'BFI London Film Festival 2025',
 	},
 	{
 		name: 'Conan O\'Brien',
-		beforeUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Conan_O%27Brien_%2848364150201%29.jpg/800px-Conan_O%27Brien_%2848364150201%29.jpg',
-		afterUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Conan_O%27Brien_at_the_2025_Sundance_Film_Festival_03_%28cropped%29.jpg/800px-Conan_O%27Brien_at_the_2025_Sundance_Film_Festival_03_%28cropped%29.jpg',
+		beforeImage: conanBeforeImg,
+		afterImage: conanAfterImg,
 		article: 'https://en.wikipedia.org/wiki/Conan_O%27Brien',
 		event: 'Sundance Film Festival 2025',
 	},
@@ -39,10 +48,10 @@ const comparisons = [
 	description="Wikipedia portrait upgrades: see the difference professional photography makes"
 >
 	<!-- Hero Section -->
-	<section class="pt-16 pb-12 bg-white">
-		<div class="max-w-4xl mx-auto px-6">
+	<section class="pt-32 md:pt-36 pb-12 bg-white">
+		<div class="max-w-6xl mx-auto px-6">
 			<h1 class="text-3xl md:text-4xl font-black text-gray-900 font-sans mb-4">Before & After</h1>
-			<p class="text-xl text-gray-600 leading-relaxed font-sans">
+			<p class="text-xl text-gray-600 leading-relaxed font-sans max-w-4xl">
 				Wikipedia deserves better photos. As a red carpet photographer for Wikipedia, I replace
 				low-quality portraits with professional images shot at film festivals and cultural events.
 			</p>
@@ -51,7 +60,7 @@ const comparisons = [
 
 	<!-- Comparison Grid -->
 	<section class="py-12 bg-white">
-		<div class="max-w-6xl mx-auto px-6">
+		<div id="before-after-gallery" class="max-w-6xl mx-auto px-6">
 			{comparisons.length === 0 ? (
 				<div class="text-center py-16 border-2 border-dashed border-gray-200 rounded-2xl">
 					<p class="text-gray-500 text-lg font-sans">
@@ -90,14 +99,22 @@ const comparisons = [
 									<span class="absolute top-4 left-4 bg-red-500/90 text-white text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full z-10">
 										Before
 									</span>
-									<div class="aspect-[3/4] bg-gray-100 rounded-xl overflow-hidden">
-										<img
-											src={comparison.beforeUrl}
+									<a
+										href={comparison.beforeImage.src}
+										class="portfolio-lightbox block aspect-[3/4] bg-gray-100 rounded-xl overflow-hidden"
+										data-pswp-width={comparison.beforeImage.width}
+										data-pswp-height={comparison.beforeImage.height}
+										data-pswp-caption={`${comparison.name} - previous Wikipedia photo`}
+									>
+										<Image
+											src={comparison.beforeImage}
 											alt={`${comparison.name} - previous Wikipedia photo`}
+											widths={[400, 800]}
+											sizes="(min-width: 768px) 50vw, 100vw"
 											class="w-full h-full object-cover object-top"
 											loading="lazy"
 										/>
-									</div>
+									</a>
 								</div>
 
 								<!-- After -->
@@ -105,14 +122,22 @@ const comparisons = [
 									<span class="absolute top-4 left-4 bg-emerald-500/90 text-white text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full z-10">
 										After
 									</span>
-									<div class="aspect-[3/4] bg-gray-100 rounded-xl overflow-hidden">
-										<img
-											src={comparison.afterUrl}
+									<a
+										href={comparison.afterImage.src}
+										class="portfolio-lightbox block aspect-[3/4] bg-gray-100 rounded-xl overflow-hidden"
+										data-pswp-width={comparison.afterImage.width}
+										data-pswp-height={comparison.afterImage.height}
+										data-pswp-caption={`${comparison.name} - upgraded Wikipedia photo by Jay Dixit`}
+									>
+										<Image
+											src={comparison.afterImage}
 											alt={`${comparison.name} - upgraded Wikipedia photo by Jay Dixit`}
+											widths={[400, 800]}
+											sizes="(min-width: 768px) 50vw, 100vw"
 											class="w-full h-full object-cover object-top"
 											loading="lazy"
 										/>
-									</div>
+									</a>
 								</div>
 							</div>
 						</article>
@@ -162,6 +187,41 @@ const comparisons = [
 		</div>
 	</section>
 </MainLayout>
+
+<script hoist>
+	import PhotoSwipeLightbox from 'photoswipe/lightbox';
+	import 'photoswipe/style.css';
+
+	const lightbox = new PhotoSwipeLightbox({
+		gallery: '#before-after-gallery',
+		children: '.portfolio-lightbox',
+		pswpModule: () => import('photoswipe'),
+		padding: { top: 20, bottom: 80, left: 20, right: 20 },
+		wheelToZoom: true,
+		imageClickAction: 'close',
+		tapAction: 'toggle-controls',
+		doubleTapAction: 'zoom',
+		preloaderDelay: 0,
+		showHideAnimationType: 'fade',
+	});
+
+	lightbox.addFilter('itemData', (itemData) => {
+		const linkEl = itemData.element;
+		if (!(linkEl instanceof HTMLElement)) return itemData;
+
+		const width = parseInt(linkEl.getAttribute('data-pswp-width') || '', 10);
+		const height = parseInt(linkEl.getAttribute('data-pswp-height') || '', 10);
+		const caption = linkEl.getAttribute('data-pswp-caption') || '';
+
+		if (Number.isFinite(width) && width > 0) itemData.w = width;
+		if (Number.isFinite(height) && height > 0) itemData.h = height;
+		if (caption) itemData.title = caption;
+
+		return itemData;
+	});
+
+	lightbox.init();
+</script>
 
 <style>
 	.comparison-card {

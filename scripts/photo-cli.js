@@ -48,6 +48,7 @@ const DEFAULT_CONFIG = {
   },
   metadata: {
     required_fields: ['caption', 'title'],
+    embed_on_upload: true,
     tag_namespaces: {
       event: 'Event name',
       cat: 'Category',
@@ -88,24 +89,32 @@ async function extractMetadata(filepath) {
     
     return {
       // Core fields
-      title: data['XMP-dc:Title'] || data['IPTC:ObjectName'],
-      caption: data['IPTC:Caption-Abstract'] || data['XMP:Description'] || data['XMP-dc:Description'],
+      title: data['XMP-dc:Title'] || data['Title'] || data['IPTC:ObjectName'] || data['ObjectName'],
+      caption:
+        data['IPTC:Caption-Abstract'] ||
+        data['Caption-Abstract'] ||
+        data['XMP:Description'] ||
+        data['XMP-dc:Description'] ||
+        data['Description'] ||
+        data['ImageDescription'],
       
       // Keywords → tags
       keywords: parseKeywords(
         data['XMP-dc:Subject'] || 
+        data['Subject'] ||
         data['IPTC:Keywords'] || 
+        data['Keywords'] ||
         []
       ),
       
       // Location
-      city: data['IPTC:City'] || data['XMP-photoshop:City'],
-      country: data['IPTC:Country-PrimaryLocationName'] || data['XMP-photoshop:Country'],
+      city: data['IPTC:City'] || data['City'] || data['XMP-photoshop:City'],
+      country: data['IPTC:Country-PrimaryLocationName'] || data['Country-PrimaryLocationName'] || data['XMP-photoshop:Country'],
       gps: parseGPS(data),
       
       // People & Credit
-      people: parseArray(data['IPTC:PersonInImage'] || data['XMP-iptcExt:PersonInImage']),
-      credit: data['IPTC:By-line'] || data['XMP-dc:Creator'] || data['Artist'],
+      people: parseArray(data['IPTC:PersonInImage'] || data['PersonInImage'] || data['XMP-iptcExt:PersonInImage']),
+      credit: data['IPTC:By-line'] || data['By-line'] || data['XMP-dc:Creator'] || data['Artist'],
       
       // Technical
       dateTaken: data['EXIF:DateTimeOriginal'] || data['CreateDate'],
@@ -152,10 +161,41 @@ async function loadTagsJson(dir) {
   const tagsPath = path.join(dir, 'tags.json');
   try {
     const content = await fs.readFile(tagsPath, 'utf-8');
-    return JSON.parse(content);
+    const parsed = JSON.parse(content);
+
+    const isStructured =
+      parsed.album ||
+      parsed.defaults ||
+      parsed.overrides ||
+      parsed.captions ||
+      parsed.highlights;
+
+    if (isStructured) {
+      return parsed;
+    }
+
+    const overrides = {};
+    for (const [filename, value] of Object.entries(parsed)) {
+      if (Array.isArray(value)) {
+        overrides[filename] = { tags: value };
+      } else if (typeof value === 'string') {
+        overrides[filename] = { caption: value, title: value };
+      }
+    }
+
+    return { overrides };
   } catch {
     return null;
   }
+}
+
+function getFileOverrides(tagsJson, filename) {
+  const captionOverride = tagsJson?.captions?.[filename]
+    ? { caption: tagsJson.captions[filename], title: tagsJson.captions[filename] }
+    : {};
+  const explicitOverrides = tagsJson?.overrides?.[filename] || {};
+  const mergedOverrides = { ...captionOverride, ...explicitOverrides };
+  return Object.keys(mergedOverrides).length > 0 ? mergedOverrides : null;
 }
 
 /**
@@ -192,6 +232,14 @@ function mergeMetadata(exif, folderDefaults, fileOverrides) {
   if (!merged.tags && merged.keywords) {
     merged.tags = merged.keywords;
   }
+
+  // If only one of title/caption is present, use it for both.
+  if (!merged.title && merged.caption) {
+    merged.title = merged.caption;
+  }
+  if (!merged.caption && merged.title) {
+    merged.caption = merged.title;
+  }
   
   return merged;
 }
@@ -207,6 +255,57 @@ function cleanObject(obj) {
     }
   }
   return cleaned;
+}
+
+function truncateIptcObjectName(value) {
+  if (!value) return undefined;
+  return String(value).slice(0, 64);
+}
+
+function buildEmbeddedSubjects(metadata) {
+  return [...new Set([
+    ...(metadata.tags || []),
+    ...parseArray(metadata.people),
+    metadata.event
+  ].filter(Boolean).map(value => String(value).trim()).filter(Boolean))];
+}
+
+async function stampEmbeddedMetadata(filepath, metadata) {
+  const title = metadata.title || metadata.caption;
+  const caption = metadata.caption || metadata.title;
+  const subjects = buildEmbeddedSubjects(metadata);
+  const args = ['-overwrite_original'];
+
+  if (title) {
+    args.push(`-XMP-dc:Title=${title}`);
+    args.push(`-IPTC:ObjectName=${truncateIptcObjectName(title)}`);
+  }
+
+  if (caption) {
+    args.push(`-XMP-dc:Description=${caption}`);
+    args.push(`-IPTC:Caption-Abstract=${caption}`);
+    args.push(`-EXIF:ImageDescription=${caption}`);
+  }
+
+  if (metadata.credit) {
+    args.push(`-IPTC:By-line=${metadata.credit}`);
+  }
+  if (metadata.city) {
+    args.push(`-IPTC:City=${metadata.city}`);
+  }
+  if (metadata.country) {
+    args.push(`-IPTC:Country-PrimaryLocationName=${metadata.country}`);
+  }
+
+  if (subjects.length > 0) {
+    args.push('-XMP-dc:Subject=');
+    for (const subject of subjects) {
+      args.push(`-XMP-dc:Subject+=${subject}`);
+    }
+  }
+
+  args.push(filepath);
+  await execa('exiftool', args);
 }
 
 /**
@@ -444,7 +543,7 @@ async function uploadCommand(directory, options) {
           const exifMetadata = await extractMetadata(file);
           
           // Get overrides from tags.json
-          const fileOverrides = tagsJson?.overrides?.[filename];
+          const fileOverrides = getFileOverrides(tagsJson, filename);
           const folderDefaults = tagsJson?.defaults;
           
           // Merge metadata
@@ -462,6 +561,10 @@ async function uploadCommand(directory, options) {
             fileSpinner.warn(`Validation failed: ${errors.join(', ')}`);
             failCount++;
             continue;
+          }
+
+          if (!options.dryRun && options.embedMetadata && config.metadata?.embed_on_upload !== false) {
+            await stampEmbeddedMetadata(file, metadata);
           }
           
           // Generate public ID
@@ -582,21 +685,41 @@ async function validateCommand(directory, options) {
   
   let validCount = 0;
   let invalidCount = 0;
+  const filesByDir = {};
   
   for (const file of files) {
-    const filename = path.basename(file);
-    const metadata = await extractMetadata(file);
-    const errors = validateMetadata(metadata, config);
+    const dir = path.dirname(file);
+    if (!filesByDir[dir]) {
+      filesByDir[dir] = { files: [], tagsJson: null };
+    }
+    filesByDir[dir].files.push(file);
+  }
+  
+  for (const dir of Object.keys(filesByDir)) {
+    filesByDir[dir].tagsJson = await loadTagsJson(dir);
+  }
+  
+  for (const [dir, { files: dirFiles, tagsJson }] of Object.entries(filesByDir)) {
+    const folderDefaults = tagsJson?.defaults;
     
-    if (errors.length > 0) {
-      console.log(chalk.red(`✗ ${filename}`));
-      errors.forEach(error => {
-        console.log(chalk.gray(`  ${error}`));
-      });
-      invalidCount++;
-    } else {
-      console.log(chalk.green(`✓ ${filename}`));
-      validCount++;
+    for (const file of dirFiles) {
+      const filename = path.basename(file);
+      const exifMetadata = await extractMetadata(file);
+      const fileOverrides = getFileOverrides(tagsJson, filename);
+      const metadata = mergeMetadata(exifMetadata, folderDefaults, fileOverrides);
+      const errors = validateMetadata(metadata, config);
+      
+      if (errors.length > 0) {
+        console.log(chalk.red(`✗ ${filename}`));
+        errors.forEach(error => {
+          console.log(chalk.gray(`  ${error}`));
+        });
+        invalidCount++;
+      } else {
+        const sourceNote = tagsJson ? ' (merged EXIF + tags.json)' : '';
+        console.log(chalk.green(`✓ ${filename}${sourceNote}`));
+        validCount++;
+      }
     }
   }
   
@@ -634,10 +757,11 @@ program
 
 program
   .command('upload <directory>')
-  .description('Upload photos to Cloudinary and generate Astro content')
+  .description('Upload photos to Cloudinary, stamp merged metadata into files, and generate Astro content')
   .option('-c, --config <path>', 'configuration file path')
   .option('--no-content', 'skip Astro content generation')
   .option('--no-upload', 'generate content without uploading')
+  .option('--no-embed-metadata', 'skip writing merged metadata back into the source files')
   .option('--dry-run', 'preview without making changes')
   .option('--force', 'ignore validation errors')
   .option('-v, --verbose', 'detailed logging')

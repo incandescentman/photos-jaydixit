@@ -825,6 +825,7 @@ node scripts/upload-with-tags-json.js ./src/gallery/photos
 - Complete implementation of this specification
 - Commander-based CLI with multiple commands
 - Full metadata extraction and merging pipeline
+- Automatically writes merged title/caption metadata back into source files before upload
 - Astro content generation
 - Validation and error handling
 - Progress tracking with ora spinners
@@ -845,6 +846,12 @@ npm run photo:validate ./photos
 # With options
 node scripts/photo-cli.js upload ./photos --verbose --dry-run --no-content
 #+end_src
+
+The main CLI now treats embedded metadata as a standard output of the workflow, not just an optional input:
+- merge EXIF/IPTC/XMP with ~tags.json~ defaults and overrides
+- validate the merged result
+- stamp the merged title/caption back into the source file
+- upload the same metadata to Cloudinary context fields
 
 **** 3. Package.json Scripts Added
 
@@ -907,7 +914,7 @@ cat > ./src/gallery/photos/tags.json << 'EOF'
   "tags": ["test", "2025"],
   "location": "Toronto, Canada",
   "captions": {
-    "jeremy.jpg": "Test caption for Jeremy"
+    "jeremy-strong_the-apprentice-premiere_2024.jpg": "Jeremy Strong at the New York red carpet premiere of The Apprentice"
   }
 }
 EOF
@@ -986,9 +993,9 @@ cat src/content/albums/*.json
     "credit": "Jay Dixit"
   },
   "captions": {
-    "jeremy-strong_studio-session_2024.jpg": "Jeremy Strong studio portrait session"
+    "jeremy-strong_the-apprentice-premiere_2024.jpg": "Jeremy Strong at the New York red carpet premiere of The Apprentice"
   },
-  "highlights": ["jeremy-strong_studio-session_2024.jpg"]
+  "highlights": ["jeremy-strong_the-apprentice-premiere_2024.jpg"]
 }
 #+end_src
 

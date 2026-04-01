@@ -41,7 +41,7 @@
 		"globals": "^16.0.0",
 		"js-yaml": "^4.1.0",
 		"justified-layout": "^4.1.0",
-		"lucide-astro": "^0.479.0",
+		"@lucide/astro": "^1.7.0",
 		"prettier": "3.5.3",
 		"prettier-plugin-astro": "^0.14.1",
 		"sharp": "^0.34.3",

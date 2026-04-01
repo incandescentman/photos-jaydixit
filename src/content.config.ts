@@ -22,6 +22,7 @@ const albums = defineCollection({
   loader: glob({ pattern: '**/*.{json,yaml,yml,toml}', base: './src/content/albums' }),
   schema: z.object({
     title: z.string(),
+    draft: z.boolean().optional().default(false),
     date: z.string().optional(),
     coverPublicId: z.string().optional(),
     tags: z.array(z.string()).optional(),

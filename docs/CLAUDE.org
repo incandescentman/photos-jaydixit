@@ -173,6 +173,7 @@ Documentation structure:
 - Photos organized in `src/gallery/photos/[gallery-name]/` folders
 - Each folder becomes a gallery page
 - Metadata extracted from filenames or tags.json
+- The preferred workflow is `scripts/photo-cli.js`, which merges EXIF/IPTC/XMP with `tags.json` and writes the merged title/caption back into the source file before upload
 - Never modify photo organization to fix code issues
 
 *** Cloudinary Integration (Homepage)
@@ -181,7 +182,7 @@ Documentation structure:
 - URL pattern: `https://res.cloudinary.com/dszpm7yps/image/upload/f_auto,q_auto,w_{width}/highlights/{publicId}`
 - Automatic format negotiation (AVIF/WebP/JPEG)
 - Images uploaded via `scripts/upload-to-cloudinary.js`
-- Local highlight images removed from repo (now in .gitignore)
+- Canonical local highlight source files live in `src/gallery/highlights/` and should stay meaningfully named
 
 *** Build Process
 - Static generation for all gallery pages
@@ -254,7 +255,7 @@ Frequency: Very High
      "wikipedia": "https://en.wikipedia.org/wiki/Ray_Kurzweil"
    }
    #+end_src
-3. The =match= array controls which filenames map to this person (matches the subject slug, i.e. the part before the first =_= in the filename). Also matches numbered variants (e.g. =["jeremy"]= matches =jeremy-3.jpg=, =jeremy-11.jpg=).
+3. The =match= array controls which filenames map to this person (matches the subject slug, i.e. the part before the first =_= in the filename). For example, =["dave-franco"]= matches =dave-franco_sundance_2025.jpg=.
 4. Build/dev to generate the page at =/portraits/ray-kurzweil=
 5. The person also appears in the Portraits directory at =/portraits/=
 

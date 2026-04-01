@@ -1,5 +1,5 @@
 import type { AstroInstance } from 'astro';
-import { Instagram, PawPrint } from 'lucide-astro';
+import { Camera, PawPrint } from '@lucide/astro';
 
 export interface SocialLink {
 	name: string;
@@ -23,7 +23,7 @@ export default {
 			{
 				name: 'Instagram',
 				url: 'https://www.instagram.com/jaydixit',
-				icon: Instagram,
+				icon: Camera,
 			} as SocialLink,
 		],
 };

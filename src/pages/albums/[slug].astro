@@ -12,7 +12,7 @@ if (!album) {
 }
 
 export const getStaticPaths = async () => {
-  const albums = await getCollection('albums');
+  const albums = (await getCollection('albums')).filter((album) => !album.data.draft);
   return albums.map((a) => ({ params: { slug: a.id } }));
 };
 ---

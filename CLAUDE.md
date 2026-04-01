@@ -5,6 +5,9 @@
 ** Future Tasks
 
 - [ ] Configure Giscus comments: Enable GitHub Discussions on repo, visit https://giscus.app to get repo-id and category-id, then update src/components/PhotoComments.astro with real values (currently has placeholders)
+- [ ] More portrait coverage: Download local highlight files for people who only have Cloudinary assets (Willem Dafoe, Gabriel LaBelle, Rose Byrne, Sydney Sweeney solo, Ana de Armas solo, Jason Collett, Kaia Gerber solo). These are referenced in src/data/homepage-images.js but have no files in src/gallery/highlights/, so they don't appear on portrait pages.
+- [ ] Before-and-after page expansion: src/pages/before-after.astro currently showcases 4 people. More Wikipedia-upgraded portraits are now available and could be added.
+- [ ] Albums: The content collection at src/content/albums/ is scaffolded but empty. Could be used for curated sets (e.g., "SXSW 2024", "Nobel Laureates").
 
 
 ​** Overview
@@ -44,7 +47,9 @@ manifest.
 
 ​*** 💡 Lightbox Viewer
 
-- Powered by GLightbox
+- Main galleries and comparison pages use PhotoSwipe for full-screen viewing
+
+- Some older components and experiments still reference GLightbox
 
 - Full-size viewer with zoom and nav arrows
 
@@ -252,6 +257,16 @@ manifest.
 
 - All content is static + light client-side JS (no SSR needed)
 
+- Two gallery modes exist: YAML (src/gallery/gallery.yaml) and filesystem (src/gallery/photos/**). Avoid route conflicts; prefer one source per route.
+
+- Coding conventions: Components are PascalCase.astro (e.g., PhotoGrid.astro), modules are camelCase.ts (e.g., galleryData.ts). Tailwind v4 utility-first CSS.
+
+- Site-wide settings live in site.config.mts
+
+- Tests: Vitest framework, tests live in src/data/__tests__/*.test.ts. Run with npm run test. Run npm run lint and npm run prettier before submitting.
+
+- User preference: org-mode is preferred for docs. In org files, use ~...~ instead of backticks for inline code.
+
 
 
 ​** Deployment
@@ -266,12 +281,21 @@ manifest.
 
 ​** Commands
 
-- To generate tags: node scripts/generate-tags-json.js
-  ./src/gallery/photos/[folder]
+- Start dev server: npm run dev
 
-- To build Astro: npm run build
+- Build production site: npm run build
 
-- To deploy (once Vercel linked): git push
+- Preview built output: npm run preview
+
+- Run tests: npm run test
+
+- Run lint: npm run lint
+
+- Format repo: npm run prettier
+
+- Regenerate gallery YAML from src/gallery/**: npm run generate
+
+- Generate tags for folder photos: npm run generate-tags
 
 
 Perfect --- Giscus is an excellent choice: lightweight,

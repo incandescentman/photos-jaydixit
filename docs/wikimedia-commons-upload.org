@@ -118,7 +118,7 @@ The system automatically parses filenames in this format:
   - Event: Locarno
   - Year: (none)
 
-- =jeremy-11.jpg=
+- =group-portrait_ana-de-armas-sydney-sweeney-ron-howard_2024.jpg=
   - Subject: Jeremy 11
   - Event: (none)
   - Year: (none)
@@ -228,7 +228,7 @@ cp user-config.py user-config.py.backup
 
 ** Test Upload (single file)
 #+BEGIN_SRC bash
-python3 scripts/commons-uploader.py src/gallery/photos/portraits/studio/jeremy-11.jpg "Portraits,Studio"
+python3 scripts/commons-uploader.py src/gallery/photos/portraits/studio/group-portrait_ana-de-armas-sydney-sweeney-ron-howard_2024.jpg "Portraits,Studio"
 #+END_SRC
 
 ** Launch Web Interface

@@ -113,9 +113,10 @@ JavaScript should *enhance* CSS layouts, not fight them. If you're destroying DO
 * 2025-10-03 - Vite Module Imports & Masonry Visibility
 - The masonry gallery script was initially imported via a relative path such as ~../scripts/packeryGallery.ts~ inside a regular ~<script type="module">~ block. In Astro + Vite, that executes on the client without bundling, so the browser requested ~/src/scripts/packeryGallery.ts~ and received a 404.
 - Because the initializer never ran, masonry items kept their absolute positioning and zero-opacity state, resulting in a blank photo grid—especially visible on mobile where the fallback relies entirely on the script.
+- The same bundling rule applies to package imports from page-level scripts. On ~/src/pages/before-after.astro~, PhotoSwipe markup and data attributes were correct, but the lightbox still failed because the page emitted a raw module script containing bare imports like ~photoswipe/lightbox~ instead of a bundled ~/_astro/*.js~ asset.
 - Fix: Switch to a hoisted script (~<script hoist>~) so Astro registers the dependency at build time; relative imports like ~import initPackeryGallery from '../scripts/packeryGallery.ts'~ now bundle correctly for every page.
 - Reminder: avoid ~Astro.resolve~ for browser-targeted helpers; it runs during SSR and returns plain URLs that bypass Vite's bundler pipeline.
-- Checklist update: before shipping a new browser-side helper, confirm the entry point uses ~<script hoist>~ (or a frontmatter import) and that a quick ~npm run build~ succeeds without 404s in devtools logs.
+- Checklist update: before shipping a new browser-side helper, confirm the entry point uses ~<script hoist>~ (or a frontmatter import), that a quick ~npm run build~ succeeds without 404s in devtools logs, and that the built HTML references a bundled ~/_astro/*.js~ file rather than leaving bare imports in the page output.
 
 * 2025-10-05 - Masonry Gutters & Edge Balance
 - Packery is happiest when column math stays at the canonical 320px + 8px gutter; pushing columns wider without recalculating heights produces the infamous cropped foreheads.

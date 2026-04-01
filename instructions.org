@@ -30,8 +30,8 @@ src/gallery/photos/
   │       └── john-hopfield_nobel-physics_2024.jpg
   ├── portraits/
   │   └── studio/
-  │       ├── jeremy-strong_studio-session_2024.jpg
-  │       └── jeremy-11.jpg
+  │       ├── jeremy-strong_the-apprentice-premiere_2024.jpg
+  │       └── dave-franco_sundance_2025.jpg
   ├── red-carpet/
   │   ├── sundance/
   │   │   └── conan-obrien_sundance_2024.jpg
@@ -39,7 +39,7 @@ src/gallery/photos/
   │       └── vanessa-kirby_tiff_2024.jpg
   └── themes/
       └── fashion/
-          └── judd-apatow_fashion-shoot_2024.jpg
+          └── judd-apatow_sxsw_2024.jpg
 #+end_example
 
 ** Filename Convention
@@ -69,9 +69,9 @@ cd src/gallery/photos/portraits/studio
 
 # Add caption and title
 exiftool -overwrite_original \
-  -IPTC:Caption-Abstract="Jeremy Strong during studio portrait session" \
-  -XMP-dc:Title="Jeremy Strong - Studio Portrait" \
-  jeremy-strong_studio-session_2024.jpg
+  -IPTC:Caption-Abstract="Jeremy Strong at the New York red carpet premiere of The Apprentice" \
+  -XMP-dc:Title="Jeremy Strong - The Apprentice Premiere" \
+  jeremy-strong_the-apprentice-premiere_2024.jpg
 
 # Add multiple tags/keywords
 exiftool -overwrite_original \
@@ -79,13 +79,13 @@ exiftool -overwrite_original \
   -XMP-dc:Subject+="studio" \
   -XMP-dc:Subject+="2024" \
   -XMP-dc:Subject+="jeremy-strong" \
-  jeremy-strong_studio-session_2024.jpg
+  jeremy-strong_the-apprentice-premiere_2024.jpg
 
 # Add location
 exiftool -overwrite_original \
   -IPTC:City="New York" \
   -IPTC:Country-PrimaryLocationName="USA" \
-  jeremy-strong_studio-session_2024.jpg
+  jeremy-strong_the-apprentice-premiere_2024.jpg
 #+end_src
 
 *** Batch Process Multiple Photos
@@ -112,7 +112,7 @@ exiftool -overwrite_original \
 *** Verify Metadata
 #+begin_src bash
 # Check what metadata a photo has
-exiftool -IPTC:All -XMP:All jeremy-strong_studio-session_2024.jpg
+exiftool -IPTC:All -XMP:All jeremy-strong_the-apprentice-premiere_2024.jpg
 #+end_src
 
 ** Method 2: Using tags.json Files (Simpler)
@@ -141,21 +141,20 @@ Notes:
     "event": "Studio Sessions"
   },
   "captions": {
-    "jeremy-strong_studio-session_2024.jpg": "Jeremy Strong during studio portrait session",
-    "jeremy-11.jpg": "Jeremy Strong - alternative angle",
-    "jeremy-3.jpg": "Jeremy Strong - close-up portrait",
-    "jeremy-4.jpg": "Jeremy Strong - three-quarter view",
-    "jeremy-6.jpg": "Jeremy Strong - casual pose",
-    "jeremy.jpg": "Jeremy Strong - main portrait"
+    "jeremy-strong_the-apprentice-premiere_2024.jpg": "Jeremy Strong at the New York red carpet premiere of The Apprentice",
+    "dave-franco_sundance_2025.jpg": "Dave Franco at Sundance 2025",
+    "himesh-patel.jpg": "Himesh Patel",
+    "sebastian-stan.jpg": "Sebastian Stan",
+    "group-portrait_ana-de-armas-sydney-sweeney-ron-howard_2024.jpg": "Ana de Armas, Sydney Sweeney, and Ron Howard"
   },
   "overrides": {
-    "jeremy-strong_studio-session_2024.jpg": {
-      "title": "Jeremy Strong - Studio Portrait",
+    "jeremy-strong_the-apprentice-premiere_2024.jpg": {
+      "title": "Jeremy Strong - The Apprentice Premiere",
       "tags": ["actor", "succession"],
       "people": ["Jeremy Strong"]
     }
   },
-  "highlights": ["jeremy-strong_studio-session_2024.jpg", "jeremy.jpg"]
+  "highlights": ["jeremy-strong_the-apprentice-premiere_2024.jpg", "dave-franco_sundance_2025.jpg"]
 }
 #+end_src
 
@@ -257,7 +256,10 @@ node scripts/upload-with-tags-json.js ./src/gallery/photos
 npm run photo:validate -- ./src/gallery/photos
 #+end_src
 
-This will show which photos are missing captions or titles.
+This validates the merged metadata for each photo:
+- embedded EXIF/IPTC/XMP metadata already on the file
+- folder defaults from ~tags.json~
+- per-file overrides from ~tags.json~
 
 *** Preview what will happen (dry run):
 #+begin_src bash
@@ -269,6 +271,13 @@ node scripts/photo-cli.js upload ./src/gallery/photos --dry-run --verbose
 npm run photo:upload -- ./src/gallery/photos
 #+end_src
 
+This is now the recommended workflow. The main CLI will:
+- merge metadata from the file and ~tags.json~
+- validate the merged metadata
+- write the merged caption/title metadata back into the source image file
+- upload the image and sync the same metadata to Cloudinary
+- generate Astro album content
+
 *** Force upload even with validation errors:
 #+begin_src bash
 node scripts/photo-cli.js upload ./src/gallery/photos --force
@@ -276,6 +285,7 @@ node scripts/photo-cli.js upload ./src/gallery/photos --force
 
 Behavior notes:
 - The full CLI uses ~overwrite: true~. Uploading the same ~public_id~ overwrites the existing asset.
+- The full CLI writes merged metadata back into the original file before upload unless you use ~--dry-run~ or ~--no-embed-metadata~.
 - The basic uploader and EXIF uploader skip existing assets unless you remove them or change filenames.
 
 * 📝 Quick Metadata Templates
@@ -498,11 +508,11 @@ src/gallery/photos/
 
 * 🎯 Next Steps
 
-1. Choose your metadata method (ExifTool or tags.json)
-2. Add captions and titles to your existing photos
-3. Run validation to check everything is ready
-4. Upload to Cloudinary
-5. Verify in Cloudinary console and your Astro site
+1. Add metadata with ExifTool and/or ~tags.json~
+2. Run ~npm run photo:validate -- DIR~ to validate merged metadata
+3. Run ~npm run photo:upload -- DIR~ to stamp that metadata into the files and upload
+4. Verify in Cloudinary console and your Astro site
+5. Use the simpler helper scripts only for exceptional cases
 
 Need help? The validation tool will tell you exactly what's missing!
  
