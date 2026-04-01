@@ -153,6 +153,7 @@ Documentation structure:
 
 *** Core Directories
 - **~/src/gallery/photos/~** - Photo storage organized by gallery
+- **~/src/gallery/highlights/~** - Canonical local highlight files used by homepage and portrait pages
 - **~/src/pages/~** - Astro pages and routes
 - **~/src/components/~** - Reusable UI components
 - **~/src/lib/~** - Utilities and helpers (including cloudinary.ts)
@@ -183,6 +184,7 @@ Documentation structure:
 - Automatic format negotiation (AVIF/WebP/JPEG)
 - Images uploaded via `scripts/upload-to-cloudinary.js`
 - Canonical local highlight source files live in `src/gallery/highlights/` and should stay meaningfully named
+- When a local highlight filename no longer matches the remote Cloudinary asset name, set ~=cloudinaryPublicId=~ in ~src/data/homepage-images.js~ instead of forcing an immediate Cloudinary rename
 
 *** Build Process
 - Static generation for all gallery pages
@@ -242,6 +244,11 @@ Frequency: Very High
 3. Create `tags.json` for gallery metadata (optional)
 4. Run build to generate gallery page
 5. Test gallery at `/gallery/[gallery-name]`
+
+*** To avoid duplicate gallery photos:
+1. Treat sibling ~.webp~ files in ~src/gallery/photos/~ as derivative assets, not separate source photos
+2. On gallery-style source-list routes, use glob patterns like ~**/*.{jpg,jpeg,png,gif}~ rather than including ~webp~
+3. If a route intentionally keeps ~webp~ in its glob, it must dedupe by slug/source priority before rendering counts or cards
 
 *** To add a portrait (person page):
 1. Ensure a solo photo of the person exists in any gallery or highlights folder (filename must start with subject slug, e.g. =ray-kurzweil_event_2024.jpg=)

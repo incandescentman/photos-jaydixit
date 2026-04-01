@@ -10,7 +10,7 @@ import type { ImageMetadata } from 'astro:assets';
 
 // Get all photos from all galleries
 const photoModules = import.meta.glob<{ default: ImageMetadata }>(
-  '../gallery/photos/**/*.{jpg,jpeg,png,webp,gif}',
+  '../gallery/photos/**/*.{jpg,jpeg,png,gif}',
   { eager: true }
 );
 

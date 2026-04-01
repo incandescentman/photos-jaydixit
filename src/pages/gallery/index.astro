@@ -14,7 +14,7 @@ type GalleryEntry = {
 };
 
 const imageModules = import.meta.glob<{ default: ImageMetadata }>(
-	'../../gallery/photos/**/*.{jpg,jpeg,png,webp,gif}',
+	'../../gallery/photos/**/*.{jpg,jpeg,png,gif}',
 	{ eager: true },
 );
 

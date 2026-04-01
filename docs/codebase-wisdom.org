@@ -1,6 +1,45 @@
 #+TITLE: Codebase Wisdom
 #+DATE: 2025-10-03
 
+* 2026-03-31 - Homepage Cloudinary IDs Can Drift From Local Highlight Filenames
+
+** Trigger
+Local highlight files were renamed to cleaner subject-based names such as ~jude-law_tiff.jpg~ and ~ron-livingston_sxsw-office-space-event_2024.jpg~, but the landing page started serving broken Cloudinary URLs.
+
+** Mechanism
+The homepage derives Cloudinary public IDs from ~=filename=~ in ~src/data/homepage-images.js~. That works only if the remote Cloudinary asset was uploaded under the same basename.
+
+Once a local file is renamed without also renaming or re-uploading the Cloudinary asset, the landing page starts requesting a public ID that does not exist, even though the local file and metadata are correct.
+
+** Fix
+Allow homepage entries to carry an explicit ~=cloudinaryPublicId=~ override and fall back to the filename-derived ID only when local and remote names still match.
+
+- Keep canonical local filenames meaningful in ~/src/gallery/highlights/~
+- In ~/src/data/homepage-images.js~, set ~=cloudinaryPublicId=~ when the Cloudinary asset still lives under an older name
+- In ~/src/pages/index.astro~, prefer ~=cloudinaryPublicId=~ over the derived ~=highlights/{basename}=~ pattern
+
+** Rule of Thumb
+Treat Cloudinary public IDs as external identifiers, not as guaranteed mirrors of local filenames. If a local rename happens after upload, either rename the Cloudinary asset too or add an explicit override in homepage data.
+
+* 2026-03-31 - Sibling Source WebP Files Must Be Excluded From Gallery-Style Source Lists
+
+** Trigger
+Routes like ~/gallery/events/nobel/~ and the gallery index surfaced duplicate photos because both ~.jpg~ and sibling source ~.webp~ files were being treated as separate source images.
+
+** Mechanism
+Under ~/src/gallery/photos/~, source ~.webp~ files are derivative siblings of canonical source images, not distinct photos. Routes that count or list raw files by folder, such as ~src/pages/gallery/index.astro~, ~src/pages/gallery/[...folder].astro~, and ~src/pages/upload-to-commons.astro~, will overcount and duplicate cards if they glob ~=webp=~ alongside ~jpg/jpeg/png/gif~.
+
+Routes that dedupe by slug can safely continue to glob ~.webp~, but gallery-style source-list pages should not.
+
+** Fix
+Exclude ~.webp~ from raw gallery photo globs on routes that build folder counts, source-photo lists, or upload queues.
+
+- Use patterns like ~**/*.{jpg,jpeg,png,gif}~ for folder galleries, gallery indexes, and Commons upload helpers
+- Keep ~.webp~ only on routes that intentionally dedupe by slug and source priority
+
+** Rule of Thumb
+If a route is treating files as source photos rather than as renderable asset variants, do not glob sibling ~.webp~ files.
+
 * 2026-03-31 - Portrait Pages Need Explicit Photo Mappings For Group Shots And Legacy Filenames
 
 ** Trigger
