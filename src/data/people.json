@@ -8,7 +8,6 @@
       "Ana_de_Armas_at_the_2024_Toronto_International_Film_Festival_02_(cropped2)",
       "Ana_de_Armas_and_Sydney_Sweeney_at_the_2024_Toronto_International_Film_Festival_04"
     ],
-    "bio": "Actor",
     "wikipedia": "https://en.wikipedia.org/wiki/Ana_de_Armas"
   },
   {
@@ -19,7 +18,6 @@
       "2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07141",
       "2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07162"
     ],
-    "bio": "Comedian and talk show host",
     "wikipedia": "https://en.wikipedia.org/wiki/Conan_O%27Brien"
   },
   {
@@ -29,56 +27,52 @@
     "photoSlugs": [
       "kaia-gerber_cory-michael-smith_saturday-night-sundance-premiere"
     ],
-    "bio": "Actor",
+    "bio": "Gotham, May December",
     "wikipedia": "https://en.wikipedia.org/wiki/Cory_Michael_Smith"
   },
   {
     "slug": "dave-franco",
     "name": "Dave Franco",
     "match": ["dave-franco"],
-    "bio": "Actor",
     "wikipedia": "https://en.wikipedia.org/wiki/Dave_Franco"
   },
   {
     "slug": "ella-hunt",
     "name": "Ella Hunt",
     "match": ["ella-hunt"],
-    "bio": "Actor and singer-songwriter",
+    "bio": "Dickinson, Anna and the Apocalypse",
     "wikipedia": "https://en.wikipedia.org/wiki/Ella_Hunt"
   },
   {
     "slug": "emma-stone",
     "name": "Emma Stone",
     "match": ["emma-stone"],
-    "bio": "Actor",
     "wikipedia": "https://en.wikipedia.org/wiki/Emma_Stone"
   },
   {
     "slug": "himesh-patel",
     "name": "Himesh Patel",
     "match": ["himesh-patel"],
-    "bio": "Actor",
+    "bio": "Yesterday, Station Eleven",
     "wikipedia": "https://en.wikipedia.org/wiki/Himesh_Patel"
   },
   {
     "slug": "jeremy-strong",
     "name": "Jeremy Strong",
     "match": ["jeremy-strong"],
-    "bio": "Actor, known for Succession",
     "wikipedia": "https://en.wikipedia.org/wiki/Jeremy_Strong_(actor)"
   },
   {
     "slug": "john-hopfield",
     "name": "John Hopfield",
     "match": ["john-hopfield"],
-    "bio": "Physicist, 2024 Nobel Prize in Physics",
+    "bio": "Nobel Prize-winning physicist",
     "wikipedia": "https://en.wikipedia.org/wiki/John_Hopfield"
   },
   {
     "slug": "judd-apatow",
     "name": "Judd Apatow",
     "match": ["judd-apatow"],
-    "bio": "Filmmaker and comedian",
     "wikipedia": "https://en.wikipedia.org/wiki/Judd_Apatow"
   },
   {
@@ -86,37 +80,33 @@
     "name": "Jude Law",
     "match": ["jude-law"],
     "photoSlugs": [
-      "jay-dixit_red-carpet_01130"
+      "jude-law_tiff"
     ],
-    "bio": "Actor",
     "wikipedia": "https://en.wikipedia.org/wiki/Jude_Law"
   },
   {
     "slug": "kaia-gerber",
     "name": "Kaia Gerber",
     "match": ["kaia-gerber"],
-    "bio": "Model and actor",
     "wikipedia": "https://en.wikipedia.org/wiki/Kaia_Gerber"
   },
   {
     "slug": "kieran-culkin",
     "name": "Kieran Culkin",
     "match": ["kieran-culkin"],
-    "bio": "Actor",
     "wikipedia": "https://en.wikipedia.org/wiki/Kieran_Culkin"
   },
   {
     "slug": "lisa-gilroy",
     "name": "Lisa Gilroy",
     "match": ["lisa-gilroy"],
-    "bio": "Comedian and actor",
+    "bio": "Comedian and improviser",
     "wikipedia": "https://en.wikipedia.org/wiki/Lisa_Gilroy"
   },
   {
     "slug": "nicholas-braun",
     "name": "Nicholas Braun",
     "match": ["nicholas-braun"],
-    "bio": "Actor",
     "wikipedia": "https://en.wikipedia.org/wiki/Nicholas_Braun"
   },
   {
@@ -126,7 +116,6 @@
     "photoSlugs": [
       "group-portrait_ana-de-armas-sydney-sweeney-ron-howard_2024"
     ],
-    "bio": "Filmmaker and actor",
     "wikipedia": "https://en.wikipedia.org/wiki/Ron_Howard"
   },
   {
@@ -134,16 +123,15 @@
     "name": "Ron Livingston",
     "match": ["ron-livingston"],
     "photoSlugs": [
-      "2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07310"
+      "ron-livingston_sxsw-office-space-event_2024"
     ],
-    "bio": "Actor",
+    "bio": "Office Space, Band of Brothers",
     "wikipedia": "https://en.wikipedia.org/wiki/Ron_Livingston"
   },
   {
     "slug": "sebastian-stan",
     "name": "Sebastian Stan",
     "match": ["sebastian-stan"],
-    "bio": "Actor",
     "wikipedia": "https://en.wikipedia.org/wiki/Sebastian_Stan"
   },
   {
@@ -155,28 +143,25 @@
       "Sydney_Sweeney_at_the_2024_Toronto_International_Film_Festival_(cropped_2)",
       "Ana_de_Armas_and_Sydney_Sweeney_at_the_2024_Toronto_International_Film_Festival_04"
     ],
-    "bio": "Actor",
     "wikipedia": "https://en.wikipedia.org/wiki/Sydney_Sweeney"
   },
   {
     "slug": "steven-yeun",
     "name": "Steven Yeun",
     "match": ["steven-yeun"],
-    "bio": "Actor",
     "wikipedia": "https://en.wikipedia.org/wiki/Steven_Yeun"
   },
   {
     "slug": "vanessa-kirby",
     "name": "Vanessa Kirby",
     "match": ["vanessa-kirby"],
-    "bio": "Actress, known for The Crown",
     "wikipedia": "https://en.wikipedia.org/wiki/Vanessa_Kirby"
   },
   {
     "slug": "vinod-khosla",
     "name": "Vinod Khosla",
     "match": ["vinod-khosla"],
-    "bio": "Venture capitalist and technology entrepreneur",
+    "bio": "Venture capitalist and tech investor",
     "wikipedia": "https://en.wikipedia.org/wiki/Vinod_Khosla"
   }
 ]

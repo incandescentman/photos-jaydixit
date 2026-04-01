@@ -28,7 +28,8 @@ manifest.
 
 ​*** 📁 Folder-Based Gallery Pages
 
-- All photos live in src/gallery/photos/** folder
+- Gallery source photos live in src/gallery/photos/** folder
+- Portrait and homepage highlight assets also live in src/gallery/highlights/
 
 - Each subfolder becomes a separate gallery
 
@@ -130,13 +131,17 @@ manifest.
 
 - Each photo displays a like button and live count
 
-- Stored in Supabase photo_likes table:
+- Stored in Supabase photo_user_likes table:
 
   - photo_id: string (filename)
 
-  - like_count: integer
+  - visitor_id: string
+
+  - created_at: timestamp
 
 - Uses Supabase anonymous access and row-level security
+
+- /popular aggregates counts from photo_user_likes by photo_id
 
 - Future: most-liked photos or tag analytics
 
@@ -218,6 +223,8 @@ manifest.
 
 - src/pages/press.astro → press kit / media resources
 
+- src/pages/upload-to-commons.astro → Wikimedia Commons upload helper for local gallery photos
+
 - src/pages/popular.astro → most-liked photos (requires Supabase)
 
 - src/pages/albums/index.astro and src/pages/albums/[slug].astro → curated albums (scaffolded, not yet populated)
@@ -275,25 +282,23 @@ manifest.
 
 - Create a Supabase project: jaydixit-photos
 
-- Enable table: photo_likes
+- Enable table: photo_user_likes
 
 - Schema:
 
-  - id (uuid, default gen)
-
   - photo_id (text)
 
-  - like_count (integer)
+  - visitor_id (text)
 
   - created_at (timestamp)
+
+- Recommended constraint: unique(photo_id, visitor_id)
 
 - RLS Policies:
 
   - Public read: USING (true)
 
   - Public write: USING (true)
-
-- SQL Function: increment_like_count(photo_id TEXT)
 
 
 
@@ -316,6 +321,12 @@ manifest.
 - All content is static + light client-side JS (no SSR needed)
 
 - Two gallery modes exist: YAML (src/gallery/gallery.yaml) and filesystem (src/gallery/photos/**). Avoid route conflicts; prefer one source per route.
+
+- Highlights are part of the real photo system: homepage and portrait pages also read from src/gallery/highlights/
+
+- Page-level scripts that import npm packages must use hoisted Astro scripts so Vite bundles them. If built HTML leaves bare imports instead of a bundled /_astro/*.js asset, browser-side features like PhotoSwipe will break.
+
+- Source .webp files in src/gallery/photos/** are derivative siblings of canonical source images. Exclude or dedupe them when building gallery-style source lists, or routes like src/pages/gallery/[...folder].astro can render duplicate photos.
 
 - Coding conventions: Components are PascalCase.astro (e.g., PhotoGrid.astro), modules are camelCase.ts (e.g., galleryData.ts). Tailwind v4 utility-first CSS.
 

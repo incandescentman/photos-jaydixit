@@ -59,7 +59,7 @@ export const images = [
     caption: 'Sebastian Stan'
   },
   {
-    filename: 'jay-dixit_red-carpet_01130.jpg',
+    filename: 'jude-law_tiff.jpg',
     size: 'xlportrait', // 1707x2560 (0.67 ratio - portrait, featured)
     caption: 'Jude Law at the Toronto International Film Festival'
   },
@@ -169,7 +169,7 @@ export const images = [
     caption: "Conan O'Brien at SXSW Office Space Event"
   },
   {
-    filename: '2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07310.jpg',
+    filename: 'ron-livingston_sxsw-office-space-event_2024.jpg',
     size: 'portrait',
     caption: 'Ron Livingston at SXSW Office Space Event'
   },

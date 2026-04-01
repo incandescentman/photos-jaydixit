@@ -25,7 +25,7 @@ import jeremyBeforeImg from '../assets/images/wikiportraits/jeremy-strong-before
 import jeremyAfterImg from '../assets/images/wikiportraits/jeremy-strong_the-apprentice-premiere_2024.jpg';
 
 // Import hero image
-import sxswHeroImg from '../assets/images/wikiportraits/2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07310.jpg';
+import sxswHeroImg from '../assets/images/wikiportraits/ron-livingston_sxsw-office-space-event_2024.jpg';
 
 <style>{`
   .pswp__img {
