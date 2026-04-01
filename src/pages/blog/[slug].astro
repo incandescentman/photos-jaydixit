@@ -1,5 +1,6 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
+import RelatedPosts from '../../components/RelatedPosts.astro';
 import SocialShare from '../../components/SocialShare.astro';
 import { getCollection, render } from 'astro:content';
 import { smartQuotes } from '@jaydixit/astro-utils';
@@ -117,6 +118,8 @@ const blogStructuredData = {
 		<div class="article-content prose prose-slate mx-auto max-w-none">
 			<Content />
 		</div>
+
+		<RelatedPosts currentSlug={post.id} currentTags={data.tags ?? []} />
 	</article>
 </MainLayout>
 

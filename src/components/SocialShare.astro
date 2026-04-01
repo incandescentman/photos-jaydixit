@@ -6,55 +6,34 @@ type Props = {
 	className?: string;
 };
 
-const {
-	url,
-	title = 'Check this out',
-	text = 'Take a look at this page',
-	className = '',
-} = Astro.props as Props;
+const { url, title = 'this page', className = '' } = Astro.props as Props;
 
 const siteUrl = Astro.site?.origin ?? 'https://photos.jaydixit.com';
 const shareUrl = new URL(url ?? Astro.url.pathname, siteUrl).toString();
-const encodedUrl = encodeURIComponent(shareUrl);
-const encodedTitle = encodeURIComponent(title);
-const encodedText = encodeURIComponent(text);
 ---
 
-<div
-	class={`social-share ${className}`}
-	data-share-url={shareUrl}
-	data-share-title={title}
-	data-share-text={text}
->
-	<div class="social-share-actions">
-		<button type="button" class="social-share-button" data-action="native">Share</button>
-		<button type="button" class="social-share-button" data-action="copy">Copy Link</button>
-		<a
-			class="social-share-link"
-			href={`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedText}`}
-			target="_blank"
-			rel="noopener noreferrer"
-		>
-			X
-		</a>
-		<a
-			class="social-share-link"
-			href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
-			target="_blank"
-			rel="noopener noreferrer"
-		>
-			Facebook
-		</a>
-		<a
-			class="social-share-link"
-			href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=${encodedTitle}`}
-			target="_blank"
-			rel="noopener noreferrer"
-		>
-			LinkedIn
-		</a>
-	</div>
-	<p class="social-share-status" aria-live="polite"></p>
+<div class={`social-share ${className}`} data-share-url={shareUrl} data-share-title={title}>
+	<button
+		type="button"
+		class="social-share-button"
+		aria-label={`Copy link to ${title}`}
+		title={`Copy link to ${title}`}
+	>
+		<span class="social-share-icon social-share-copy" aria-hidden="true">
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+				<rect x="9" y="9" width="10" height="10" rx="2"></rect>
+				<path d="M6 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1"></path>
+			</svg>
+		</span>
+		<span class="social-share-icon social-share-check" aria-hidden="true">
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+				<path d="M5 13l4 4L19 7"></path>
+			</svg>
+		</span>
+		<span class="social-share-label">Share</span>
+		<span class="social-share-divider" aria-hidden="true">·</span>
+		<span class="social-share-action">Copy link</span>
+	</button>
 </div>
 
 <script is:inline>
@@ -65,43 +44,46 @@ const encodedText = encodeURIComponent(text);
 		if (element.dataset.bound === 'true') return;
 		element.dataset.bound = 'true';
 
-		const status = element.querySelector('.social-share-status');
-		const shareUrl = element.dataset.shareUrl || window.location.href;
-		const shareTitle = element.dataset.shareTitle || document.title;
-		const shareText = element.dataset.shareText || '';
+		const button = element.querySelector('.social-share-button');
+		if (!button) return;
 
-		const setStatus = (message) => {
-			if (status) status.textContent = message;
-		};
+		button.addEventListener('click', async () => {
+			const shareUrl = element.dataset.shareUrl || window.location.href;
+			const actionLabel = button.querySelector('.social-share-action');
+			const originalText = actionLabel?.textContent;
 
-		element.querySelectorAll('[data-action]').forEach((button) => {
-			button.addEventListener('click', async (event) => {
-				const action = event.currentTarget?.getAttribute('data-action');
-				if (!action) return;
-
-				if (action === 'native' && navigator.share) {
-					try {
-						await navigator.share({
-							title: shareTitle,
-							text: shareText,
-							url: shareUrl,
-						});
-						setStatus('Shared.');
-					} catch {
-						setStatus('');
-					}
-					return;
+			try {
+				await navigator.clipboard.writeText(shareUrl);
+				button.setAttribute('data-state', 'copied');
+				if (actionLabel) actionLabel.textContent = 'Copied';
+				window.setTimeout(() => {
+					button.removeAttribute('data-state');
+					if (actionLabel && originalText) actionLabel.textContent = originalText;
+				}, 1600);
+			} catch {
+				try {
+					const textArea = document.createElement('textarea');
+					textArea.value = shareUrl;
+					textArea.setAttribute('readonly', 'true');
+					textArea.style.position = 'absolute';
+					textArea.style.left = '-9999px';
+					document.body.appendChild(textArea);
+					textArea.select();
+					document.execCommand('copy');
+					document.body.removeChild(textArea);
+					button.setAttribute('data-state', 'copied');
+					if (actionLabel) actionLabel.textContent = 'Copied';
+					window.setTimeout(() => {
+						button.removeAttribute('data-state');
+						if (actionLabel && originalText) actionLabel.textContent = originalText;
+					}, 1600);
+				} catch {
+					if (actionLabel) actionLabel.textContent = 'Copy failed';
+					window.setTimeout(() => {
+						if (actionLabel && originalText) actionLabel.textContent = originalText;
+					}, 1600);
 				}
-
-				if (action === 'copy') {
-					try {
-						await navigator.clipboard.writeText(shareUrl);
-						setStatus('Link copied.');
-					} catch {
-						setStatus('Unable to copy link.');
-					}
-				}
-			});
+			}
 		});
 	});
 </script>
@@ -111,43 +93,61 @@ const encodedText = encodeURIComponent(text);
 		margin: 1.25rem 0 1.5rem;
 	}
 
-	.social-share-actions {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.5rem;
-		align-items: center;
-	}
-
-	.social-share-button,
-	.social-share-link {
+	.social-share-button {
 		display: inline-flex;
 		align-items: center;
-		justify-content: center;
-		padding: 0.5rem 0.8rem;
-		border: 1px solid #d1d5db;
+		gap: 0.55rem;
+		padding: 0.5rem 0.9rem;
+		border: 1px solid rgba(203, 213, 225, 0.9);
 		border-radius: 9999px;
-		background: #fff;
-		color: #111827;
-		font-size: 0.8rem;
+		background: rgba(255, 255, 255, 0.82);
+		backdrop-filter: blur(8px);
+		color: rgb(100, 116, 139);
+		font-size: 0.75rem;
 		font-weight: 600;
-		line-height: 1;
-		text-decoration: none;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
 		cursor: pointer;
 		transition:
-			background-color 0.2s ease,
-			border-color 0.2s ease;
+			color 0.2s ease,
+			border-color 0.2s ease,
+			box-shadow 0.2s ease,
+			background-color 0.2s ease;
 	}
 
-	.social-share-button:hover,
-	.social-share-link:hover {
-		background-color: #f3f4f6;
-		border-color: #9ca3af;
+	.social-share-button:hover {
+		color: rgb(37, 99, 235);
+		border-color: rgba(147, 197, 253, 0.95);
+		background: rgba(255, 255, 255, 0.96);
+		box-shadow: 0 10px 30px -20px rgba(37, 99, 235, 0.45);
 	}
 
-	.social-share-status {
-		min-height: 1rem;
-		margin-top: 0.5rem;
-		font-size: 0.75rem;
-		color: #4b5563;
+	.social-share-button[data-state='copied'] {
+		color: rgb(37, 99, 235);
+		border-color: rgba(96, 165, 250, 0.95);
+		background: rgb(239, 246, 255);
+		box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.12);
+	}
+
+	.social-share-icon {
+		display: inline-flex;
+		width: 0.95rem;
+		height: 0.95rem;
+	}
+
+	.social-share-check {
+		display: none;
+	}
+
+	.social-share-button[data-state='copied'] .social-share-copy {
+		display: none;
+	}
+
+	.social-share-button[data-state='copied'] .social-share-check {
+		display: inline-flex;
+	}
+
+	.social-share-divider {
+		color: rgb(203, 213, 225);
 	}
 </style>
