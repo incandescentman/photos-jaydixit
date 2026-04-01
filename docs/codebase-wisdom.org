@@ -1,6 +1,49 @@
 #+TITLE: Codebase Wisdom
 #+DATE: 2025-10-03
 
+* 2026-04-01 - Legacy ~=gallery= Cloudinary Transforms Can Break Otherwise Valid Images
+
+** Trigger
+Blog images on ~/blog/nobel-portrait-session/~ were broken even though the underlying Cloudinary public IDs were correct and directly fetchable.
+
+** Mechanism
+The shared helper in ~src/lib/cloudinary.ts~ was still honoring ~=PUBLIC_CLOUDINARY_TRANSFORM=gallery~ and generating URLs like ~.../image/upload/t_gallery,w_1600/...~.
+
+That named transform no longer exists on Cloudinary, so requests fail with ~=Unknown transformation gallery=~. This is easy to miss because the public ID itself is valid, and swapping only the transformation string to ~f_auto,q_auto,w_1600~ immediately makes the same asset load.
+
+The bug is worse than a single broken page because blog hero images, related-post cards, and any helper-generated Cloudinary URL all inherit the same transform logic.
+
+** Fix
+Treat the legacy ~=gallery=~ value as invalid and fall back to explicit transforms instead of blindly emitting ~t_gallery~.
+
+- In ~src/lib/cloudinary.ts~, default to ~f_auto,q_auto~ when ~=PUBLIC_CLOUDINARY_TRANSFORM=~ is missing or still set to ~=gallery=~
+- In MDX posts that hardcode old Cloudinary URLs, replace ~t_gallery,...~ with explicit transforms such as ~f_auto,q_auto,w_1600~
+- Verify suspicious Cloudinary failures with ~curl -I~; if the same public ID loads under ~f_auto,q_auto~ but not ~t_gallery~, the transform is the problem, not the asset
+
+** Rule of Thumb
+Treat named Cloudinary transforms as external configuration that can drift or disappear. If a page breaks but the public ID is valid, test the same asset with explicit ~f_auto,q_auto~ transforms before assuming the image is missing.
+
+* 2026-04-01 - Blog Post Images Need Template-Level PhotoSwipe Wiring
+
+** Trigger
+Images on ~/blog/nobel-portrait-session/~ rendered correctly but clicking them did nothing, even after the broken image URLs themselves were fixed.
+
+** Mechanism
+Blog post body content is rendered from Markdown/MDX as plain ~<img>~ tags inside ~src/pages/blog/[slug].astro~. Unlike gallery pages or ~/before-after/~, those images are not authored with PhotoSwipe wrappers, dimensions, or captions.
+
+That means there is nothing for PhotoSwipe to attach to unless the blog template itself enhances the rendered images. Fixing one post by hand would just move the bug around to the next essay.
+
+** Fix
+Handle blog-image lightbox behavior in the shared blog post template, not in individual posts.
+
+- Give the article a stable gallery container
+- Wrap rendered blog-body and hero images in ~=portfolio-lightbox=~ anchors at runtime if they are not already linked
+- Populate ~=data-pswp-width=~, ~=data-pswp-height=~, and ~=data-pswp-caption=~ from the image element
+- Initialize PhotoSwipe from a hoisted script so Astro bundles the code into ~/_astro/*.js~
+
+** Rule of Thumb
+If content comes from Markdown/MDX, assume it will emit plain HTML. Cross-cutting behavior like PhotoSwipe belongs in the page template or renderer pipeline, not in individual content files.
+
 * 2026-03-31 - Homepage Cloudinary IDs Can Drift From Local Highlight Filenames
 
 ** Trigger

@@ -16,6 +16,7 @@ Last Synced for AI Context: 2025-10-04
 The root **CLAUDE.md** file contains legacy documentation. This file (docs/CLAUDE.org) is the canonical documentation entry point. Both should be maintained during transition.
 
 * Recent Updates
+- 2026-04-01: Replaced the dead ~=t_gallery=~ Cloudinary transform fallback with explicit transforms and made blog post images auto-wire into PhotoSwipe
 - 2026-04-01: Renamed the public people directory to ~/red-carpet/~, added recognition + related-essays sections, and standardized metadata helpers
 - 2026-03-30: Added Portraits feature - per-person pages with people.json manifest
 - 2026-01-06: Migrated homepage images to Cloudinary CDN (removed ~200MB from repo)
@@ -186,12 +187,14 @@ Documentation structure:
 - Images uploaded via `scripts/upload-to-cloudinary.js`
 - Canonical local highlight source files live in `src/gallery/highlights/` and should stay meaningfully named
 - When a local highlight filename no longer matches the remote Cloudinary asset name, set ~=cloudinaryPublicId=~ in ~src/data/homepage-images.js~ instead of forcing an immediate Cloudinary rename
+- Do not rely on the legacy named transform ~=gallery=~. The safe default in ~src/lib/cloudinary.ts~ is explicit ~f_auto,q_auto~ transforms.
 
 *** Build Process
 - Static generation for all gallery pages
 - Content collections for photo metadata
 - Dynamic imports for lightbox functionality
 - Progressive image loading
+- Blog post images are rendered from Markdown/MDX as plain ~<img>~ tags and are enhanced into PhotoSwipe links by ~src/pages/blog/[slug].astro~, not by the content files themselves
 
 *** Performance
 - Lazy loading for images

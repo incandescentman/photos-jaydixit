@@ -78,7 +78,7 @@ const blogStructuredData = {
 	keywords={data.tags}
 	structuredData={blogStructuredData}
 >
-	<article class="mx-auto max-w-3xl px-6 pb-24 pt-44 md:pt-56">
+	<article id="blog-lightbox-gallery" class="mx-auto max-w-3xl px-6 pb-24 pt-44 md:pt-56">
 		{
 			heroImage && (
 				<figure class="relative mb-12 overflow-hidden rounded-[2.5rem] bg-slate-100 shadow-[0_25px_70px_-30px_rgba(15,23,42,0.35)]">
@@ -89,7 +89,7 @@ const blogStructuredData = {
 						alt={data.imageAlt ?? data.title}
 						loading="eager"
 						decoding="async"
-						class="h-full w-full object-cover"
+						class="blog-hero-image h-full w-full object-cover"
 					/>
 				</figure>
 			)
@@ -139,6 +139,117 @@ const blogStructuredData = {
 		{showRelatedPosts && <RelatedPosts currentSlug={post.id} currentTags={data.tags ?? []} />}
 	</article>
 </MainLayout>
+
+<script hoist>
+	import PhotoSwipeLightbox from 'photoswipe/lightbox';
+	import 'photoswipe/style.css';
+
+	function updateLightboxLink(img: HTMLImageElement, link: HTMLAnchorElement) {
+		link.href = img.currentSrc || img.src;
+
+		if (img.naturalWidth > 0) {
+			link.setAttribute('data-pswp-width', String(img.naturalWidth));
+		}
+
+		if (img.naturalHeight > 0) {
+			link.setAttribute('data-pswp-height', String(img.naturalHeight));
+		}
+
+		if (img.alt) {
+			link.setAttribute('data-pswp-caption', img.alt);
+		}
+	}
+
+	function wrapBlogImage(img: HTMLImageElement) {
+		const existingLink = img.closest('a');
+
+		if (existingLink instanceof HTMLAnchorElement) {
+			existingLink.classList.add('portfolio-lightbox');
+			updateLightboxLink(img, existingLink);
+			return;
+		}
+
+		const link = document.createElement('a');
+		link.className = 'portfolio-lightbox block';
+		link.setAttribute('aria-label', img.alt || 'Open image');
+		img.parentNode?.insertBefore(link, img);
+		link.appendChild(img);
+		updateLightboxLink(img, link);
+	}
+
+	function enhanceBlogImages() {
+		const gallery = document.querySelector('#blog-lightbox-gallery');
+		if (!(gallery instanceof HTMLElement)) return;
+
+		const targets = gallery.querySelectorAll<HTMLImageElement>('.blog-hero-image, .article-content img');
+		targets.forEach((img) => {
+			img.classList.add('cursor-zoom-in');
+			wrapBlogImage(img);
+
+			if (!img.complete || img.naturalWidth === 0 || img.naturalHeight === 0) {
+				img.addEventListener(
+					'load',
+					() => {
+						const link = img.closest('a.portfolio-lightbox');
+						if (link instanceof HTMLAnchorElement) {
+							updateLightboxLink(img, link);
+						}
+					},
+					{ once: true },
+				);
+			}
+		});
+
+		const lightbox = new PhotoSwipeLightbox({
+			gallery: '#blog-lightbox-gallery',
+			children: '.portfolio-lightbox',
+			pswpModule: () => import('photoswipe'),
+			padding: { top: 20, bottom: 80, left: 20, right: 20 },
+			wheelToZoom: true,
+			imageClickAction: 'close',
+			tapAction: 'toggle-controls',
+			doubleTapAction: 'zoom',
+			preloaderDelay: 0,
+			showHideAnimationType: 'fade',
+		});
+
+		lightbox.addFilter('itemData', (itemData) => {
+			const linkEl = itemData.element;
+			if (!(linkEl instanceof HTMLAnchorElement)) return itemData;
+
+			const img = linkEl.querySelector('img');
+			const width = parseInt(linkEl.getAttribute('data-pswp-width') || '', 10);
+			const height = parseInt(linkEl.getAttribute('data-pswp-height') || '', 10);
+			const caption = linkEl.getAttribute('data-pswp-caption') || '';
+
+			if (Number.isFinite(width) && width > 0) {
+				itemData.w = width;
+			} else if (img instanceof HTMLImageElement && img.naturalWidth > 0) {
+				itemData.w = img.naturalWidth;
+			}
+
+			if (Number.isFinite(height) && height > 0) {
+				itemData.h = height;
+			} else if (img instanceof HTMLImageElement && img.naturalHeight > 0) {
+				itemData.h = img.naturalHeight;
+			}
+
+			if (caption) {
+				itemData.title = caption;
+			}
+
+			return itemData;
+		});
+
+		lightbox.init();
+	}
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', enhanceBlogImages, { once: true });
+	} else {
+		enhanceBlogImages();
+	}
+</script>
 
 <style>
 	.article-content :global(p),

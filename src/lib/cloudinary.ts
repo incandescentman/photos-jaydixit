@@ -1,5 +1,5 @@
 const CLOUD = import.meta.env.PUBLIC_CLOUDINARY_CLOUD_NAME;
-const TRANSFORM = import.meta.env.PUBLIC_CLOUDINARY_TRANSFORM || 'gallery';
+const TRANSFORM = import.meta.env.PUBLIC_CLOUDINARY_TRANSFORM;
 
 function ensureEnv(name: string, value: string | undefined) {
   if (!value) {
@@ -11,7 +11,13 @@ ensureEnv('PUBLIC_CLOUDINARY_CLOUD_NAME', CLOUD);
 
 export function cldUrl(publicId: string, width?: number) {
   const base = `https://res.cloudinary.com/${CLOUD}/image/upload`;
-  const transform = width ? `t_${TRANSFORM},w_${width}` : `t_${TRANSFORM}`;
+  const normalizedTransform =
+    !TRANSFORM || TRANSFORM === 'gallery'
+      ? 'f_auto,q_auto'
+      : TRANSFORM.startsWith('t_')
+        ? TRANSFORM
+        : TRANSFORM;
+  const transform = width ? `${normalizedTransform},w_${width}` : normalizedTransform;
   return `${base}/${transform}/${publicId}`;
 }
 
@@ -24,4 +30,3 @@ export function cldSizes(
 ) {
   return sizes;
 }
-
