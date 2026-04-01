@@ -61,7 +61,7 @@ export const images = [
   {
     filename: 'jay-dixit_red-carpet_01130.jpg',
     size: 'xlportrait', // 1707x2560 (0.67 ratio - portrait, featured)
-    caption: 'Jay Dixit on the Red Carpet'
+    caption: 'Jude Law at the Toronto International Film Festival'
   },
   {
     filename: 'group-portrait_ana-de-armas-sydney-sweeney-ron-howard_2024.jpg',
@@ -161,17 +161,17 @@ export const images = [
   {
     filename: '2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07141.jpg',
     size: 'portrait',
-    caption: 'Conan and Nick Kroll at SXSW Office Space Event'
+    caption: "Conan O'Brien at SXSW Office Space Event"
   },
   {
     filename: '2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07162.jpg',
     size: 'portrait',
-    caption: 'Conan and Nick Kroll at SXSW Office Space Event'
+    caption: "Conan O'Brien at SXSW Office Space Event"
   },
   {
     filename: '2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07310.jpg',
     size: 'portrait',
-    caption: 'Conan and Nick Kroll at SXSW Office Space Event'
+    caption: 'Ron Livingston at SXSW Office Space Event'
   },
   {
     filename: '2024-03-09_SXSW_UCB_ASSSSCAT_10.jpg',

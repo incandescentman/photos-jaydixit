@@ -15,6 +15,10 @@
     "slug": "conan-obrien",
     "name": "Conan O'Brien",
     "match": ["conan-obrien"],
+    "photoSlugs": [
+      "2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07141",
+      "2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07162"
+    ],
     "bio": "Comedian and talk show host",
     "wikipedia": "https://en.wikipedia.org/wiki/Conan_O%27Brien"
   },
@@ -78,6 +82,16 @@
     "wikipedia": "https://en.wikipedia.org/wiki/Judd_Apatow"
   },
   {
+    "slug": "jude-law",
+    "name": "Jude Law",
+    "match": ["jude-law"],
+    "photoSlugs": [
+      "jay-dixit_red-carpet_01130"
+    ],
+    "bio": "Actor",
+    "wikipedia": "https://en.wikipedia.org/wiki/Jude_Law"
+  },
+  {
     "slug": "kaia-gerber",
     "name": "Kaia Gerber",
     "match": ["kaia-gerber"],
@@ -95,7 +109,8 @@
     "slug": "lisa-gilroy",
     "name": "Lisa Gilroy",
     "match": ["lisa-gilroy"],
-    "bio": "Comedian and actor"
+    "bio": "Comedian and actor",
+    "wikipedia": "https://en.wikipedia.org/wiki/Lisa_Gilroy"
   },
   {
     "slug": "nicholas-braun",
@@ -103,18 +118,6 @@
     "match": ["nicholas-braun"],
     "bio": "Actor",
     "wikipedia": "https://en.wikipedia.org/wiki/Nicholas_Braun"
-  },
-  {
-    "slug": "nick-kroll",
-    "name": "Nick Kroll",
-    "match": ["nick-kroll"],
-    "photoSlugs": [
-      "2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07141",
-      "2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07162",
-      "2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07310"
-    ],
-    "bio": "Comedian, actor, and writer",
-    "wikipedia": "https://en.wikipedia.org/wiki/Nick_Kroll"
   },
   {
     "slug": "ron-howard",
@@ -125,6 +128,16 @@
     ],
     "bio": "Filmmaker and actor",
     "wikipedia": "https://en.wikipedia.org/wiki/Ron_Howard"
+  },
+  {
+    "slug": "ron-livingston",
+    "name": "Ron Livingston",
+    "match": ["ron-livingston"],
+    "photoSlugs": [
+      "2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07310"
+    ],
+    "bio": "Actor",
+    "wikipedia": "https://en.wikipedia.org/wiki/Ron_Livingston"
   },
   {
     "slug": "sebastian-stan",
