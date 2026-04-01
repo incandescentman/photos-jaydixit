@@ -124,6 +124,10 @@ manifest.
 
 - Highlight-only photos render without gallery detail links
 
+- Index page exclusions: the portraits index only shows people who have at least one solo portrait. Group shots and multi-person photos are automatically excluded — if a photo's filename contains another person's slug from people.json, it is skipped. Photos matched only via photoSlugs (not match patterns) are also excluded from the index. People with no qualifying solo photos do not appear on the index but still have individual person pages accessible via direct URL.
+
+- Bio guidelines: omit bio for household names. Use achievement-first descriptors for less recognizable people (e.g., "Nobel Prize-winning physicist", "Dickinson, Anna and the Apocalypse"). Avoid generic labels like "Actor".
+
 - To add a person: add entry to people.json, ensure matching photos exist in any gallery or highlights folder
 
 

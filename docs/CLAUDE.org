@@ -244,7 +244,7 @@ Frequency: Very High
 5. Test gallery at `/gallery/[gallery-name]`
 
 *** To add a portrait (person page):
-1. Ensure photos of the person exist in any gallery folder (filename must start with subject slug, e.g. =ray-kurzweil_event_2024.jpg=)
+1. Ensure a solo photo of the person exists in any gallery or highlights folder (filename must start with subject slug, e.g. =ray-kurzweil_event_2024.jpg=)
 2. Add an entry to =src/data/people.json=:
    #+begin_src json
    {
@@ -256,8 +256,10 @@ Frequency: Very High
    }
    #+end_src
 3. The =match= array controls which filenames map to this person (matches the subject slug, i.e. the part before the first =_= in the filename). For example, =["dave-franco"]= matches =dave-franco_sundance_2025.jpg=.
-4. Build/dev to generate the page at =/portraits/ray-kurzweil=
-5. The person also appears in the Portraits directory at =/portraits/=
+4. For group shots and non-standard filenames, use =photoSlugs= for explicit file-to-person mapping. These appear on person pages but not the index.
+5. Build/dev to generate the page at =/portraits/ray-kurzweil=
+6. The person appears on the =/portraits/= index only if they have at least one solo photo (matched by =match= pattern, with no other person's slug in the filename). People with only group shots or =photoSlugs= have person pages but are excluded from the index.
+7. Bio guidelines: omit bio for household names. Use achievement-first descriptors for less recognizable people (e.g., "Nobel Prize-winning physicist"). Avoid generic labels like "Actor".
 
 *** To modify gallery layout:
 1. Check [[file:design-architecture.org::*Masonry Layout][design-architecture.org::*Masonry Layout]] first

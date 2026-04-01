@@ -349,10 +349,14 @@ const fallbackDimensions = {
 } as const;
 
 // Helper to map a single image to render data
-function mapSingle(img: { filename: string; caption?: string; size?: string }) {
+function mapSingle(img: {
+  filename: string;
+  caption?: string;
+  size?: string;
+  cloudinaryPublicId?: string;
+}) {
   const filename = img.filename;
-  // Remove extension for Cloudinary public ID
-  const publicId = `highlights/${filename.replace(/\.[^.]+$/, '')}`;
+  const publicId = img.cloudinaryPublicId ?? `highlights/${filename.replace(/\.[^.]+$/, '')}`;
   const size = (img.size ?? 'portrait') as HighlightSize;
   const preset = sizePresets[size];
 

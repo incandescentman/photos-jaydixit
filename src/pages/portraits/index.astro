@@ -50,6 +50,17 @@ function matchesPersonByPattern(subjectSlug: string, person: Person): boolean {
 	});
 }
 
+// Collect all match patterns to detect multi-person photos
+const allMatchPatterns = people.flatMap((p) => p.match.map(normalizeMatchValue));
+
+function isMultiPersonPhoto(photoSlug: string, currentPerson: Person): boolean {
+	const normalizedSlug = normalizeMatchValue(photoSlug);
+	const ownPatterns = new Set(currentPerson.match.map(normalizeMatchValue));
+	return allMatchPatterns.some(
+		(pattern) => !ownPatterns.has(pattern) && normalizedSlug.includes(pattern),
+	);
+}
+
 const extensionPriority = ['jpg', 'jpeg', 'webp', 'png', 'gif'];
 const sourcePriority = { gallery: 0, highlights: 1 } as const;
 
@@ -80,11 +91,12 @@ const personEntries = people
 				if (!filename) return;
 				const subjectSlug = getSubjectSlug(filename);
 
-				if (matchesPersonByPattern(subjectSlug, person)) {
+				const photoSlug = filename.replace(/\.[^/.]+$/, '');
+				if (matchesPersonByPattern(subjectSlug, person) && !isMultiPersonPhoto(photoSlug, person)) {
 					matchingPhotos.push({
 						metadata: module.default,
 						filename,
-						slug: filename.replace(/\.[^/.]+$/, ''),
+						slug: photoSlug,
 						source,
 					});
 				}

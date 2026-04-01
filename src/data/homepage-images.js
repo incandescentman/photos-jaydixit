@@ -13,6 +13,9 @@
 // Caption:
 // - Provide a custom caption for each image
 // - If not provided, the filename will be used (with dashes/underscores converted to spaces)
+//
+// Cloudinary:
+// - Optionally provide `cloudinaryPublicId` when the Cloudinary asset name differs from the local filename
 
 export const images = [
   {
@@ -60,6 +63,7 @@ export const images = [
   },
   {
     filename: 'jude-law_tiff.jpg',
+    cloudinaryPublicId: 'highlights/jay-dixit_red-carpet_01130',
     size: 'xlportrait', // 1707x2560 (0.67 ratio - portrait, featured)
     caption: 'Jude Law at the Toronto International Film Festival'
   },
@@ -170,6 +174,7 @@ export const images = [
   },
   {
     filename: 'ron-livingston_sxsw-office-space-event_2024.jpg',
+    cloudinaryPublicId: 'highlights/2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07310',
     size: 'portrait',
     caption: 'Ron Livingston at SXSW Office Space Event'
   },

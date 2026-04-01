@@ -101,7 +101,7 @@ const blogStructuredData = {
 			}
 			{
 				excerpt && (
-					<p class="mx-auto max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
+					<p class="mx-auto max-w-2xl text-xl leading-relaxed text-slate-600 sm:text-2xl">
 						{excerpt}
 					</p>
 				)
@@ -114,8 +114,33 @@ const blogStructuredData = {
 			className="mb-10"
 		/>
 
-		<div class="prose prose-lg prose-slate mx-auto max-w-none">
+		<div class="article-content prose prose-slate mx-auto max-w-none">
 			<Content />
 		</div>
 	</article>
 </MainLayout>
+
+<style>
+	.article-content :global(p),
+	.article-content :global(li) {
+		font-size: 1.5rem;
+		line-height: 1.6;
+	}
+
+	.article-content :global(blockquote) {
+		font-size: 1.5rem;
+		line-height: 1.5;
+	}
+
+	.article-content :global(figcaption) {
+		font-size: 1rem;
+	}
+
+	@media (max-width: 640px) {
+		.article-content :global(p),
+		.article-content :global(li),
+		.article-content :global(blockquote) {
+			font-size: 1.25rem;
+		}
+	}
+</style>
