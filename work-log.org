@@ -1,6 +1,14 @@
 #+TITLE: Daily Handoff Notes
 #+DATE: 2025-10-19
 
+* 2026-04-07
+** Summary
+- Changed the default Astro dev server port from =4321= to =4322= in =astro.config.mts=
+- This avoids port collisions with the Socratic app during local development
+
+** Status
+- Next local dev run should open at =http://localhost:4322/=
+
 * 2026-01-06
 ** Summary
 - Migrated homepage images from build-time Astro processing to Cloudinary CDN
