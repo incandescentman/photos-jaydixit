@@ -1,6 +1,20 @@
 #+TITLE: Daily Handoff Notes
 #+DATE: 2025-10-19
 
+* 2026-04-10
+** Summary
+- Updated Astro from =6.1.2= to =6.1.5= and refreshed the npm and pnpm lockfiles.
+- Left the unrelated dirty change in [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/vercel.json][📄 /Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/vercel.json]] untouched.
+
+** Files
+- [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/package.json][📄 /Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/package.json]]
+- [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/package-lock.json][📄 /Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/package-lock.json]]
+- [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/pnpm-lock.yaml][📄 /Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/pnpm-lock.yaml]]
+
+** Validation
+- =cd /Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit && npm install=
+- =cd /Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit && npm run build=
+
 * 2026-04-07
 ** Summary
 - Changed the default Astro dev server port from =4321= to =4322= in =astro.config.mts=

@@ -3,7 +3,7 @@
   "outputDirectory": "dist",
   "framework": "astro",
   "devCommand": "npm run dev",
-  "installCommand": "npm install",
+  "installCommand": "npm ci",
   "regions": ["iad1"],
   "rewrites": [
     {
