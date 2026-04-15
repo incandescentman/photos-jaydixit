@@ -131,3 +131,13 @@
 ** Status
 - All work committed and pushed to `main`.
 - Ready for pick-up on the follow-up tasks above.
+
+* 2026-04-15
+** Summary
+- Updated [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/src/pages/about.astro][about.astro]] to match the revised Jaydixit Photography page structure.
+- Moved the credentials / bio copy into a bordered box directly under the photo.
+- Restored Jay's original personal essay copy below the box.
+- Simplified [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/src/components/RecognitionSection.astro][RecognitionSection.astro]] so the publication and institution names render as clean editorial lists instead of individual mini-cards.
+
+** Verification
+- Ran `npm run build` in [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit][photos-jaydixit]] successfully.
