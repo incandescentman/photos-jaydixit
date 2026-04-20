@@ -26,6 +26,11 @@ const highlightImageModules = import.meta.glob<{ default: ImageMetadata }>(
 	{ eager: true },
 );
 
+const wikiportraitImageModules = import.meta.glob<{ default: ImageMetadata }>(
+	'../../assets/images/wikiportraits/**/*.{jpg,jpeg,png,webp,gif}',
+	{ eager: true },
+);
+
 function getSubjectSlug(filename: string): string {
 	const baseName = filename.replace(/\.[^/.]+$/, '');
 	return baseName.split('_')[0];
@@ -35,9 +40,14 @@ function normalizeMatchValue(value: string) {
 	return value.trim().toLowerCase();
 }
 
-// Index page only uses match patterns (solo portraits), not photoSlugs (group shots / legacy filenames)
-function matchesPersonByPattern(subjectSlug: string, person: Person): boolean {
+function matchesPerson(subjectSlug: string, photoSlug: string, person: Person): boolean {
 	const normalizedSubjectSlug = normalizeMatchValue(subjectSlug);
+	const normalizedPhotoSlug = normalizeMatchValue(photoSlug);
+	const explicitPhotoSlugs = new Set((person.photoSlugs ?? []).map(normalizeMatchValue));
+
+	if (explicitPhotoSlugs.has(normalizedPhotoSlug)) {
+		return true;
+	}
 
 	return person.match.some((pattern) => {
 		const normalizedPattern = normalizeMatchValue(pattern);
@@ -62,7 +72,7 @@ function isMultiPersonPhoto(photoSlug: string, currentPerson: Person): boolean {
 }
 
 const extensionPriority = ['jpg', 'jpeg', 'webp', 'png', 'gif'];
-const sourcePriority = { gallery: 0, highlights: 1 } as const;
+const sourcePriority = { gallery: 0, highlights: 1, wikiportraits: 2 } as const;
 
 function extensionRank(file: string) {
 	const ext = file.split('.').pop()?.toLowerCase() ?? '';
@@ -92,7 +102,10 @@ const personEntries = people
 				const subjectSlug = getSubjectSlug(filename);
 
 				const photoSlug = filename.replace(/\.[^/.]+$/, '');
-				if (matchesPersonByPattern(subjectSlug, person) && !isMultiPersonPhoto(photoSlug, person)) {
+				if (
+					matchesPerson(subjectSlug, photoSlug, person) &&
+					!isMultiPersonPhoto(photoSlug, person)
+				) {
 					matchingPhotos.push({
 						metadata: module.default,
 						filename,
@@ -105,6 +118,11 @@ const personEntries = people
 
 		collectMatchingPhotos(galleryImageModules, '../../gallery/photos/', 'gallery');
 		collectMatchingPhotos(highlightImageModules, '../../gallery/highlights/', 'highlights');
+		collectMatchingPhotos(
+			wikiportraitImageModules,
+			'../../assets/images/wikiportraits/',
+			'wikiportraits',
+		);
 
 		const grouped = matchingPhotos.reduce<Record<string, typeof matchingPhotos>>((acc, photo) => {
 			const key = photo.slug;
@@ -189,9 +207,7 @@ const portraitsStructuredData = {
 									<h3 class="text-xl font-semibold mb-1 font-sans group-hover:text-blue-600 transition-colors">
 										{person.name}
 									</h3>
-									{person.bio && (
-										<p class="text-gray-500 text-base mb-1">{person.bio}</p>
-									)}
+									{person.bio && <p class="text-gray-500 text-base mb-1">{person.bio}</p>}
 									<p class="text-gray-400 text-base">
 										{person.photoCount} {person.photoCount === 1 ? 'photo' : 'photos'}
 									</p>

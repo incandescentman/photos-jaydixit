@@ -25,6 +25,9 @@ The root **CLAUDE.md** file contains legacy documentation. This file (docs/CLAUD
 - 2025-10-04: Added AI assistant navigation and pre-session ritual
 - 2025-10-04: Organized existing documentation into structured /docs directory
 
+* TODO For Jay
+- [ ] Add and upload more photos of famous people so additional named person pages can be generated from real local assets
+
 * Start Here
 
 If you're new to this project, read these in order:

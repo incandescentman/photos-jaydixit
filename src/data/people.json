@@ -1,167 +1,166 @@
 [
-  {
-    "slug": "ana-de-armas",
-    "name": "Ana de Armas",
-    "match": ["ana-de-armas"],
-    "photoSlugs": [
-      "group-portrait_ana-de-armas-sydney-sweeney-ron-howard_2024",
-      "Ana_de_Armas_at_the_2024_Toronto_International_Film_Festival_02_(cropped2)",
-      "Ana_de_Armas_and_Sydney_Sweeney_at_the_2024_Toronto_International_Film_Festival_04"
-    ],
-    "wikipedia": "https://en.wikipedia.org/wiki/Ana_de_Armas"
-  },
-  {
-    "slug": "conan-obrien",
-    "name": "Conan O'Brien",
-    "match": ["conan-obrien"],
-    "photoSlugs": [
-      "2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07141",
-      "2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07162"
-    ],
-    "wikipedia": "https://en.wikipedia.org/wiki/Conan_O%27Brien"
-  },
-  {
-    "slug": "cory-michael-smith",
-    "name": "Cory Michael Smith",
-    "match": ["cory-michael-smith"],
-    "photoSlugs": [
-      "kaia-gerber_cory-michael-smith_saturday-night-sundance-premiere"
-    ],
-    "bio": "Gotham, May December",
-    "wikipedia": "https://en.wikipedia.org/wiki/Cory_Michael_Smith"
-  },
-  {
-    "slug": "dave-franco",
-    "name": "Dave Franco",
-    "match": ["dave-franco"],
-    "wikipedia": "https://en.wikipedia.org/wiki/Dave_Franco"
-  },
-  {
-    "slug": "ella-hunt",
-    "name": "Ella Hunt",
-    "match": ["ella-hunt"],
-    "bio": "Dickinson, Anna and the Apocalypse",
-    "wikipedia": "https://en.wikipedia.org/wiki/Ella_Hunt"
-  },
-  {
-    "slug": "emma-stone",
-    "name": "Emma Stone",
-    "match": ["emma-stone"],
-    "wikipedia": "https://en.wikipedia.org/wiki/Emma_Stone"
-  },
-  {
-    "slug": "himesh-patel",
-    "name": "Himesh Patel",
-    "match": ["himesh-patel"],
-    "bio": "Yesterday, Station Eleven",
-    "wikipedia": "https://en.wikipedia.org/wiki/Himesh_Patel"
-  },
-  {
-    "slug": "jeremy-strong",
-    "name": "Jeremy Strong",
-    "match": ["jeremy-strong"],
-    "wikipedia": "https://en.wikipedia.org/wiki/Jeremy_Strong_(actor)"
-  },
-  {
-    "slug": "john-hopfield",
-    "name": "John Hopfield",
-    "match": ["john-hopfield"],
-    "bio": "Nobel Prize-winning physicist",
-    "wikipedia": "https://en.wikipedia.org/wiki/John_Hopfield"
-  },
-  {
-    "slug": "judd-apatow",
-    "name": "Judd Apatow",
-    "match": ["judd-apatow"],
-    "wikipedia": "https://en.wikipedia.org/wiki/Judd_Apatow"
-  },
-  {
-    "slug": "jude-law",
-    "name": "Jude Law",
-    "match": ["jude-law"],
-    "photoSlugs": [
-      "jude-law_tiff"
-    ],
-    "wikipedia": "https://en.wikipedia.org/wiki/Jude_Law"
-  },
-  {
-    "slug": "kaia-gerber",
-    "name": "Kaia Gerber",
-    "match": ["kaia-gerber"],
-    "wikipedia": "https://en.wikipedia.org/wiki/Kaia_Gerber"
-  },
-  {
-    "slug": "kieran-culkin",
-    "name": "Kieran Culkin",
-    "match": ["kieran-culkin"],
-    "wikipedia": "https://en.wikipedia.org/wiki/Kieran_Culkin"
-  },
-  {
-    "slug": "lisa-gilroy",
-    "name": "Lisa Gilroy",
-    "match": ["lisa-gilroy"],
-    "bio": "Comedian and improviser",
-    "wikipedia": "https://en.wikipedia.org/wiki/Lisa_Gilroy"
-  },
-  {
-    "slug": "nicholas-braun",
-    "name": "Nicholas Braun",
-    "match": ["nicholas-braun"],
-    "wikipedia": "https://en.wikipedia.org/wiki/Nicholas_Braun"
-  },
-  {
-    "slug": "ron-howard",
-    "name": "Ron Howard",
-    "match": ["ron-howard"],
-    "photoSlugs": [
-      "group-portrait_ana-de-armas-sydney-sweeney-ron-howard_2024"
-    ],
-    "wikipedia": "https://en.wikipedia.org/wiki/Ron_Howard"
-  },
-  {
-    "slug": "ron-livingston",
-    "name": "Ron Livingston",
-    "match": ["ron-livingston"],
-    "photoSlugs": [
-      "ron-livingston_sxsw-office-space-event_2024"
-    ],
-    "bio": "Office Space, Band of Brothers",
-    "wikipedia": "https://en.wikipedia.org/wiki/Ron_Livingston"
-  },
-  {
-    "slug": "sebastian-stan",
-    "name": "Sebastian Stan",
-    "match": ["sebastian-stan"],
-    "wikipedia": "https://en.wikipedia.org/wiki/Sebastian_Stan"
-  },
-  {
-    "slug": "sydney-sweeney",
-    "name": "Sydney Sweeney",
-    "match": ["sydney-sweeney"],
-    "photoSlugs": [
-      "group-portrait_ana-de-armas-sydney-sweeney-ron-howard_2024",
-      "Sydney_Sweeney_at_the_2024_Toronto_International_Film_Festival_(cropped_2)",
-      "Ana_de_Armas_and_Sydney_Sweeney_at_the_2024_Toronto_International_Film_Festival_04"
-    ],
-    "wikipedia": "https://en.wikipedia.org/wiki/Sydney_Sweeney"
-  },
-  {
-    "slug": "steven-yeun",
-    "name": "Steven Yeun",
-    "match": ["steven-yeun"],
-    "wikipedia": "https://en.wikipedia.org/wiki/Steven_Yeun"
-  },
-  {
-    "slug": "vanessa-kirby",
-    "name": "Vanessa Kirby",
-    "match": ["vanessa-kirby"],
-    "wikipedia": "https://en.wikipedia.org/wiki/Vanessa_Kirby"
-  },
-  {
-    "slug": "vinod-khosla",
-    "name": "Vinod Khosla",
-    "match": ["vinod-khosla"],
-    "bio": "Venture capitalist and tech investor",
-    "wikipedia": "https://en.wikipedia.org/wiki/Vinod_Khosla"
-  }
+	{
+		"slug": "ana-de-armas",
+		"name": "Ana de Armas",
+		"match": ["ana-de-armas"],
+		"photoSlugs": [
+			"group-portrait_ana-de-armas-sydney-sweeney-ron-howard_2024",
+			"Ana_de_Armas_at_the_2024_Toronto_International_Film_Festival_02_(cropped2)",
+			"Ana_de_Armas_and_Sydney_Sweeney_at_the_2024_Toronto_International_Film_Festival_04"
+		],
+		"wikipedia": "https://en.wikipedia.org/wiki/Ana_de_Armas"
+	},
+	{
+		"slug": "conan-obrien",
+		"name": "Conan O'Brien",
+		"match": ["conan-obrien"],
+		"photoSlugs": [
+			"2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07141",
+			"2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07162"
+		],
+		"wikipedia": "https://en.wikipedia.org/wiki/Conan_O%27Brien"
+	},
+	{
+		"slug": "cory-michael-smith",
+		"name": "Cory Michael Smith",
+		"match": ["cory-michael-smith"],
+		"photoSlugs": ["kaia-gerber_cory-michael-smith_saturday-night-sundance-premiere"],
+		"bio": "Gotham, May December",
+		"wikipedia": "https://en.wikipedia.org/wiki/Cory_Michael_Smith"
+	},
+	{
+		"slug": "dave-franco",
+		"name": "Dave Franco",
+		"match": ["dave-franco"],
+		"wikipedia": "https://en.wikipedia.org/wiki/Dave_Franco"
+	},
+	{
+		"slug": "ella-hunt",
+		"name": "Ella Hunt",
+		"match": ["ella-hunt"],
+		"bio": "Dickinson, Anna and the Apocalypse",
+		"wikipedia": "https://en.wikipedia.org/wiki/Ella_Hunt"
+	},
+	{
+		"slug": "emma-stone",
+		"name": "Emma Stone",
+		"match": ["emma-stone"],
+		"wikipedia": "https://en.wikipedia.org/wiki/Emma_Stone"
+	},
+	{
+		"slug": "frank-oz",
+		"name": "Frank Oz",
+		"match": ["frank-oz"],
+		"photoSlugs": ["Frank_Oz_2024_Cropped"],
+		"wikipedia": "https://en.wikipedia.org/wiki/Frank_Oz"
+	},
+	{
+		"slug": "himesh-patel",
+		"name": "Himesh Patel",
+		"match": ["himesh-patel"],
+		"bio": "Yesterday, Station Eleven",
+		"wikipedia": "https://en.wikipedia.org/wiki/Himesh_Patel"
+	},
+	{
+		"slug": "jeremy-strong",
+		"name": "Jeremy Strong",
+		"match": ["jeremy-strong"],
+		"wikipedia": "https://en.wikipedia.org/wiki/Jeremy_Strong_(actor)"
+	},
+	{
+		"slug": "john-hopfield",
+		"name": "John Hopfield",
+		"match": ["john-hopfield"],
+		"bio": "Nobel Prize-winning physicist",
+		"wikipedia": "https://en.wikipedia.org/wiki/John_Hopfield"
+	},
+	{
+		"slug": "judd-apatow",
+		"name": "Judd Apatow",
+		"match": ["judd-apatow"],
+		"wikipedia": "https://en.wikipedia.org/wiki/Judd_Apatow"
+	},
+	{
+		"slug": "jude-law",
+		"name": "Jude Law",
+		"match": ["jude-law"],
+		"photoSlugs": ["jude-law_tiff"],
+		"wikipedia": "https://en.wikipedia.org/wiki/Jude_Law"
+	},
+	{
+		"slug": "kaia-gerber",
+		"name": "Kaia Gerber",
+		"match": ["kaia-gerber"],
+		"wikipedia": "https://en.wikipedia.org/wiki/Kaia_Gerber"
+	},
+	{
+		"slug": "kieran-culkin",
+		"name": "Kieran Culkin",
+		"match": ["kieran-culkin"],
+		"wikipedia": "https://en.wikipedia.org/wiki/Kieran_Culkin"
+	},
+	{
+		"slug": "lisa-gilroy",
+		"name": "Lisa Gilroy",
+		"match": ["lisa-gilroy"],
+		"bio": "Comedian and improviser",
+		"wikipedia": "https://en.wikipedia.org/wiki/Lisa_Gilroy"
+	},
+	{
+		"slug": "nicholas-braun",
+		"name": "Nicholas Braun",
+		"match": ["nicholas-braun"],
+		"wikipedia": "https://en.wikipedia.org/wiki/Nicholas_Braun"
+	},
+	{
+		"slug": "ron-howard",
+		"name": "Ron Howard",
+		"match": ["ron-howard"],
+		"photoSlugs": ["group-portrait_ana-de-armas-sydney-sweeney-ron-howard_2024"],
+		"wikipedia": "https://en.wikipedia.org/wiki/Ron_Howard"
+	},
+	{
+		"slug": "ron-livingston",
+		"name": "Ron Livingston",
+		"match": ["ron-livingston"],
+		"photoSlugs": ["ron-livingston_sxsw-office-space-event_2024"],
+		"bio": "Office Space, Band of Brothers",
+		"wikipedia": "https://en.wikipedia.org/wiki/Ron_Livingston"
+	},
+	{
+		"slug": "sebastian-stan",
+		"name": "Sebastian Stan",
+		"match": ["sebastian-stan"],
+		"wikipedia": "https://en.wikipedia.org/wiki/Sebastian_Stan"
+	},
+	{
+		"slug": "sydney-sweeney",
+		"name": "Sydney Sweeney",
+		"match": ["sydney-sweeney"],
+		"photoSlugs": [
+			"group-portrait_ana-de-armas-sydney-sweeney-ron-howard_2024",
+			"Sydney_Sweeney_at_the_2024_Toronto_International_Film_Festival_(cropped_2)",
+			"Ana_de_Armas_and_Sydney_Sweeney_at_the_2024_Toronto_International_Film_Festival_04"
+		],
+		"wikipedia": "https://en.wikipedia.org/wiki/Sydney_Sweeney"
+	},
+	{
+		"slug": "steven-yeun",
+		"name": "Steven Yeun",
+		"match": ["steven-yeun"],
+		"wikipedia": "https://en.wikipedia.org/wiki/Steven_Yeun"
+	},
+	{
+		"slug": "vanessa-kirby",
+		"name": "Vanessa Kirby",
+		"match": ["vanessa-kirby"],
+		"wikipedia": "https://en.wikipedia.org/wiki/Vanessa_Kirby"
+	},
+	{
+		"slug": "vinod-khosla",
+		"name": "Vinod Khosla",
+		"match": ["vinod-khosla"],
+		"bio": "Venture capitalist and tech investor",
+		"wikipedia": "https://en.wikipedia.org/wiki/Vinod_Khosla"
+	}
 ]

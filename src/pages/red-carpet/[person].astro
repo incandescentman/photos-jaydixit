@@ -34,6 +34,11 @@ const highlightImageModules = import.meta.glob<{ default: ImageMetadata }>(
 	{ eager: true },
 );
 
+const wikiportraitImageModules = import.meta.glob<{ default: ImageMetadata }>(
+	'../../assets/images/wikiportraits/**/*.{jpg,jpeg,png,webp,gif}',
+	{ eager: true },
+);
+
 const captionByFilename = new Map(homepageImages.map((image) => [image.filename, image.caption]));
 
 function formatWord(word: string) {
@@ -127,7 +132,7 @@ function toPhotoHref(folderSlug: string, file: string) {
 }
 
 const extensionPriority = ['jpg', 'jpeg', 'webp', 'png', 'gif'];
-const sourcePriority = { gallery: 0, highlights: 1 } as const;
+const sourcePriority = { gallery: 0, highlights: 1, wikiportraits: 2 } as const;
 
 function extensionRank(file: string) {
 	const ext = file.split('.').pop()?.toLowerCase() ?? '';
@@ -170,10 +175,12 @@ function collectMatchingPhotos(
 			const galleryName =
 				source === 'highlights'
 					? 'Highlights'
-					: folder
-							.split('/')
-							.map((part) => formatPhrase(part))
-							.join(' / ');
+					: source === 'wikiportraits'
+						? 'WikiPortraits'
+						: folder
+								.split('/')
+								.map((part) => formatPhrase(part))
+								.join(' / ');
 
 			return {
 				metadata,
@@ -193,6 +200,11 @@ function collectMatchingPhotos(
 const allMatches: PhotoEntry[] = [
 	...collectMatchingPhotos(galleryImageModules, '../../gallery/photos/', 'gallery'),
 	...collectMatchingPhotos(highlightImageModules, '../../gallery/highlights/', 'highlights'),
+	...collectMatchingPhotos(
+		wikiportraitImageModules,
+		'../../assets/images/wikiportraits/',
+		'wikiportraits',
+	),
 ];
 
 const grouped = allMatches.reduce<Record<string, PhotoEntry[]>>((acc, photo) => {
@@ -293,9 +305,14 @@ export function getStaticPaths() {
 
 			<header class="mb-10 text-center">
 				<h1 class="text-4xl md:text-5xl font-bold mb-3 font-sans">{personData.name}</h1>
-				{personData.bio && <p class="text-xl text-gray-600 max-w-xl mx-auto mb-3">{personData.bio}</p>}
+				{
+					personData.bio && (
+						<p class="text-xl text-gray-600 max-w-xl mx-auto mb-3">{personData.bio}</p>
+					)
+				}
 				<p class="text-gray-500 text-base">
-					{photos.length} {photos.length === 1 ? 'photo' : 'photos'}
+					{photos.length}
+					{photos.length === 1 ? 'photo' : 'photos'}
 				</p>
 				{
 					personData.wikipedia && (
