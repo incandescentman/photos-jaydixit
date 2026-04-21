@@ -1,0 +1,56 @@
+#+title: Vercel Incident Audit 2026-04-20
+
+* Purpose
+
+Document the results of the April 20, 2026 Vercel incident review for [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit][📁 /Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit]].
+
+* Scope
+
+- Audited environment variable references and local =.env= files in [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit][📁 /Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit]].
+- Reviewed local env keys in:
+  - [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/.env][📄 /Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/.env]]
+  - [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/.env.example][📄 /Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/.env.example]]
+- Queried the linked Vercel project using the local CLI from [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/.vercel/project.json][📄 /Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/.vercel/project.json]].
+
+* Findings
+
+** Local env keys
+
+- [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/.env][📄 .env]] contains:
+  - =PUBLIC_CLOUDINARY_CLOUD_NAME=
+  - =PUBLIC_CLOUDINARY_TRANSFORM=
+  - =CLOUDINARY_URL=
+  - =PUBLIC_SUPABASE_URL=
+  - =PUBLIC_SUPABASE_ANON_KEY=
+
+** Active code usage
+
+- [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/src/lib/cloudinary.ts][📄 src/lib/cloudinary.ts]] uses =PUBLIC_CLOUDINARY_CLOUD_NAME= and =PUBLIC_CLOUDINARY_TRANSFORM=.
+- [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/src/components/PhotoLikeButton.astro][📄 src/components/PhotoLikeButton.astro]] and [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/src/pages/popular.astro][📄 src/pages/popular.astro]] use =PUBLIC_SUPABASE_URL= and =PUBLIC_SUPABASE_ANON_KEY=.
+- Cloudinary upload and sync scripts reference credential-bearing vars such as =CLOUDINARY_URL=, =CLOUDINARY_API_KEY=, and =CLOUDINARY_API_SECRET=.
+
+** Vercel project state
+
+- Linked project: =photos-jaydixit= via [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/.vercel/project.json][📄 .vercel/project.json]].
+- The Vercel CLI env listing for that project showed only:
+  - =PUBLIC_CLOUDINARY_CLOUD_NAME= in Development, Preview, and Production
+
+** Not seen in the Vercel env listing
+
+- =CLOUDINARY_URL=
+- =CLOUDINARY_API_KEY=
+- =CLOUDINARY_API_SECRET=
+- =CLOUDINARY_CLOUD_NAME=
+- =PUBLIC_SUPABASE_URL=
+- =PUBLIC_SUPABASE_ANON_KEY=
+
+* Conclusion
+
+- The Cloudinary secret in local development is present in [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/.env][📄 .env]] as =CLOUDINARY_URL=.
+- The linked Vercel project did not show a Cloudinary credential in its env listing during this audit.
+- The only Cloudinary-related Vercel env var found was =PUBLIC_CLOUDINARY_CLOUD_NAME=, which is public config rather than a secret.
+
+* Follow-up
+
+- No Vercel-side Cloudinary credential rotation appears necessary for this project based on the env listing checked on 2026-04-20.
+- If a later dashboard review shows integration-managed or hidden vars not returned by the CLI listing, revisit this conclusion.
