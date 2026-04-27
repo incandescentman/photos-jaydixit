@@ -1,6 +1,23 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-04-27 - Fix imported-image lightbox hrefs so Astro dev stops opening dead /@fs paths
+
+** Status
+- Fixed the remaining places where PhotoSwipe or GLightbox was opening imported Astro image metadata ~=.src=~ directly as the lightbox target.
+
+** Shipped
+- ~src/pages/before-after.astro~
+  - Switched before/after lightbox hrefs from ~=comparison.beforeImage.src=~ and ~=comparison.afterImage.src=~ to served URLs generated with ~=getImage()=~.
+- ~src/components/PhotoGrid.astro~
+  - Switched GLightbox hrefs from ~=image.src.src=~ to served URLs generated with ~=getImage()=~.
+- ~docs/codebase-wisdom.org~
+  - Added a debugging note explaining the Astro dev trap where the thumbnail can render from ~=srcset=~ while the lightbox opens a dead =/@fs/...= href.
+
+** Validation
+- =cd /Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit && npm run build= passed
+- The code paths now generate lightbox hrefs with =getImage()=, so imported Astro assets no longer rely on raw metadata =.src= as the lightbox target.
+
 * 2026-02-19 - Fix Nav Item Wrapping
 
 ** Status

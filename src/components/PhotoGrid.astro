@@ -1,7 +1,7 @@
 ---
 import 'glightbox/dist/css/glightbox.css';
 import '../styles/glightbox-custom.css';
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import type { Image as ImageType } from '../data/galleryData';
 
 interface Props {
@@ -9,13 +9,19 @@ interface Props {
 }
 
 const { images } = Astro.props;
+const imagesWithLightbox = await Promise.all(
+	images.map(async (image) => ({
+		...image,
+		lightboxHref: (await getImage({ src: image.src, width: image.src.width, inferSize: true })).src,
+	})),
+);
 ---
 
 <section id="photo-grid" class="relative w-full mx-auto overflow-hidden">
 	{
-		images.map((image) => (
+		imagesWithLightbox.map((image) => (
 			<a
-				href={image.src.src}
+				href={image.lightboxHref}
 				class="photo-item glightbox absolute transition-transform hover:scale-[1.02] hover:z-10"
 				data-gallery="gallery1"
 				data-type="image"

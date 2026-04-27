@@ -1,6 +1,6 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import vanessaBeforeImg from '../assets/images/wikiportraits/vanessa-kirby-before-2018.jpg';
 import vanessaAfterImg from '../assets/images/wikiportraits/vanessa-kirby_tiff_2024.jpg';
 import johnBeforeImg from '../assets/images/wikiportraits/john-hopfield-before-2016.jpg';
@@ -41,6 +41,18 @@ const comparisons = [
 		event: 'Sundance Film Festival 2025',
 	},
 ];
+
+const comparisonsWithLightbox = await Promise.all(
+	comparisons.map(async (comparison) => ({
+		...comparison,
+		beforeLightboxHref: (
+			await getImage({ src: comparison.beforeImage, width: comparison.beforeImage.width, inferSize: true })
+		).src,
+		afterLightboxHref: (
+			await getImage({ src: comparison.afterImage, width: comparison.afterImage.width, inferSize: true })
+		).src,
+	})),
+);
 ---
 
 <MainLayout
@@ -69,7 +81,7 @@ const comparisons = [
 				</div>
 			) : (
 				<div class="space-y-16">
-					{comparisons.map((comparison) => (
+					{comparisonsWithLightbox.map((comparison) => (
 						<article class="comparison-card">
 							<div class="flex items-center justify-between mb-6">
 								<div>
@@ -100,7 +112,7 @@ const comparisons = [
 										Before
 									</span>
 									<a
-										href={comparison.beforeImage.src}
+										href={comparison.beforeLightboxHref}
 										class="portfolio-lightbox block aspect-[3/4] bg-gray-100 rounded-xl overflow-hidden"
 										data-pswp-width={comparison.beforeImage.width}
 										data-pswp-height={comparison.beforeImage.height}
@@ -123,7 +135,7 @@ const comparisons = [
 										After
 									</span>
 									<a
-										href={comparison.afterImage.src}
+										href={comparison.afterLightboxHref}
 										class="portfolio-lightbox block aspect-[3/4] bg-gray-100 rounded-xl overflow-hidden"
 										data-pswp-width={comparison.afterImage.width}
 										data-pswp-height={comparison.afterImage.height}

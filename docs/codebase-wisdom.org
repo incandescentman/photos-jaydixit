@@ -1,6 +1,29 @@
 #+TITLE: Codebase Wisdom
 #+DATE: 2025-10-03
 
+* 2026-04-27 - Astro Asset ~=.src= Can Break PhotoSwipe And GLightbox In Dev
+
+** Trigger
+Lightbox links built from imported Astro image metadata looked reasonable in source, but opened broken images in development even while the thumbnails themselves still rendered.
+
+** Mechanism
+For imported Astro assets, ~=ImageMetadata.src=~ can resolve to a raw =/@fs/...= path in dev. The visible ~<Image>~ often still works because the browser prefers a valid optimized image from ~=srcset=~ or another transformed URL, so the page thumbnail looks healthy.
+
+The trap is that PhotoSwipe or GLightbox opens the anchor ~=href=~, not the browser's chosen ~=currentSrc=~. If the anchor still points at the raw =/@fs/...= path, the lightbox fetch can fail even though the inline image looks fine.
+
+This repo had the risky pattern in:
+- ~src/pages/before-after.astro~
+- ~src/components/PhotoGrid.astro~
+
+** Fix
+Generate a served image URL for the lightbox target instead of reusing raw metadata ~=.src=~.
+
+- For Astro-authored asset components, build the lightbox href with ~=getImage()=~
+- For DOM-enhanced content images, prefer ~=img.currentSrc || img.src=~ once the image is actually rendered
+
+** Rule of Thumb
+If a lightbox image fails in Astro dev but the thumbnail still renders, inspect the anchor ~=href=~ first. If it starts with =/@fs/=, the lightbox target is wrong even if the on-page image looks correct.
+
 * 2026-04-01 - Legacy ~=gallery= Cloudinary Transforms Can Break Otherwise Valid Images
 
 ** Trigger
