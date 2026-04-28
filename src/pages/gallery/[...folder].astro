@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro:assets';
 import MainLayout from '../../layouts/MainLayout.astro';
 import PhotoComments from '../../components/PhotoComments.astro';
@@ -118,8 +118,8 @@ function buildCaptionAndTags(filename: string, folderSlug: string) {
 	};
 }
 
-const groupedImages = Object.entries(imageModules)
-	.map(([key, module]) => {
+const groupedImageEntries = await Promise.all(
+	Object.entries(imageModules).map(async ([key, module]) => {
 		const metadata = module.default;
 		const relativePath = key.replace('../../gallery/photos/', '');
 		const segments = relativePath.split('/');
@@ -130,6 +130,11 @@ const groupedImages = Object.entries(imageModules)
 		if (imageFolder !== folderPath) return null;
 
 		const { caption, tags } = buildCaptionAndTags(filename, imageFolder);
+		const lightboxImage = await getImage({
+			src: metadata,
+			width: Math.min(metadata.width, 3000),
+			inferSize: true,
+		});
 
 		return {
 			metadata,
@@ -138,8 +143,12 @@ const groupedImages = Object.entries(imageModules)
 			caption,
 			tags,
 			originalSrc: metadata.src,
+			lightboxSrc: lightboxImage.src,
 		};
-	})
+	}),
+);
+
+const groupedImages = groupedImageEntries
 	.filter(
 		(
 			entry,
@@ -150,6 +159,7 @@ const groupedImages = Object.entries(imageModules)
 			caption: string;
 			tags: string[];
 			originalSrc: string;
+			lightboxSrc: string;
 		} => entry !== null,
 	)
 	.reduce<
@@ -162,6 +172,7 @@ const groupedImages = Object.entries(imageModules)
 				caption: string;
 				tags: string[];
 				originalSrc: string;
+				lightboxSrc: string;
 			}>
 		>
 	>((acc, entry) => {
@@ -389,9 +400,12 @@ export const getStaticPaths = () => {
 							>
 								<a
 									class="masonry-link portfolio-lightbox"
-									href={image.originalSrc}
+									href={image.lightboxSrc}
+									data-pswp-item="true"
 									data-pswp-width={image.metadata.width}
 									data-pswp-height={image.metadata.height}
+									data-full-src={image.lightboxSrc}
+									data-cropped="true"
 								>
 									<Image
 										src={image.metadata}

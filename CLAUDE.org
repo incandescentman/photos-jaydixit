@@ -50,7 +50,7 @@ manifest.
 
 - Main galleries and comparison pages use PhotoSwipe for full-screen viewing
 
-- Some older components and experiments still reference GLightbox
+- Older docs and backups may still mention GLightbox, but live gallery surfaces should stay on PhotoSwipe
 
 - Full-size viewer with zoom and nav arrows
 

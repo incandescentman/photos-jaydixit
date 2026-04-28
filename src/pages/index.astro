@@ -13,64 +13,73 @@ import path from 'path';
 // Cloudinary configuration
 const CLOUDINARY_CLOUD = 'dszpm7yps';
 const cldUrl = (publicId: string, width?: number) => {
-  const transforms = width ? `f_auto,q_auto,w_${width}` : 'f_auto,q_auto';
-  return `https://res.cloudinary.com/${CLOUDINARY_CLOUD}/image/upload/${transforms}/${publicId}`;
+	const transforms = width ? `f_auto,q_auto,w_${width}` : 'f_auto,q_auto';
+	return `https://res.cloudinary.com/${CLOUDINARY_CLOUD}/image/upload/${transforms}/${publicId}`;
 };
 const cldSrcset = (publicId: string, widths: number[]) =>
-  widths.map(w => `${cldUrl(publicId, w)} ${w}w`).join(', ');
+	widths.map((w) => `${cldUrl(publicId, w)} ${w}w`).join(', ');
 
 // Size presets for responsive images (simplified for Cloudinary)
 const sizePresets = {
-  portrait: { widths: [400, 800, 1200], sizes: '(max-width: 640px) 90vw, (max-width: 1100px) 45vw, 320px' },
-  landscape: { widths: [640, 1000, 1440], sizes: '(max-width: 640px) 100vw, (max-width: 1100px) 90vw, 648px' },
-  xlportrait: { widths: [500, 900, 1400], sizes: '(max-width: 640px) 90vw, (max-width: 1100px) 60vw, 648px' }
+	portrait: {
+		widths: [400, 800, 1200],
+		sizes: '(max-width: 640px) 90vw, (max-width: 1100px) 45vw, 320px',
+	},
+	landscape: {
+		widths: [640, 1000, 1440],
+		sizes: '(max-width: 640px) 100vw, (max-width: 1100px) 90vw, 648px',
+	},
+	xlportrait: {
+		widths: [500, 900, 1400],
+		sizes: '(max-width: 640px) 90vw, (max-width: 1100px) 60vw, 648px',
+	},
 } as const;
 type HighlightSize = keyof typeof sizePresets;
 
 // Load saved order from JSON file if it exists
 function loadSavedOrder() {
-  try {
-    const orderPath = path.join(process.cwd(), 'src/data/saved-order.json');
-    if (fs.existsSync(orderPath)) {
-      const savedOrder = JSON.parse(fs.readFileSync(orderPath, 'utf-8'));
-      return savedOrder;
-    }
-  } catch (e) {
-    console.error('Failed to load saved order:', e);
-  }
-  return null;
+	try {
+		const orderPath = path.join(process.cwd(), 'src/data/saved-order.json');
+		if (fs.existsSync(orderPath)) {
+			const savedOrder = JSON.parse(fs.readFileSync(orderPath, 'utf-8'));
+			return savedOrder;
+		}
+	} catch (e) {
+		console.error('Failed to load saved order:', e);
+	}
+	return null;
 }
 
 // Apply saved order to images array
 function applySavedOrder(images) {
-  const savedOrder = loadSavedOrder();
-  if (!savedOrder || !Array.isArray(savedOrder)) {
-    return images;
-  }
-  
-  // Create a map of filename to image data
-  const imageMap = new Map();
-  images.forEach(img => {
-    imageMap.set(img.filename, img);
-  });
-  
-  // Build new array in saved order
-  const orderedImages = [];
-  savedOrder.forEach(item => {
-    const filename = typeof item === 'string' ? item : item.filename;
-    const imageData = imageMap.get(filename);
-    if (imageData) {
-      orderedImages.push(imageData);
-      imageMap.delete(filename); // Remove from map so we don't duplicate
-    }
-  });
-  
-  // Add any remaining images not in saved order
-  imageMap.forEach(img => {
-    orderedImages.push(img);
-  });
-  
-  return orderedImages;
+	const savedOrder = loadSavedOrder();
+	if (!savedOrder || !Array.isArray(savedOrder)) {
+		return images;
+	}
+
+	// Create a map of filename to image data
+	const imageMap = new Map();
+	images.forEach((img) => {
+		imageMap.set(img.filename, img);
+	});
+
+	// Build new array in saved order
+	const orderedImages = [];
+	savedOrder.forEach((item) => {
+		const filename = typeof item === 'string' ? item : item.filename;
+		const imageData = imageMap.get(filename);
+		if (imageData) {
+			orderedImages.push(imageData);
+			imageMap.delete(filename); // Remove from map so we don't duplicate
+		}
+	});
+
+	// Add any remaining images not in saved order
+	imageMap.forEach((img) => {
+		orderedImages.push(img);
+	});
+
+	return orderedImages;
 }
 
 // Set this to false to use your manual image order from homepage-images.js
@@ -79,263 +88,296 @@ const AUTO_OPTIMIZE_ORDER = false;
 
 // Algorithm to optimize image order for minimal gaps
 function optimizeImageOrder(images) {
-  // In AUTO_OPTIMIZE_ORDER, ignore manual order and treat all as unordered
-  const orderedImages = [];
-  const unorderedImages = images.slice();
-  
-  // Sort ordered images by their order value
-  orderedImages.sort((a, b) => a.order - b.order);
-  
-  // If no unordered images, just return the ordered ones
-  if (unorderedImages.length === 0) {
-    return orderedImages;
-  }
-  
-  // Optimize the unordered images
-  const sizeGroups = {
-    xlportrait: [], // 2x2 - largest, place first for anchor points
-    landscape: [],  // 2x1 - horizontal images
-    portrait: []    // 1x1 - standard portrait, use to fill gaps
-  };
-  
-  unorderedImages.forEach(img => {
-    sizeGroups[img.size].push(img);
-  });
-  
-  const optimizedUnordered = [];
-  
-  // Strategy: Follow specific pattern for top of page, then distribute remaining items
-  
-  // Pattern for top section:
-  // Row 1: 2 portraits (stacked), xlportrait, 2 portraits (stacked), xlportrait
-  // Row 2: xlportrait, landscape (above another xlportrait), landscape
-  
-  // Row 1 implementation
-  // First column: 2 portraits stacked (composite item)
-  if (sizeGroups.portrait.length >= 2) {
-    const p1 = sizeGroups.portrait.shift();
-    const p2 = sizeGroups.portrait.shift();
-    optimizedUnordered.push({ type: 'stacked', items: [p1, p2] });
-  } else if (sizeGroups.portrait.length === 1) {
-    optimizedUnordered.push(sizeGroups.portrait.shift());
-  }
-  
-  // Second column: xlportrait
-  if (sizeGroups.xlportrait.length > 0) {
-    optimizedUnordered.push(sizeGroups.xlportrait.shift());
-  }
-  
-  // Third column: 2 portraits stacked (composite item)
-  if (sizeGroups.portrait.length >= 2) {
-    const p3 = sizeGroups.portrait.shift();
-    const p4 = sizeGroups.portrait.shift();
-    optimizedUnordered.push({ type: 'stacked', items: [p3, p4] });
-  } else {
-    while (sizeGroups.portrait.length > 0) {
-      optimizedUnordered.push(sizeGroups.portrait.shift());
-    }
-  }
-  
-  // Fourth column: xlportrait
-  if (sizeGroups.xlportrait.length > 0) {
-    optimizedUnordered.push(sizeGroups.xlportrait.shift());
-  }
-  
-  // Row 2 implementation
-  // First: xlportrait
-  if (sizeGroups.xlportrait.length > 0) {
-    optimizedUnordered.push(sizeGroups.xlportrait.shift());
-  }
-  
-  // Second: landscape
-  if (sizeGroups.landscape.length > 0) {
-    optimizedUnordered.push(sizeGroups.landscape.shift());
-  }
-  
-  // Third: another landscape
-  if (sizeGroups.landscape.length > 0) {
-    optimizedUnordered.push(sizeGroups.landscape.shift());
-  }
-  
-  // Now continue with remaining items, distributing xlportraits with spacing
-  const totalXl = sizeGroups.xlportrait.length;
-  const totalOtherItems = sizeGroups.portrait.length + sizeGroups.landscape.length;
-  const minSpacing = totalXl > 0 ? Math.max(4, Math.floor(totalOtherItems / (totalXl + 1))) : 0;
-  
-  let itemsSinceLastXl = 0;
-  
-  // Place remaining items with xlportraits distributed
-  while (sizeGroups.portrait.length > 0 || sizeGroups.landscape.length > 0 || sizeGroups.xlportrait.length > 0) {
-    
-    // Check if we should place an xlportrait (with proper spacing)
-    if (sizeGroups.xlportrait.length > 0 && itemsSinceLastXl >= minSpacing) {
-      // Place some portraits before xlportrait
-      for (let i = 0; i < 2 && sizeGroups.portrait.length > 0; i++) {
-        optimizedUnordered.push(sizeGroups.portrait.shift());
-      }
-      
-      // Place the xlportrait
-      optimizedUnordered.push(sizeGroups.xlportrait.shift());
-      itemsSinceLastXl = 0;
-      
-      // Place some portraits after xlportrait
-      for (let i = 0; i < 2 && sizeGroups.portrait.length > 0; i++) {
-        optimizedUnordered.push(sizeGroups.portrait.shift());
-      }
-      
-      // Add a landscape if available
-      if (sizeGroups.landscape.length > 0) {
-        optimizedUnordered.push(sizeGroups.landscape.shift());
-        itemsSinceLastXl++;
-      }
-    } else {
-      // Add regular items between xlportraits
-      
-      // Add portraits in small batches
-      const portraitBatch = Math.min(2, sizeGroups.portrait.length);
-      for (let i = 0; i < portraitBatch; i++) {
-        if (sizeGroups.portrait.length > 0) {
-          optimizedUnordered.push(sizeGroups.portrait.shift());
-          itemsSinceLastXl++;
-        }
-      }
-      
-      // Add landscape
-      if (sizeGroups.landscape.length > 0) {
-        optimizedUnordered.push(sizeGroups.landscape.shift());
-        itemsSinceLastXl++;
-      }
-    }
-    
-    // Safety: place remaining xlportraits if we're running low on other items
-    if (sizeGroups.xlportrait.length > 0 && 
-        sizeGroups.portrait.length + sizeGroups.landscape.length < 2) {
-      while (sizeGroups.xlportrait.length > 0) {
-        optimizedUnordered.push(sizeGroups.xlportrait.shift());
-      }
-    }
-  }
-  
-  // Merge ordered and optimized unordered images
-  const result = [];
-  let orderedIndex = 0;
-  let unorderedIndex = 0;
-  
-  // Place images according to order values, filling gaps with optimized unordered
-  for (let position = 1; orderedIndex < orderedImages.length || unorderedIndex < optimizedUnordered.length; position++) {
-    // Check if there's an ordered image for this position
-    if (orderedIndex < orderedImages.length && orderedImages[orderedIndex].order === position) {
-      result.push(orderedImages[orderedIndex]);
-      orderedIndex++;
-    } else if (unorderedIndex < optimizedUnordered.length) {
-      // Fill with optimized unordered image
-      result.push(optimizedUnordered[unorderedIndex]);
-      unorderedIndex++;
-    }
-  }
-  
-  // Post-pass: break up long runs of portrait-width columns
-  // Treat both single portraits and stacked pairs as portrait-width columns
-  function isPortraitColumn(item) {
-    if (!item) return false;
-    if (item.type === 'stacked') return true;
-    return !item.type && item.size === 'portrait';
-  }
-  function isXlPortrait(item) {
-    return item && !item.type && item.size === 'xlportrait';
-  }
-  function isLandscape(item) {
-    return item && !item.type && item.size === 'landscape';
-  }
-  
-  let i = 0;
-  while (i < result.length) {
-    // Find a run of consecutive portrait-width columns
-    if (!isPortraitColumn(result[i])) { i++; continue; }
-    const start = i;
-    let end = i;
-    while (end < result.length && isPortraitColumn(result[end])) end++;
-    const runLen = end - start;
-    
-    // If there are too many portrait-width columns in a row, insert a wide item in the middle
-    if (runLen >= 6) {
-      // Prefer an xlportrait; fallback to a landscape
-      let xlIndex = -1;
-      for (let k = end; k < result.length; k++) {
-        if (isXlPortrait(result[k])) { xlIndex = k; break; }
-      }
-      // If none after, try before the run
-      if (xlIndex === -1) {
-        for (let k = start - 1; k >= 0; k--) {
-          if (isXlPortrait(result[k])) { xlIndex = k; break; }
-        }
-      }
-      // If still none, try landscape
-      if (xlIndex === -1) {
-        for (let k = end; k < result.length; k++) {
-          if (isLandscape(result[k])) { xlIndex = k; break; }
-        }
-        if (xlIndex === -1) {
-          for (let k = start - 1; k >= 0; k--) {
-            if (isLandscape(result[k])) { xlIndex = k; break; }
-          }
-        }
-      }
+	// In AUTO_OPTIMIZE_ORDER, ignore manual order and treat all as unordered
+	const orderedImages = [];
+	const unorderedImages = images.slice();
 
-      if (xlIndex !== -1) {
-        const [wide] = result.splice(xlIndex, 1);
-        // Build portrait-width columns for this run by pairing single portraits into stacked columns
-        const segment = result.slice(start, end);
-        const columns = [];
-        let carry = null;
-        for (const it of segment) {
-          if (it && it.type === 'stacked') {
-            // flush carry as single column before pushing stacked column
-            if (carry) { columns.push(carry); carry = null; }
-            columns.push(it);
-          } else if (it && !it.type && it.size === 'portrait') {
-            if (!carry) {
-              carry = it; // hold until we have a pair
-            } else {
-              columns.push({ type: 'stacked', items: [carry, it] });
-              carry = null;
-            }
-          } else {
-            // Non-portrait shouldn't be in this run, but guard anyway
-            if (carry) { columns.push(carry); carry = null; }
-            columns.push(it);
-          }
-        }
-        if (carry) { columns.push(carry); carry = null; }
+	// Sort ordered images by their order value
+	orderedImages.sort((a, b) => a.order - b.order);
 
-        // Decide insertion point at column level
-        const splitCols = columns.length >= 8 ? 4 : Math.floor(columns.length / 2);
-        const leftCols = columns.slice(0, splitCols);
-        const rightCols = columns.slice(splitCols);
-        const rebuilt = [...leftCols, wide, ...rightCols];
+	// If no unordered images, just return the ordered ones
+	if (unorderedImages.length === 0) {
+		return orderedImages;
+	}
 
-        // Replace the original segment with rebuilt columns back into flat items
-        const flat = [];
-        for (const col of rebuilt) {
-          if (col && col.type === 'stacked') {
-            flat.push(col); // render as a single item (we have renderer for stacked)
-          } else {
-            flat.push(col);
-          }
-        }
+	// Optimize the unordered images
+	const sizeGroups = {
+		xlportrait: [], // 2x2 - largest, place first for anchor points
+		landscape: [], // 2x1 - horizontal images
+		portrait: [], // 1x1 - standard portrait, use to fill gaps
+	};
 
-        // Splice back into result
-        result.splice(start, end - start, ...flat);
-        // Move i past the rebuilt block
-        i = start + flat.length;
-        continue;
-      }
-    }
-    
-    i = end; // skip past this run
-  }
-  
-  return result;
+	unorderedImages.forEach((img) => {
+		sizeGroups[img.size].push(img);
+	});
+
+	const optimizedUnordered = [];
+
+	// Strategy: Follow specific pattern for top of page, then distribute remaining items
+
+	// Pattern for top section:
+	// Row 1: 2 portraits (stacked), xlportrait, 2 portraits (stacked), xlportrait
+	// Row 2: xlportrait, landscape (above another xlportrait), landscape
+
+	// Row 1 implementation
+	// First column: 2 portraits stacked (composite item)
+	if (sizeGroups.portrait.length >= 2) {
+		const p1 = sizeGroups.portrait.shift();
+		const p2 = sizeGroups.portrait.shift();
+		optimizedUnordered.push({ type: 'stacked', items: [p1, p2] });
+	} else if (sizeGroups.portrait.length === 1) {
+		optimizedUnordered.push(sizeGroups.portrait.shift());
+	}
+
+	// Second column: xlportrait
+	if (sizeGroups.xlportrait.length > 0) {
+		optimizedUnordered.push(sizeGroups.xlportrait.shift());
+	}
+
+	// Third column: 2 portraits stacked (composite item)
+	if (sizeGroups.portrait.length >= 2) {
+		const p3 = sizeGroups.portrait.shift();
+		const p4 = sizeGroups.portrait.shift();
+		optimizedUnordered.push({ type: 'stacked', items: [p3, p4] });
+	} else {
+		while (sizeGroups.portrait.length > 0) {
+			optimizedUnordered.push(sizeGroups.portrait.shift());
+		}
+	}
+
+	// Fourth column: xlportrait
+	if (sizeGroups.xlportrait.length > 0) {
+		optimizedUnordered.push(sizeGroups.xlportrait.shift());
+	}
+
+	// Row 2 implementation
+	// First: xlportrait
+	if (sizeGroups.xlportrait.length > 0) {
+		optimizedUnordered.push(sizeGroups.xlportrait.shift());
+	}
+
+	// Second: landscape
+	if (sizeGroups.landscape.length > 0) {
+		optimizedUnordered.push(sizeGroups.landscape.shift());
+	}
+
+	// Third: another landscape
+	if (sizeGroups.landscape.length > 0) {
+		optimizedUnordered.push(sizeGroups.landscape.shift());
+	}
+
+	// Now continue with remaining items, distributing xlportraits with spacing
+	const totalXl = sizeGroups.xlportrait.length;
+	const totalOtherItems = sizeGroups.portrait.length + sizeGroups.landscape.length;
+	const minSpacing = totalXl > 0 ? Math.max(4, Math.floor(totalOtherItems / (totalXl + 1))) : 0;
+
+	let itemsSinceLastXl = 0;
+
+	// Place remaining items with xlportraits distributed
+	while (
+		sizeGroups.portrait.length > 0 ||
+		sizeGroups.landscape.length > 0 ||
+		sizeGroups.xlportrait.length > 0
+	) {
+		// Check if we should place an xlportrait (with proper spacing)
+		if (sizeGroups.xlportrait.length > 0 && itemsSinceLastXl >= minSpacing) {
+			// Place some portraits before xlportrait
+			for (let i = 0; i < 2 && sizeGroups.portrait.length > 0; i++) {
+				optimizedUnordered.push(sizeGroups.portrait.shift());
+			}
+
+			// Place the xlportrait
+			optimizedUnordered.push(sizeGroups.xlportrait.shift());
+			itemsSinceLastXl = 0;
+
+			// Place some portraits after xlportrait
+			for (let i = 0; i < 2 && sizeGroups.portrait.length > 0; i++) {
+				optimizedUnordered.push(sizeGroups.portrait.shift());
+			}
+
+			// Add a landscape if available
+			if (sizeGroups.landscape.length > 0) {
+				optimizedUnordered.push(sizeGroups.landscape.shift());
+				itemsSinceLastXl++;
+			}
+		} else {
+			// Add regular items between xlportraits
+
+			// Add portraits in small batches
+			const portraitBatch = Math.min(2, sizeGroups.portrait.length);
+			for (let i = 0; i < portraitBatch; i++) {
+				if (sizeGroups.portrait.length > 0) {
+					optimizedUnordered.push(sizeGroups.portrait.shift());
+					itemsSinceLastXl++;
+				}
+			}
+
+			// Add landscape
+			if (sizeGroups.landscape.length > 0) {
+				optimizedUnordered.push(sizeGroups.landscape.shift());
+				itemsSinceLastXl++;
+			}
+		}
+
+		// Safety: place remaining xlportraits if we're running low on other items
+		if (
+			sizeGroups.xlportrait.length > 0 &&
+			sizeGroups.portrait.length + sizeGroups.landscape.length < 2
+		) {
+			while (sizeGroups.xlportrait.length > 0) {
+				optimizedUnordered.push(sizeGroups.xlportrait.shift());
+			}
+		}
+	}
+
+	// Merge ordered and optimized unordered images
+	const result = [];
+	let orderedIndex = 0;
+	let unorderedIndex = 0;
+
+	// Place images according to order values, filling gaps with optimized unordered
+	for (
+		let position = 1;
+		orderedIndex < orderedImages.length || unorderedIndex < optimizedUnordered.length;
+		position++
+	) {
+		// Check if there's an ordered image for this position
+		if (orderedIndex < orderedImages.length && orderedImages[orderedIndex].order === position) {
+			result.push(orderedImages[orderedIndex]);
+			orderedIndex++;
+		} else if (unorderedIndex < optimizedUnordered.length) {
+			// Fill with optimized unordered image
+			result.push(optimizedUnordered[unorderedIndex]);
+			unorderedIndex++;
+		}
+	}
+
+	// Post-pass: break up long runs of portrait-width columns
+	// Treat both single portraits and stacked pairs as portrait-width columns
+	function isPortraitColumn(item) {
+		if (!item) return false;
+		if (item.type === 'stacked') return true;
+		return !item.type && item.size === 'portrait';
+	}
+	function isXlPortrait(item) {
+		return item && !item.type && item.size === 'xlportrait';
+	}
+	function isLandscape(item) {
+		return item && !item.type && item.size === 'landscape';
+	}
+
+	let i = 0;
+	while (i < result.length) {
+		// Find a run of consecutive portrait-width columns
+		if (!isPortraitColumn(result[i])) {
+			i++;
+			continue;
+		}
+		const start = i;
+		let end = i;
+		while (end < result.length && isPortraitColumn(result[end])) end++;
+		const runLen = end - start;
+
+		// If there are too many portrait-width columns in a row, insert a wide item in the middle
+		if (runLen >= 6) {
+			// Prefer an xlportrait; fallback to a landscape
+			let xlIndex = -1;
+			for (let k = end; k < result.length; k++) {
+				if (isXlPortrait(result[k])) {
+					xlIndex = k;
+					break;
+				}
+			}
+			// If none after, try before the run
+			if (xlIndex === -1) {
+				for (let k = start - 1; k >= 0; k--) {
+					if (isXlPortrait(result[k])) {
+						xlIndex = k;
+						break;
+					}
+				}
+			}
+			// If still none, try landscape
+			if (xlIndex === -1) {
+				for (let k = end; k < result.length; k++) {
+					if (isLandscape(result[k])) {
+						xlIndex = k;
+						break;
+					}
+				}
+				if (xlIndex === -1) {
+					for (let k = start - 1; k >= 0; k--) {
+						if (isLandscape(result[k])) {
+							xlIndex = k;
+							break;
+						}
+					}
+				}
+			}
+
+			if (xlIndex !== -1) {
+				const [wide] = result.splice(xlIndex, 1);
+				// Build portrait-width columns for this run by pairing single portraits into stacked columns
+				const segment = result.slice(start, end);
+				const columns = [];
+				let carry = null;
+				for (const it of segment) {
+					if (it && it.type === 'stacked') {
+						// flush carry as single column before pushing stacked column
+						if (carry) {
+							columns.push(carry);
+							carry = null;
+						}
+						columns.push(it);
+					} else if (it && !it.type && it.size === 'portrait') {
+						if (!carry) {
+							carry = it; // hold until we have a pair
+						} else {
+							columns.push({ type: 'stacked', items: [carry, it] });
+							carry = null;
+						}
+					} else {
+						// Non-portrait shouldn't be in this run, but guard anyway
+						if (carry) {
+							columns.push(carry);
+							carry = null;
+						}
+						columns.push(it);
+					}
+				}
+				if (carry) {
+					columns.push(carry);
+					carry = null;
+				}
+
+				// Decide insertion point at column level
+				const splitCols = columns.length >= 8 ? 4 : Math.floor(columns.length / 2);
+				const leftCols = columns.slice(0, splitCols);
+				const rightCols = columns.slice(splitCols);
+				const rebuilt = [...leftCols, wide, ...rightCols];
+
+				// Replace the original segment with rebuilt columns back into flat items
+				const flat = [];
+				for (const col of rebuilt) {
+					if (col && col.type === 'stacked') {
+						flat.push(col); // render as a single item (we have renderer for stacked)
+					} else {
+						flat.push(col);
+					}
+				}
+
+				// Splice back into result
+				result.splice(start, end - start, ...flat);
+				// Move i past the rebuilt block
+				i = start + flat.length;
+				continue;
+			}
+		}
+
+		i = end; // skip past this run
+	}
+
+	return result;
 }
 
 // Decide whether to optimize or use manual order, then apply saved order
@@ -343,34 +385,36 @@ const baseImages = AUTO_OPTIMIZE_ORDER ? optimizeImageOrder(images) : images;
 const processedImages = applySavedOrder(baseImages);
 
 const fallbackDimensions = {
-  portrait: { width: 320, height: 480 },
-  landscape: { width: 648, height: 480 },
-  xlportrait: { width: 648, height: 968 }
+	portrait: { width: 320, height: 480 },
+	landscape: { width: 648, height: 480 },
+	xlportrait: { width: 648, height: 968 },
 } as const;
+const LIGHTBOX_MAX_WIDTH = 2800;
+const LIGHTBOX_WIDTH_CANDIDATES = [960, 1440, 1920, 2400, LIGHTBOX_MAX_WIDTH];
 
 // Helper to map a single image to render data
 function mapSingle(img: {
-  filename: string;
-  caption?: string;
-  size?: string;
-  cloudinaryPublicId?: string;
+	filename: string;
+	caption?: string;
+	size?: string;
+	cloudinaryPublicId?: string;
 }) {
-  const filename = img.filename;
-  const publicId = img.cloudinaryPublicId ?? `highlights/${filename.replace(/\.[^.]+$/, '')}`;
-  const size = (img.size ?? 'portrait') as HighlightSize;
-  const preset = sizePresets[size];
+	const filename = img.filename;
+	const publicId = img.cloudinaryPublicId ?? `highlights/${filename.replace(/\.[^.]+$/, '')}`;
+	const size = (img.size ?? 'portrait') as HighlightSize;
+	const preset = sizePresets[size];
 
-  return {
-    filename,
-    publicId,
-    caption: img.caption || filename.replace(/[-_]/g, ' ').replace(/\.\w+$/, ''),
-    size,
-    // Cloudinary URLs
-    srcset: cldSrcset(publicId, preset.widths),
-    sizes: preset.sizes,
-    src: cldUrl(publicId, preset.widths[1]), // Medium size as default
-    fullSrc: cldUrl(publicId), // Full quality for lightbox
-  };
+	return {
+		filename,
+		publicId,
+		caption: img.caption || filename.replace(/[-_]/g, ' ').replace(/\.\w+$/, ''),
+		size,
+		// Cloudinary URLs
+		srcset: cldSrcset(publicId, preset.widths),
+		sizes: preset.sizes,
+		src: cldUrl(publicId, preset.widths[1]), // Medium size as default
+		fullSrc: cldUrl(publicId, LIGHTBOX_MAX_WIDTH),
+	};
 }
 
 const siteOrigin = Astro.site?.origin ?? 'https://photos.jaydixit.com';
@@ -378,91 +422,116 @@ const canonicalUrl = new URL('/', siteOrigin).toString();
 const metaTitle = 'Red Carpet Highlights';
 const fullTitle = `${metaTitle} — ${siteConfig.owner}`;
 const pageDescription =
-  'Red carpet portraits captured by Jay Dixit at film festivals, cultural premieres, and creative events.';
+	'Red carpet portraits captured by Jay Dixit at film festivals, cultural premieres, and creative events.';
 const creatorName = siteConfig.owner;
 
 const flattenProcessed = processedImages.flatMap((item) => {
-  if (!item) return [];
-  if (item.type === 'stacked' && Array.isArray(item.items)) {
-    return item.items;
-  }
-  return [item];
+	if (!item) return [];
+	if (item.type === 'stacked' && Array.isArray(item.items)) {
+		return item.items;
+	}
+	return [item];
 });
 
 const normalizedPhotos = flattenProcessed.map((item) => mapSingle(item));
 
 const uniquePhotoMap = new Map<string, ReturnType<typeof mapSingle>>();
 normalizedPhotos.forEach((photo) => {
-  if (!uniquePhotoMap.has(photo.filename)) {
-    uniquePhotoMap.set(photo.filename, photo);
-  }
+	if (!uniquePhotoMap.has(photo.filename)) {
+		uniquePhotoMap.set(photo.filename, photo);
+	}
 });
 
 const uniquePhotos = Array.from(uniquePhotoMap.values());
 
 const dimensionForPhoto = (photo: ReturnType<typeof mapSingle>) => {
-  const key = `highlights/${photo.filename}`;
-  const meta = imageMetadata[key] as { width?: number; height?: number } | undefined;
-  const fallback = fallbackDimensions[photo.size as keyof typeof fallbackDimensions] ?? fallbackDimensions.portrait;
-  return {
-    width: meta?.width ?? fallback.width,
-    height: meta?.height ?? fallback.height
-  };
+	const key = `highlights/${photo.filename}`;
+	const meta = imageMetadata[key] as { width?: number; height?: number } | undefined;
+	const fallback =
+		fallbackDimensions[photo.size as keyof typeof fallbackDimensions] ??
+		fallbackDimensions.portrait;
+	return {
+		width: meta?.width ?? fallback.width,
+		height: meta?.height ?? fallback.height,
+	};
+};
+
+const lightboxSrcsetFor = (photo: ReturnType<typeof mapSingle>) => {
+	const { width } = dimensionForPhoto(photo);
+	const maxWidth = Math.min(width, LIGHTBOX_MAX_WIDTH);
+	const widths = Array.from(
+		new Set(
+			[...LIGHTBOX_WIDTH_CANDIDATES.filter((candidate) => candidate < maxWidth), maxWidth].filter(
+				(candidate) => candidate > 0,
+			),
+		),
+	);
+	return cldSrcset(photo.publicId, widths);
+};
+
+const lightboxDimensionsFor = (photo: ReturnType<typeof mapSingle>) => {
+	const { width, height } = dimensionForPhoto(photo);
+	if (width <= LIGHTBOX_MAX_WIDTH) {
+		return { width, height };
+	}
+
+	const scaledHeight = Math.round((height / width) * LIGHTBOX_MAX_WIDTH);
+	return { width: LIGHTBOX_MAX_WIDTH, height: scaledHeight };
 };
 
 const imageObjects = uniquePhotos.map((photo) => {
-  const { width, height } = dimensionForPhoto(photo);
-  return {
-    '@type': 'ImageObject',
-    '@id': `${photo.fullSrc}#image`,
-    name: photo.caption,
-    caption: photo.caption,
-    url: photo.fullSrc,
-    contentUrl: photo.fullSrc,
-    thumbnailUrl: photo.src,
-    encodingFormat: 'image/jpeg', // Cloudinary auto-negotiates format
-    representativeOfPage: photo.size === 'xlportrait' ? true : undefined,
-    width,
-    height,
-    author: { '@type': 'Person', name: creatorName },
-    creator: { '@type': 'Person', name: creatorName }
-  };
+	const { width, height } = lightboxDimensionsFor(photo);
+	return {
+		'@type': 'ImageObject',
+		'@id': `${photo.fullSrc}#image`,
+		name: photo.caption,
+		caption: photo.caption,
+		url: photo.fullSrc,
+		contentUrl: photo.fullSrc,
+		thumbnailUrl: photo.src,
+		encodingFormat: 'image/jpeg', // Cloudinary auto-negotiates format
+		representativeOfPage: photo.size === 'xlportrait' ? true : undefined,
+		width,
+		height,
+		author: { '@type': 'Person', name: creatorName },
+		creator: { '@type': 'Person', name: creatorName },
+	};
 });
 
 const collectionStructuredData = {
-  '@context': 'https://schema.org',
-  '@type': 'CollectionPage',
-  name: fullTitle,
-  url: canonicalUrl,
-  description: pageDescription,
-  image: imageObjects.slice(0, 12).map((img) => img.contentUrl),
-  hasPart: imageObjects
+	'@context': 'https://schema.org',
+	'@type': 'CollectionPage',
+	name: fullTitle,
+	url: canonicalUrl,
+	description: pageDescription,
+	image: imageObjects.slice(0, 12).map((img) => img.contentUrl),
+	hasPart: imageObjects,
 };
 
 const jsonLdString = JSON.stringify(collectionStructuredData, null, 2)
-  .replace(/</g, '\\u003c')
-  .replace(/>/g, '\\u003e')
-  .replace(/&/g, '\\u0026');
+	.replace(/</g, '\\u003c')
+	.replace(/>/g, '\\u003e')
+	.replace(/&/g, '\\u0026');
 
 const featuredPhotos = uniquePhotos.filter((photo) => photo.size === 'xlportrait');
 const shareCandidates = featuredPhotos.length > 0 ? featuredPhotos : uniquePhotos;
 
 const ogImages = shareCandidates.slice(0, 4).map((photo) => {
-  const { width, height } = dimensionForPhoto(photo);
-  return {
-    url: photo.fullSrc,
-    alt: photo.caption,
-    width,
-    height
-  };
+	const { width, height } = lightboxDimensionsFor(photo);
+	return {
+		url: photo.fullSrc,
+		alt: photo.caption,
+		width,
+		height,
+	};
 });
 
 const primaryOgImage = ogImages[0];
 
 const layoutFrontmatter = {
-  title: metaTitle,
-  description: pageDescription,
-  canonical: canonicalUrl
+	title: metaTitle,
+	description: pageDescription,
+	canonical: canonicalUrl,
 };
 
 const criticalStyles = `
@@ -558,670 +627,722 @@ const criticalStyles = `
     }
   }
 `;
---- 
+---
 
 <MainLayout frontmatter={layoutFrontmatter}>
-  <Fragment slot="head">
-    <style is:inline set:html={criticalStyles}></style>
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content={fullTitle} />
-    <meta property="og:description" content={pageDescription} />
-    <meta property="og:url" content={canonicalUrl} />
-    {ogImages.map((image) => (
-      <meta property="og:image" content={image.url} />
-    ))}
-    {ogImages.map((image) => (
-      <meta property="og:image:alt" content={image.alt} />
-    ))}
-    {primaryOgImage?.width && <meta property="og:image:width" content={String(primaryOgImage.width)} />}
-    {primaryOgImage?.height && <meta property="og:image:height" content={String(primaryOgImage.height)} />}
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={fullTitle} />
-    <meta name="twitter:description" content={pageDescription} />
-    {primaryOgImage && <meta name="twitter:image" content={primaryOgImage.url} />}
-    {primaryOgImage?.alt && <meta name="twitter:image:alt" content={primaryOgImage.alt} />}
-    <script type="application/ld+json" set:html={jsonLdString}></script>
-  </Fragment>
-  <div class="portfolio-wrap">
-    <div id="masonry" class="masonry-items elastic" data-col-num="elastic" data-gutter="8px" data-starting-filter="*" data-masonry-type="photography">
-      <div class="grid-sizer"></div>
-      {processedImages.map((item, index) => {
-        if (item && item.type === 'stacked' && Array.isArray(item.items)) {
-          const a = mapSingle(item.items[0]);
-          const b = mapSingle(item.items[1] || item.items[0]);
-          const containerAspectRatio = 648 / 968;
-          return (
-            <article
-              class="masonry-item wide_tall"
-              data-idx={index}
-              data-filename={a.filename}
-              data-size="xlportrait"
-              style={`--aspect-ratio: ${containerAspectRatio}`}
-            >
-              <div class="stacked-pair">
-                <a class="masonry-link portfolio-lightbox" href={a.fullSrc} data-full-src={a.fullSrc}>
-                  <img
-                    src={a.src}
-                    srcset={a.srcset}
-                    sizes={a.sizes}
-                    alt={a.caption}
-                    width={648}
-                    height={484}
-                    loading="lazy"
-                    decoding="async"
-                    data-caption={a.caption}
-                    data-full-src={a.fullSrc}
-                  />
-                  <div class="caption-overlay"><h3>{a.caption}</h3></div>
-                </a>
-                <a class="masonry-link portfolio-lightbox" href={b.fullSrc} data-full-src={b.fullSrc}>
-                  <img
-                    src={b.src}
-                    srcset={b.srcset}
-                    sizes={b.sizes}
-                    alt={b.caption}
-                    width={648}
-                    height={484}
-                    loading="lazy"
-                    decoding="async"
-                    data-caption={b.caption}
-                    data-full-src={b.fullSrc}
-                  />
-                  <div class="caption-overlay"><h3>{b.caption}</h3></div>
-                </a>
-              </div>
-            </article>
-          );
-        }
-        const photo = mapSingle(item);
-        // Map size to variant names
-        let variant = 'regular';
-        if (photo.size === 'landscape') variant = 'wide';
-        else if (photo.size === 'xlportrait') variant = 'wide_tall';
-        else if (photo.size === 'portrait') variant = 'regular';
+	<Fragment slot="head">
+		<style is:inline set:html={criticalStyles}></style>
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={fullTitle} />
+		<meta property="og:description" content={pageDescription} />
+		<meta property="og:url" content={canonicalUrl} />
+		{ogImages.map((image) => <meta property="og:image" content={image.url} />)}
+		{ogImages.map((image) => <meta property="og:image:alt" content={image.alt} />)}
+		{
+			primaryOgImage?.width && (
+				<meta property="og:image:width" content={String(primaryOgImage.width)} />
+			)
+		}
+		{
+			primaryOgImage?.height && (
+				<meta property="og:image:height" content={String(primaryOgImage.height)} />
+			)
+		}
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={fullTitle} />
+		<meta name="twitter:description" content={pageDescription} />
+		{primaryOgImage && <meta name="twitter:image" content={primaryOgImage.url} />}
+		{primaryOgImage?.alt && <meta name="twitter:image:alt" content={primaryOgImage.alt} />}
+		<script type="application/ld+json" set:html={jsonLdString} />
+	</Fragment>
+	<div class="portfolio-wrap">
+		<div
+			id="masonry"
+			class="masonry-items elastic"
+			data-col-num="elastic"
+			data-gutter="8px"
+			data-starting-filter="*"
+			data-masonry-type="photography"
+		>
+			<div class="grid-sizer"></div>
+			{
+				processedImages.map((item, index) => {
+					if (item && item.type === 'stacked' && Array.isArray(item.items)) {
+						const a = mapSingle(item.items[0]);
+						const b = mapSingle(item.items[1] || item.items[0]);
+						const aDimensions = lightboxDimensionsFor(a);
+						const bDimensions = lightboxDimensionsFor(b);
+						const containerAspectRatio = 648 / 968;
+						return (
+							<article
+								class="masonry-item wide_tall"
+								data-idx={index}
+								data-filename={a.filename}
+								data-size="xlportrait"
+								style={`--aspect-ratio: ${containerAspectRatio}`}
+							>
+								<div class="stacked-pair">
+									<a
+										class="masonry-link portfolio-lightbox"
+										href={a.fullSrc}
+										data-full-src={a.fullSrc}
+										data-pswp-width={aDimensions.width}
+										data-pswp-height={aDimensions.height}
+										data-pswp-srcset={lightboxSrcsetFor(a)}
+										data-cropped="true"
+									>
+										<img
+											src={a.src}
+											srcset={a.srcset}
+											sizes={a.sizes}
+											alt={a.caption}
+											width={648}
+											height={484}
+											loading="lazy"
+											decoding="async"
+											data-caption={a.caption}
+											data-full-src={a.fullSrc}
+										/>
+										<div class="caption-overlay">
+											<h3>{a.caption}</h3>
+										</div>
+									</a>
+									<a
+										class="masonry-link portfolio-lightbox"
+										href={b.fullSrc}
+										data-full-src={b.fullSrc}
+										data-pswp-width={bDimensions.width}
+										data-pswp-height={bDimensions.height}
+										data-pswp-srcset={lightboxSrcsetFor(b)}
+										data-cropped="true"
+									>
+										<img
+											src={b.src}
+											srcset={b.srcset}
+											sizes={b.sizes}
+											alt={b.caption}
+											width={648}
+											height={484}
+											loading="lazy"
+											decoding="async"
+											data-caption={b.caption}
+											data-full-src={b.fullSrc}
+										/>
+										<div class="caption-overlay">
+											<h3>{b.caption}</h3>
+										</div>
+									</a>
+								</div>
+							</article>
+						);
+					}
+					const photo = mapSingle(item);
+					// Map size to variant names
+					let variant = 'regular';
+					if (photo.size === 'landscape') variant = 'wide';
+					else if (photo.size === 'xlportrait') variant = 'wide_tall';
+					else if (photo.size === 'portrait') variant = 'regular';
 
-        // Get metadata for aspect ratio
-        const key = 'highlights/' + photo.filename;
-        const meta = imageMetadata[key];
+					// Get metadata for aspect ratio
+					const key = 'highlights/' + photo.filename;
+					const meta = imageMetadata[key];
 
-        const fallback = fallbackDimensions[photo.size as keyof typeof fallbackDimensions] ?? fallbackDimensions.portrait;
-        const aspectRatio = fallback.width / fallback.height;
+					const fallback =
+						fallbackDimensions[photo.size as keyof typeof fallbackDimensions] ??
+						fallbackDimensions.portrait;
+					const aspectRatio = fallback.width / fallback.height;
 
-        // Enforce consistent frame dimensions for Packery layout
-        const imageWidth = fallback.width;
-        const imageHeight = fallback.height;
+					// Enforce consistent frame dimensions for Packery layout
+					const imageWidth = fallback.width;
+					const imageHeight = fallback.height;
 
-        return (
-          <article
-            class={`masonry-item ${variant}`}
-            data-idx={index}
-            data-filename={photo.filename}
-            data-size={photo.size}
-            style={`--aspect-ratio: ${aspectRatio}`}
-          >
-            <a class="masonry-link portfolio-lightbox" href={photo.fullSrc} data-full-src={photo.fullSrc}>
-              <img
-                src={photo.src}
-                srcset={photo.srcset}
-                sizes={photo.sizes}
-                alt={photo.caption}
-                width={imageWidth}
-                height={imageHeight}
-                loading="lazy"
-                decoding="async"
-                data-caption={photo.caption}
-                data-variant={variant}
-                data-natural-width={meta?.width}
-                data-natural-height={meta?.height}
-                data-full-src={photo.fullSrc}
-              />
-              <div class="caption-overlay">
-                <h3>{photo.caption}</h3>
-              </div>
-            </a>
-          </article>
-        );
-      })}
-    </div>
-  </div>
+					return (
+						<article
+							class={`masonry-item ${variant}`}
+							data-idx={index}
+							data-filename={photo.filename}
+							data-size={photo.size}
+							style={`--aspect-ratio: ${aspectRatio}`}
+						>
+							<a
+								class="masonry-link portfolio-lightbox"
+								href={photo.fullSrc}
+								data-full-src={photo.fullSrc}
+								data-pswp-width={lightboxDimensionsFor(photo).width}
+								data-pswp-height={lightboxDimensionsFor(photo).height}
+								data-pswp-srcset={lightboxSrcsetFor(photo)}
+								data-cropped="true"
+							>
+								<img
+									src={photo.src}
+									srcset={photo.srcset}
+									sizes={photo.sizes}
+									alt={photo.caption}
+									width={imageWidth}
+									height={imageHeight}
+									loading="lazy"
+									decoding="async"
+									data-caption={photo.caption}
+									data-variant={variant}
+									data-natural-width={meta?.width}
+									data-natural-height={meta?.height}
+									data-full-src={photo.fullSrc}
+								/>
+								<div class="caption-overlay">
+									<h3>{photo.caption}</h3>
+								</div>
+							</a>
+						</article>
+					);
+				})
+			}
+		</div>
+	</div>
 </MainLayout>
 
 <style is:inline>
-/* Portfolio container - full width with top spacing for navbar */
-.portfolio-wrap {
-  position: relative;
-  margin: 0;
-  padding: 120px 0 0 0; /* Top padding for navbar; no side gutters for edge-to-edge */
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* Masonry Container */
-.masonry-items {
-  position: relative;
-  width: 100%;
-  margin: 0 auto;
-  padding: 0;
-  min-height: 500px; /* Prevent collapse */
-}
-
-/* Base masonry item */
-.masonry-item {
-  box-sizing: border-box;
-  padding: 0;
-  opacity: 0;
-  transform: translateY(12px);
-  position: absolute;
-  overflow: hidden;
-  aspect-ratio: var(--aspect-ratio, 2 / 3);
-}
-
-.masonry-item.animated-in {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity .35s ease, transform .35s ease;
-}
-
-/* Packery requires a sizer for percentPosition math */
-.grid-sizer {
-  width: 320px;
-}
-
-/* Size variants */
-.masonry-item.regular {
-  width: 320px;
-}
-
-.masonry-item.wide {
-  width: 648px; /* 2 columns (320*2) + gap (8) */
-}
-
-.masonry-item.wide_tall {
-  width: 648px; /* 2 columns (320*2) + gap (8) */
-}
-
-.masonry-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* Responsive sizing */
-@media only screen and (max-width: 1300px) {
-  .grid-sizer,
-  .masonry-item.regular {
-    width: 25%;
-  }
-  .masonry-item.wide,
-  .masonry-item.wide_tall {
-    width: 50%;
-  }
-
-}
-
-.masonry-item .stacked-pair {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  height: 100%;
-}
-
-.masonry-item .stacked-pair a {
-  display: block;
-  overflow: hidden;
-  flex: 1;
-}
-
-.masonry-item .stacked-pair img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-
-/* Caption overlay */
-.masonry-item a {
-  display: block;
-  position: relative;
-  overflow: hidden;
-  height: 100%;
-}
-
-/* Dark overlay on hover - gradient for sophistication */
-.masonry-item a::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0.3) 40%,
-    rgba(0, 0, 0, 0.7) 100%
-  );
-  opacity: 0;
-  transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  z-index: 1;
-  pointer-events: none;
-}
-
-.caption-overlay {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-  text-align: center;
-  width: 85%;
-  max-width: 500px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-  z-index: 2;
-  padding: 0 10px;
-}
-
-.caption-overlay h3 {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  font-size: clamp(20px, 3vw, 28px);
-  font-weight: 500;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-  letter-spacing: -0.02em;
-  line-height: 1.25;
-}
-
-/* Hover effects - gentler and more elegant */
-.masonry-item img {
-  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.masonry-item:hover img {
-  transform: scale(1.03);
-}
-
-.masonry-item:hover a::before {
-  opacity: 1;
-}
-
-.masonry-item:hover .caption-overlay {
-  opacity: 1;
-}
-
-/* PhotoSwipe caption styling */
-.pswp__caption {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  min-height: 44px;
-  padding: 15px 20px;
-  background: rgba(0, 0, 0, 0.75);
-  color: #fff;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  font-size: 16px;
-  text-align: center;
-  line-height: 1.4;
-  z-index: 10;
-}
-
-.pswp--ui-visible .pswp__caption {
-  opacity: 1;
-}
-
-/* Admin mode styles */
-.admin-toolbar {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  width: 100% !important;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-  color: white !important;
-  padding: 12px 20px !important;
-  z-index: 99999 !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 15px !important;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2) !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-
-.admin-badge {
-  background: rgba(255,255,255,0.2);
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-weight: 600;
-  font-size: 14px;
-  margin-right: auto;
-}
-
-.admin-btn {
-  background: rgba(255,255,255,0.2);
-  border: 1px solid rgba(255,255,255,0.3);
-  color: white;
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.admin-btn:hover {
-  background: rgba(255,255,255,0.3);
-  transform: translateY(-1px);
-}
-
-.admin-btn.success {
-  background: #10b981;
-  border-color: #10b981;
-}
-
-.admin-btn.error {
-  background: #ef4444;
-  border-color: #ef4444;
-}
-
-.admin-btn.warning {
-  background: #f59e0b;
-  border-color: #f59e0b;
-}
-
-/* Admin mode - show drag cursor */
-.admin-mode .masonry-item {
-  cursor: move;
-}
-
-.admin-mode .masonry-item.is-dragging {
-  z-index: 100;
-  opacity: 0.8;
-  transform: scale(1.05);
-  transition: none;
-}
-
-.admin-mode.is-sorting .masonry-item:not(.is-dragging) {
-  opacity: 0.6;
-}
-
-/* Visual feedback for draggable items in admin mode */
-.admin-mode .masonry-item:hover {
-  outline: 2px dashed #667eea;
-  outline-offset: 4px;
-}
-
-/* Adjust portfolio wrap when admin toolbar is present */
-body:has(.admin-toolbar) .portfolio-wrap {
-  padding-top: 170px; /* Extra space for admin toolbar */
-}
-
-/* Admin mode helpers */
-.admin-mode .masonry-item { position: relative; }
-
-.admin-mode .masonry-item::before {
-  content: "Shift+Click to edit";
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  right: 10px;
-  background: rgba(30, 58, 138, 0.9);
-  color: white;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  text-align: center;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.admin-mode .masonry-item:hover::before {
-  opacity: 1;
-}
-
-/* Enhanced edit popover */
-.edit-popover {
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform: translate(-12px, -12px);
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  padding: 20px;
-  z-index: 100000;
-  width: 380px;
-  max-width: calc(100vw - 40px);
-  animation: popoverFadeIn 0.2s ease;
-}
-
-@keyframes popoverFadeIn {
-  from {
-    opacity: 0;
-    transform: translate(-12px, -12px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-12px, -12px) scale(1);
-  }
-}
-
-.edit-popover h4 { 
-  margin: 0 0 4px 0; 
-  font-size: 16px; 
-  font-weight: 600; 
-  color: #111827; 
-}
-
-.edit-popover .hint { 
-  font-size: 11px; 
-  color: #9ca3af; 
-  margin-bottom: 16px;
-  font-family: monospace;
-}
-
-.edit-popover label { 
-  display: block; 
-  font-size: 13px; 
-  font-weight: 500;
-  color: #374151; 
-  margin: 12px 0 6px; 
-}
-
-.edit-popover input[type="text"],
-.edit-popover textarea { 
-  width: 100%; 
-  padding: 10px 12px; 
-  border: 2px solid #e5e7eb; 
-  border-radius: 8px; 
-  font-size: 14px; 
-  transition: all 0.15s ease;
-  background: #f9fafb;
-}
-
-.edit-popover textarea {
-  resize: vertical;
-  min-height: 60px;
-  font-family: inherit;
-  line-height: 1.4;
-}
-
-.edit-popover input:focus,
-.edit-popover textarea:focus { 
-  outline: none;
-  border-color: #3b82f6; 
-  background: #ffffff;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-.edit-popover select {
-  width: 100%;
-  padding: 10px 12px;
-  padding-right: 32px;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
-  font-size: 14px;
-  background: #f9fafb;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
-  background-position: right 8px center;
-  background-repeat: no-repeat;
-  background-size: 20px;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.edit-popover select:focus {
-  outline: none;
-  border-color: #3b82f6;
-  background-color: #ffffff;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-.edit-popover .row { 
-  display: flex; 
-  gap: 12px; 
-  align-items: flex-start; 
-}
-
-.edit-popover .size-hint { 
-  font-size: 11px; 
-  color: #9ca3af; 
-  margin-top: 4px;
-  line-height: 1.4;
-}
-
-.edit-popover .actions { 
-  display: flex; 
-  gap: 8px; 
-  justify-content: flex-end; 
-  margin-top: 20px; 
-  padding-top: 16px;
-  border-top: 1px solid #e5e7eb;
-}
-
-.edit-popover button { 
-  padding: 8px 16px; 
-  border-radius: 8px; 
-  font-size: 14px; 
-  font-weight: 500;
-  cursor: pointer; 
-  transition: all 0.15s ease;
-  border: none;
-}
-
-.edit-popover .save { 
-  background: #1e3a8a; 
-  color: white; 
-}
-
-.edit-popover .save:hover {
-  background: #1e40af;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.edit-popover .cancel { 
-  background: #f3f4f6; 
-  color: #374151; 
-}
-
-.edit-popover .cancel:hover {
-  background: #e5e7eb;
-}
-
-.edit-popover .invalid { 
-  border-color: #ef4444 !important; 
-  background: #fef2f2 !important;
-}
-
-/* Modal for editing */
-.edit-modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
-  padding: 24px;
-  border-radius: 12px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  z-index: 100000;
-  min-width: 400px;
-}
-
-.edit-modal h3 {
-  margin: 0 0 16px 0;
-  font-size: 20px;
-  font-weight: 600;
-}
-
-.edit-modal label {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.edit-modal .edit-section {
-  margin-bottom: 16px;
-}
-
-.edit-modal input,
-.edit-modal select {
-  width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  font-size: 14px;
-  margin-bottom: 16px;
-}
-
-.edit-modal .button-group {
-  display: flex;
-  gap: 8px;
-  justify-content: flex-end;
-}
-
-.edit-modal button {
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.edit-modal .save-btn {
-  background: #1e3a8a;
-  color: white;
-  border: none;
-}
-
-.edit-modal .cancel-btn {
-  background: #f3f4f6;
-  color: #374151;
-  border: none;
-}
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 99999;
-}
-
+	/* Portfolio container - full width with top spacing for navbar */
+	.portfolio-wrap {
+		position: relative;
+		margin: 0;
+		padding: 120px 0 0 0; /* Top padding for navbar; no side gutters for edge-to-edge */
+		width: 100%;
+		box-sizing: border-box;
+	}
+
+	/* Masonry Container */
+	.masonry-items {
+		position: relative;
+		width: 100%;
+		margin: 0 auto;
+		padding: 0;
+		min-height: 500px; /* Prevent collapse */
+	}
+
+	/* Base masonry item */
+	.masonry-item {
+		box-sizing: border-box;
+		padding: 0;
+		opacity: 0;
+		transform: translateY(12px);
+		position: absolute;
+		overflow: hidden;
+		aspect-ratio: var(--aspect-ratio, 2 / 3);
+	}
+
+	.masonry-item.animated-in {
+		opacity: 1;
+		transform: translateY(0);
+		transition:
+			opacity 0.35s ease,
+			transform 0.35s ease;
+	}
+
+	/* Packery requires a sizer for percentPosition math */
+	.grid-sizer {
+		width: 320px;
+	}
+
+	/* Size variants */
+	.masonry-item.regular {
+		width: 320px;
+	}
+
+	.masonry-item.wide {
+		width: 648px; /* 2 columns (320*2) + gap (8) */
+	}
+
+	.masonry-item.wide_tall {
+		width: 648px; /* 2 columns (320*2) + gap (8) */
+	}
+
+	.masonry-item img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+	}
+
+	/* Responsive sizing */
+	@media only screen and (max-width: 1300px) {
+		.grid-sizer,
+		.masonry-item.regular {
+			width: 25%;
+		}
+		.masonry-item.wide,
+		.masonry-item.wide_tall {
+			width: 50%;
+		}
+	}
+
+	.masonry-item .stacked-pair {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		height: 100%;
+	}
+
+	.masonry-item .stacked-pair a {
+		display: block;
+		overflow: hidden;
+		flex: 1;
+	}
+
+	.masonry-item .stacked-pair img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+	}
+
+	/* Caption overlay */
+	.masonry-item a {
+		display: block;
+		position: relative;
+		overflow: hidden;
+		height: 100%;
+	}
+
+	/* Dark overlay on hover - gradient for sophistication */
+	.masonry-item a::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(
+			180deg,
+			rgba(0, 0, 0, 0) 0%,
+			rgba(0, 0, 0, 0.3) 40%,
+			rgba(0, 0, 0, 0.7) 100%
+		);
+		opacity: 0;
+		transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+		z-index: 1;
+		pointer-events: none;
+	}
+
+	.caption-overlay {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		color: white;
+		text-align: center;
+		width: 85%;
+		max-width: 500px;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+		pointer-events: none;
+		z-index: 2;
+		padding: 0 10px;
+	}
+
+	.caption-overlay h3 {
+		margin: 0;
+		font-family:
+			-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+		font-size: clamp(20px, 3vw, 28px);
+		font-weight: 500;
+		text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+		letter-spacing: -0.02em;
+		line-height: 1.25;
+	}
+
+	/* Hover effects - gentler and more elegant */
+	.masonry-item img {
+		transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+	}
+
+	.masonry-item:hover img {
+		transform: scale(1.03);
+	}
+
+	.masonry-item:hover a::before {
+		opacity: 1;
+	}
+
+	.masonry-item:hover .caption-overlay {
+		opacity: 1;
+	}
+
+	/* PhotoSwipe caption styling */
+	.pswp__caption {
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		width: 100%;
+		min-height: 44px;
+		padding: 15px 20px;
+		background: rgba(0, 0, 0, 0.75);
+		color: #fff;
+		font-family:
+			-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+		font-size: 16px;
+		text-align: center;
+		line-height: 1.4;
+		z-index: 10;
+	}
+
+	.pswp--ui-visible .pswp__caption {
+		opacity: 1;
+	}
+
+	/* Admin mode styles */
+	.admin-toolbar {
+		position: fixed !important;
+		top: 0 !important;
+		left: 0 !important;
+		right: 0 !important;
+		width: 100% !important;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+		color: white !important;
+		padding: 12px 20px !important;
+		z-index: 99999 !important;
+		display: flex !important;
+		align-items: center !important;
+		gap: 15px !important;
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
+		visibility: visible !important;
+		opacity: 1 !important;
+	}
+
+	.admin-badge {
+		background: rgba(255, 255, 255, 0.2);
+		padding: 6px 12px;
+		border-radius: 20px;
+		font-weight: 600;
+		font-size: 14px;
+		margin-right: auto;
+	}
+
+	.admin-btn {
+		background: rgba(255, 255, 255, 0.2);
+		border: 1px solid rgba(255, 255, 255, 0.3);
+		color: white;
+		padding: 8px 16px;
+		border-radius: 6px;
+		cursor: pointer;
+		font-size: 14px;
+		font-weight: 500;
+		transition: all 0.3s ease;
+	}
+
+	.admin-btn:hover {
+		background: rgba(255, 255, 255, 0.3);
+		transform: translateY(-1px);
+	}
+
+	.admin-btn.success {
+		background: #10b981;
+		border-color: #10b981;
+	}
+
+	.admin-btn.error {
+		background: #ef4444;
+		border-color: #ef4444;
+	}
+
+	.admin-btn.warning {
+		background: #f59e0b;
+		border-color: #f59e0b;
+	}
+
+	/* Admin mode - show drag cursor */
+	.admin-mode .masonry-item {
+		cursor: move;
+	}
+
+	.admin-mode .masonry-item.is-dragging {
+		z-index: 100;
+		opacity: 0.8;
+		transform: scale(1.05);
+		transition: none;
+	}
+
+	.admin-mode.is-sorting .masonry-item:not(.is-dragging) {
+		opacity: 0.6;
+	}
+
+	/* Visual feedback for draggable items in admin mode */
+	.admin-mode .masonry-item:hover {
+		outline: 2px dashed #667eea;
+		outline-offset: 4px;
+	}
+
+	/* Adjust portfolio wrap when admin toolbar is present */
+	body:has(.admin-toolbar) .portfolio-wrap {
+		padding-top: 170px; /* Extra space for admin toolbar */
+	}
+
+	/* Admin mode helpers */
+	.admin-mode .masonry-item {
+		position: relative;
+	}
+
+	.admin-mode .masonry-item::before {
+		content: 'Shift+Click to edit';
+		position: absolute;
+		top: 10px;
+		left: 10px;
+		right: 10px;
+		background: rgba(30, 58, 138, 0.9);
+		color: white;
+		padding: 4px 8px;
+		border-radius: 4px;
+		font-size: 12px;
+		text-align: center;
+		opacity: 0;
+		transition: opacity 0.2s ease;
+		z-index: 10;
+		pointer-events: none;
+	}
+
+	.admin-mode .masonry-item:hover::before {
+		opacity: 1;
+	}
+
+	/* Enhanced edit popover */
+	.edit-popover {
+		position: absolute;
+		top: 0;
+		left: 0;
+		transform: translate(-12px, -12px);
+		background: #ffffff;
+		border: 1px solid #e5e7eb;
+		border-radius: 12px;
+		box-shadow:
+			0 20px 25px -5px rgba(0, 0, 0, 0.1),
+			0 10px 10px -5px rgba(0, 0, 0, 0.04);
+		padding: 20px;
+		z-index: 100000;
+		width: 380px;
+		max-width: calc(100vw - 40px);
+		animation: popoverFadeIn 0.2s ease;
+	}
+
+	@keyframes popoverFadeIn {
+		from {
+			opacity: 0;
+			transform: translate(-12px, -12px) scale(0.95);
+		}
+		to {
+			opacity: 1;
+			transform: translate(-12px, -12px) scale(1);
+		}
+	}
+
+	.edit-popover h4 {
+		margin: 0 0 4px 0;
+		font-size: 16px;
+		font-weight: 600;
+		color: #111827;
+	}
+
+	.edit-popover .hint {
+		font-size: 11px;
+		color: #9ca3af;
+		margin-bottom: 16px;
+		font-family: monospace;
+	}
+
+	.edit-popover label {
+		display: block;
+		font-size: 13px;
+		font-weight: 500;
+		color: #374151;
+		margin: 12px 0 6px;
+	}
+
+	.edit-popover input[type='text'],
+	.edit-popover textarea {
+		width: 100%;
+		padding: 10px 12px;
+		border: 2px solid #e5e7eb;
+		border-radius: 8px;
+		font-size: 14px;
+		transition: all 0.15s ease;
+		background: #f9fafb;
+	}
+
+	.edit-popover textarea {
+		resize: vertical;
+		min-height: 60px;
+		font-family: inherit;
+		line-height: 1.4;
+	}
+
+	.edit-popover input:focus,
+	.edit-popover textarea:focus {
+		outline: none;
+		border-color: #3b82f6;
+		background: #ffffff;
+		box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+	}
+
+	.edit-popover select {
+		width: 100%;
+		padding: 10px 12px;
+		padding-right: 32px;
+		border: 2px solid #e5e7eb;
+		border-radius: 8px;
+		font-size: 14px;
+		background: #f9fafb;
+		appearance: none;
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+		background-position: right 8px center;
+		background-repeat: no-repeat;
+		background-size: 20px;
+		cursor: pointer;
+		transition: all 0.15s ease;
+	}
+
+	.edit-popover select:focus {
+		outline: none;
+		border-color: #3b82f6;
+		background-color: #ffffff;
+		box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+	}
+
+	.edit-popover .row {
+		display: flex;
+		gap: 12px;
+		align-items: flex-start;
+	}
+
+	.edit-popover .size-hint {
+		font-size: 11px;
+		color: #9ca3af;
+		margin-top: 4px;
+		line-height: 1.4;
+	}
+
+	.edit-popover .actions {
+		display: flex;
+		gap: 8px;
+		justify-content: flex-end;
+		margin-top: 20px;
+		padding-top: 16px;
+		border-top: 1px solid #e5e7eb;
+	}
+
+	.edit-popover button {
+		padding: 8px 16px;
+		border-radius: 8px;
+		font-size: 14px;
+		font-weight: 500;
+		cursor: pointer;
+		transition: all 0.15s ease;
+		border: none;
+	}
+
+	.edit-popover .save {
+		background: #1e3a8a;
+		color: white;
+	}
+
+	.edit-popover .save:hover {
+		background: #1e40af;
+		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+	}
+
+	.edit-popover .cancel {
+		background: #f3f4f6;
+		color: #374151;
+	}
+
+	.edit-popover .cancel:hover {
+		background: #e5e7eb;
+	}
+
+	.edit-popover .invalid {
+		border-color: #ef4444 !important;
+		background: #fef2f2 !important;
+	}
+
+	/* Modal for editing */
+	.edit-modal {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background: white;
+		padding: 24px;
+		border-radius: 12px;
+		box-shadow:
+			0 20px 25px -5px rgba(0, 0, 0, 0.1),
+			0 10px 10px -5px rgba(0, 0, 0, 0.04);
+		z-index: 100000;
+		min-width: 400px;
+	}
+
+	.edit-modal h3 {
+		margin: 0 0 16px 0;
+		font-size: 20px;
+		font-weight: 600;
+	}
+
+	.edit-modal label {
+		display: block;
+		margin-bottom: 8px;
+		font-size: 14px;
+		font-weight: 500;
+	}
+
+	.edit-modal .edit-section {
+		margin-bottom: 16px;
+	}
+
+	.edit-modal input,
+	.edit-modal select {
+		width: 100%;
+		padding: 8px 12px;
+		border: 1px solid #e5e7eb;
+		border-radius: 6px;
+		font-size: 14px;
+		margin-bottom: 16px;
+	}
+
+	.edit-modal .button-group {
+		display: flex;
+		gap: 8px;
+		justify-content: flex-end;
+	}
+
+	.edit-modal button {
+		padding: 8px 16px;
+		border-radius: 6px;
+		font-size: 14px;
+		font-weight: 500;
+		cursor: pointer;
+		transition: all 0.2s ease;
+	}
+
+	.edit-modal .save-btn {
+		background: #1e3a8a;
+		color: white;
+		border: none;
+	}
+
+	.edit-modal .cancel-btn {
+		background: #f3f4f6;
+		color: #374151;
+		border: none;
+	}
+
+	.modal-overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: rgba(0, 0, 0, 0.5);
+		z-index: 99999;
+	}
 </style>
 
 <script hoist>
-  import initPackeryGallery from '../scripts/packeryGallery.ts';
-  initPackeryGallery({ container: '#masonry' });
+	import initPackeryGallery from '../scripts/packeryGallery.ts';
+	initPackeryGallery({ container: '#masonry' });
 </script>

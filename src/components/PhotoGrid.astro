@@ -1,7 +1,6 @@
 ---
-import 'glightbox/dist/css/glightbox.css';
-import '../styles/glightbox-custom.css';
 import { Image, getImage } from 'astro:assets';
+import PhotoSwipeLightbox from './PhotoSwipeLightbox.astro';
 import type { Image as ImageType } from '../data/galleryData';
 
 interface Props {
@@ -10,10 +9,22 @@ interface Props {
 
 const { images } = Astro.props;
 const imagesWithLightbox = await Promise.all(
-	images.map(async (image) => ({
-		...image,
-		lightboxHref: (await getImage({ src: image.src, width: image.src.width, inferSize: true })).src,
-	})),
+	images.map(async (image) => {
+		const lightboxWidth = Math.min(image.src.width, 3000);
+		const lightboxImage = await getImage({
+			src: image.src,
+			width: lightboxWidth,
+			inferSize: true,
+		});
+
+		return {
+			...image,
+			lightboxHref: lightboxImage.src,
+			lightboxWidth: image.src.width,
+			lightboxHeight: image.src.height,
+			lightboxCaption: image.description || image.title,
+		};
+	}),
 );
 ---
 
@@ -22,10 +33,12 @@ const imagesWithLightbox = await Promise.all(
 		imagesWithLightbox.map((image) => (
 			<a
 				href={image.lightboxHref}
-				class="photo-item glightbox absolute transition-transform hover:scale-[1.02] hover:z-10"
-				data-gallery="gallery1"
-				data-type="image"
-				data-glightbox={image.description ? `title: ${image.description}` : undefined}
+				class="photo-item portfolio-lightbox absolute transition-transform hover:scale-[1.02] hover:z-10"
+				data-pswp-item="true"
+				data-pswp-width={image.lightboxWidth}
+				data-pswp-height={image.lightboxHeight}
+				data-pswp-caption={image.lightboxCaption}
+				data-cropped="true"
 			>
 				<Image
 					src={image.src}
@@ -40,6 +53,8 @@ const imagesWithLightbox = await Promise.all(
 		))
 	}
 </section>
+
+<PhotoSwipeLightbox gallerySelector="#photo-grid" childrenSelector="a[data-pswp-item]" />
 
 <script>
 	import '../scripts/photo-grid';

@@ -1,193 +1,193 @@
 ---
+import PhotoSwipeLightbox from './PhotoSwipeLightbox.astro';
+
 const { images } = Astro.props;
 ---
 
 <style>
-.gallery {
-  column-count: 1;
-  column-gap: 1rem;
-  padding: 0 1rem;
-}
+	.gallery {
+		column-count: 1;
+		column-gap: 1rem;
+		padding: 0 1rem;
+	}
 
-@media (min-width: 640px) {
-  .gallery {
-    column-count: 2;
-  }
-}
+	@media (min-width: 640px) {
+		.gallery {
+			column-count: 2;
+		}
+	}
 
-@media (min-width: 1024px) {
-  .gallery {
-    column-count: 3;
-  }
-}
+	@media (min-width: 1024px) {
+		.gallery {
+			column-count: 3;
+		}
+	}
 
-@media (min-width: 1280px) {
-  .gallery {
-    column-count: 4;
-  }
-}
+	@media (min-width: 1280px) {
+		.gallery {
+			column-count: 4;
+		}
+	}
 
-.gallery-item {
-  break-inside: avoid;
-  margin-bottom: 1rem;
-  position: relative;
-  overflow: hidden;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
+	.gallery-item {
+		break-inside: avoid;
+		margin-bottom: 1rem;
+		position: relative;
+		overflow: hidden;
+		border-radius: 8px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		transition:
+			transform 0.2s ease,
+			box-shadow 0.2s ease;
+	}
 
-.gallery-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-}
+	.gallery-item:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+	}
 
-.gallery-item img {
-  width: 100%;
-  height: auto;
-  display: block;
-  cursor: pointer;
-}
+	.gallery-item img {
+		width: 100%;
+		height: auto;
+		display: block;
+		cursor: pointer;
+	}
 
-.gallery-item .overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
-  color: white;
-  padding: 1rem;
-  transform: translateY(100%);
-  transition: transform 0.2s ease;
-}
+	.gallery-item .overlay {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+		color: white;
+		padding: 1rem;
+		transform: translateY(100%);
+		transition: transform 0.2s ease;
+	}
 
-.gallery-item:hover .overlay {
-  transform: translateY(0);
-}
+	.gallery-item:hover .overlay {
+		transform: translateY(0);
+	}
 
-.gallery-item .caption {
-  font-size: 0.9rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
+	.gallery-item .caption {
+		font-size: 0.9rem;
+		font-weight: 600;
+		margin-bottom: 0.5rem;
+	}
 
-.gallery-item .tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem;
-}
+	.gallery-item .tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.25rem;
+	}
 
-.gallery-item .tag {
-  background: rgba(255, 255, 255, 0.2);
-  padding: 0.125rem 0.5rem;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  backdrop-filter: blur(4px);
-}
+	.gallery-item .tag {
+		background: rgba(255, 255, 255, 0.2);
+		padding: 0.125rem 0.5rem;
+		border-radius: 12px;
+		font-size: 0.75rem;
+		backdrop-filter: blur(4px);
+	}
 
-.like-button {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  background: rgba(255, 255, 255, 0.9);
-  border: none;
-  border-radius: 50%;
-  width: 2.5rem;
-  height: 2.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  opacity: 0;
-}
+	.like-button {
+		position: absolute;
+		top: 0.5rem;
+		right: 0.5rem;
+		background: rgba(255, 255, 255, 0.9);
+		border: none;
+		border-radius: 50%;
+		width: 2.5rem;
+		height: 2.5rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		opacity: 0;
+	}
 
-.gallery-item:hover .like-button {
-  opacity: 1;
-}
+	.gallery-item:hover .like-button {
+		opacity: 1;
+	}
 
-.like-button:hover {
-  background: rgba(255, 255, 255, 1);
-  transform: scale(1.1);
-}
+	.like-button:hover {
+		background: rgba(255, 255, 255, 1);
+		transform: scale(1.1);
+	}
 
-.like-button.liked {
-  background: #ef4444;
-  color: white;
-}
+	.like-button.liked {
+		background: #ef4444;
+		color: white;
+	}
 
-.like-button .heart {
-  width: 1rem;
-  height: 1rem;
-  fill: currentColor;
-}
+	.like-button .heart {
+		width: 1rem;
+		height: 1rem;
+		fill: currentColor;
+	}
 </style>
 
 <div class="gallery">
-  {images.map(({ src, filename, caption, tags }) => (
-    <div 
-      class="gallery-item" 
-      data-caption={caption}
-      data-tags={JSON.stringify(tags)}
-      data-src={src}
-    >
-      <img 
-        src={src} 
-        alt={caption || filename} 
-        loading="lazy"
-        data-gallery="gallery"
-      />
-      
-      <button class="like-button" data-photo-id={filename}>
-        <svg class="heart" viewBox="0 0 24 24">
-          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-        </svg>
-        <span class="like-count">0</span>
-      </button>
-      
-      <div class="overlay">
-        <div class="caption">{caption}</div>
-        <div class="tags">
-          {tags.map(tag => (
-            <span class="tag">{tag}</span>
-          ))}
-        </div>
-      </div>
-    </div>
-  ))}
+	{
+		images.map(({ src, filename, caption, tags }) => (
+			<div
+				class="gallery-item"
+				data-caption={caption}
+				data-tags={JSON.stringify(tags)}
+				data-src={src}
+			>
+				<a
+					href={src}
+					class="portfolio-lightbox block"
+					data-pswp-item="true"
+					data-pswp-caption={caption || filename}
+				>
+					<img src={src} alt={caption || filename} loading="lazy" />
+				</a>
+
+				<button class="like-button" data-photo-id={filename}>
+					<svg class="heart" viewBox="0 0 24 24">
+						<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+					</svg>
+					<span class="like-count">0</span>
+				</button>
+
+				<div class="overlay">
+					<div class="caption">{caption}</div>
+					<div class="tags">
+						{tags.map((tag) => (
+							<span class="tag">{tag}</span>
+						))}
+					</div>
+				</div>
+			</div>
+		))
+	}
 </div>
 
+<PhotoSwipeLightbox gallerySelector=".gallery" childrenSelector="a[data-pswp-item]" />
+
 <script>
-  import GLightbox from 'glightbox';
-  
-  // Initialize GLightbox
-  const lightbox = GLightbox({
-    selector: '[data-gallery="gallery"]',
-    touchNavigation: true,
-    loop: true,
-    autoplayVideos: false,
-  });
-  
-  // Like button functionality (will be enhanced with Supabase later)
-  document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.like-button').forEach(button => {
-      button.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const photoId = button.dataset.photoId;
-        const likeCount = button.querySelector('.like-count');
-        const currentCount = parseInt(likeCount.textContent);
-        
-        if (button.classList.contains('liked')) {
-          button.classList.remove('liked');
-          likeCount.textContent = Math.max(0, currentCount - 1);
-        } else {
-          button.classList.add('liked');
-          likeCount.textContent = currentCount + 1;
-        }
-        
-        // TODO: Integrate with Supabase to persist likes
-        console.log(`Toggled like for ${photoId}`);
-      });
-    });
-  });
+	// Like button functionality (will be enhanced with Supabase later)
+	document.addEventListener('DOMContentLoaded', () => {
+		document.querySelectorAll('.like-button').forEach((button) => {
+			button.addEventListener('click', (e) => {
+				e.stopPropagation();
+				const photoId = button.dataset.photoId;
+				const likeCount = button.querySelector('.like-count');
+				const currentCount = parseInt(likeCount.textContent);
+
+				if (button.classList.contains('liked')) {
+					button.classList.remove('liked');
+					likeCount.textContent = Math.max(0, currentCount - 1);
+				} else {
+					button.classList.add('liked');
+					likeCount.textContent = currentCount + 1;
+				}
+
+				// TODO: Integrate with Supabase to persist likes
+				console.log(`Toggled like for ${photoId}`);
+			});
+		});
+	});
 </script>

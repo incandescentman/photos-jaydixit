@@ -979,6 +979,8 @@ function setupPhotoSwipe({ container, isAdminMode }: PhotoSwipeOptions) {
 				imgEl?.getAttribute('data-full-src') ||
 				linkEl.getAttribute('href') ||
 				itemData.src;
+			const responsiveSrcset = linkEl.getAttribute('data-pswp-srcset') || undefined;
+			const thumbSrc = imgEl?.currentSrc || imgEl?.getAttribute('src') || undefined;
 
 			const imgDataWidth = imgEl
 				? parseInt(imgEl.getAttribute('data-natural-width') || '', 10)
@@ -1020,6 +1022,18 @@ function setupPhotoSwipe({ container, isAdminMode }: PhotoSwipeOptions) {
 
 			if (fullSrc) {
 				itemData.src = fullSrc;
+			}
+
+			if (responsiveSrcset) {
+				itemData.srcset = responsiveSrcset;
+			}
+
+			if (thumbSrc) {
+				itemData.msrc = thumbSrc;
+			}
+
+			if (linkEl.getAttribute('data-cropped') === 'true') {
+				itemData.thumbCropped = true;
 			}
 
 			return itemData;

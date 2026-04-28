@@ -1,6 +1,37 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-04-27 - Standardize live lightbox surfaces on bundled PhotoSwipe and improve cropped/responsive metadata
+
+** Status
+- Converted the remaining live gallery surfaces onto bundled PhotoSwipe patterns and tightened the metadata we give the lightbox about cropped thumbnails and capped responsive sources.
+
+** Shipped
+- Added a shared local initializer at ~src/components/PhotoSwipeLightbox.astro~ so static gallery surfaces can use one bundled PhotoSwipe path instead of CDN snippets or GLightbox.
+- ~src/components/Gallery.astro~
+  - Removed CDN PhotoSwipe assets.
+  - Switched to the local lightbox wrapper.
+  - Added ~=data-pswp-srcset=~ so album lightboxes can load capped responsive Cloudinary images.
+- ~src/components/PhotoGrid.astro~ and ~src/scripts/photo-grid.ts~
+  - Replaced the GLightbox path with PhotoSwipe for collection/featured grids.
+  - Marked those cover-cropped previews with ~=data-cropped="true"=.
+- ~src/pages/before-after.astro~
+  - Moved the comparison page onto the shared local PhotoSwipe wrapper.
+  - Marked the cover-cropped previews with ~=data-cropped="true"=.
+- ~src/pages/gallery/[...folder].astro~
+  - Stopped pointing the folder-gallery lightbox at raw imported metadata URLs.
+  - Generated a served lightbox target with ~=getImage()=~ and marked the cover-cropped thumbnails appropriately.
+- ~src/pages/index.astro~ and ~src/scripts/packeryGallery.ts~
+  - Capped homepage lightbox images to a saner maximum width.
+  - Added ~=data-pswp-srcset=~, ~=data-cropped=~, and lightbox dimensions that match the largest delivered slide instead of the uncapped original.
+- ~src/layouts/MainLayout.astro~
+  - Removed the now-unused live GLightbox CSS import.
+- ~docs/codebase-wisdom.org~
+  - Added the durable note about cropped thumbnails and capped responsive lightbox metadata.
+
+** Validation
+- Pending final =npm run build= after the full cleanup set
+
 * 2026-04-27 - Fix imported-image lightbox hrefs so Astro dev stops opening dead /@fs paths
 
 ** Status

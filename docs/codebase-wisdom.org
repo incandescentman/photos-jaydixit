@@ -1,6 +1,32 @@
 #+TITLE: Codebase Wisdom
 #+DATE: 2025-10-03
 
+* 2026-04-27 - Cropped PhotoSwipe Thumbnails Need Explicit Metadata, And Capped Lightbox Images Must Advertise Their Real Max Size
+
+** Trigger
+The repo still had a mix of cover-cropped thumbnails, uncapped full-resolution lightbox targets, and lightbox dimensions that described the original image even when the served lightbox source was intentionally capped.
+
+** Mechanism
+Two separate PhotoSwipe assumptions were easy to violate:
+
+- If the visible thumbnail uses ~=object-fit: cover=~, PhotoSwipe assumes the preview is *not* cropped unless you set ~=data-cropped="true"=. The open/close animation can feel subtly wrong otherwise.
+- If you cap the lightbox source (for example to ~=2200px=~ or ~=2800px=~) or supply ~=data-pswp-srcset=~, then ~=data-pswp-width=~ / ~=data-pswp-height=~ should describe the *largest delivered lightbox image*, not the original full-resolution source.
+
+Using the original dimensions with a capped lightbox still preserves aspect ratio, but it overstates available zoom detail and makes the responsive source metadata less truthful than it should be.
+
+** Fix
+- Add ~=data-cropped="true"= anywhere the clickable preview is visibly cropped:
+  - ~src/pages/index.astro~
+  - ~src/pages/gallery/[...folder].astro~
+  - ~src/components/PhotoGrid.astro~
+  - ~src/pages/before-after.astro~
+- When lightbox sources are capped or responsive, set ~=data-pswp-width=~, ~=data-pswp-height=~, and ~=data-pswp-srcset=~ to match the largest delivered lightbox variant.
+
+** Rule of Thumb
+If a PhotoSwipe transition feels "off" from a cover thumbnail, or zoom seems to promise more detail than the slide actually has, check two things first:
+- missing ~=data-cropped="true"=
+- dimensions that describe the original file instead of the capped lightbox source
+
 * 2026-04-27 - Astro Asset ~=.src= Can Break PhotoSwipe And GLightbox In Dev
 
 ** Trigger

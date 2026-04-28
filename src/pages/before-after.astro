@@ -1,6 +1,7 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 import { Image, getImage } from 'astro:assets';
+import PhotoSwipeLightbox from '../components/PhotoSwipeLightbox.astro';
 import vanessaBeforeImg from '../assets/images/wikiportraits/vanessa-kirby-before-2018.jpg';
 import vanessaAfterImg from '../assets/images/wikiportraits/vanessa-kirby_tiff_2024.jpg';
 import johnBeforeImg from '../assets/images/wikiportraits/john-hopfield-before-2016.jpg';
@@ -113,10 +114,12 @@ const comparisonsWithLightbox = await Promise.all(
 									</span>
 									<a
 										href={comparison.beforeLightboxHref}
+										data-pswp-item="true"
 										class="portfolio-lightbox block aspect-[3/4] bg-gray-100 rounded-xl overflow-hidden"
 										data-pswp-width={comparison.beforeImage.width}
 										data-pswp-height={comparison.beforeImage.height}
 										data-pswp-caption={`${comparison.name} - previous Wikipedia photo`}
+										data-cropped="true"
 									>
 										<Image
 											src={comparison.beforeImage}
@@ -136,10 +139,12 @@ const comparisonsWithLightbox = await Promise.all(
 									</span>
 									<a
 										href={comparison.afterLightboxHref}
+										data-pswp-item="true"
 										class="portfolio-lightbox block aspect-[3/4] bg-gray-100 rounded-xl overflow-hidden"
 										data-pswp-width={comparison.afterImage.width}
 										data-pswp-height={comparison.afterImage.height}
 										data-pswp-caption={`${comparison.name} - upgraded Wikipedia photo by Jay Dixit`}
+										data-cropped="true"
 									>
 										<Image
 											src={comparison.afterImage}
@@ -200,40 +205,16 @@ const comparisonsWithLightbox = await Promise.all(
 	</section>
 </MainLayout>
 
-<script hoist>
-	import PhotoSwipeLightbox from 'photoswipe/lightbox';
-	import 'photoswipe/style.css';
-
-	const lightbox = new PhotoSwipeLightbox({
-		gallery: '#before-after-gallery',
-		children: '.portfolio-lightbox',
-		pswpModule: () => import('photoswipe'),
+<PhotoSwipeLightbox
+	gallerySelector="#before-after-gallery"
+	childrenSelector="a[data-pswp-item]"
+	options={{
 		padding: { top: 20, bottom: 80, left: 20, right: 20 },
 		wheelToZoom: true,
-		imageClickAction: 'close',
-		tapAction: 'toggle-controls',
-		doubleTapAction: 'zoom',
 		preloaderDelay: 0,
 		showHideAnimationType: 'fade',
-	});
-
-	lightbox.addFilter('itemData', (itemData) => {
-		const linkEl = itemData.element;
-		if (!(linkEl instanceof HTMLElement)) return itemData;
-
-		const width = parseInt(linkEl.getAttribute('data-pswp-width') || '', 10);
-		const height = parseInt(linkEl.getAttribute('data-pswp-height') || '', 10);
-		const caption = linkEl.getAttribute('data-pswp-caption') || '';
-
-		if (Number.isFinite(width) && width > 0) itemData.w = width;
-		if (Number.isFinite(height) && height > 0) itemData.h = height;
-		if (caption) itemData.title = caption;
-
-		return itemData;
-	});
-
-	lightbox.init();
-</script>
+	}}
+/>
 
 <style>
 	.comparison-card {

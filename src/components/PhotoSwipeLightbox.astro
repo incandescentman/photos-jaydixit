@@ -1,0 +1,219 @@
+---
+export interface Props {
+	gallerySelector: string;
+	childrenSelector?: string;
+	options?: Record<string, unknown>;
+}
+
+const { gallerySelector, childrenSelector = 'a', options = {} } = Astro.props;
+const serializedOptions = JSON.stringify(options);
+---
+
+<div
+	hidden
+	data-photo-pswp-config="true"
+	data-gallery-selector={gallerySelector}
+	data-children-selector={childrenSelector}
+	data-options={serializedOptions}
+>
+</div>
+
+<script>
+	import PhotoSwipeLightbox from 'photoswipe/lightbox';
+	import 'photoswipe/style.css';
+
+	const DEFAULT_OPTIONS = {
+		showHideAnimationType: 'zoom',
+		bgOpacity: 0.95,
+		closeOnVerticalDrag: true,
+		padding: { top: 20, bottom: 20, left: 20, right: 20 },
+		imageClickAction: 'close',
+		tapAction: 'toggle-controls',
+		doubleTapAction: 'zoom',
+	};
+
+	const CONFIG_SELECTOR = '[data-photo-pswp-config="true"]';
+
+	const asPositiveInt = (value) => {
+		const parsed = Number.parseInt(value || '', 10);
+		return Number.isFinite(parsed) && parsed > 0 ? parsed : undefined;
+	};
+
+	const parseOptions = (rawOptions) => {
+		if (!rawOptions) return {};
+		try {
+			return JSON.parse(rawOptions);
+		} catch (error) {
+			console.warn('PhotoSwipeLightbox: unable to parse options JSON', error);
+			return {};
+		}
+	};
+
+	const deriveCaption = (linkEl, imgEl) =>
+		linkEl.getAttribute('data-pswp-caption') ||
+		imgEl?.dataset.caption ||
+		imgEl?.getAttribute('alt') ||
+		linkEl.querySelector('.pswp-caption-content')?.innerHTML ||
+		imgEl?.closest('figure')?.querySelector('figcaption')?.textContent ||
+		'';
+
+	const deriveSource = (linkEl, imgEl, itemData) =>
+		linkEl.getAttribute('data-full-src') ||
+		linkEl.getAttribute('href') ||
+		imgEl?.currentSrc ||
+		imgEl?.src ||
+		itemData.src;
+
+	function initPhotoSwipeLightboxes() {
+		const configNodes = document.querySelectorAll(CONFIG_SELECTOR);
+		if (!configNodes.length) return;
+
+		configNodes.forEach((configNode) => {
+			if (!(configNode instanceof HTMLElement)) return;
+			if (configNode.dataset.pswpBound === 'true') return;
+
+			const selector = configNode.dataset.gallerySelector;
+			const children = configNode.dataset.childrenSelector || 'a';
+			const parsedOptions = parseOptions(configNode.dataset.options);
+			if (!selector || !document.querySelector(selector)) return;
+
+			const lightbox = new PhotoSwipeLightbox({
+				...DEFAULT_OPTIONS,
+				...parsedOptions,
+				gallery: selector,
+				children,
+				pswpModule: () => import('photoswipe'),
+			});
+
+			lightbox.addFilter('domItemData', (itemData, _element, linkEl) => {
+				const anchor =
+					linkEl instanceof HTMLAnchorElement
+						? linkEl
+						: itemData.element instanceof HTMLAnchorElement
+							? itemData.element
+							: null;
+				if (!anchor) return itemData;
+
+				const imgEl = anchor.querySelector('img');
+				const width =
+					asPositiveInt(anchor.getAttribute('data-pswp-width')) ||
+					asPositiveInt(imgEl?.getAttribute('data-pswp-width')) ||
+					imgEl?.naturalWidth ||
+					imgEl?.width;
+				const height =
+					asPositiveInt(anchor.getAttribute('data-pswp-height')) ||
+					asPositiveInt(imgEl?.getAttribute('data-pswp-height')) ||
+					imgEl?.naturalHeight ||
+					imgEl?.height;
+				const caption = deriveCaption(anchor, imgEl);
+				const srcset = anchor.getAttribute('data-pswp-srcset');
+				const msrc = imgEl?.currentSrc || imgEl?.getAttribute('src') || itemData.msrc;
+
+				if (width) itemData.w = width;
+				if (height) itemData.h = height;
+				if (caption) itemData.title = caption;
+				if (srcset) itemData.srcset = srcset;
+				if (msrc) itemData.msrc = msrc;
+				if (imgEl?.alt) itemData.alt = imgEl.alt;
+				if (anchor.getAttribute('data-cropped') === 'true') {
+					itemData.thumbCropped = true;
+				}
+
+				const src = deriveSource(anchor, imgEl, itemData);
+				if (src) itemData.src = src;
+
+				return itemData;
+			});
+
+			lightbox.on('uiRegister', () => {
+				lightbox.pswp.ui.registerElement({
+					name: 'custom--caption',
+					order: 9,
+					isButton: false,
+					appendTo: 'root',
+					html: 'Caption text',
+					onInit: (el) => {
+						lightbox.pswp.on('change', () => {
+							const currSlideData = lightbox.pswp.currSlide?.data;
+							const explicitCaption =
+								currSlideData?.title ||
+								currSlideData?.element?.getAttribute?.('data-pswp-caption') ||
+								'';
+
+							el.innerHTML = explicitCaption;
+						});
+					},
+				});
+			});
+
+			lightbox.init();
+			configNode.dataset.pswpBound = 'true';
+		});
+	}
+
+	const runWhenReady = () => {
+		if (document.readyState === 'loading') {
+			document.addEventListener('DOMContentLoaded', initPhotoSwipeLightboxes, { once: true });
+			return;
+		}
+		initPhotoSwipeLightboxes();
+	};
+
+	runWhenReady();
+	document.addEventListener('astro:page-load', initPhotoSwipeLightboxes);
+</script>
+
+<style is:global>
+	.pswp__custom--caption {
+		position: absolute !important;
+		left: 0 !important;
+		right: 0 !important;
+		bottom: 0 !important;
+		top: auto !important;
+		background: linear-gradient(
+			to top,
+			rgba(0, 0, 0, 0.85) 0%,
+			rgba(0, 0, 0, 0.5) 60%,
+			transparent 100%
+		) !important;
+		color: #fff !important;
+		font-size: 18px !important;
+		line-height: 1.65 !important;
+		padding: 60px 24px 24px !important;
+		text-align: center !important;
+		z-index: 10 !important;
+		font-family:
+			system-ui,
+			-apple-system,
+			'Segoe UI',
+			sans-serif !important;
+		font-weight: 400 !important;
+		max-width: 100% !important;
+		box-sizing: border-box !important;
+	}
+
+	.pswp__custom--caption strong {
+		font-weight: 600 !important;
+		color: #fff !important;
+		display: block !important;
+		margin-bottom: 6px !important;
+		max-width: 900px !important;
+		margin-left: auto !important;
+		margin-right: auto !important;
+		font-size: 18px !important;
+	}
+
+	.pswp__custom--caption em {
+		font-style: italic !important;
+		color: rgba(255, 255, 255, 0.85) !important;
+		font-size: 16px !important;
+		display: block !important;
+		max-width: 900px !important;
+		margin-left: auto !important;
+		margin-right: auto !important;
+	}
+
+	.pswp__custom--caption:empty {
+		display: none;
+	}
+</style>

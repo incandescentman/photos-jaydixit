@@ -1,65 +1,85 @@
 ---
 import { cldUrl, cldSrcset, cldSizes } from '../lib/cloudinary';
+import PhotoSwipeLightbox from './PhotoSwipeLightbox.astro';
 import type { CollectionEntry } from 'astro:content';
 
-interface PhotoItem { publicId: string; alt?: string; width?: number; height?: number }
-interface AlbumData { title?: string; photos: PhotoItem[] }
+interface PhotoItem {
+	publicId: string;
+	alt?: string;
+	width?: number;
+	height?: number;
+}
+interface AlbumData {
+	title?: string;
+	photos: PhotoItem[];
+}
 
 const { album } = Astro.props as { album: CollectionEntry<'albums'>['data'] | AlbumData };
 const sizes = cldSizes();
 const largeWidth = 2200;
 const defaultWidth = 1024;
 const galleryId = 'cld-gallery';
+
+function lightboxWidthsFor(width: number) {
+	return Array.from(
+		new Set(
+			[960, 1400, 1800, width].filter(function keepWidth(candidate) {
+				return candidate <= width;
+			}),
+		),
+	);
+}
 ---
 
 <section class="mx-auto max-w-7xl px-4 md:px-6">
-  {album.title && <h1 class="text-2xl md:text-3xl font-semibold mb-4">{album.title}</h1>}
-  <div id={galleryId} class="columns-1 sm:columns-2 lg:columns-3 gap-4 [column-fill:_balance]">
-    {album.photos.map((p, i) => {
-      const src = cldUrl(p.publicId, defaultWidth);
-      const srcset = cldSrcset(p.publicId);
-      const href = cldUrl(p.publicId, largeWidth);
-      return (
-        <a
-          href={href}
-          class="block mb-4 break-inside-avoid"
-          data-pswp-item="true"
-          data-pswp-width={p.width ?? largeWidth}
-          data-pswp-height={p.height ?? Math.round(largeWidth * 0.667)}
-          data-pswp-caption={p.alt || ''}
-          data-pswp-index={i}
-        >
-          <img
-            src={src}
-            srcset={srcset}
-            sizes={sizes}
-            alt={p.alt || ''}
-            loading="lazy"
-            decoding="async"
-            class="w-full h-auto rounded-xl shadow-sm"
-            fetchpriority={i === 0 ? 'high' : 'auto'}
-          />
-        </a>
-      );
-    })}
-  </div>
+	{album.title && <h1 class="text-2xl md:text-3xl font-semibold mb-4">{album.title}</h1>}
+	<div id={galleryId} class="columns-1 sm:columns-2 lg:columns-3 gap-4 [column-fill:_balance]">
+		{
+			album.photos.map((p, i) => {
+				const src = cldUrl(p.publicId, defaultWidth);
+				const srcset = cldSrcset(p.publicId);
+				const href = cldUrl(p.publicId, largeWidth);
+				const lightboxWidth = p.width ? Math.min(p.width, largeWidth) : largeWidth;
+				const lightboxHeight =
+					p.width && p.height
+						? Math.round((p.height / p.width) * lightboxWidth)
+						: Math.round(largeWidth * 0.667);
+				const lightboxWidths = lightboxWidthsFor(lightboxWidth);
+				const lightboxSrcset = cldSrcset(p.publicId, lightboxWidths);
+				return (
+					<a
+						href={href}
+						class="block mb-4 break-inside-avoid"
+						data-pswp-item="true"
+						data-pswp-width={lightboxWidth}
+						data-pswp-height={lightboxHeight}
+						data-pswp-caption={p.alt || ''}
+						data-pswp-srcset={lightboxSrcset}
+						data-full-src={href}
+						data-pswp-index={i}
+					>
+						<img
+							src={src}
+							srcset={srcset}
+							sizes={sizes}
+							alt={p.alt || ''}
+							loading="lazy"
+							decoding="async"
+							class="w-full h-auto rounded-xl shadow-sm"
+							fetchpriority={i === 0 ? 'high' : 'auto'}
+						/>
+					</a>
+				);
+			})
+		}
+	</div>
 </section>
 
-<!-- PhotoSwipe CSS from CDN -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5/dist/photoswipe.css" />
-
-<!-- Initialize PhotoSwipe Lightbox via CDN ESM -->
-<script type="module">
-  import PhotoSwipeLightbox from 'https://cdn.jsdelivr.net/npm/photoswipe@5/dist/photoswipe-lightbox.esm.min.js';
-  const lightbox = new PhotoSwipeLightbox({
-    gallery: '#cld-gallery',
-    children: 'a[data-pswp-item]',
-    pswpModule: () => import('https://cdn.jsdelivr.net/npm/photoswipe@5/dist/photoswipe.esm.js')
-  });
-  lightbox.init();
-</script>
+<PhotoSwipeLightbox gallerySelector={`#${galleryId}`} childrenSelector="a[data-pswp-item]" />
 
 <style>
-/* Minimal masonry via CSS columns */
-img { display: block; }
+	/* Minimal masonry via CSS columns */
+	img {
+		display: block;
+	}
 </style>
