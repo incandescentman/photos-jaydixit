@@ -939,180 +939,215 @@ type PhotoSwipeOptions = {
 };
 
 function setupPhotoSwipe({ container, isAdminMode }: PhotoSwipeOptions) {
-	let initialized = false;
+	let lightbox: InstanceType<PhotoSwipeLightboxCtor> | null = null;
+	let initialization: Promise<InstanceType<PhotoSwipeLightboxCtor>> | null = null;
 
-	const activateLightbox = async () => {
-		if (initialized) return;
-		initialized = true;
+	const initializeLightbox = async () => {
+		if (lightbox) return lightbox;
+		if (initialization) return initialization;
 
-		const PhotoSwipeLightbox = await loadPhotoSwipeLightbox();
-		const lightbox = new PhotoSwipeLightbox({
-			gallery: '.masonry-items',
-			children: '.portfolio-lightbox',
-			pswpModule: () => import('photoswipe'),
-			padding: { top: 20, bottom: 80, left: 20, right: 20 },
-			wheelToZoom: true,
-			imageClickAction: 'close',
-			tapAction: 'toggle-controls',
-			doubleTapAction: 'zoom',
-			preloaderDelay: 0,
-			showHideAnimationType: 'fade',
-		});
-
-		if (isAdminMode) {
-			lightbox.on('clickEvent', (event) => {
-				const target = event.originalEvent.target as HTMLElement | null;
-				const item = target?.closest('.masonry-item');
-				if (item && item.classList.contains('is-dragging')) {
-					event.preventDefault();
-				}
+		initialization = (async () => {
+			const PhotoSwipeLightbox = await loadPhotoSwipeLightbox();
+			const nextLightbox = new PhotoSwipeLightbox({
+				gallery: '.masonry-items',
+				children: '.portfolio-lightbox',
+				pswpModule: () => import('photoswipe'),
+				padding: { top: 20, bottom: 80, left: 20, right: 20 },
+				wheelToZoom: true,
+				escKey: true,
+				imageClickAction: 'close',
+				tapAction: 'toggle-controls',
+				doubleTapAction: 'zoom',
+				preloaderDelay: 0,
+				showHideAnimationType: 'fade',
 			});
-		}
 
-		lightbox.addFilter('itemData', (itemData) => {
-			const linkEl = itemData.element as HTMLElement;
-			const imgEl = linkEl.querySelector('img');
-			const linkWidth = parseInt(linkEl.getAttribute('data-pswp-width') || '', 10);
-			const linkHeight = parseInt(linkEl.getAttribute('data-pswp-height') || '', 10);
-			const fullSrc =
-				linkEl.getAttribute('data-full-src') ||
-				imgEl?.getAttribute('data-full-src') ||
-				linkEl.getAttribute('href') ||
-				itemData.src;
-			const responsiveSrcset = linkEl.getAttribute('data-pswp-srcset') || undefined;
-			const thumbSrc = imgEl?.currentSrc || imgEl?.getAttribute('src') || undefined;
+			if (isAdminMode) {
+				nextLightbox.on('clickEvent', (event) => {
+					const target = event.originalEvent.target as HTMLElement | null;
+					const item = target?.closest('.masonry-item');
+					if (item && item.classList.contains('is-dragging')) {
+						event.preventDefault();
+					}
+				});
+			}
 
-			const imgDataWidth = imgEl
-				? parseInt(imgEl.getAttribute('data-natural-width') || '', 10)
-				: NaN;
-			const imgDataHeight = imgEl
-				? parseInt(imgEl.getAttribute('data-natural-height') || '', 10)
-				: NaN;
-			const widthCandidates = [
-				linkWidth,
-				imgDataWidth,
-				Number(itemData.w),
-				imgEl?.naturalWidth,
-				imgEl?.width,
-				1600,
-			];
-			const heightCandidates = [
-				linkHeight,
-				imgDataHeight,
-				Number(itemData.h),
-				imgEl?.naturalHeight,
-				imgEl?.height,
-				1200,
-			];
-			const resolvedWidth =
-				widthCandidates.find((value) => Number.isFinite(value) && Number(value) > 0) ?? 1600;
-			const resolvedHeight =
-				heightCandidates.find((value) => Number.isFinite(value) && Number(value) > 0) ?? 1200;
+			nextLightbox.addFilter('itemData', (itemData) => {
+				const linkEl = itemData.element as HTMLElement;
+				const imgEl = linkEl.querySelector('img');
+				const linkWidth = parseInt(linkEl.getAttribute('data-pswp-width') || '', 10);
+				const linkHeight = parseInt(linkEl.getAttribute('data-pswp-height') || '', 10);
+				const fullSrc =
+					linkEl.getAttribute('data-full-src') ||
+					imgEl?.getAttribute('data-full-src') ||
+					linkEl.getAttribute('href') ||
+					itemData.src;
+				const responsiveSrcset = linkEl.getAttribute('data-pswp-srcset') || undefined;
+				const thumbSrc = imgEl?.currentSrc || imgEl?.getAttribute('src') || undefined;
 
-			itemData.w = Number(resolvedWidth);
-			itemData.h = Number(resolvedHeight);
+				const imgDataWidth = imgEl
+					? parseInt(imgEl.getAttribute('data-natural-width') || '', 10)
+					: NaN;
+				const imgDataHeight = imgEl
+					? parseInt(imgEl.getAttribute('data-natural-height') || '', 10)
+					: NaN;
+				const widthCandidates = [
+					linkWidth,
+					imgDataWidth,
+					Number(itemData.w),
+					imgEl?.naturalWidth,
+					imgEl?.width,
+					1600,
+				];
+				const heightCandidates = [
+					linkHeight,
+					imgDataHeight,
+					Number(itemData.h),
+					imgEl?.naturalHeight,
+					imgEl?.height,
+					1200,
+				];
+				const resolvedWidth =
+					widthCandidates.find((value) => Number.isFinite(value) && Number(value) > 0) ?? 1600;
+				const resolvedHeight =
+					heightCandidates.find((value) => Number.isFinite(value) && Number(value) > 0) ?? 1200;
 
-			if (imgEl) {
-				itemData.alt = imgEl.alt;
-				const caption = imgEl.getAttribute('data-caption') || imgEl.alt || '';
-				if (caption) {
-					itemData.title = caption;
+				itemData.w = Number(resolvedWidth);
+				itemData.h = Number(resolvedHeight);
+
+				if (imgEl) {
+					itemData.alt = imgEl.alt;
+					const caption = imgEl.getAttribute('data-caption') || imgEl.alt || '';
+					if (caption) {
+						itemData.title = caption;
+					}
 				}
-			}
 
-			if (fullSrc) {
-				itemData.src = fullSrc;
-			}
+				if (fullSrc) {
+					itemData.src = fullSrc;
+				}
 
-			if (responsiveSrcset) {
-				itemData.srcset = responsiveSrcset;
-			}
+				if (responsiveSrcset) {
+					itemData.srcset = responsiveSrcset;
+				}
 
-			if (thumbSrc) {
-				itemData.msrc = thumbSrc;
-			}
+				if (thumbSrc) {
+					itemData.msrc = thumbSrc;
+				}
 
-			if (linkEl.getAttribute('data-cropped') === 'true') {
-				itemData.thumbCropped = true;
-			}
+				if (linkEl.getAttribute('data-cropped') === 'true') {
+					itemData.thumbCropped = true;
+				}
 
-			return itemData;
-		});
-
-		lightbox.on('uiRegister', () => {
-			lightbox.pswp.ui.registerElement({
-				name: 'custom-caption',
-				order: 9,
-				isButton: false,
-				appendTo: 'root',
-				onInit: (el, pswp) => {
-					el.style.position = 'absolute';
-					el.style.left = '0';
-					el.style.bottom = '0';
-					el.style.width = '100%';
-					el.style.maxWidth = '100%';
-					el.style.padding = '15px 20px';
-					el.style.background = 'rgba(0, 0, 0, 0.75)';
-					el.style.color = '#fff';
-					el.style.fontSize = '16px';
-					el.style.fontFamily =
-						'-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
-					el.style.textAlign = 'center';
-					el.style.lineHeight = '1.4';
-					el.style.zIndex = '10';
-
-					pswp.on('change', () => {
-						const currSlideData = pswp.currSlide?.data;
-						if (currSlideData?.title) {
-							el.textContent = currSlideData.title;
-							el.style.display = 'block';
-						} else {
-							el.style.display = 'none';
-						}
-					});
-
-					setTimeout(() => {
-						const currSlideData = pswp.currSlide?.data;
-						if (currSlideData?.title) {
-							el.textContent = currSlideData.title;
-							el.style.display = 'block';
-						}
-					}, 0);
-				},
+				return itemData;
 			});
+
+			nextLightbox.on('uiRegister', () => {
+				nextLightbox.pswp.ui.registerElement({
+					name: 'custom-caption',
+					order: 9,
+					isButton: false,
+					appendTo: 'root',
+					onInit: (el, pswp) => {
+						el.style.position = 'absolute';
+						el.style.left = '0';
+						el.style.bottom = '0';
+						el.style.width = '100%';
+						el.style.maxWidth = '100%';
+						el.style.padding = '15px 20px';
+						el.style.background = 'rgba(0, 0, 0, 0.75)';
+						el.style.color = '#fff';
+						el.style.fontSize = '16px';
+						el.style.fontFamily =
+							'-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+						el.style.textAlign = 'center';
+						el.style.lineHeight = '1.4';
+						el.style.zIndex = '10';
+
+						pswp.on('change', () => {
+							const currSlideData = pswp.currSlide?.data;
+							if (currSlideData?.title) {
+								el.textContent = currSlideData.title;
+								el.style.display = 'block';
+							} else {
+								el.style.display = 'none';
+							}
+						});
+
+						setTimeout(() => {
+							const currSlideData = pswp.currSlide?.data;
+							if (currSlideData?.title) {
+								el.textContent = currSlideData.title;
+								el.style.display = 'block';
+							}
+						}, 0);
+					},
+				});
+			});
+
+			nextLightbox.init();
+			lightbox = nextLightbox;
+			return nextLightbox;
+		})().catch((error) => {
+			initialization = null;
+			throw error;
 		});
 
-		lightbox.init();
+		return initialization;
 	};
 
-	const pointerHandler = (event: Event) => {
-		const target = event.target as HTMLElement | null;
-		if (!target) return;
-		if (!target.closest('.portfolio-lightbox')) return;
-
-		container.removeEventListener('pointerdown', pointerHandler);
+	const cleanupInitialHandlers = () => {
+		container.removeEventListener('click', clickHandler, true);
 		container.removeEventListener('keydown', keyHandler);
+	};
 
-		activateLightbox().catch((error) => {
-			console.error('Failed to initialize PhotoSwipe', error);
-		});
+	const getInitialPoint = (event: MouseEvent | KeyboardEvent) => {
+		if (!(event instanceof MouseEvent)) return null;
+		if (!event.clientX && !event.clientY) return null;
+		return { x: event.clientX, y: event.clientY };
+	};
+
+	const openFromInitialEvent = (event: MouseEvent | KeyboardEvent, anchor: HTMLElement) => {
+		const links = Array.from(container.querySelectorAll<HTMLElement>('.portfolio-lightbox'));
+		const index = links.findIndex((link) => link === anchor || link.contains(anchor));
+		if (index < 0) return;
+
+		event.preventDefault();
+		event.stopPropagation();
+
+		initializeLightbox()
+			.then((readyLightbox) => {
+				cleanupInitialHandlers();
+				readyLightbox.loadAndOpen(index, { gallery: container }, getInitialPoint(event));
+			})
+			.catch((error) => {
+				console.error('Failed to initialize PhotoSwipe', error);
+			});
+	};
+
+	const clickHandler = (event: MouseEvent) => {
+		if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+			return;
+		}
+
+		const target = event.target as HTMLElement | null;
+		const anchor = target?.closest<HTMLElement>('.portfolio-lightbox');
+		if (!anchor || !container.contains(anchor)) return;
+
+		openFromInitialEvent(event, anchor);
 	};
 
 	const keyHandler = (event: KeyboardEvent) => {
 		if (event.key !== 'Enter' && event.key !== ' ') return;
+
 		const target = event.target as HTMLElement | null;
-		if (!target) return;
-		if (!target.closest('.portfolio-lightbox')) return;
+		const anchor = target?.closest<HTMLElement>('.portfolio-lightbox');
+		if (!anchor || !container.contains(anchor)) return;
 
-		container.removeEventListener('pointerdown', pointerHandler);
-		container.removeEventListener('keydown', keyHandler);
-
-		activateLightbox().catch((error) => {
-			console.error('Failed to initialize PhotoSwipe', error);
-		});
+		openFromInitialEvent(event, anchor);
 	};
 
-	container.addEventListener('pointerdown', pointerHandler);
+	container.addEventListener('click', clickHandler, true);
 	container.addEventListener('keydown', keyHandler);
 }
 

@@ -1,6 +1,25 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-05-26 - Make homepage PhotoSwipe open on the first click and close with Escape
+
+** Status
+- Fixed the Packery homepage lightbox path so the first click or keyboard activation initializes ~PhotoSwipe~ and opens the intended slide instead of only priming the lazy loader.
+
+** Shipped
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/scripts/packeryGallery.ts][src/scripts/packeryGallery.ts]]
+  - Replaced the lazy ~pointerdown~ initializer with a first-activation handler that prevents navigation, loads ~PhotoSwipe~, and calls ~loadAndOpen~ for the clicked slide.
+  - Kept modifier-click behavior intact so browser open-in-new-tab shortcuts still work.
+  - Made ~escKey~ explicit in the Packery lightbox options.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/PhotoSwipeLightbox.astro][src/components/PhotoSwipeLightbox.astro]]
+  - Made ~escKey~ explicit in the shared lightbox defaults.
+
+** Validation
+- =npm run build= passed.
+- =npm run lint= passed.
+- Verified in a clean Chrome DevTools Protocol session against =http://127.0.0.1:4322/= that the first homepage photo click opens ~PhotoSwipe~ and ~Escape~ closes it.
+- Verified =http://127.0.0.1:4322/before-after/= still opens ~PhotoSwipe~ and closes with ~Escape~.
+
 * 2026-04-27 - Standardize live lightbox surfaces on bundled PhotoSwipe and improve cropped/responsive metadata
 
 ** Status
