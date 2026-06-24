@@ -1,6 +1,20 @@
 #+TITLE: Codebase Wisdom
 #+DATE: 2025-10-03
 
+* 2026-06-24 - PhotoSwipe Keyboard Tests Need To Wait For The Open Transition To Settle
+
+** Trigger
+The new Playwright e2e test could click a homepage or gallery photo and see ~PhotoSwipe~ visibly open, but an immediate synthetic ~Escape~ keypress did not close the lightbox in bundled Chromium. The same interaction worked in a slower manual-style browser probe.
+
+** Mechanism
+~PhotoSwipe~ can be visible and carrying ~=pswp--open=~ before it is fully settled for keyboard interaction. Playwright is fast enough to send ~Escape~ during that opening window, so the key event can be ignored even though the UI looks open in the failure screenshot.
+
+** Fix
+For keyboard-close tests, wait for the root lightbox to be visible, wait for the ~=pswp--open=~ class, then allow a short settle interval before pressing ~Escape~.
+
+** Rule of Thumb
+When testing animated overlays, assert the stable open state before keyboard shortcuts. If a screenshot shows the overlay open but the shortcut failed, check timing before assuming the app option is missing.
+
 * 2026-04-27 - Cropped PhotoSwipe Thumbnails Need Explicit Metadata, And Capped Lightbox Images Must Advertise Their Real Max Size
 
 ** Trigger

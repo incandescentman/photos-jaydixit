@@ -1,6 +1,30 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-06-24 - Add Playwright portfolio smoke tests
+
+** Status
+- Added a Playwright e2e layer for production-like portfolio verification through Astro preview.
+- Covered the visual smoke paths that matter after dependency and image-pipeline changes: homepage, gallery index, Sundance gallery, Conan photo detail, Nobel blog post, PhotoSwipe open/close, and the Vanessa Kirby related-essay thumbnail.
+
+** Shipped
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/package.json][package.json]] and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/pnpm-lock.yaml][pnpm-lock.yaml]]
+  - Added ~@playwright/test~ and a ~test:e2e~ script.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/playwright.config.ts][playwright.config.ts]]
+  - Launches ~pnpm build && pnpm exec astro preview --host 127.0.0.1 --port 4326~ unless ~PLAYWRIGHT_BASE_URL~ is provided.
+  - Uses Chromium, list + HTML reporters, screenshots on failure, and traces on first retry.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tests/e2e/portfolio.e2e.ts][tests/e2e/portfolio.e2e.ts]]
+  - Checks expected titles/headings, minimum image/lightbox counts, completed broken images, PhotoSwipe first-click/Escape behavior, and the corrected Vanessa Kirby thumbnail source.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/.gitignore][.gitignore]]
+  - Ignores Playwright report and test-result artifacts.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tsconfig.json][tsconfig.json]]
+  - Includes the Playwright config and e2e test files so project-backed ESLint can parse them.
+
+** Validation
+- =pnpm exec playwright install chromium= installed the local browser cache under ~/Users/jay/Library/Caches/ms-playwright/~.
+- =PLAYWRIGHT_BASE_URL=http://127.0.0.1:4325 pnpm exec playwright test -g "PhotoSwipe" --workers=1= passed (2/2).
+- =pnpm test:e2e= passed (8/8).
+
 * 2026-06-24 - Post-pnpm visual spot-check and stale Cloudinary ID fix
 
 ** Status

@@ -9,6 +9,7 @@
 		"astro": "astro",
 		"prettier": "prettier . --write",
 		"test": "vitest",
+		"test:e2e": "playwright test",
 		"lint": "eslint . --ext .ts,.js,.astro",
 		"generate": "npx tsx src/data/gallery-generator.ts src/gallery",
 		"generate-tags": "node scripts/generate-tags-json.js",
@@ -24,6 +25,7 @@
 	"devDependencies": {
 		"@eslint/js": "^9.39.3",
 		"@lucide/astro": "^1.7.0",
+		"@playwright/test": "^1.61.1",
 		"@tailwindcss/typography": "^0.5.16",
 		"@tailwindcss/vite": "^4.0.14",
 		"@types/js-yaml": "^4.0.9",
