@@ -151,7 +151,7 @@ Users should see content ASAP, not stare at blank screens. Photography portfolio
 
 *** Vercel Configuration (=vercel.json=)
 - Framework: Astro
-- Build command: =npm run build=
+- Build command: =pnpm run build=
 - Output directory: =dist=
 - Region: iad1 (US East)
 - Cache headers for immutable assets (31536000s)

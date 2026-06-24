@@ -96,14 +96,14 @@ Key documentation files:
 
 ** Local Development
 #+begin_src bash
-npm run dev      # Start dev server
-npm run build    # Build for production
-npm run preview  # Preview production build
+pnpm run dev      # Start dev server
+pnpm run build    # Build for production
+pnpm run preview  # Preview production build
 #+end_src
 
 ** Cloudinary Sync
 #+begin_src bash
-npm run sync     # Sync Cloudinary assets to content layer
+pnpm run sync     # Sync Cloudinary assets to content layer
 #+end_src
 
 ** Deployment

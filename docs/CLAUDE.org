@@ -308,12 +308,12 @@ Frequency: Very High
 * Development Commands
 
 ** Local Development
-- `npm run dev` - Start dev server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
+- `pnpm run dev` - Start dev server
+- `pnpm run build` - Build for production
+- `pnpm run preview` - Preview production build
 
 ** Cloudinary Sync
-- `npm run sync` - Sync Cloudinary assets to content layer
+- `pnpm run sync` - Sync Cloudinary assets to content layer
 - Check logs in `/logs` directory
 
 ** Deployment

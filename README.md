@@ -35,7 +35,7 @@ Ideal for photographers who want to showcase their work through a sleek, perform
 3. Install dependencies:
 
 ```bash
-npm install
+pnpm install
 # or
 yarn install
 ```
@@ -43,7 +43,7 @@ yarn install
 3. Start the development server:
 
 ```bash
-npm run dev
+pnpm run dev
 # or
 yarn dev
 ```
@@ -86,7 +86,7 @@ if your file has a different name/location.
 ### Adding Your Photos
 
 1. Place your images in the `src/gallery/<album>` directory
-2. Update the gallery details in `src/gallery/gallery.yaml`. Optionally, you can run `npm run generate` to generate a
+2. Update the gallery details in `src/gallery/gallery.yaml`. Optionally, you can run `pnpm run generate` to generate a
    gallery.yaml file from the images in the directory.
 3. Update meta-data for images in the `src/gallery/gallery.yaml` file.
 4. Images are automatically optimized during build
