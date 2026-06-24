@@ -1,6 +1,29 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-06-24 - Post-pnpm visual spot-check and stale Cloudinary ID fix
+
+** Status
+- Ran a local browser visual pass against the pnpm/Astro 6 site at =http://127.0.0.1:4325/= after the package-manager and Astro-integration commits.
+- Found and fixed a stale Cloudinary public ID in the sample blog post that broke the related-essay thumbnail on the Nobel portrait session page.
+- Made the ESLint flat-config package import explicit for pnpm strict dependency resolution.
+
+** Shipped
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/package.json][package.json]] and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/pnpm-lock.yaml][pnpm-lock.yaml]]
+  - Added direct dev dependency ~@eslint/js~ because ~eslint.config.js~ imports it directly and pnpm does not expose undeclared transitive dependencies.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/content/blog/hello-world.mdx][src/content/blog/hello-world.mdx]]
+  - Changed the Vanessa Kirby image public ID from the missing ~events/red-carpet/tiff/vanessa-kirby_tiff_2024~ asset to the existing ~highlights/vanessa-kirby_tiff_2024~ asset in both frontmatter and the inline image URL.
+
+** Validation
+- Browser-checked =/=, =/gallery/=, =/gallery/red-carpet/sundance/=, =/gallery/photo/red-carpet/sundance/conan-obrien_sundance_2024/=, and =/blog/nobel-portrait-session/= in system Chrome via Playwright.
+- Verified homepage and Sundance gallery ~PhotoSwipe~ open on first click and close with ~Escape~.
+- Confirmed the stale Cloudinary URL returned =404= before the fix.
+- Verified the fixed related-essay thumbnail loads after scrolling the section into view.
+- =pnpm build= passed.
+- =pnpm test= passed (21/21).
+- =pnpm lint= passed after declaring ~@eslint/js~ directly.
+- =pnpm exec prettier --check package.json src/content/blog/hello-world.mdx= passed.
+
 * 2026-05-26 - Make homepage PhotoSwipe open on the first click and close with Escape
 
 ** Status
