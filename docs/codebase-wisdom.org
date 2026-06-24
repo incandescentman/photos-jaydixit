@@ -1,6 +1,20 @@
 #+TITLE: Codebase Wisdom
 #+DATE: 2025-10-03
 
+* 2026-06-24 - ESLint Flat Config Must Ignore Playwright Artifact Directories Directly
+
+** Trigger
+After adding Playwright, a parallel verify run had ~pnpm lint~ fail with an =ENOENT= while ESLint was scanning ~test-results~ as Playwright was creating and cleaning generated artifacts.
+
+** Mechanism
+Repo-level =.gitignore= keeps Playwright artifacts out of commits, but the ESLint flat config has its own explicit ignore list. If generated artifact directories are not listed there, ESLint can still walk them during broad commands like ~eslint . --ext .ts,.js,.astro~.
+
+** Fix
+Add ~playwright-report/**~ and ~test-results/**~ to the top-level ~ignores~ block in ~eslint.config.js~.
+
+** Rule of Thumb
+When adding a generator-backed test tool, update both =.gitignore= and tool-specific ignore lists. Generated directories should not be lint or typecheck inputs.
+
 * 2026-06-24 - PhotoSwipe Keyboard Tests Need To Wait For The Open Transition To Settle
 
 ** Trigger

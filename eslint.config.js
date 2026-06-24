@@ -14,6 +14,8 @@ export default [
 			'**/.astro/**',
 			'node_modules/**',
 			'.cache/**',
+			'playwright-report/**',
+			'test-results/**',
 			'venv/**',
 			'astro-jay-dixit-photos-starter/**',
 		],

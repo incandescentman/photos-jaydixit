@@ -1,6 +1,29 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-06-24 - Align Vercel deploy settings with pnpm
+
+** Status
+- Updated both repo-local and remote Vercel build settings so the next Git deployment uses pnpm instead of stale npm commands.
+- Added Playwright artifact directories to the ESLint flat-config ignore list after a parallel lint/e2e run exposed a transient ~test-results~ scan failure.
+
+** Shipped
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/vercel.json][vercel.json]]
+  - Changed ~buildCommand~ to ~pnpm build~.
+  - Changed ~installCommand~ to ~pnpm install~.
+  - Changed ~devCommand~ to ~pnpm run dev~.
+- Remote Vercel project ~photos-jaydixit~
+  - Updated Framework Settings to ~Build Command: pnpm build~, ~Install Command: pnpm install~, and ~Development Command: pnpm run dev~.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/eslint.config.js][eslint.config.js]]
+  - Ignored ~playwright-report/**~ and ~test-results/**~ so generated e2e artifacts are never lint targets.
+
+** Validation
+- =vercel project inspect photos-jaydixit= confirmed remote settings are now ~pnpm build~ and ~pnpm install~.
+- =pnpm exec prettier --check vercel.json= passed.
+- =pnpm build= passed.
+- =pnpm test= passed (21/21).
+- =pnpm test:e2e= passed (8/8).
+
 * 2026-06-24 - Add Playwright portfolio smoke tests
 
 ** Status
