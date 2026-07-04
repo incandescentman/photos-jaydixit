@@ -133,16 +133,14 @@ test('before-after page renders source captions and loads comparison images afte
 	await expect(page).toHaveTitle(/Before & After/);
 	await expect(page.getByRole('heading', { name: 'Before & After' })).toBeVisible();
 
-	const comparisonCards = page.locator('.comparison-card');
+	const comparisonCards = page.locator('.ba-pair');
 	await expect(comparisonCards).toHaveCount(5);
-	await expect(page.locator('.comparison-arrow')).toHaveCount(5);
-	await expect(page.locator('.comparison-source')).toHaveCount(10);
+	await expect(page.locator('.ba-arrow')).toHaveCount(5);
+	await expect(page.locator('.ba-cap-src')).toHaveCount(10);
+	await expect(page.locator('.ba-cap-src', { hasText: 'Glenn Francis, 2019' })).toBeVisible();
 	await expect(
-		page.locator('.comparison-source', { hasText: 'Glenn Francis, 2019' }),
-	).toBeVisible();
-	await expect(
-		page.locator('.comparison-source', {
-			hasText: 'Jay Dixit, Toronto International Film Festival 2024',
+		page.locator('.ba-cap-src', {
+			hasText: 'Jay Dixit, TIFF 2024',
 		}),
 	).toHaveCount(2);
 
