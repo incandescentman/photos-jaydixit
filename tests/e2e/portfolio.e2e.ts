@@ -123,3 +123,42 @@ test('Nobel related essay thumbnail uses the live Vanessa Kirby asset', async ({
 		.poll(() => image.evaluate((element: HTMLImageElement) => element.currentSrc || element.src))
 		.toContain('/highlights/vanessa-kirby_tiff_2024');
 });
+
+test('before-after page renders source captions and loads comparison images after scroll', async ({
+	page,
+}) => {
+	await page.goto('/before-after/');
+	await waitForInitialImages(page);
+
+	await expect(page).toHaveTitle(/Before & After/);
+	await expect(page.getByRole('heading', { name: 'Before & After' })).toBeVisible();
+
+	const comparisonCards = page.locator('.comparison-card');
+	await expect(comparisonCards).toHaveCount(5);
+	await expect(page.locator('.comparison-source')).toHaveCount(10);
+	await expect(
+		page.locator('.comparison-source', { hasText: 'Glenn Francis, 2019' }),
+	).toBeVisible();
+	await expect(
+		page.locator('.comparison-source', {
+			hasText: 'Jay Dixit, Toronto International Film Festival 2024',
+		}),
+	).toHaveCount(2);
+
+	for (const card of await comparisonCards.all()) {
+		await card.scrollIntoViewIfNeeded();
+		await page.waitForTimeout(150);
+		await expect(card.locator('img')).toHaveCount(2);
+		await expect
+			.poll(() =>
+				card
+					.locator('img')
+					.evaluateAll((images) =>
+						images.every((image) => image.complete && image.naturalWidth > 0),
+					),
+			)
+			.toBe(true);
+	}
+
+	expect(await getBrokenCompletedImages(page)).toEqual([]);
+});

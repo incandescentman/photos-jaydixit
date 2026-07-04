@@ -1,0 +1,150 @@
+#+TITLE: Site-Wide Improvements Implementation Plan
+#+DATE: 2026-07-03
+#+DESCRIPTION: Practical implementation plan for editorial design, homepage identity, shared photo infrastructure, discovery paths, and Wikimedia impact metadata.
+
+* Purpose
+This document turns the current site-wide improvement ideas into an implementation plan for [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit][photos-jaydixit]].
+
+The goal is not a full redesign for its own sake. The goal is to make the site feel more like an editorial photography publication and less like a generic portfolio template, while making future additions safer and easier.
+
+* Guiding Principles
+- Preserve Jay's prose. Do not rewrite public-facing explanatory copy unless that is the explicit task.
+- Let the photos carry the page. Interface elements should identify, credit, and contextualize the images without competing with them.
+- Prefer repeatable patterns over one-off styling. The before-and-after page is now a useful design reference; extract from it rather than copying it by hand everywhere.
+- Keep source-of-truth data in typed data files or content collections. Pages should render data, not hide important metadata inside template markup.
+- Verify visually in the browser. For this site, screenshots and actual image loading behavior matter as much as passing builds.
+
+* 1. Editorial Photography Language
+
+** Goal
+Unify the site around a quieter editorial vocabulary: monochrome labels, precise image credits, tighter captions, controlled spacing, and fewer generic portfolio-card gestures.
+
+** Approach
+Use [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/before-after.astro][src/pages/before-after.astro]] as the first reference point. Its new neutral label rows and source captions are closer to the desired tone than the older colored badge treatment.
+
+The next step is to identify every place where the site describes a photo and bring those surfaces into the same language:
+- homepage image captions in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][src/pages/index.astro]]
+- person cards in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/red-carpet/index.astro][src/pages/red-carpet/index.astro]]
+- gallery cards in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/gallery/index.astro][src/pages/gallery/index.astro]]
+- photo detail pages under [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/gallery/photo][src/pages/gallery/photo]]
+- reusable grids such as [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/PhotoGrid.astro][src/components/PhotoGrid.astro]]
+
+** Implementation
+- Define a small set of shared editorial classes in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/styles/global.css][src/styles/global.css]], such as ~.eyebrow~, ~.photo-credit~, ~.photo-caption~, and ~.editorial-link~.
+- Replace colored status badges with monochrome typographic labels unless color is carrying real state.
+- Add explicit credit/source text where it matters: photographer, event, publication, Wikimedia source, or Wikipedia article.
+- Tighten repeated card spacing by choosing one scale for caption gaps, section gaps, and grid gutters.
+- Keep hover states subtle and consistent. For photo surfaces, prefer a small zoom or opacity change over colored overlays.
+
+** Acceptance Criteria
+- The same kind of text looks the same across pages. A photo credit should not be gray-400 on one page, blue on another, and hidden in a tooltip on a third.
+- Each public-facing photo surface either has a meaningful caption/credit or intentionally omits one because the image is decorative.
+- No page relies on red/green/purple badge color just to label ordinary editorial concepts.
+
+* 2. Homepage First Viewport
+
+** Goal
+Make the first viewport unmistakably about Jay's red-carpet and WikiPortraits work, not just a generic masonry portfolio.
+
+** Approach
+The homepage should open with a tighter, more authored edit of high-recognition portraits and a short contextual line. The page does not need a large marketing hero, but it does need a stronger editorial premise before the masonry flow takes over.
+
+** Implementation
+- Add a compact homepage editorial lead in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][src/pages/index.astro]] with an actual ~h1~ and one short line about red-carpet photography for Wikipedia.
+- Choose a small first-viewport set from [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/homepage-images.js][src/data/homepage-images.js]]: high-recognition people first, strong expressions, varied color, and no weak duplicates.
+- Add small contextual captions to the first visible images: name, event, and optionally "now used on Wikipedia" when true.
+- Make the first row load eagerly. The homepage currently depends heavily on image timing; the first visible images should not all be lazy.
+- Keep the existing masonry below the lead until a larger layout refactor happens. This can be an incremental design improvement, not a full homepage rebuild.
+
+** Acceptance Criteria
+- The first viewport answers: who is Jay, what kind of photography is this, and why is it distinctive?
+- The opening image set feels intentionally edited rather than randomly shuffled.
+- The first visible images load quickly and do not sit as gray boxes while less important assets load first.
+
+* 3. Shared Components And Typed Data
+
+** Goal
+Reduce template sprawl by extracting repeated photo-card and lightbox patterns, then moving page-specific data into typed modules.
+
+** Approach
+Start with the before-and-after page because it is small, high-value, and now has richer metadata. Use it to design the data shape and a reusable frame component before applying the same pattern to broader galleries.
+
+** Implementation
+- Create [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/beforeAfter.ts][src/data/beforeAfter.ts]] for comparison entries.
+- Define a typed comparison shape with fields such as ~name~, ~article~, ~event~, ~beforeImage~, ~afterImage~, ~beforeSource~, ~afterSource~, and future Wikimedia fields.
+- Extract a reusable frame component, likely [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/EditorialPhotoFrame.astro][src/components/EditorialPhotoFrame.astro]], responsible for label, source, caption, image, and PhotoSwipe data attributes.
+- Keep [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/PhotoSwipeLightbox.astro][src/components/PhotoSwipeLightbox.astro]] as the shared lightbox initializer.
+- After the before-and-after extraction is stable, reuse the same frame/card language in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/PhotoGrid.astro][src/components/PhotoGrid.astro]] and gallery/person pages.
+
+** Acceptance Criteria
+- Adding a before-and-after entry does not require editing page layout markup.
+- Lightbox data attributes are generated consistently by one component.
+- Captions, credits, and responsive image settings are harder to forget because they are part of the component contract.
+
+* 4. Stronger Discovery Paths
+
+** Goal
+Make the site browsable by the ways visitors actually think: people, events, publications, Wikipedia upgrades, and recently added work.
+
+** Approach
+The current folder-based gallery model is useful for maintenance but not enough as public navigation. Keep folder galleries as one source, but create editorial indexes over the same data.
+
+** Implementation
+- Strengthen [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/red-carpet/index.astro][src/pages/red-carpet/index.astro]] as the primary people index. Add search/filtering by name, event, and notable project when the data supports it.
+- Add an events index backed by gallery folder metadata: TIFF, Sundance, SXSW, Nobel, and future festivals.
+- Add a "Wikipedia upgrades" index that combines before-and-after cases and individual portraits with Wikimedia status metadata.
+- Add a "Recently added" surface by tracking upload/addition dates in metadata. This can start as a manually maintained field and later be generated.
+- Revisit the nav labels once these paths exist. The nav should reflect visitor intent, not just filesystem architecture.
+
+** Acceptance Criteria
+- A visitor can find a person without knowing which folder their photo lives in.
+- A visitor can browse the WikiPortraits impact story without reading a blog post first.
+- Important new work has a path to the surface of the site instead of disappearing into a folder.
+
+* 5. Wikimedia And Wikipedia Impact Metadata
+
+** Goal
+Turn the portfolio into a visible record of public impact: which portraits were uploaded, which are used on Wikipedia, what image they replaced, who should be credited, and what license applies.
+
+** Approach
+Add structured fields gradually. Begin with before-and-after entries and person records, then later connect to Wikimedia Commons URLs and article usage.
+
+** Implementation
+- Extend comparison data with fields such as:
+  - ~commonsUrl~
+  - ~wikipediaArticle~
+  - ~uploadStatus~
+  - ~articleUsageStatus~
+  - ~replacedImageUrl~
+  - ~sourceCredit~
+  - ~license~
+  - ~licenseUrl~
+- Extend [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/people.json][src/data/people.json]] or replace it with a typed module if the schema becomes too rich for JSON.
+- Add a small provenance block to photo detail pages showing Wikimedia Commons link, license, article usage, and credit.
+- Add status chips sparingly. Use monochrome status language first; introduce color only if it encodes a genuinely useful state.
+- Document the data contract in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/wikimedia-commons-upload.org][docs/wikimedia-commons-upload.org]] once the field names stabilize.
+
+** Acceptance Criteria
+- For each public Wikipedia upgrade, the site can answer: where is it uploaded, where is it used, who should be credited, and what license governs reuse?
+- The before-and-after page becomes evidence, not just presentation.
+- The metadata can support future automation without scraping prose from page templates.
+
+* Suggested Implementation Order
+1. Extract before-and-after data into a typed module and add the reusable editorial image frame.
+2. Apply the editorial caption/credit classes to person and gallery cards.
+3. Add the homepage editorial lead and eager-load the first visible images.
+4. Add first-class Playwright coverage for before-and-after and the homepage first viewport.
+5. Add Wikimedia status fields to before-and-after entries.
+6. Add a Wikipedia upgrades index.
+7. Add search/filtering to the red-carpet people index.
+8. Expand event and recently-added indexes once the metadata exists.
+
+* Verification Checklist
+- Run ~pnpm lint~.
+- Run ~pnpm build~.
+- Run focused Playwright tests for changed routes, then ~pnpm test:e2e~ before committing larger navigation or gallery changes.
+- Capture desktop and mobile screenshots for visual changes.
+- Check for horizontal overflow on mobile.
+- Confirm lazy images load after scroll on image-heavy pages.
+- Record the change and any handoff notes in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/work-log.org][docs/work-log.org]].
+

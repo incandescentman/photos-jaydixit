@@ -1,0 +1,167 @@
+#+title: Site Review & Improvement Plan — 2026-07-03
+#+author: Claude (Fable 5)
+#+date: 2026-07-03
+
+Full review of the live site (https://photos.jaydixit.com) plus a two-agent codebase audit (design layer + technical layer). Organized by priority, with implementation suggestions for each item.
+
+Live-site observations were made in Chrome on 2026-07-03: gray placeholder boxes for 3–5+ seconds on [[https://photos.jaydixit.com/red-carpet/][/red-carpet/]], [[https://photos.jaydixit.com/gallery/][/gallery/]], person pages, and [[https://photos.jaydixit.com/before-after][/before-after]]; homepage masonry visibly re-laying-out during load with horizontal overflow.
+
+* 🔥 Tier 1 — High-impact fixes (visitor-facing)
+
+** TODO Compress the 5.7 MB logo.png
+The single highest-leverage fix on the site.
+
+- *Problem*: [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/logo.png][📄 public/logo.png]] is 5,746,187 bytes — a 2048×2048 PNG rendered at 56px in the nav. It loads on *every page* and saturates the connection while photo thumbnails queue behind it. This is the main cause of the "gray boxes for seconds" experience.
+- *Verified*: ~curl -s -o /dev/null -w '%{size_download}' https://photos.jaydixit.com/logo.png~ → 5746187 bytes. Photo thumbnails themselves are only 30–55 KB.
+- *Implementation*:
+  1. Generate small derivatives with sharp (already a dev dependency):
+     ~npx sharp-cli~ or a tiny node script: resize to 112px (2x of 56px display) and 512px (for the logo modal), export as webp.
+     #+begin_src bash
+     node -e "const s=require('sharp'); s('public/logo.png').resize(112).webp({quality:85}).toFile('public/logo-nav.webp'); s('public/logo.png').resize(512).webp({quality:85}).toFile('public/logo-large.webp')"
+     #+end_src
+  2. Update the two ~<img src="/logo.png">~ references in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/NavBar.astro][📄 NavBar.astro]] (nav logo → ~logo-nav.webp~, zoom modal → ~logo-large.webp~).
+  3. Keep the original PNG out of ~public/~ (move to ~src/assets/~ or delete) so it can't be served again.
+- *Expected result*: ~5.7 MB → ~10–30 KB per page load.
+
+** TODO Make above-the-fold images eager / prioritized
+- *Problem*: every image site-wide is ~loading="lazy"~, including the homepage LCP images (~src/pages/index.astro:701, :726, :783~). First paint shows gray placeholder boxes.
+- *Implementation*:
+  - Homepage: for the first N items (say, the first 4–6 in the masonry order), emit ~loading="eager" fetchpriority="high"~; keep ~lazy~ for the rest. The render loop already has the index available.
+  - Index pages ([[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/red-carpet/index.astro][📄 red-carpet/index.astro]], [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/gallery/index.astro][📄 gallery/index.astro]]): same treatment for the first row of cards.
+  - Optionally add ~<link rel="preload" as="image">~ for the known LCP image in the head slot.
+
+** TODO Replace the homepage Packery masonry with a deterministic layout
+- *Problem*: while loading, the homepage shows large blank regions; images pop into place one at a time as Packery re-lays-out; the grid overflows the viewport horizontally (horizontal scrollbar); even settled there's an empty region at bottom-right. The ~300-line custom "gap optimizer" (~src/pages/index.astro:90–381~) fights the layout engine.
+- *Implementation options* (pick one):
+  1. /Recommended:/ ~justified-layout~ (Flickr's algorithm — *already in package.json*). Compute row-based layout at build time in the frontmatter using the known aspect ratios from [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/image-metadata.json][📄 image-metadata.json]], emit absolutely-positioned items with inline ~top/left/width/height~. Zero client JS, zero CLS, no gaps by construction. PhotoSwipe still works unchanged.
+  2. CSS Grid with ~grid-template-rows: masonry~ is still not cross-browser; skip.
+  3. Plain CSS columns (like ~Gallery.astro~) — simplest, but loses left-to-right visual ordering.
+- Once replaced, delete Packery, imagesloaded, draggabilly, and the gap-optimizer code. See also [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/masonry-architecture-improvements.org][📄 masonry-architecture-improvements.org]] for earlier thinking on this.
+
+** TODO Fix the nav active-state bug
+- *Problem*: "Why I Photograph" is highlighted blue on /every/ page (verified live on /gallery/, /red-carpet/, /before-after). The current section is never indicated.
+- *Implementation*: in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/NavBar.astro][📄 NavBar.astro]], compare ~Astro.url.pathname~ against each link's href (prefix match for sections, e.g. ~pathname.startsWith('/red-carpet')~). Note there are currently /two different/ active colors: ~#0ea5e9~ inline (desktop, ~NavBar.astro:67~) and ~text-blue-600~ (mobile, ~NavBar.astro:131~) — unify while in there.
+
+** TODO Fix /gallery/ index so it doesn't look broken
+- *Problem*: the page lists five galleries, four of which say "1 photo," with slow gray thumbnails — reads as an unfinished stub, while the homepage clearly has dozens of photos.
+- *Also*: the folder-page glob excludes ~.webp~ while sibling pages include it, so pages disagree about which photos exist (~src/pages/gallery/[...folder].astro:19~ vs ~src/pages/gallery/photo/[...photo].astro:31~ and ~red-carpet/[person].astro:29~).
+- *Implementation*:
+  1. Decide the content story: either move the homepage highlight photos into real gallery folders under [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/gallery/photos/][📁 src/gallery/photos/]] so galleries are substantive, or drop the "Photo Galleries" concept from the nav until it has content.
+  2. Unify the glob patterns + webp/jpg dedup policy in one shared helper (see Tier 3 "extract shared module").
+
+** TODO Right-size the Before & After images
+- *Problem*: [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/before-after.astro][📄 before-after.astro]] serves 1679px-wide images into 540px slots with no srcset (~3× the needed pixels). The "After" column — the whole point of the page — loads last.
+- *Implementation*: use Astro ~<Image>~ with ~widths={[540, 1080]}~ and ~sizes~, or ~getImage()~ with explicit width. Make the first comparison pair ~loading="eager"~.
+
+* ⚙️ Tier 2 — Infrastructure & integrity
+
+** TODO Fix or delete the broken GitHub Actions
+- *Problem*: all three workflows in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/.github/workflows/][📁 .github/workflows/]] run ~npm ci~, but the repo is pnpm-only (no ~package-lock.json~) — they cannot succeed. ~deploy.yml~ also still deploys ~dist~ to GitHub Pages even though production is Vercel Git integration.
+- *Implementation*:
+  1. Delete ~deploy.yml~ (Vercel already handles deploys).
+  2. In ~test.yml~ / ~quality.yml~: use ~pnpm/action-setup~ + ~actions/setup-node~ with ~cache: pnpm~, then ~pnpm install --frozen-lockfile~ and ~pnpm test~ / ~pnpm lint~.
+  3. Pin Node: add ~"engines": { "node": "22.x" }~ to package.json or an ~.nvmrc~, and use the same version in CI and Vercel.
+
+** TODO Verify and document Supabase RLS on photo_user_likes
+- *Problem*: [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/PhotoLikeButton.astro][📄 PhotoLikeButton.astro]] inserts/deletes rows client-side keyed on a localStorage ~visitor_id~. No RLS policies are committed or documented anywhere in the repo. Unless RLS is locked down in the Supabase dashboard, anyone can forge or delete likes and manipulate /popular.
+- *Implementation*:
+  1. In the Supabase dashboard, confirm policies on ~photo_user_likes~: public ~SELECT~; ~INSERT~ allowed only with a ~unique(photo_id, visitor_id)~ constraint; ~DELETE~ restricted to rows matching the caller's own ~visitor_id~ (or disallowed entirely — accept that "unlike" only works via a soft client-side state).
+  2. Commit the actual SQL (schema + policies) to a new ~supabase/schema.sql~ in the repo so it's documented and reproducible.
+  3. Accept the residual risk: anonymous likes can never be fully tamper-proof without auth; the goal is raising the bar from "trivially scriptable" to "annoying."
+
+** TODO Fix the unbounded /popular likes query
+- *Problem*: ~src/pages/popular.astro:267~ fetches *every like row ever* (~select('photo_id')~) and counts client-side; it also renders a card for every photo on the site and hides zero-like ones in JS.
+- *Implementation*: create a Postgres view or RPC in Supabase (~select photo_id, count(*) from photo_user_likes group by photo_id order by count desc limit 50~) and call that instead. Render only photos that have likes.
+
+** TODO Head/meta cleanup
+- Duplicate OG/Twitter tags on the homepage: emitted by both [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/layouts/MainLayout.astro][📄 MainLayout.astro]] (~:132–157~) and ~index.astro~ (~:635–655~). Remove the page-level copies.
+- Viewport is ~width=device-width~ without ~initial-scale=1~ (~MainLayout.astro:119~). Add it.
+- Prototype pages (~salient-photography-demo.astro~, ~about-prototype.astro~, ~about-prototype-editorial.astro~, ~prototype-documentary.astro~) are publicly indexable and in the sitemap. Either delete them, rename with a leading underscore (Astro skips ~_~-prefixed pages), or add ~<meta name="robots" content="noindex">~. Also add a ~public/robots.txt~.
+- Alpine.js loads un-pinned from unpkg on every page (~MainLayout.astro:178~) though only the NavBar uses it. Either bundle it (~pnpm add alpinejs~ + hoisted script) or replace the mobile menu with a ~<details>~/vanilla toggle and drop the dependency.
+
+* 🎨 Tier 3 — Design-system consolidation
+
+** TODO Unify typography (one source of truth)
+- *Problem*: [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/styles/global.css][📄 global.css]] sets Karla body + Cormorant Garamond headings, while [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tailwind.config.js][📄 tailwind.config.js]] maps ~font-sans~ → Inter and declares Playfair Display (never loaded, never used). Result: /gallery/ headings are serif, /red-carpet/ is bold Inter, and /about + /before-after mix serif, Inter, and inline ~system-ui~ on the same page.
+- *Recommendation*: keep the Cormorant Garamond + Karla pairing (distinctive, editorial, suits a photo portfolio) and eliminate Inter.
+- *Implementation*:
+  1. In tailwind.config.js: set ~sans: ['Karla', ...]~ and ~serif: ['Cormorant Garamond', ...]~; delete the Playfair entry.
+  2. Sweep pages for ~font-sans~ / ~font-black~ on headings (about.astro:10/91/99, red-carpet/index.astro:183/207/220, before-after.astro:93) and remove the overrides so headings inherit the global serif.
+  3. Remove the inline ~system-ui~ stacks in before-after.astro (~:298–320~).
+  4. Kill duplicate font loading: Dancing Script is loaded twice (global.css:2 and MainLayout.astro:114–117); NavBar injects its own preconnect + Inter stylesheet (NavBar.astro:18–23). Load all fonts once in MainLayout. Consider self-hosting via ~@fontsource~ packages to remove the render-blocking Google Fonts round-trip entirely.
+  5. Check weights: ~font-black~ (900) is used but Karla loads only up to 800 — either load the weight or step down to ~font-bold~.
+
+** TODO Define a single accent color token
+- *Problem*: the "accent blue" alone appears as ~#0ea5e9~, ~text-blue-600~, ~#1d4ed8~, and ~#3b82f6~; plus stray emerald (about.astro:220) and a leftover ~blue-500/20 → purple-500/20~ gradient on the logo hover (NavBar.astro:46).
+- *Implementation*: add ~--accent~ to the token block in global.css (~:10–49~), map it in Tailwind (~colors.accent~), then sweep and replace the hardcoded blues. Delete the purple gradient. Also collapse the two parallel neutral systems (shadcn HSL vars + hardcoded ~--neutral-50…900~) into one.
+
+** TODO Real social icons with accessible names
+- *Problem*: NavBar social links are text glyphs — ~𝕏~, the literal string ~"in"~, and 📷 (NavBar.astro:12–14) — with ~title~ but no ~aria-label~.
+- *Implementation*: ~@lucide/astro~ is already installed. Use ~<Twitter/>~ (or X), ~<Linkedin/>~, ~<Instagram/>~ at 18–20px, each link with ~aria-label~. Apply to both desktop (NavBar.astro:79–86) and mobile (:145–152) menus.
+
+** TODO Standardize hover/transition behavior
+- *Problem*: image hover zooms of 1.02×, 1.03×, 1.05×, and 1.10× with durations 0.2s–0.6s depending on page.
+- *Implementation*: pick one treatment (suggest: ~scale(1.03)~, ~0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)~, matching the homepage) and define it once as a utility class or component style; sweep PhotoGrid.astro, gallery/index.astro, red-carpet/index.astro, Gallery.astro.
+
+** TODO Consolidate five gallery layout engines into one
+- *Current state*: Packery (homepage + folder pages), CSS columns twice ([[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/Gallery.astro][📄 Gallery.astro]] and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/MasonryGallery.astro][📄 MasonryGallery.astro]] — near-duplicates with different breakpoints), an absolute-position JS grid ([[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/PhotoGrid.astro][📄 PhotoGrid.astro]] + photo-grid.ts), and CSS Grid cards on the index pages.
+- *Implementation*: after the homepage moves to justified-layout (Tier 1), make that the one ~<PhotoMasonry>~ component. Keep CSS Grid for card-style index pages (that's a different, appropriate pattern). Delete Gallery.astro or MasonryGallery.astro (keep one), photo-grid.ts, masonry.ts (Isotope, only used by a prototype page).
+
+** TODO Accessibility pass
+- Add ~focus-visible~ styles to nav links, cards, and CTAs (currently only the mobile hamburger has a focus ring — NavBar.astro:95). One global rule works: ~a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }~.
+- Fix contrast: ~text-gray-400~ on white (~2.8:1) fails WCAG AA — bump meaningful text (photo counts, kickers, footer) to ~text-gray-500~/600.
+- Make the logo-zoom control a ~<button>~ (currently a click-handler ~<div>~, NavBar.astro:39).
+- Give the homepage an ~<h1>~ (see the WikiPortraits hero item below — solves both).
+- Improve alt-text fallbacks: several components fall back to de-slugified filenames; fine, but ensure it never emits raw "img 1234" style strings.
+- Replace visitor-facing developer copy in empty states ("Add people to src/data/people.json" — red-carpet/index.astro:222; similar in gallery/index.astro:169 and before-after.astro:108) with human copy ("More coming soon").
+
+* 🧹 Tier 4 — Dead code & repo hygiene
+
+** TODO Delete unused dependencies and subsystems
+- ~fslightbox~ — zero references in src/. ~pnpm remove fslightbox~.
+- ~isotope-layout~ — only used by the salient prototype page. Remove with the prototypes.
+- After the Packery replacement: ~packery~, ~imagesloaded~, ~draggabilly~.
+- The dead YAML gallery subsystem: ~src/data/galleryData.ts~, ~src/data/gallery-generator.ts~, ~src/data/galleryEntityFactory.ts~, ~src/data/imageStore.ts~, ~src/gallery/gallery.yaml~ — no live page uses them. Note the existing Vitest suite /only/ tests this dead subsystem, so removing it means replacing the tests (next item).
+- Committed clutter: [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/astro-jay-dixit-photos-starter/][📁 astro-jay-dixit-photos-starter/]] (a whole nested starter project), ~src/pages/gallery/_[folder].astro.backup~, ~src/wikiportraits-story.mdx.disabled~.
+- ~src/pages/api/save-order.ts~ has ~prerender = true~ on a static build, so the POST endpoint can never run in production; the admin toolbar already falls back to localStorage. Delete or document as dev-only.
+- Unused top-level image folders under ~src/gallery/~ (~nature~, ~street~, ~travel~, ~cannes-2024~, …) — pages only glob ~src/gallery/photos/**~. Decide: wire them in or remove (~78 MB of originals are committed across src/gallery + src/assets, slowing builds).
+
+** TODO Extract shared filename/caption logic + real tests
+- *Problem*: ~formatWord~, ~formatPhrase~, ~buildCaptionAndTags~, ~toPhotoHref~, extension-ranking are copy-pasted across five page files and have already drifted (the acronym map in red-carpet/[person].astro omits ~wikiportraits~). Extension priority ranks jpg /above/ webp, so the larger file wins when both exist.
+- *Implementation*:
+  1. Create ~src/lib/photoNaming.ts~ with the canonical versions; import everywhere.
+  2. Decide webp policy once (prefer webp when a sibling exists, or always dedupe to the canonical source) and encode it in one ~dedupeVariants()~ helper.
+  3. Add Vitest coverage for: caption parsing (names, events, years, tags), ~matchesPerson~ incl. numbered variants (~jeremy-3~), extension dedup, and ~src/lib/seo.ts~. These replace the dead-subsystem tests.
+  4. Extend Playwright smoke tests to cover ~/red-carpet/[person]~, tag filtering/search on a folder page, and mobile nav.
+
+* ✨ Tier 5 — Feature ideas
+
+** TODO Homepage: tell the WikiPortraits story
+The site's most distinctive hook — "I photograph celebrities so Wikipedia can have better photos" — is invisible on the homepage: no headline, no ~<h1>~, no intro line.
+- *Implementation*: a single editorial block above the grid: an ~<h1>~ ("Jay Dixit — Red Carpet Photography for Wikipedia" or similar), one sentence of context, and a small "See the Before & After →" link. Keep it minimal so the photos stay dominant. This also fixes the missing-h1 accessibility issue.
+
+** TODO Search on the entry pages
+Filtering exists on gallery folder pages, but the homepage and /red-carpet/ (the real entry points) have none.
+- *Implementation*: a single client-side search box on /red-carpet/ filtering the person cards by name/event (the data is already in the DOM; ~30 lines of JS). Optionally the same for homepage captions.
+
+** TODO Populate albums
+[[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/content/albums/][📁 src/content/albums/]] is scaffolded but empty. Curated sets ("TIFF 2024", "Nobel Laureates", "SXSW") make better shareable URLs than raw folders. Already noted in CLAUDE.org future tasks.
+
+** TODO Photo detail pages: provenance block
+Turn each photo page into a small proof of the WikiPortraits mission: which Wikipedia article uses the image, the license badge (CC BY-SA), and a "View on Wikimedia Commons" link. Data could live in a per-folder json (like tags.json) or extend [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/people.json][📄 people.json]] with a ~commonsUrl~ field.
+
+** TODO Content tasks already tracked in CLAUDE.org
+Still the right priorities: more portrait coverage (people with Cloudinary-only assets), expanding before/after beyond 4 people.
+
+* Suggested implementation order
+
+1. Logo compression + eager LCP images (30 min, biggest visible win)
+2. Nav active-state + social icons (small, same file)
+3. CI fix (small, unblocks everything else being tested)
+4. Typography + accent-color unification (one session)
+5. Homepage masonry replacement with justified-layout (the big one — do on a branch)
+6. Supabase RLS verification + /popular aggregation
+7. Dead-code deletion sweep + shared photoNaming module + tests
+8. Features (hero story block, search, albums)
+
+Items 1–4 and 6–7 are low-risk and independent. Item 5 changes the site's centerpiece — verify against the live look before deploying, and remember: no git push without explicit say-so (Vercel deploy limits).

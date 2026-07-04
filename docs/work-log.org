@@ -1,6 +1,26 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-03 - Add before-and-after e2e coverage and site improvement plan
+
+** Status
+- Added first-class Playwright coverage for the before-and-after page.
+- Created a site-wide improvement implementation plan for editorial design, homepage identity, technical consolidation, discovery, and Wikimedia impact metadata.
+
+** Shipped
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tests/e2e/portfolio.e2e.ts][tests/e2e/portfolio.e2e.ts]]
+  - Added a direct ~/before-after/~ smoke test.
+  - Verifies 5 comparison cards, 10 source captions, specific Sydney/Jay credit text, image loading after scroll, and no completed broken images.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/site-wide-improvements-implementation-plan.org][docs/site-wide-improvements-implementation-plan.org]]
+  - Documents approach, implementation steps, acceptance criteria, suggested order, and verification checklist for the site-wide improvement tracks.
+
+** Validation
+- =pnpm exec prettier --check tests/e2e/portfolio.e2e.ts= passed.
+- =pnpm lint= passed.
+- =pnpm build= passed.
+- =PLAYWRIGHT_PORT=4329 pnpm exec playwright test -g "before-after page renders source captions" --workers=1= passed (1/1).
+- =pnpm test:e2e= passed (9/9).
+
 * 2026-07-03 - Refine before-and-after page editorial presentation
 
 ** Status
