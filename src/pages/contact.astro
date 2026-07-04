@@ -7,9 +7,9 @@ import MainLayout from '../layouts/MainLayout.astro';
 		<div class="contact-shell">
 			<header class="contact-header">
 				<p class="contact-kicker">Contact</p>
-				<h1>Let's Talk</h1>
-				<p>
-					Have a project, question, or idea? Send me a message and I'll get back to you.
+				<h1>Let&rsquo;s Talk</h1>
+				<p class="contact-intro">
+					Have a project, question, or idea? Send me a message and I&rsquo;ll get back to you.
 				</p>
 			</header>
 
@@ -21,22 +21,30 @@ import MainLayout from '../layouts/MainLayout.astro';
 				/>
 				<input type="text" name="_gotcha" class="hp-field" tabindex="-1" autocomplete="off" />
 
-				<label for="name">Name</label>
-				<input id="name" name="name" type="text" required />
+				<div class="field">
+					<label for="name">Name</label>
+					<input id="name" name="name" type="text" required />
+				</div>
 
-				<label for="email">Email</label>
-				<input id="email" name="email" type="email" required />
+				<div class="field">
+					<label for="email">Email</label>
+					<input id="email" name="email" type="email" required />
+				</div>
 
-				<label for="topic">Topic</label>
-				<select id="topic" name="topic">
-					<option value="Photography">Photography</option>
-					<option value="Speaking">Speaking</option>
-					<option value="Press">Press</option>
-					<option value="Other">Other</option>
-				</select>
+				<div class="field">
+					<label for="topic">Topic</label>
+					<select id="topic" name="topic">
+						<option value="Photography">Photography</option>
+						<option value="Speaking">Speaking</option>
+						<option value="Press">Press</option>
+						<option value="Other">Other</option>
+					</select>
+				</div>
 
-				<label for="message">Message</label>
-				<textarea id="message" name="message" rows={7} required></textarea>
+				<div class="field">
+					<label for="message">Message</label>
+					<textarea id="message" name="message" rows={7} required></textarea>
+				</div>
 
 				<button type="submit">Send Message</button>
 			</form>
@@ -47,104 +55,120 @@ import MainLayout from '../layouts/MainLayout.astro';
 <style>
 	.contact-page {
 		min-height: 100vh;
-		padding: 9rem 1rem 4rem;
-		background:
-			radial-gradient(circle at 12% 10%, rgba(14, 165, 233, 0.13), transparent 42%),
-			radial-gradient(circle at 90% 90%, rgba(16, 185, 129, 0.1), transparent 40%), #f8fafc;
+		padding: 9rem 1.5rem 5rem;
+		background: var(--paper);
 	}
 
 	.contact-shell {
-		max-width: 760px;
+		max-width: 44rem;
 		margin: 0 auto;
-		background: rgba(255, 255, 255, 0.92);
-		border: 1px solid rgba(203, 213, 225, 0.65);
-		border-radius: 1.5rem;
-		padding: 2rem;
-		box-shadow: 0 18px 45px -35px rgba(15, 23, 42, 0.5);
 	}
 
 	.contact-header {
-		margin-bottom: 1.5rem;
+		margin-bottom: 3rem;
+		text-align: center;
 	}
 
 	.contact-kicker {
-		margin: 0;
+		margin: 0 0 1.4rem;
+		font-family: var(--sans);
 		font-size: 0.75rem;
+		font-weight: 500;
 		letter-spacing: 0.32em;
 		text-transform: uppercase;
-		color: #0284c7;
-		font-weight: 700;
+		color: var(--accent);
 	}
 
 	.contact-header h1 {
-		margin: 0.4rem 0 0.8rem;
-		font-size: clamp(2rem, 4vw, 2.8rem);
-		letter-spacing: -0.02em;
-	}
-
-	.contact-header p {
 		margin: 0;
-		color: #334155;
-		line-height: 1.6;
+		font-family: var(--serif);
+		font-weight: 300;
+		font-size: clamp(2.8rem, 6vw, 4.25rem);
+		line-height: 1.02;
+		letter-spacing: -0.015em;
+		color: #161310;
 	}
 
-	.contact-header a {
-		color: #0f172a;
-		font-weight: 600;
+	.contact-intro {
+		max-width: 30rem;
+		margin: 1.5rem auto 0;
+		font-family: var(--serif);
+		font-weight: 300;
+		font-style: italic;
+		font-size: 1.25rem;
+		line-height: 1.55;
+		color: #565049;
 	}
 
 	.contact-form {
 		display: grid;
-		gap: 0.6rem;
+		gap: 1.5rem;
+		border-top: 1px solid var(--hairline);
+		padding-top: 2.5rem;
+	}
+
+	.field {
+		display: grid;
+		gap: 0.55rem;
 	}
 
 	.contact-form label {
-		margin-top: 0.6rem;
-		font-size: 0.83rem;
-		font-weight: 700;
+		font-family: var(--sans);
+		font-size: 0.72rem;
+		font-weight: 600;
 		text-transform: uppercase;
-		letter-spacing: 0.14em;
-		color: #475569;
+		letter-spacing: 0.18em;
+		color: var(--muted);
 	}
 
 	.contact-form input,
 	.contact-form textarea,
 	.contact-form select {
 		width: 100%;
-		padding: 0.85rem 0.9rem;
-		border: 1px solid #cbd5e1;
-		border-radius: 0.75rem;
+		padding: 0.9rem 1rem;
+		border: 1px solid var(--hairline);
+		border-radius: 2px;
 		background: #fff;
-		color: #0f172a;
-		font: inherit;
+		color: var(--ink);
+		font-family: var(--sans);
+		font-size: 1rem;
+		transition:
+			border-color 0.2s ease,
+			box-shadow 0.2s ease;
+	}
+
+	.contact-form textarea {
+		resize: vertical;
 	}
 
 	.contact-form input:focus,
 	.contact-form textarea:focus,
 	.contact-form select:focus {
-		outline: 2px solid #0ea5e9;
-		outline-offset: 1px;
-		border-color: #0ea5e9;
+		outline: none;
+		border-color: var(--accent);
+		box-shadow: 0 0 0 3px rgba(150, 119, 63, 0.12);
 	}
 
 	.contact-form button {
-		margin-top: 1rem;
-		padding: 0.95rem 1.2rem;
-		border: 0;
-		border-radius: 9999px;
-		background: linear-gradient(130deg, #0f172a, #0369a1);
-		color: #fff;
-		font-weight: 700;
-		letter-spacing: 0.03em;
+		justify-self: start;
+		margin-top: 0.75rem;
+		padding: 0.95rem 2rem;
+		border: 1px solid var(--ink);
+		border-radius: 2px;
+		background: var(--ink);
+		color: #faf9f6;
+		font-family: var(--sans);
+		font-size: 0.78rem;
+		font-weight: 600;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		white-space: nowrap;
 		cursor: pointer;
-		transition:
-			transform 0.18s ease,
-			opacity 0.18s ease;
+		transition: background-color 0.25s ease;
 	}
 
 	.contact-form button:hover {
-		opacity: 0.94;
-		transform: translateY(-1px);
+		background: #000;
 	}
 
 	.hp-field {
@@ -156,9 +180,13 @@ import MainLayout from '../layouts/MainLayout.astro';
 	}
 
 	@media (max-width: 640px) {
-		.contact-shell {
-			padding: 1.25rem;
-			border-radius: 1.1rem;
+		.contact-page {
+			padding-top: 7rem;
+		}
+
+		.contact-form button {
+			justify-self: stretch;
+			text-align: center;
 		}
 	}
 </style>
