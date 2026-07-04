@@ -16,6 +16,13 @@ const routes = [
 		minImages: 4,
 	},
 	{
+		name: 'red-carpet index',
+		path: '/red-carpet/',
+		title: /Red Carpet Photos — Jay Dixit/,
+		heading: 'Red Carpet Photos',
+		minImages: 20,
+	},
+	{
 		name: 'Sundance gallery',
 		path: '/gallery/red-carpet/sundance/',
 		title: /Red Carpet → Sundance Gallery — Jay Dixit/,
@@ -31,11 +38,32 @@ const routes = [
 		minImages: 1,
 	},
 	{
+		name: 'blog index',
+		path: '/blog/',
+		title: /Blog — Jay Dixit/,
+		heading: 'Notes From the Field',
+		minImages: 3,
+	},
+	{
 		name: 'Nobel blog post',
 		path: '/blog/nobel-portrait-session/',
 		title: /Inside the Nobel Portrait Session — Jay Dixit/,
 		heading: 'Inside the Nobel Portrait Session',
 		minImages: 2,
+	},
+	{
+		name: 'about page',
+		path: '/about/',
+		title: /Jay Dixit/,
+		heading: 'Why I Take Photos',
+		minImages: 2,
+	},
+	{
+		name: 'contact page',
+		path: '/contact/',
+		title: /Contact — Jay Dixit/,
+		heading: /Let.s Talk/,
+		minImages: 1,
 	},
 ];
 
@@ -122,6 +150,69 @@ test('Nobel related essay thumbnail uses the live Vanessa Kirby asset', async ({
 	await expect
 		.poll(() => image.evaluate((element: HTMLImageElement) => element.currentSrc || element.src))
 		.toContain('/highlights/vanessa-kirby_tiff_2024');
+});
+
+test('red-carpet index renders editorial person cards from generated data', async ({ page }) => {
+	await page.goto('/red-carpet/');
+	await waitForInitialImages(page);
+
+	const cards = page.locator('.rc-card');
+	await expect(cards).toHaveCount(20);
+	await expect(page.locator('.rc-name').first()).toHaveText('Ana de Armas');
+	await expect(page.locator('.rc-count').first()).toContainText(/photo/i);
+
+	await expect
+		.poll(() =>
+			cards
+				.first()
+				.locator('img')
+				.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0),
+		)
+		.toBe(true);
+	expect(await getBrokenCompletedImages(page)).toEqual([]);
+});
+
+test('blog index renders editorial post list with live thumbnails', async ({ page }) => {
+	await page.goto('/blog/');
+	await waitForInitialImages(page);
+
+	const posts = page.locator('.post');
+	await expect(posts).toHaveCount(3);
+	await expect(page.locator('.post-title').first()).toHaveText('Hello From the Darkroom');
+	await expect(page.locator('.post-more').first()).toContainText('Read story');
+
+	await expect
+		.poll(() =>
+			page
+				.locator('.post-img')
+				.evaluateAll((images) => images.every((image) => image.complete && image.naturalWidth > 0)),
+		)
+		.toBe(true);
+	expect(await getBrokenCompletedImages(page)).toEqual([]);
+});
+
+test('contact page preserves Formspree form and editorial fields', async ({ page }) => {
+	await page.goto('/contact/');
+
+	const form = page.locator('.contact-form');
+	await expect(form).toHaveAttribute('action', 'https://formspree.io/f/xeelzjpn');
+	await expect(form.locator('input[name="_gotcha"]')).toHaveCount(1);
+	await expect(form.locator('.field')).toHaveCount(4);
+	await expect(form.getByRole('button', { name: 'Send Message' })).toBeVisible();
+});
+
+test('about page renders editorial sections without breaking the recognition block', async ({
+	page,
+}) => {
+	await page.goto('/about/');
+	await waitForInitialImages(page);
+
+	await expect(page.getByRole('heading', { name: 'Why I Take Photos' })).toBeVisible();
+	await expect(page.locator('.ed-card')).toHaveCount(4);
+	await expect(page.locator('.ed-ai-card')).toHaveCount(2);
+	await expect(page.getByText('Socratic AI')).toBeVisible();
+	await expect(page.getByRole('heading', { name: 'OpenAI' })).toBeVisible();
+	expect(await getBrokenCompletedImages(page)).toEqual([]);
 });
 
 test('before-after page renders source captions and loads comparison images after scroll', async ({

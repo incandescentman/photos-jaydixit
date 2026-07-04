@@ -1,6 +1,40 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-04 - Adopt Claude Design editorial redesigns
+
+** Status
+- Adopted the Claude Design editorial redesigns for the contact, blog index, red-carpet index, and about pages.
+- Hoisted the shared editorial font and color language so the redesigned pages reuse one site-level layer rather than duplicating page-local font links and tokens.
+
+** Shipped
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/layouts/MainLayout.astro][src/layouts/MainLayout.astro]]
+  - Added the shared Newsreader and Instrument Sans font link in the site head.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/styles/global.css][src/styles/global.css]] and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tailwind.config.js][tailwind.config.js]]
+  - Added shared editorial tokens for ~--paper~, ~--paper-deep~, ~--ink~, ~--muted~, ~--hairline~, ~--accent~, ~--serif~, and ~--sans~.
+  - Kept Tailwind's HSL color helpers working by moving the older muted/accent values to ~--muted-hsl~ and ~--accent-hsl~.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/before-after.astro][src/pages/before-after.astro]]
+  - Removed duplicated page-level font links and local editorial token definitions now supplied globally.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/contact.astro][src/pages/contact.astro]]
+  - Adopted the editorial contact layout from [[file+emacs:/Users/jay/Downloads/uploads/contact.astro][/Users/jay/Downloads/uploads/contact.astro]] while preserving the Formspree endpoint and honeypot field.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/blog/index.astro][src/pages/blog/index.astro]]
+  - Adopted the editorial journal layout from [[file+emacs:/Users/jay/Downloads/uploads/index-1f5d5db0.astro][/Users/jay/Downloads/uploads/index-1f5d5db0.astro]] while preserving blog collection, Cloudinary, and smart-quote logic.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/red-carpet/index.astro][src/pages/red-carpet/index.astro]]
+  - Adopted the editorial portrait-archive layout from [[file+emacs:/Users/jay/Downloads/uploads/index.astro][/Users/jay/Downloads/uploads/index.astro]] while preserving generated people/photo data.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/about.astro][src/pages/about.astro]]
+  - Adopted the editorial about layout from [[file+emacs:/Users/jay/Downloads/uploads/about.astro][/Users/jay/Downloads/uploads/about.astro]].
+  - Corrected the inaccurate WikiPortraits card copy from "Founded initiative..." to a contributor phrasing.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tests/e2e/portfolio.e2e.ts][tests/e2e/portfolio.e2e.ts]]
+  - Added direct smoke coverage for ~/contact/~, ~/blog/~, ~/red-carpet/~, and ~/about/~.
+  - Added focused assertions for generated red-carpet cards, blog thumbnails, Formspree/honeypot preservation, about-page editorial sections, and broken-image checks.
+
+** Validation
+- =pnpm exec prettier --write= and targeted =pnpm exec eslint= passed on each redesigned page as it landed.
+- Browser-verified the redesigned pages at =http://127.0.0.1:4323/contact/=, =http://127.0.0.1:4323/blog/=, =http://127.0.0.1:4323/red-carpet/=, and =http://127.0.0.1:4323/about/=.
+- =pnpm test= passed (21/21).
+- =pnpm lint= passed.
+- =pnpm exec playwright test= passed (17/17).
+
 * 2026-07-04 - Document Claude Design before-and-after replacement
 
 ** Status
