@@ -52,100 +52,296 @@ const blogIndexStructuredData = {
 	canonical={canonicalUrl}
 	structuredData={blogIndexStructuredData}
 >
-	<section class="mx-auto max-w-4xl px-6 pb-24 pt-44 md:pt-56">
-		<header class="mb-16 text-center">
-			<p class="text-xs uppercase tracking-[0.3em] leading-[1.8] text-gray-500">Journal</p>
-			<h1 class="mt-3 text-4xl font-semibold sm:text-5xl">Notes From The Field</h1>
-			<p class="mt-4 text-base text-gray-600 sm:text-lg">
-				Dispatches on photography, creative process, and the craft of storytelling.
-			</p>
-		</header>
+	<section class="blog-page">
+		<div class="blog-shell">
+			<header class="blog-header">
+				<p class="blog-kicker">Journal</p>
+				<h1 class="blog-title">Notes From the Field</h1>
+				<p class="blog-standfirst">
+					Dispatches on photography, creative process, and the craft of storytelling.
+				</p>
+			</header>
 
-		{
-			sortedPosts.length === 0 && (
-				<p class="text-center text-gray-500">No posts published yet. Check back soon.</p>
-			)
-		}
-
-		<div class="grid gap-12">
 			{
-			sortedPosts.map(({ data, id }) => {
-					const publishDate = data.publishDate ? new Date(data.publishDate) : undefined;
-					const formattedDate = publishDate
-						? publishDate.toLocaleDateString('en-US', {
-								year: 'numeric',
-								month: 'long',
-								day: 'numeric',
-							})
-						: null;
+				sortedPosts.length === 0 && (
+					<p class="blog-empty">No posts published yet. Check back soon.</p>
+				)
+			}
 
-					const heroImage = data.imagePublicId
-						? cldUrl(data.imagePublicId, 1600)
-						: (data.image ?? null);
-					const heroSrcset = data.imagePublicId ? cldSrcset(data.imagePublicId) : undefined;
-					const excerpt = data.excerpt ? smartQuotes(data.excerpt) : null;
+			<div class="blog-list">
+				{
+					sortedPosts.map(({ data, id }) => {
+						const publishDate = data.publishDate ? new Date(data.publishDate) : undefined;
+						const formattedDate = publishDate
+							? publishDate.toLocaleDateString('en-US', {
+									year: 'numeric',
+									month: 'long',
+									day: 'numeric',
+								})
+							: null;
 
-					return (
-						<article class="group overflow-hidden rounded-3xl border border-black/5 bg-white/90 shadow-[0_25px_70px_-30px_rgba(15,23,42,0.35)] transition hover:-translate-y-1 hover:bg-white">
-							<a href={`/blog/${id}/`} class="block no-underline">
-								{heroImage && (
-									<figure class="relative aspect-[3/2] overflow-hidden bg-slate-100">
-										<img
-											src={heroImage}
-											srcset={heroSrcset}
-											sizes={cldSizes('(max-width: 768px) 100vw, 50vw')}
-											alt={data.imageAlt ?? data.title}
-											loading="lazy"
-											decoding="async"
-											class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
-										/>
-									</figure>
-								)}
+						const heroImage = data.imagePublicId
+							? cldUrl(data.imagePublicId, 1600)
+							: (data.image ?? null);
+						const heroSrcset = data.imagePublicId ? cldSrcset(data.imagePublicId) : undefined;
+						const excerpt = data.excerpt ? smartQuotes(data.excerpt) : null;
 
-								<div class="p-8">
-									<header class="flex flex-col gap-3 sm:flex-row sm:items-baseline sm:justify-between">
-										<h2 class="text-2xl font-semibold tracking-tight text-gray-900 transition group-hover:text-gray-700">
-											{data.title}
-										</h2>
+						return (
+							<article class="post">
+								<a href={`/blog/${id}/`} class="post-link">
+									{heroImage && (
+										<figure class="post-figure">
+											<img
+												src={heroImage}
+												srcset={heroSrcset}
+												sizes={cldSizes('(max-width: 768px) 100vw, 50vw')}
+												alt={data.imageAlt ?? data.title}
+												loading="lazy"
+												decoding="async"
+												class="post-img"
+											/>
+										</figure>
+									)}
+
+									<div class="post-body">
 										{formattedDate && (
-											<time
-												datetime={publishDate?.toISOString()}
-												class="text-sm uppercase tracking-[0.2em] text-gray-400"
-											>
+											<time datetime={publishDate?.toISOString()} class="post-date">
 												{formattedDate}
 											</time>
 										)}
-									</header>
 
-									{excerpt && (
-										<p class="mt-4 text-[15px] leading-relaxed text-gray-600">{excerpt}</p>
-									)}
+										<h2 class="post-title">{data.title}</h2>
 
-									{data.tags && data.tags.length > 0 && (
-										<ul class="mt-6 flex flex-wrap gap-2">
-											{data.tags.map((tag) => (
-												<li class="rounded-full bg-slate-900 px-3 py-1 text-xs uppercase tracking-[0.2em] text-white/90">
-													{formatTagLabel(tag)}
-												</li>
-											))}
-										</ul>
-									)}
+										{excerpt && <p class="post-excerpt">{excerpt}</p>}
 
-									<span class="mt-6 inline-flex items-center text-sm font-medium text-slate-800 group-hover:text-slate-600">
-										Read story
-										<svg class="ml-2 h-3 w-3" viewBox="0 0 12 12" aria-hidden="true">
-											<path
-												fill="currentColor"
-												d="M3.172 11.828 2 10.657l5.485-5.485H1V3h8.172l.707.707-6.707 6.707z"
-											/>
-										</svg>
-									</span>
-								</div>
-							</a>
-						</article>
-					);
-				})
-			}
+										{data.tags && data.tags.length > 0 && (
+											<ul class="post-tags">
+												{data.tags.map((tag) => (
+													<li class="post-tag">{formatTagLabel(tag)}</li>
+												))}
+											</ul>
+										)}
+
+										<span class="post-more">
+											Read story
+											<svg viewBox="0 0 12 12" aria-hidden="true">
+												<path
+													fill="currentColor"
+													d="M3.172 11.828 2 10.657l5.485-5.485H1V3h8.172l.707.707-6.707 6.707z"
+												/>
+											</svg>
+										</span>
+									</div>
+								</a>
+							</article>
+						);
+					})
+				}
+			</div>
 		</div>
 	</section>
 </MainLayout>
+
+<style>
+	.blog-page {
+		background: var(--paper);
+		padding: 9rem 0 6rem;
+	}
+
+	.blog-shell {
+		max-width: 60rem;
+		margin: 0 auto;
+		padding: 0 2.5rem;
+	}
+
+	.blog-header {
+		max-width: 40rem;
+		margin: 0 auto 4rem;
+		text-align: center;
+	}
+
+	.blog-kicker {
+		margin: 0 0 1.4rem;
+		font-family: var(--sans);
+		font-size: 0.75rem;
+		font-weight: 500;
+		letter-spacing: 0.32em;
+		text-transform: uppercase;
+		color: var(--accent);
+	}
+
+	.blog-title {
+		margin: 0;
+		font-family: var(--serif);
+		font-weight: 300;
+		font-size: clamp(2.8rem, 6vw, 4.5rem);
+		line-height: 1.02;
+		letter-spacing: -0.015em;
+		color: #161310;
+	}
+
+	.blog-standfirst {
+		max-width: 32rem;
+		margin: 1.6rem auto 0;
+		font-family: var(--serif);
+		font-weight: 300;
+		font-style: italic;
+		font-size: 1.2rem;
+		line-height: 1.55;
+		color: #565049;
+	}
+
+	.blog-empty {
+		text-align: center;
+		font-family: var(--sans);
+		color: var(--muted);
+	}
+
+	.blog-list {
+		display: grid;
+		gap: 0;
+	}
+
+	.post {
+		border-top: 1px solid var(--hairline);
+	}
+
+	.post:first-child {
+		border-top: none;
+	}
+
+	.post-link {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 2.5rem;
+		align-items: center;
+		padding: 3rem 0;
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.post-figure {
+		margin: 0;
+		aspect-ratio: 3 / 2;
+		overflow: hidden;
+		background: #eceae3;
+	}
+
+	.post-img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+		transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+	}
+
+	.post-link:hover .post-img {
+		transform: scale(1.03);
+	}
+
+	.post-body {
+		min-width: 0;
+	}
+
+	.post-date {
+		display: block;
+		margin-bottom: 1rem;
+		font-family: var(--sans);
+		font-size: 0.72rem;
+		font-weight: 500;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+		color: var(--muted);
+	}
+
+	.post-title {
+		margin: 0;
+		font-family: var(--serif);
+		font-weight: 400;
+		font-size: clamp(1.6rem, 3vw, 2.1rem);
+		line-height: 1.12;
+		letter-spacing: -0.015em;
+		color: #161310;
+		transition: color 0.2s ease;
+	}
+
+	.post-link:hover .post-title {
+		color: var(--accent);
+	}
+
+	.post-excerpt {
+		margin: 1rem 0 0;
+		font-family: var(--sans);
+		font-size: 1rem;
+		line-height: 1.65;
+		color: #5c554c;
+	}
+
+	.post-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin: 1.5rem 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.post-tag {
+		font-family: var(--sans);
+		font-size: 0.66rem;
+		font-weight: 600;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--accent);
+		border: 1px solid #e0d6c2;
+		border-radius: 999px;
+		padding: 0.3rem 0.75rem;
+	}
+
+	.post-more {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.45rem;
+		margin-top: 1.75rem;
+		font-family: var(--sans);
+		font-size: 0.8rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		color: var(--ink);
+	}
+
+	.post-more svg {
+		width: 0.7rem;
+		height: 0.7rem;
+		transition: transform 0.25s ease;
+	}
+
+	.post-link:hover .post-more svg {
+		transform: translate(2px, -2px);
+	}
+
+	/* Alternate image side for rhythm */
+	.post:nth-child(even) .post-figure {
+		order: 2;
+	}
+
+	@media (max-width: 767px) {
+		.blog-page {
+			padding-top: 7rem;
+		}
+
+		.blog-shell {
+			padding: 0 1.5rem;
+		}
+
+		.post-link {
+			grid-template-columns: 1fr;
+			gap: 1.5rem;
+			padding: 2.5rem 0;
+		}
+
+		.post:nth-child(even) .post-figure {
+			order: 0;
+		}
+	}
+</style>
