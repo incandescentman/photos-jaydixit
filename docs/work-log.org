@@ -1,6 +1,33 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-04 - Adopt Claude Design top navigation
+
+** Status
+- Adopted Jay's redesigned top navigation from [[file+emacs:/Users/jay/Downloads/NavBar.astro][/Users/jay/Downloads/NavBar.astro]].
+- Kept the redesign aligned with the shared editorial design layer instead of reintroducing page/component-local font loading.
+
+** Shipped
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/NavBar.astro][src/components/NavBar.astro]]
+  - Replaced the older Inter/Tailwind-styled nav with the editorial Newsreader/Instrument Sans version.
+  - Removed the downloaded component's duplicate Google Fonts links so the nav relies on [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/layouts/MainLayout.astro][src/layouts/MainLayout.astro]] and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/styles/global.css][src/styles/global.css]].
+  - Added route-aware active states, including descendant matching for sections like ~/red-carpet/[person]~.
+  - Swapped the old emoji/text social markers for inline monochrome SVG icons.
+  - Used nav-specific class names so the old global ~.nav-link~ component styles cannot leak into the redesigned header.
+  - Made the logo preview trigger a real button with focus states.
+  - Set the mobile drawer to an opaque paper panel after visual inspection showed the page title ghosting through the translucent first pass.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tests/e2e/portfolio.e2e.ts][tests/e2e/portfolio.e2e.ts]]
+  - Added a direct smoke test for the redesigned nav's desktop active state, external link attributes, social links, and mobile drawer active state.
+
+** Validation
+- Browser-verified the redesigned nav at =http://127.0.0.1:4323/about/= and =http://127.0.0.1:4323/before-after/=.
+- Playwright browser probe confirmed no desktop link wrapping, no horizontal overflow, and correct active states at 1440px desktop and 390px mobile widths.
+- =pnpm exec prettier --write src/components/NavBar.astro tests/e2e/portfolio.e2e.ts= passed.
+- Targeted =pnpm exec eslint src/components/NavBar.astro tests/e2e/portfolio.e2e.ts= passed.
+- =pnpm test= passed (21/21).
+- =pnpm lint= passed.
+- =pnpm exec playwright test= passed (18/18).
+
 * 2026-07-04 - Adopt Claude Design editorial redesigns
 
 ** Status

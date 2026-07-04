@@ -111,6 +111,39 @@ test.describe('portfolio smoke checks', () => {
 	}
 });
 
+test('site nav renders redesigned desktop and mobile states', async ({ page }) => {
+	await page.goto('/about/');
+	await waitForInitialImages(page);
+
+	const nav = page.locator('nav.site-nav');
+	await expect(nav).toBeVisible();
+	await expect(nav.getByRole('link', { name: 'Jay Dixit Photos' })).toHaveAttribute('href', '/');
+	await expect(nav.getByRole('link', { name: 'Why I Photograph' })).toHaveAttribute(
+		'aria-current',
+		'page',
+	);
+
+	const externalLink = nav.getByRole('link', { name: 'jaydixit.com' });
+	await expect(externalLink).toHaveAttribute('target', '_blank');
+	await expect(externalLink).toHaveAttribute('rel', /noopener/);
+	await expect(nav.locator('.site-nav-social a')).toHaveCount(3);
+
+	await page.setViewportSize({ width: 390, height: 820 });
+	await page.goto('/before-after/');
+
+	const toggle = page.getByRole('button', { name: 'Menu' });
+	await expect(toggle).toBeVisible();
+	await toggle.click();
+
+	const mobileMenu = page.locator('#site-nav-mobile-menu');
+	await expect(mobileMenu).toBeVisible();
+	await expect(mobileMenu.getByRole('link', { name: 'Before & After' })).toHaveAttribute(
+		'aria-current',
+		'page',
+	);
+	await expect(mobileMenu.locator('.site-nav-mobile-social a')).toHaveCount(3);
+});
+
 for (const route of ['/', '/gallery/red-carpet/sundance/']) {
 	test(`PhotoSwipe opens on first click and Escape closes on ${route}`, async ({ page }) => {
 		await page.goto(route);
