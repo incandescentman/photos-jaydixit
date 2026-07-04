@@ -1,6 +1,52 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-04 - Restyle site chrome and replace public logo asset
+
+** Status
+- Restyled the shared site chrome so the navigation and footer now match the editorial page language.
+- Replaced the 5.7 MB public ~logo.png~ route with right-sized WebP derivatives.
+- Fixed the long-standing nav active-state, social-icon, duplicate-font, and logo-trigger accessibility issues.
+
+** Shipped
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/logo-nav.webp][public/logo-nav.webp]] and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/logo-large.webp][public/logo-large.webp]]
+  - Generated compressed WebP logo assets from the old 2048px PNG.
+  - Header logo now uses ~logo-nav.webp~; the logo modal now uses ~logo-large.webp~.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/assets/logo-original.png][src/assets/logo-original.png]]
+  - Moved the original 5.7 MB PNG out of [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/][public/]] so ~/logo.png~ is no longer served.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/NavBar.astro][src/components/NavBar.astro]]
+  - Kept the Alpine mobile-menu mechanics but changed the surface to ~--paper~ with a ~--hairline~ bottom border.
+  - Updated the wordmark/menu typography to the editorial Newsreader/Instrument Sans system.
+  - Made section links route-aware and kept the WikiPortraits story link exact-match only.
+  - Replaced inline social SVG duplication with the shared social icon component.
+  - Replaced the text external-arrow glyph and menu/close drawings with Lucide icons.
+  - Kept the logo modal trigger as a real button with a clearer ~View logo full size~ label.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/SocialIcon.astro][src/components/SocialIcon.astro]] and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/site.config.mts][site.config.mts]]
+  - Moved social rendering into one shared component for nav and footer.
+  - Kept brand SVGs in the shared component because the installed ~@lucide/astro~ package does not ship Twitter/LinkedIn/Instagram brand icons; the shared styling matches the Lucide/editorial treatment and uses Lucide for the generic website icon.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/Footer.astro][src/components/Footer.astro]]
+  - Replaced the old glassmorphism footer with a ~--paper-deep~ band, ~--hairline~ border, small ~--sans~ copyright line, and shared muted social icons.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/styles/global.css][src/styles/global.css]] and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/layouts/MainLayout.astro][src/layouts/MainLayout.astro]]
+  - Removed the unused Dancing Script load and old ~#logo~ rule.
+  - Added a global ~a:focus-visible~ / ~button:focus-visible~ outline using ~--accent~.
+
+** Validation
+- Browser-verified the chrome on =http://127.0.0.1:4323/=, =http://127.0.0.1:4323/before-after/=, =http://127.0.0.1:4323/red-carpet/=, and =http://127.0.0.1:4323/contact/=.
+- Confirmed nav active state on ~/before-after/~, ~/red-carpet/~, ~/contact/~, and exact-match behavior on ~/blog/wikiportraits-story/~.
+- Confirmed rendered pages use ~/logo-nav.webp~ and no rendered image references ~/logo.png~.
+- Confirmed =curl http://127.0.0.1:4323/logo-nav.webp= returns ~4432~ bytes and =curl http://127.0.0.1:4323/logo.png= returns ~404~.
+- Confirmed the footer renders with ~rgb(244, 241, 234)~ background, ~rgb(235, 230, 220)~ top border, small copyright copy, and aria-labeled social links.
+- Noted that the homepage still has the pre-existing masonry horizontal overflow tracked in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/site-review-2026-07-03.org][docs/site-review-2026-07-03.org]]; this chrome pass did not change homepage layout.
+- =pnpm build= passed.
+- =pnpm lint= passed.
+- =pnpm test= passed (21/21).
+- =pnpm exec playwright test= passed (18/18).
+
+** Commits
+- ~f2c4885~ Replace 5.7MB logo.png with compressed webp derivatives
+- ~c6ae95c~ Restyle NavBar in editorial language; fix active state, icons, a11y
+- ~07c45ba~ Restyle Footer to match editorial design
+
 * 2026-07-04 - Adopt Claude Design top navigation
 
 ** Status

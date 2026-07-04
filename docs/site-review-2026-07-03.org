@@ -8,11 +8,12 @@ Live-site observations were made in Chrome on 2026-07-03: gray placeholder boxes
 
 * 🔥 Tier 1 — High-impact fixes (visitor-facing)
 
-** TODO Compress the 5.7 MB logo.png
+** DONE Compress the 5.7 MB logo.png
 The single highest-leverage fix on the site.
 
 - *Problem*: [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/logo.png][📄 public/logo.png]] is 5,746,187 bytes — a 2048×2048 PNG rendered at 56px in the nav. It loads on *every page* and saturates the connection while photo thumbnails queue behind it. This is the main cause of the "gray boxes for seconds" experience.
 - *Verified*: ~curl -s -o /dev/null -w '%{size_download}' https://photos.jaydixit.com/logo.png~ → 5746187 bytes. Photo thumbnails themselves are only 30–55 KB.
+- *Completed 2026-07-04*: [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/logo-nav.webp][📄 public/logo-nav.webp]] is now the nav asset, [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/logo-large.webp][📄 public/logo-large.webp]] is now the modal asset, and the original PNG lives at [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/assets/logo-original.png][📄 src/assets/logo-original.png]] so ~/logo.png~ is no longer publicly served.
 - *Implementation*:
   1. Generate small derivatives with sharp (already a dev dependency):
      ~npx sharp-cli~ or a tiny node script: resize to 112px (2x of 56px display) and 512px (for the logo modal), export as webp.
