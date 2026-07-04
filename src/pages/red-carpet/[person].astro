@@ -282,7 +282,7 @@ export function getStaticPaths() {
 	imageAlt={`Portrait of ${personData.name}`}
 	structuredData={[personStructuredData, breadcrumbStructuredData]}
 >
-	<section class="py-16 pt-28 md:pt-32">
+	<section class="py-16 pt-(--nav-clearance)">
 		<div class="container mx-auto px-4 max-w-7xl">
 			<nav aria-label="Breadcrumb" class="mb-6">
 				<ol class="flex flex-wrap items-center gap-2 text-sm text-gray-500">
@@ -304,7 +304,7 @@ export function getStaticPaths() {
 			</nav>
 
 			<header class="mb-10 text-center">
-				<h1 class="text-4xl md:text-5xl font-bold mb-3 font-sans">{personData.name}</h1>
+				<h1 class="text-4xl md:text-5xl font-bold mb-3">{personData.name}</h1>
 				{
 					personData.bio && (
 						<p class="text-xl text-gray-600 max-w-xl mx-auto mb-3">{personData.bio}</p>

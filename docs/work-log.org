@@ -1,6 +1,83 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-04 - Prune stale site-wide improvement plan items
+
+** Status
+- Reviewed [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/site-wide-improvements-implementation-plan.org][docs/site-wide-improvements-implementation-plan.org]] against the current repo state and removed items that are no longer actionable.
+
+** Shipped
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/site-wide-improvements-implementation-plan.org][docs/site-wide-improvements-implementation-plan.org]]
+  - Added a current-applicability summary separating still-current work from already-addressed first-pass items.
+  - Removed completed homepage lead, eager image loading, red-carpet name search, before/after smoke coverage, and initial album population from the suggested implementation order.
+  - Kept the still-relevant recommendations for editorial captions, typed before/after data, shared components, richer discovery indexes, and Wikimedia impact metadata.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/site-review-2026-07-03.org][docs/site-review-2026-07-03.org]]
+  - Updated the stale site-review order so it no longer lists eager image loading, typography cleanup, homepage story block, red-carpet search, or initial albums as remaining work.
+
+** Validation
+- =git diff --check= passed.
+- =pnpm lint= passed.
+- =pnpm test= passed (21/21).
+- =pnpm exec playwright test= passed (19/19).
+
+* 2026-07-04 - Enact site-review feature items (hero, search, albums, eager images, typography)
+
+** Status
+- Enacted the remaining actionable items from [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/site-review-2026-07-03.org][docs/site-review-2026-07-03.org]] Tier 5 + eager-images, plus the typography unification. Executed via four parallel Opus subagents; verified on a local dev server. Packery/masonry left untouched by design.
+
+** Shipped
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][src/pages/index.astro]]
+  - New ~home-intro~ editorial header above the grid: ~<h1>~ "Jay Dixit — Red Carpet Photography for Wikipedia", one-sentence WikiPortraits lede, "See the Before & After →" accent link. Fixes the missing-h1 accessibility issue.
+  - First 6 images in DOM order now emit ~loading="eager" fetchpriority="high"~ (handles stacked pairs correctly); rest stay lazy.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/red-carpet/index.astro][src/pages/red-carpet/index.astro]]
+  - Client-side search input filtering person cards by name + bio (~data-search~ attribute, vanilla JS, no-matches message, accent focus ring, visually-hidden label).
+  - First 4 card images eager + high fetchpriority.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/gallery/index.astro][src/pages/gallery/index.astro]]
+  - First-row card images (first category) eager + high fetchpriority.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/before-after.astro][src/pages/before-after.astro]]
+  - First comparison pair (before + after) eager + high fetchpriority.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/content/albums/][src/content/albums/]]
+  - Three curated albums replacing ~_placeholder.json~: ~tiff-2024~ (9 photos), ~sxsw-2024~ (6), ~sundance-film-festival~ (4). Photos referenced by Cloudinary publicId sourced from homepage-images.js; all 19 publicIds verified HTTP 200. Album pages needed no fixes.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tailwind.config.js][tailwind.config.js]]
+  - ~font-sans~ now maps to Karla (was Inter, never loaded); added ~serif~ → Cormorant Garamond; deleted unused Playfair entry (zero ~font-playfair~ usage confirmed).
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/RecognitionSection.astro][src/components/RecognitionSection.astro]] and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/red-carpet/[person].astro][src/pages/red-carpet/[person].astro]]
+  - Removed ~font-sans~ from headings so they inherit the global Cormorant Garamond serif; body ~font-sans~ kept (now correctly Karla).
+
+** Validation
+- ~pnpm lint~ passed.
+- Dev server: all touched routes return 200 (/, /red-carpet/, /gallery/, /before-after, /albums/ and all three album slugs).
+- Rendered HTML spot-checks: h1 + lede + link present on homepage; 6/4/1/2 eager+fetchpriority images on home / red-carpet / gallery (first category has one card) / before-after; search input, ~data-search~ on 21 cards, and no-matches node present on /red-carpet/; 3 albums listed with Cloudinary-served images.
+
+** Follow-up fix: site-wide nav clearance
+- The same-day nav-logo enlargement (44px → 88px) made the fixed navbar ~132px tall (desktop) / ~120px (mobile), taller than the top padding every page reserved, so page tops were clipped under the nav site-wide.
+- Bumped clearance on all affected pages, then consolidated the values into a single token (next item).
+
+** Follow-up refactor: single --nav-clearance token
+- All per-page hardcoded nav-clearance values are replaced by one CSS variable, ~--nav-clearance~ (10.5rem desktop, 9.5rem at ≤640px), defined in a ~<style is:global>~ block in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/NavBar.astro][src/components/NavBar.astro]] right next to the nav sizing it must track. If the nav is resized again, change only that block.
+- Consumers: homepage ~.portfolio-wrap~ (both style blocks), custom-CSS heroes via ~padding: var(--nav-clearance) …~ (about, before-after, red-carpet index, blog index, contact, and press including its mobile override), and Tailwind pages via the v4 class ~pt-(--nav-clearance)~ (albums index, popular, collections, gallery index, gallery folder, photo detail, red-carpet person).
+- Now-redundant per-page mobile padding overrides were deleted (the variable's own media query handles mobile); sibling rules in those media blocks were preserved.
+- Not converted (intentionally): blog posts (~pt-44 md:pt-56~ is deliberately more generous) and upload-to-commons (standalone page without the fixed nav).
+- Verified: all live routes 200 on dev server with the token present in served HTML; ~npm run lint~ clean.
+
+** Notes / follow-ups
+- /albums/ index page renders correctly but is stylistically plain (doesn't yet use the editorial design system or cover thumbnails) — worth a design pass if albums go prominent.
+- Prototype pages intentionally skipped in the font-sans sweep (slated for deletion per review Tier 4).
+- @fontsource self-hosting deliberately deferred.
+
+* 2026-07-04 - Enlarge nav logo lockup
+
+** Status
+- Increased the site nav logo and wordmark so the new generated mark reads clearly beside the site title.
+
+** Shipped
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/NavBar.astro][src/components/NavBar.astro]]
+  - Doubled the displayed nav logo from ~44px~ to ~88px~ on desktop, with matching larger scrolled and mobile sizes.
+  - Increased the ~Jay Dixit Photos~ wordmark from ~1.45rem~ to ~2.35rem~ on desktop, with smaller scrolled and mobile values to preserve fit.
+  - Added a global ~--nav-clearance~ token for pages that need to clear the fixed nav.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/logo-nav.webp][public/logo-nav.webp]]
+  - Regenerated the nav logo derivative at ~176x176~ so the enlarged display stays sharp.
+- Fixed-nav top padding was increased across the homepage, editorial pages, gallery/photo pages, albums, collections, and popular routes so the larger nav lockup does not overlap page content.
+
 * 2026-07-04 - Try new generated site logo
 
 ** Status

@@ -1,0 +1,36 @@
+{
+	"title": "SXSW 2024",
+	"date": "2024-03",
+	"coverPublicId": "highlights/judd-apatow_sxsw_2024",
+	"tags": ["sxsw", "austin", "comedy", "2024"],
+	"photos": [
+		{
+			"publicId": "highlights/judd-apatow_sxsw_2024",
+			"alt": "Judd Apatow at SXSW 2024",
+			"width": 1519,
+			"height": 2560
+		},
+		{
+			"publicId": "highlights/2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07141",
+			"alt": "Conan O'Brien and Nick Kroll at the SXSW Office Space reunion event"
+		},
+		{
+			"publicId": "highlights/2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07162",
+			"alt": "Conan O'Brien at the SXSW Office Space reunion event"
+		},
+		{
+			"publicId": "highlights/2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07310",
+			"alt": "Ron Livingston at the SXSW Office Space reunion event"
+		},
+		{
+			"publicId": "highlights/2024-03-09_SXSW_UCB_ASSSSCAT_10",
+			"alt": "UCB ASSSSCAT improv show at SXSW"
+		},
+		{
+			"publicId": "highlights/vinod-khosla_sxsw",
+			"alt": "Vinod Khosla at SXSW",
+			"width": 2560,
+			"height": 1707
+		}
+	]
+}

@@ -7,6 +7,23 @@ This document turns the current site-wide improvement ideas into an implementati
 
 The goal is not a full redesign for its own sake. The goal is to make the site feel more like an editorial photography publication and less like a generic portfolio template, while making future additions safer and easier.
 
+* Current Applicability
+This plan still applies, but several first-pass items have already landed or are in the current working tree.
+
+Still-current work:
+- shared editorial caption, credit, and link styling
+- before-and-after data extraction into typed data
+- reusable editorial photo/card components
+- richer discovery paths for events, publications, Wikipedia upgrades, and recently added work
+- Wikimedia/Wikipedia status metadata and provenance display
+
+Already addressed and removed from the action list below:
+- homepage ~h1~ / editorial lead
+- eager loading for the homepage, red-carpet index, gallery index, and first before-and-after pair
+- red-carpet name search
+- first-class before-and-after Playwright smoke coverage
+- initial curated album content
+
 * Guiding Principles
 - Preserve Jay's prose. Do not rewrite public-facing explanatory copy unless that is the explicit task.
 - Let the photos carry the page. Interface elements should identify, credit, and contextualize the images without competing with them.
@@ -50,10 +67,8 @@ Make the first viewport unmistakably about Jay's red-carpet and WikiPortraits wo
 The homepage should open with a tighter, more authored edit of high-recognition portraits and a short contextual line. The page does not need a large marketing hero, but it does need a stronger editorial premise before the masonry flow takes over.
 
 ** Implementation
-- Add a compact homepage editorial lead in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][src/pages/index.astro]] with an actual ~h1~ and one short line about red-carpet photography for Wikipedia.
-- Choose a small first-viewport set from [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/homepage-images.js][src/data/homepage-images.js]]: high-recognition people first, strong expressions, varied color, and no weak duplicates.
+- Refine the first-viewport set in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/homepage-images.js][src/data/homepage-images.js]]: high-recognition people first, strong expressions, varied color, and no weak duplicates.
 - Add small contextual captions to the first visible images: name, event, and optionally "now used on Wikipedia" when true.
-- Make the first row load eagerly. The homepage currently depends heavily on image timing; the first visible images should not all be lazy.
 - Keep the existing masonry below the lead until a larger layout refactor happens. This can be an incremental design improvement, not a full homepage rebuild.
 
 ** Acceptance Criteria
@@ -90,7 +105,7 @@ Make the site browsable by the ways visitors actually think: people, events, pub
 The current folder-based gallery model is useful for maintenance but not enough as public navigation. Keep folder galleries as one source, but create editorial indexes over the same data.
 
 ** Implementation
-- Strengthen [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/red-carpet/index.astro][src/pages/red-carpet/index.astro]] as the primary people index. Add search/filtering by name, event, and notable project when the data supports it.
+- Strengthen [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/red-carpet/index.astro][src/pages/red-carpet/index.astro]] as the primary people index. Name search now exists; extend filtering to event and notable project when the data supports it.
 - Add an events index backed by gallery folder metadata: TIFF, Sundance, SXSW, Nobel, and future festivals.
 - Add a "Wikipedia upgrades" index that combines before-and-after cases and individual portraits with Wikimedia status metadata.
 - Add a "Recently added" surface by tracking upload/addition dates in metadata. This can start as a manually maintained field and later be generated.
@@ -132,12 +147,11 @@ Add structured fields gradually. Begin with before-and-after entries and person 
 * Suggested Implementation Order
 1. Extract before-and-after data into a typed module and add the reusable editorial image frame.
 2. Apply the editorial caption/credit classes to person and gallery cards.
-3. Add the homepage editorial lead and eager-load the first visible images.
-4. Add first-class Playwright coverage for before-and-after and the homepage first viewport.
-5. Add Wikimedia status fields to before-and-after entries.
-6. Add a Wikipedia upgrades index.
-7. Add search/filtering to the red-carpet people index.
-8. Expand event and recently-added indexes once the metadata exists.
+3. Add contextual captions and a tighter first-viewport edit to the homepage images.
+4. Add Wikimedia status fields to before-and-after entries.
+5. Add a Wikipedia upgrades index.
+6. Expand event, publication, and recently-added indexes once the metadata exists.
+7. Extend red-carpet filtering beyond name search once person/event metadata supports it.
 
 * Verification Checklist
 - Run ~pnpm lint~.
@@ -147,4 +161,3 @@ Add structured fields gradually. Begin with before-and-after entries and person 
 - Check for horizontal overflow on mobile.
 - Confirm lazy images load after scroll on image-heavy pages.
 - Record the change and any handoff notes in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/work-log.org][docs/work-log.org]].
-

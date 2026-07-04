@@ -105,7 +105,7 @@ const galleryIndexStructuredData = {
 	canonical={canonicalUrl}
 	structuredData={galleryIndexStructuredData}
 >
-	<section class="py-16 pt-28 md:pt-32">
+	<section class="py-16 pt-(--nav-clearance)">
 		<div class="container mx-auto px-4 max-w-7xl">
 			<div class="mb-16 text-center">
 				<h1 class="text-4xl md:text-5xl font-bold mb-4">Photo Galleries</h1>
@@ -116,47 +116,50 @@ const galleryIndexStructuredData = {
 
 			{
 				Object.keys(categorizedGalleries).length > 0 ? (
-					Object.entries(categorizedGalleries).map(([category, categoryGalleries]) => (
-						<div class="mb-12">
-							<h2 class="text-2xl font-bold mb-6 capitalize text-gray-800">
-								{category.split('-').join(' ')}
-							</h2>
+					Object.entries(categorizedGalleries).map(
+						([category, categoryGalleries], categoryIndex) => (
+							<div class="mb-12">
+								<h2 class="text-2xl font-bold mb-6 capitalize text-gray-800">
+									{category.split('-').join(' ')}
+								</h2>
 
-							<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-								{categoryGalleries.map((gallery) => (
-									<a
-										href={gallery.url}
-										class="group block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
-									>
-										<div class="aspect-[4/3] bg-gray-200 overflow-hidden">
-											{gallery.sampleImage ? (
-												<Image
-													src={gallery.sampleImage}
-													alt={gallery.displayName}
-													width={640}
-													height={480}
-													fit="cover"
-													class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-													loading="lazy"
-												/>
-											) : (
-												<div class="w-full h-full bg-gray-200" />
-											)}
-										</div>
+								<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+									{categoryGalleries.map((gallery, i) => (
+										<a
+											href={gallery.url}
+											class="group block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
+										>
+											<div class="aspect-[4/3] bg-gray-200 overflow-hidden">
+												{gallery.sampleImage ? (
+													<Image
+														src={gallery.sampleImage}
+														alt={gallery.displayName}
+														width={640}
+														height={480}
+														fit="cover"
+														class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+														loading={categoryIndex === 0 && i < 4 ? 'eager' : 'lazy'}
+														fetchpriority={categoryIndex === 0 && i < 4 ? 'high' : undefined}
+													/>
+												) : (
+													<div class="w-full h-full bg-gray-200" />
+												)}
+											</div>
 
-										<div class="p-4">
-											<h3 class="text-lg font-semibold mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">
-												{gallery.displayName}
-											</h3>
-											<p class="text-gray-600 text-sm">
-												{gallery.imageCount} {gallery.imageCount === 1 ? 'photo' : 'photos'}
-											</p>
-										</div>
-									</a>
-								))}
+											<div class="p-4">
+												<h3 class="text-lg font-semibold mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">
+													{gallery.displayName}
+												</h3>
+												<p class="text-gray-600 text-sm">
+													{gallery.imageCount} {gallery.imageCount === 1 ? 'photo' : 'photos'}
+												</p>
+											</div>
+										</a>
+									))}
+								</div>
 							</div>
-						</div>
-					))
+						),
+					)
 				) : (
 					<div class="text-center py-16">
 						<div class="text-gray-400 mb-4">

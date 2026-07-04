@@ -384,6 +384,24 @@ function optimizeImageOrder(images) {
 const baseImages = AUTO_OPTIMIZE_ORDER ? optimizeImageOrder(images) : images;
 const processedImages = applySavedOrder(baseImages);
 
+// Eager-load the first few above-the-fold images (in rendered masonry order),
+// counting each sub-image of a stacked pair. The rest stay lazy.
+const EAGER_IMAGE_COUNT = 6;
+let eagerBudget = EAGER_IMAGE_COUNT;
+const eagerForIndex = processedImages.map((item) => {
+	if (!item) return { a: false, b: false, single: false };
+	if (item.type === 'stacked' && Array.isArray(item.items)) {
+		const a = eagerBudget > 0;
+		if (a) eagerBudget--;
+		const b = eagerBudget > 0;
+		if (b) eagerBudget--;
+		return { a, b, single: false };
+	}
+	const single = eagerBudget > 0;
+	if (single) eagerBudget--;
+	return { a: false, b: false, single };
+});
+
 const fallbackDimensions = {
 	portrait: { width: 320, height: 480 },
 	landscape: { width: 648, height: 480 },
@@ -560,7 +578,7 @@ const criticalStyles = `
   .portfolio-wrap {
     position: relative;
     margin: 0;
-    padding: 120px 0 0 0;
+    padding: var(--nav-clearance) 0 0 0; /* clears the fixed nav */
     width: 100%;
     box-sizing: border-box;
   }
@@ -590,10 +608,6 @@ const criticalStyles = `
   }
 
   @media (max-width: 768px) {
-    .portfolio-wrap {
-      padding-top: 100px;
-    }
-
     /* Force mobile stack layout */
     .masonry-items {
       display: flex !important;
@@ -656,6 +670,15 @@ const criticalStyles = `
 		<script type="application/ld+json" set:html={jsonLdString} />
 	</Fragment>
 	<div class="portfolio-wrap">
+		<header class="home-intro">
+			<h1 class="home-intro-title">Jay Dixit — Red Carpet Photography for Wikipedia</h1>
+			<p class="home-intro-lede">
+				I photograph actors, directors, and public figures at film festivals and premieres, then
+				release the portraits under a free license so their Wikipedia articles can finally have
+				great photos.
+			</p>
+			<a class="home-intro-link" href="/before-after">See the Before &amp; After →</a>
+		</header>
 		<div
 			id="masonry"
 			class="masonry-items elastic"
@@ -698,7 +721,8 @@ const criticalStyles = `
 											alt={a.caption}
 											width={648}
 											height={484}
-											loading="lazy"
+											loading={eagerForIndex[index].a ? 'eager' : 'lazy'}
+											fetchpriority={eagerForIndex[index].a ? 'high' : undefined}
 											decoding="async"
 											data-caption={a.caption}
 											data-full-src={a.fullSrc}
@@ -723,7 +747,8 @@ const criticalStyles = `
 											alt={b.caption}
 											width={648}
 											height={484}
-											loading="lazy"
+											loading={eagerForIndex[index].b ? 'eager' : 'lazy'}
+											fetchpriority={eagerForIndex[index].b ? 'high' : undefined}
 											decoding="async"
 											data-caption={b.caption}
 											data-full-src={b.fullSrc}
@@ -780,7 +805,8 @@ const criticalStyles = `
 									alt={photo.caption}
 									width={imageWidth}
 									height={imageHeight}
-									loading="lazy"
+									loading={eagerForIndex[index].single ? 'eager' : 'lazy'}
+									fetchpriority={eagerForIndex[index].single ? 'high' : undefined}
 									decoding="async"
 									data-caption={photo.caption}
 									data-variant={variant}
@@ -805,7 +831,7 @@ const criticalStyles = `
 	.portfolio-wrap {
 		position: relative;
 		margin: 0;
-		padding: 120px 0 0 0; /* Top padding for navbar; no side gutters for edge-to-edge */
+		padding: var(--nav-clearance) 0 0 0; /* clears the fixed nav; no side gutters for edge-to-edge */
 		width: 100%;
 		box-sizing: border-box;
 	}
@@ -1339,6 +1365,63 @@ const criticalStyles = `
 		bottom: 0;
 		background: rgba(0, 0, 0, 0.5);
 		z-index: 99999;
+	}
+</style>
+
+<style>
+	/* Compact editorial intro above the photo grid */
+	.home-intro {
+		max-width: 80rem;
+		margin: 0 auto 2.5rem;
+		padding: 0 2rem;
+	}
+
+	.home-intro-title {
+		margin: 0;
+		font-family: var(--serif);
+		font-weight: 500;
+		font-size: clamp(1.7rem, 3.4vw, 2.6rem);
+		line-height: 1.1;
+		letter-spacing: -0.01em;
+		color: var(--ink);
+	}
+
+	.home-intro-lede {
+		margin: 0.7rem 0 0;
+		max-width: 42rem;
+		font-family: var(--sans);
+		font-size: 0.98rem;
+		font-weight: 400;
+		line-height: 1.55;
+		color: var(--muted);
+	}
+
+	.home-intro-link {
+		display: inline-block;
+		margin-top: 1rem;
+		font-family: var(--sans);
+		font-size: 0.74rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--accent);
+		text-decoration: none;
+		border-bottom: 1px solid transparent;
+		transition:
+			color 0.2s ease,
+			border-color 0.2s ease;
+	}
+
+	.home-intro-link:hover {
+		color: var(--ink);
+		border-bottom-color: #c9b792;
+	}
+
+	@media (max-width: 640px) {
+		.home-intro {
+			margin-bottom: 1.75rem;
+			padding: 0 1rem;
+		}
 	}
 </style>
 

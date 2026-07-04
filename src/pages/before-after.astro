@@ -161,7 +161,8 @@ const comparisonsWithLightbox = await Promise.all(
 												sizes="(min-width: 768px) 50vw, 100vw"
 												class="ba-img"
 												style={`object-position:${comparison.beforePos}`}
-												loading="lazy"
+												loading={i === 0 ? 'eager' : 'lazy'}
+												fetchpriority={i === 0 ? 'high' : undefined}
 											/>
 										</a>
 										<figcaption class="ba-cap ba-cap--before">
@@ -194,7 +195,8 @@ const comparisonsWithLightbox = await Promise.all(
 												sizes="(min-width: 768px) 50vw, 100vw"
 												class="ba-img"
 												style={`object-position:${comparison.afterPos}`}
-												loading="lazy"
+												loading={i === 0 ? 'eager' : 'lazy'}
+												fetchpriority={i === 0 ? 'high' : undefined}
 											/>
 										</a>
 										<figcaption class="ba-cap ba-cap--after">
@@ -267,7 +269,7 @@ const comparisonsWithLightbox = await Promise.all(
 	/* ---- Hero ---- */
 	.ba-hero {
 		background: var(--paper);
-		padding: 8rem 0 2rem;
+		padding: var(--nav-clearance) 0 2rem;
 		text-align: center;
 	}
 
@@ -608,10 +610,6 @@ const comparisonsWithLightbox = await Promise.all(
 		.ba-shell {
 			padding-left: 1.5rem;
 			padding-right: 1.5rem;
-		}
-
-		.ba-hero {
-			padding-top: 7rem;
 		}
 
 		.ba-pair-head {

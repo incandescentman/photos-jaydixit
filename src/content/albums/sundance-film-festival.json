@@ -1,0 +1,32 @@
+{
+	"title": "Sundance Film Festival",
+	"date": "2025-01",
+	"coverPublicId": "highlights/steven-yeun_sundance_2025",
+	"tags": ["sundance", "park-city", "red-carpet"],
+	"photos": [
+		{
+			"publicId": "highlights/steven-yeun_sundance_2025",
+			"alt": "Steven Yeun at Sundance 2025",
+			"width": 2048,
+			"height": 2560
+		},
+		{
+			"publicId": "highlights/dave-franco_sundance_2025",
+			"alt": "Dave Franco at Sundance 2025",
+			"width": 2048,
+			"height": 2560
+		},
+		{
+			"publicId": "highlights/conan-obrien_sundance_2024",
+			"alt": "Conan O'Brien at Sundance 2024",
+			"width": 1707,
+			"height": 2560
+		},
+		{
+			"publicId": "highlights/kaia-gerber_cory-michael-smith_saturday-night-sundance-premiere",
+			"alt": "Kaia Gerber and Cory Michael Smith at the Sundance premiere of Saturday Night",
+			"width": 1707,
+			"height": 2560
+		}
+	]
+}

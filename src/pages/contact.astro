@@ -55,7 +55,7 @@ import MainLayout from '../layouts/MainLayout.astro';
 <style>
 	.contact-page {
 		min-height: 100vh;
-		padding: 9rem 1.5rem 5rem;
+		padding: var(--nav-clearance) 1.5rem 5rem;
 		background: var(--paper);
 	}
 
@@ -180,10 +180,6 @@ import MainLayout from '../layouts/MainLayout.astro';
 	}
 
 	@media (max-width: 640px) {
-		.contact-page {
-			padding-top: 7rem;
-		}
-
 		.contact-form button {
 			justify-self: stretch;
 			text-align: center;

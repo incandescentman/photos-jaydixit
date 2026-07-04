@@ -161,6 +161,20 @@ function isActive(item: MenuItem) {
 	</div>
 </div>
 
+<style is:global>
+	/* Single source of truth for how much top padding pages need to clear the
+	   fixed nav. Keep in sync with .site-nav sizing below: ~132px tall on
+	   desktop (88px logo + 2×1.35rem padding), ~120px at ≤640px (76px logo). */
+	:root {
+		--nav-clearance: 10.5rem;
+	}
+	@media (max-width: 640px) {
+		:root {
+			--nav-clearance: 9.5rem;
+		}
+	}
+</style>
+
 <style>
 	.site-nav {
 		position: fixed;
@@ -213,8 +227,8 @@ function isActive(item: MenuItem) {
 	}
 
 	.site-nav-logo {
-		width: 44px;
-		height: 44px;
+		width: 88px;
+		height: 88px;
 		object-fit: contain;
 		border-radius: 6px;
 		transition:
@@ -229,14 +243,14 @@ function isActive(item: MenuItem) {
 	}
 
 	.nav--scrolled .site-nav-logo {
-		width: 38px;
-		height: 38px;
+		width: 76px;
+		height: 76px;
 	}
 
 	.site-nav-wordmark {
 		font-family: var(--serif);
 		font-weight: 500;
-		font-size: 1.45rem;
+		font-size: 2.35rem;
 		line-height: 1;
 		letter-spacing: 0;
 		color: var(--ink);
@@ -252,7 +266,7 @@ function isActive(item: MenuItem) {
 	}
 
 	.nav--scrolled .site-nav-wordmark {
-		font-size: 1.3rem;
+		font-size: 2.05rem;
 	}
 
 	.site-nav-menu {
@@ -442,12 +456,12 @@ function isActive(item: MenuItem) {
 		}
 
 		.site-nav-logo {
-			width: 38px;
-			height: 38px;
+			width: 76px;
+			height: 76px;
 		}
 
 		.site-nav-wordmark {
-			font-size: 1.28rem;
+			font-size: 1.68rem;
 		}
 	}
 
