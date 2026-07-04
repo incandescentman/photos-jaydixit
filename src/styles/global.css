@@ -18,9 +18,9 @@
 		--primary-foreground: 0 0% 98%;
 		--secondary: 240 4.8% 95.9%;
 		--secondary-foreground: 240 5.9% 10%;
-		--muted: 240 4.8% 95.9%;
+		--muted-hsl: 240 4.8% 95.9%;
 		--muted-foreground: 240 3.8% 46.1%;
-		--accent: 210 40% 96%;
+		--accent-hsl: 210 40% 96%;
 		--accent-foreground: 240 5.9% 10%;
 		--destructive: 0 84.2% 60.2%;
 		--destructive-foreground: 0 0% 98%;
@@ -37,6 +37,16 @@
 		--neutral-600: #525252;
 		--neutral-700: #404040;
 		--neutral-900: #171717;
+
+		/* Editorial page system */
+		--paper: #faf9f6;
+		--paper-deep: #f4f1ea;
+		--ink: #1a1714;
+		--muted: #8a8175;
+		--hairline: #ebe6dc;
+		--accent: #96773f;
+		--serif: 'Newsreader', Georgia, 'Times New Roman', serif;
+		--sans: 'Instrument Sans', system-ui, -apple-system, sans-serif;
 
 		/* Consistent spacing scale */
 		--spacing-xs: 0.5rem;
@@ -106,22 +116,26 @@
 
 	/* Refined shadow system */
 	.shadow-sm-refined {
-		box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03),
-					0 1px 3px 0 rgba(0, 0, 0, 0.04);
+		box-shadow:
+			0 1px 2px 0 rgba(0, 0, 0, 0.03),
+			0 1px 3px 0 rgba(0, 0, 0, 0.04);
 	}
 
 	.shadow-md-refined {
-		box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.04),
-					0 4px 6px -1px rgba(0, 0, 0, 0.06);
+		box-shadow:
+			0 2px 4px -1px rgba(0, 0, 0, 0.04),
+			0 4px 6px -1px rgba(0, 0, 0, 0.06);
 	}
 
 	.shadow-lg-refined {
-		box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08),
-					0 4px 6px -2px rgba(0, 0, 0, 0.03);
+		box-shadow:
+			0 10px 15px -3px rgba(0, 0, 0, 0.08),
+			0 4px 6px -2px rgba(0, 0, 0, 0.03);
 	}
 
 	.shadow-xl-refined {
-		box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08),
-					0 10px 10px -5px rgba(0, 0, 0, 0.04);
+		box-shadow:
+			0 20px 25px -5px rgba(0, 0, 0, 0.08),
+			0 10px 10px -5px rgba(0, 0, 0, 0.04);
 	}
 }
