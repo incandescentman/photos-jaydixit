@@ -1,6 +1,15 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-04 - Match about-page essay copy to larger lead size
+
+** Status
+- Updated the About page so the later opening essay paragraphs match the larger font size used by the first two paragraphs.
+
+** Shipped
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/about.astro][src/pages/about.astro]]
+  - Changed ~.ed-essay p~ from ~1.3rem~ to ~1.5rem~ on desktop and from ~1.2rem~ to ~1.3rem~ on mobile, matching the ~.ed-lead p~ scale.
+
 * 2026-07-04 - Prune stale site-wide improvement plan items
 
 ** Status
