@@ -1,6 +1,26 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-03 - Add before-and-after transition arrows
+
+** Status
+- Added directional arrows between each before/after image pair so the comparison reads more explicitly as a transformation.
+
+** Shipped
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/before-after.astro][src/pages/before-after.astro]]
+  - Inserted a neutral, decorative arrow between each Before and After figure.
+  - Kept the arrow monochrome and compact so it supports the editorial case-study design without becoming a loud UI control.
+  - Rotated the arrow downward on mobile, where the comparison images stack vertically.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tests/e2e/portfolio.e2e.ts][tests/e2e/portfolio.e2e.ts]]
+  - Extended the ~/before-after/~ smoke test to assert one arrow per comparison card.
+
+** Validation
+- =pnpm exec prettier --check src/pages/before-after.astro tests/e2e/portfolio.e2e.ts= passed.
+- =pnpm lint= passed.
+- =pnpm build= passed.
+- =PLAYWRIGHT_PORT=4330 pnpm exec playwright test -g "before-after page renders source captions" --workers=1= passed (1/1).
+- =PLAYWRIGHT_PORT=4331 pnpm test:e2e= passed (9/9).
+
 * 2026-07-03 - Add before-and-after e2e coverage and site improvement plan
 
 ** Status

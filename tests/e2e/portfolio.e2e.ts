@@ -135,6 +135,7 @@ test('before-after page renders source captions and loads comparison images afte
 
 	const comparisonCards = page.locator('.comparison-card');
 	await expect(comparisonCards).toHaveCount(5);
+	await expect(page.locator('.comparison-arrow')).toHaveCount(5);
 	await expect(page.locator('.comparison-source')).toHaveCount(10);
 	await expect(
 		page.locator('.comparison-source', { hasText: 'Glenn Francis, 2019' }),
