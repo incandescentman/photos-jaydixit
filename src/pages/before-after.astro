@@ -21,6 +21,8 @@ const comparisons = [
 		afterImage: vanessaAfterImg,
 		article: 'https://en.wikipedia.org/wiki/Vanessa_Kirby',
 		event: 'Toronto International Film Festival 2024',
+		beforeSource: 'Previous Wikipedia portrait, 2018',
+		afterSource: 'Jay Dixit, Toronto International Film Festival 2024',
 	},
 	{
 		name: 'John Hopfield',
@@ -28,6 +30,8 @@ const comparisons = [
 		afterImage: johnAfterImg,
 		article: 'https://en.wikipedia.org/wiki/John_Hopfield',
 		event: 'Nobel Prize Lectures, Stockholm 2024',
+		beforeSource: 'Previous Wikipedia portrait, 2016',
+		afterSource: 'Jay Dixit, Nobel Prize Lectures 2024',
 	},
 	{
 		name: 'Jeremy Strong',
@@ -35,6 +39,8 @@ const comparisons = [
 		afterImage: jeremyAfterImg,
 		article: 'https://en.wikipedia.org/wiki/Jeremy_Strong',
 		event: 'BFI London Film Festival 2025',
+		beforeSource: 'Previous Wikipedia portrait',
+		afterSource: 'Jay Dixit, BFI London Film Festival 2025',
 	},
 	{
 		name: "Conan O'Brien",
@@ -42,6 +48,8 @@ const comparisons = [
 		afterImage: conanAfterImg,
 		article: 'https://en.wikipedia.org/wiki/Conan_O%27Brien',
 		event: 'Sundance Film Festival 2025',
+		beforeSource: 'Previous Wikipedia portrait',
+		afterSource: 'Jay Dixit, Sundance Film Festival 2025',
 	},
 	{
 		name: 'Sydney Sweeney',
@@ -49,6 +57,8 @@ const comparisons = [
 		afterImage: sydneyAfterImg,
 		article: 'https://en.wikipedia.org/wiki/Sydney_Sweeney',
 		event: 'Toronto International Film Festival 2024',
+		beforeSource: 'Glenn Francis, 2019',
+		afterSource: 'Jay Dixit, Toronto International Film Festival 2024',
 	},
 ];
 
@@ -78,10 +88,10 @@ const comparisonsWithLightbox = await Promise.all(
 	description="Wikipedia portrait upgrades: see the difference professional photography makes"
 >
 	<!-- Hero Section -->
-	<section class="pt-32 md:pt-36 pb-12 bg-white">
+	<section class="pt-32 md:pt-36 pb-10 bg-white">
 		<div class="max-w-6xl mx-auto px-6">
 			<h1 class="text-3xl md:text-4xl font-black text-gray-900 font-sans mb-4">Before & After</h1>
-			<p class="text-xl text-gray-600 leading-relaxed font-sans max-w-4xl">
+			<p class="text-lg md:text-xl text-gray-600 leading-relaxed font-sans max-w-3xl">
 				Wikipedia deserves better photos. As a red carpet photographer for Wikipedia, I replace
 				low-quality portraits with professional images shot at film festivals and cultural events.
 			</p>
@@ -89,7 +99,7 @@ const comparisonsWithLightbox = await Promise.all(
 	</section>
 
 	<!-- Comparison Grid -->
-	<section class="py-12 bg-white">
+	<section class="pt-8 pb-12 bg-white">
 		<div id="before-after-gallery" class="max-w-6xl mx-auto px-6">
 			{
 				comparisons.length === 0 ? (
@@ -99,25 +109,29 @@ const comparisonsWithLightbox = await Promise.all(
 						</p>
 					</div>
 				) : (
-					<div class="space-y-16">
+					<div class="comparison-list">
 						{comparisonsWithLightbox.map((comparison) => (
 							<article class="comparison-card">
-								<div class="flex items-center justify-between mb-6">
-									<div>
-										<h2 class="text-2xl font-bold text-gray-900 font-sans">{comparison.name}</h2>
-										{comparison.event && (
-											<p class="text-gray-500 text-sm font-sans mt-1">{comparison.event}</p>
-										)}
+								<header class="comparison-header">
+									<div class="comparison-title-block">
+										<p class="comparison-kicker">Wikipedia portrait upgrade</p>
+										<h2 class="comparison-title">{comparison.name}</h2>
+										{comparison.event && <p class="comparison-event">{comparison.event}</p>}
 									</div>
 									{comparison.article && (
 										<a
 											href={comparison.article}
 											target="_blank"
 											rel="noopener noreferrer"
-											class="text-sm text-blue-600 hover:text-blue-800 font-sans flex items-center gap-1"
+											class="comparison-link"
 										>
 											View on Wikipedia
-											<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<svg
+												class="comparison-link-icon"
+												fill="none"
+												stroke="currentColor"
+												viewBox="0 0 24 24"
+											>
 												<path
 													stroke-linecap="round"
 													stroke-linejoin="round"
@@ -127,18 +141,18 @@ const comparisonsWithLightbox = await Promise.all(
 											</svg>
 										</a>
 									)}
-								</div>
+								</header>
 
-								<div class="grid md:grid-cols-2 gap-6">
-									{/* Before */}
-									<div class="relative">
-										<span class="absolute top-4 left-4 bg-red-500/90 text-white text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full z-10">
-											Before
-										</span>
+								<div class="comparison-images">
+									<figure class="comparison-figure">
+										<div class="comparison-label-row">
+											<span class="comparison-label">Before</span>
+											<span class="comparison-source">{comparison.beforeSource}</span>
+										</div>
 										<a
 											href={comparison.beforeLightboxHref}
 											data-pswp-item="true"
-											class="portfolio-lightbox block aspect-[3/4] bg-gray-100 rounded-xl overflow-hidden"
+											class="portfolio-lightbox comparison-frame"
 											data-pswp-width={comparison.beforeImage.width}
 											data-pswp-height={comparison.beforeImage.height}
 											data-pswp-caption={`${comparison.name} - previous Wikipedia photo`}
@@ -149,21 +163,24 @@ const comparisonsWithLightbox = await Promise.all(
 												alt={`${comparison.name} - previous Wikipedia photo`}
 												widths={[400, 800]}
 												sizes="(min-width: 768px) 50vw, 100vw"
-												class="w-full h-full object-cover object-top"
+												class="comparison-image"
 												loading="lazy"
 											/>
 										</a>
-									</div>
+										<figcaption class="comparison-caption">
+											Image previously used or available for the article.
+										</figcaption>
+									</figure>
 
-									{/* After */}
-									<div class="relative">
-										<span class="absolute top-4 left-4 bg-emerald-500/90 text-white text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full z-10">
-											After
-										</span>
+									<figure class="comparison-figure">
+										<div class="comparison-label-row">
+											<span class="comparison-label">After</span>
+											<span class="comparison-source">{comparison.afterSource}</span>
+										</div>
 										<a
 											href={comparison.afterLightboxHref}
 											data-pswp-item="true"
-											class="portfolio-lightbox block aspect-[3/4] bg-gray-100 rounded-xl overflow-hidden"
+											class="portfolio-lightbox comparison-frame"
 											data-pswp-width={comparison.afterImage.width}
 											data-pswp-height={comparison.afterImage.height}
 											data-pswp-caption={`${comparison.name} - upgraded Wikipedia photo by Jay Dixit`}
@@ -174,11 +191,14 @@ const comparisonsWithLightbox = await Promise.all(
 												alt={`${comparison.name} - upgraded Wikipedia photo by Jay Dixit`}
 												widths={[400, 800]}
 												sizes="(min-width: 768px) 50vw, 100vw"
-												class="w-full h-full object-cover object-top"
+												class="comparison-image"
 												loading="lazy"
 											/>
 										</a>
-									</div>
+										<figcaption class="comparison-caption">
+											Replacement portrait photographed for public encyclopedic use.
+										</figcaption>
+									</figure>
 								</div>
 							</article>
 						))}
@@ -246,13 +266,190 @@ const comparisonsWithLightbox = await Promise.all(
 />
 
 <style>
+	.comparison-list {
+		display: grid;
+		gap: 2.75rem;
+	}
+
 	.comparison-card {
-		padding-bottom: 3rem;
-		border-bottom: 1px solid #e5e7eb;
+		padding-bottom: 2.75rem;
+		border-bottom: 1px solid #e7e5e4;
 	}
 
 	.comparison-card:last-child {
 		border-bottom: none;
 		padding-bottom: 0;
+	}
+
+	.comparison-header {
+		display: flex;
+		align-items: flex-end;
+		justify-content: space-between;
+		gap: 1.5rem;
+		margin-bottom: 1.25rem;
+	}
+
+	.comparison-title-block {
+		min-width: 0;
+	}
+
+	.comparison-kicker {
+		margin-bottom: 0.35rem;
+		font-family:
+			system-ui,
+			-apple-system,
+			'Segoe UI',
+			sans-serif;
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: #78716c;
+	}
+
+	.comparison-title {
+		font-family:
+			system-ui,
+			-apple-system,
+			'Segoe UI',
+			sans-serif;
+		font-size: clamp(1.45rem, 2.2vw, 2rem);
+		font-weight: 800;
+		line-height: 1.08;
+		color: #111827;
+	}
+
+	.comparison-event {
+		margin-top: 0.45rem;
+		font-family:
+			system-ui,
+			-apple-system,
+			'Segoe UI',
+			sans-serif;
+		font-size: 0.92rem;
+		color: #57534e;
+	}
+
+	.comparison-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		flex-shrink: 0;
+		border-bottom: 1px solid #a8a29e;
+		padding-bottom: 0.1rem;
+		font-family:
+			system-ui,
+			-apple-system,
+			'Segoe UI',
+			sans-serif;
+		font-size: 0.88rem;
+		font-weight: 600;
+		color: #292524;
+		transition:
+			border-color 160ms ease,
+			color 160ms ease;
+	}
+
+	.comparison-link:hover {
+		border-color: #1d4ed8;
+		color: #1d4ed8;
+	}
+
+	.comparison-link-icon {
+		width: 1rem;
+		height: 1rem;
+	}
+
+	.comparison-images {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1rem;
+	}
+
+	.comparison-figure {
+		margin: 0;
+	}
+
+	.comparison-label-row {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1rem;
+		min-height: 1.45rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.comparison-label {
+		font-family:
+			system-ui,
+			-apple-system,
+			'Segoe UI',
+			sans-serif;
+		font-size: 0.72rem;
+		font-weight: 800;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: #1c1917;
+	}
+
+	.comparison-source {
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		font-family:
+			system-ui,
+			-apple-system,
+			'Segoe UI',
+			sans-serif;
+		font-size: 0.78rem;
+		color: #78716c;
+	}
+
+	.comparison-frame {
+		display: block;
+		aspect-ratio: 3 / 4;
+		overflow: hidden;
+		border-radius: 6px;
+		background: #f5f5f4;
+		box-shadow: inset 0 0 0 1px rgba(41, 37, 36, 0.08);
+	}
+
+	.comparison-image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: top;
+	}
+
+	.comparison-caption {
+		margin-top: 0.55rem;
+		font-family:
+			system-ui,
+			-apple-system,
+			'Segoe UI',
+			sans-serif;
+		font-size: 0.78rem;
+		line-height: 1.45;
+		color: #78716c;
+	}
+
+	@media (max-width: 767px) {
+		.comparison-header {
+			align-items: flex-start;
+			flex-direction: column;
+			gap: 0.8rem;
+			margin-bottom: 1rem;
+		}
+
+		.comparison-images {
+			grid-template-columns: 1fr;
+			gap: 1.25rem;
+		}
+
+		.comparison-source {
+			white-space: normal;
+			text-align: right;
+		}
 	}
 </style>

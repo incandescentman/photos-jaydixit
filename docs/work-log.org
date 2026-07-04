@@ -1,6 +1,25 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-03 - Refine before-and-after page editorial presentation
+
+** Status
+- Made the before-and-after comparisons feel more editorial and less like a utility grid.
+
+** Shipped
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/before-after.astro][src/pages/before-after.astro]]
+  - Replaced colored overlay labels with consistent monochrome Before/After label rows.
+  - Added source/credit captions for each before and after image.
+  - Tightened comparison spacing and converted repeated inline utility styling into dedicated comparison classes.
+  - Preserved the existing explanatory page prose and PhotoSwipe behavior.
+
+** Validation
+- =pnpm exec prettier --check src/pages/before-after.astro= passed.
+- =pnpm lint= passed.
+- =pnpm build= passed.
+- Browser-verified =http://127.0.0.1:4328/before-after/= at desktop and mobile widths.
+- Confirmed 5 comparison cards, 10 source captions, no broken loaded images after scroll-through, no mobile horizontal overflow, and PhotoSwipe opens from the comparison grid.
+
 * 2026-07-03 - Add Sydney Sweeney before/after comparison
 
 ** Status
