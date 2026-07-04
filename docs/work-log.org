@@ -1,6 +1,25 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-04 - Document Claude Design before-and-after replacement
+
+** Status
+- Backfilled the missing handoff entry for the Claude Design-generated ~/before-after/~ redesign that is now committed as ~cea24f1~.
+
+** Shipped
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/before-after.astro][src/pages/before-after.astro]]
+  - Replaced the previous utility-grid/editorial hybrid with the Claude Design artifact from [[file+emacs:/Users/jay/Downloads/uploads/before-after.astro][/Users/jay/Downloads/uploads/before-after.astro]].
+  - Preserved the real Astro route plumbing: ~MainLayout~, local image imports, Astro ~Image~ optimization, ~getImage~ lightbox hrefs, and ~PhotoSwipeLightbox~.
+  - Introduced the page-scoped ~ba-*~ editorial system: warm paper palette, Newsreader/Instrument Sans typography, numbered case-study pairs, hairline captions, circled before-to-after arrows, pull-quote context section, and compact CTA.
+  - Added per-image ~beforePos~ / ~afterPos~ crop tuning so portrait faces stay framed inside the new fixed-aspect comparison cards.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tests/e2e/portfolio.e2e.ts][tests/e2e/portfolio.e2e.ts]]
+  - Updated the first-class ~/before-after/~ smoke test from the old ~comparison-*~ selectors to the new ~ba-*~ markup.
+  - Kept coverage for comparison count, arrow count, source-caption presence, lazy image loading after scroll, and broken-image detection.
+
+** Validation
+- This entry is a docs-only backfill after the already-pushed redesign commit.
+- =git diff --check= passed for the work-log update.
+
 * 2026-07-03 - Add before-and-after transition arrows
 
 ** Status
