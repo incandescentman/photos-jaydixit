@@ -212,6 +212,10 @@ test('blog index renders editorial post list with live thumbnails', async ({ pag
 	const posts = page.locator('.post');
 	await expect(posts).toHaveCount(3);
 	await expect(page.locator('.post-title').first()).toHaveText('Hello From the Darkroom');
+	await expect(page.locator('.post-date').first()).toHaveText('October 1, 2025');
+	await expect(
+		posts.filter({ hasText: 'The Story of WikiPortraits' }).locator('.post-date'),
+	).toHaveText('October 1, 2024');
 	await expect(page.locator('.post-more').first()).toContainText('Read story');
 
 	await expect
@@ -222,6 +226,16 @@ test('blog index renders editorial post list with live thumbnails', async ({ pag
 		)
 		.toBe(true);
 	expect(await getBrokenCompletedImages(page)).toEqual([]);
+});
+
+test('blog detail and related post dates render in UTC', async ({ page }) => {
+	await page.goto('/blog/nobel-portrait-session/');
+	await waitForInitialImages(page);
+
+	await expect(page.locator('article time')).toHaveText('September 20, 2025');
+	await expect(
+		page.locator('section', { hasText: 'Related essays' }).getByText('Oct 1, 2025'),
+	).toBeVisible();
 });
 
 test('contact page preserves Formspree form and editorial fields', async ({ page }) => {

@@ -1,6 +1,28 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-04 - Fix blog date timezone drift
+
+** Status
+- Fixed the one-day-early blog date display caused by formatting UTC-midnight frontmatter dates in the local timezone.
+
+** Shipped
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/blog/index.astro][src/pages/blog/index.astro]]
+  - Added UTC date formatting for blog index dates so ~publishDate: 2024-10-01~ renders as October 1, not September 30.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/blog/[slug].astro][src/pages/blog/[slug].astro]]
+  - Added the same UTC date formatting for blog detail pages.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/RelatedPosts.astro][src/components/RelatedPosts.astro]]
+  - Added UTC date formatting for related essay cards while preserving the shorter month style.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tests/e2e/portfolio.e2e.ts][tests/e2e/portfolio.e2e.ts]]
+  - Added assertions for UTC-correct blog index, blog detail, and related essay dates.
+
+** Validation
+- =pnpm exec prettier --write src/pages/blog/index.astro src/pages/blog/[slug].astro src/components/RelatedPosts.astro tests/e2e/portfolio.e2e.ts= passed.
+- Targeted =pnpm exec eslint= passed for the changed files.
+- =pnpm lint= passed.
+- =pnpm test= passed (21/21).
+- =pnpm exec playwright test= passed (19/19).
+
 * 2026-07-04 - Restyle site chrome and replace public logo asset
 
 ** Status
