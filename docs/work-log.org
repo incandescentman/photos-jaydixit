@@ -1,6 +1,27 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-03 - Add Sydney Sweeney before/after comparison
+
+** Status
+- Added a Sydney Sweeney before/after pair to the public before-and-after page.
+
+** Shipped
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/before-after.astro][src/pages/before-after.astro]]
+  - Imported the new Sydney Sweeney before/after image assets.
+  - Added a comparison entry linking to the Sydney Sweeney Wikipedia article.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/assets/images/wikiportraits/sydney-sweeney-before-2019.jpg][sydney-sweeney-before-2019.jpg]]
+  - Copied from [[file+emacs:/Users/jay/Downloads/Sydney_Sweeney_2019_by_Glenn_Francis.jpg][Downloads source image]].
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/assets/images/wikiportraits/sydney-sweeney_tiff_2024.jpg][sydney-sweeney_tiff_2024.jpg]]
+  - Copied from [[file+emacs:/Users/jay/Downloads/Sydney_Sweeney_at_the_2024_Toronto_International_Film_Festival_01_(3x4_cropped_and_rotated).jpg][Downloads source image]].
+
+** Validation
+- =pnpm exec prettier --check src/pages/before-after.astro= passed.
+- =pnpm lint= passed.
+- =pnpm build= passed.
+- Verified the built ~/before-after/~ page includes the Sydney Sweeney section and both optimized image assets.
+- Verified in local Astro preview at =http://127.0.0.1:4327/before-after/= that the Sydney Sweeney images load and PhotoSwipe opens/closes.
+
 * 2026-06-24 - Align Vercel deploy settings with pnpm
 
 ** Status
