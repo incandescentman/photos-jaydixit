@@ -16,6 +16,7 @@ Last Synced for AI Context: 2025-10-04
 The root **CLAUDE.md** file contains legacy documentation. This file (docs/CLAUDE.org) is the canonical documentation entry point. Both should be maintained during transition.
 
 * Recent Updates
+- 2026-07-04: Confirmed Vercel deployment contract: ~vercel.json~ runs ~pnpm build~ and serves Astro static output from ~dist~
 - 2026-04-01: Replaced the dead ~=t_gallery=~ Cloudinary transform fallback with explicit transforms and made blog post images auto-wire into PhotoSwipe
 - 2026-04-01: Renamed the public people directory to ~/red-carpet/~, added recognition + related-essays sections, and standardized metadata helpers
 - 2026-03-30: Added Portraits feature - per-person pages with people.json manifest
@@ -199,6 +200,13 @@ Documentation structure:
 - Progressive image loading
 - Blog post images are rendered from Markdown/MDX as plain ~<img>~ tags and are enhanced into PhotoSwipe links by ~src/pages/blog/[slug].astro~, not by the content files themselves
 
+*** Vercel Deployment
+- Production hosting is Vercel Git integration for [[https://photos.jaydixit.com][photos.jaydixit.com]].
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/vercel.json][vercel.json]] is the deployment contract: ~framework~ is ~astro~, ~installCommand~ is ~pnpm install~, ~buildCommand~ is ~pnpm build~, and ~outputDirectory~ is ~dist~.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/astro.config.mts][astro.config.mts]] sets ~output: 'static'~ and ~site: 'https://photos.jaydixit.com'~.
+- Pushing [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/][this repo]]'s ~main~ branch to ~origin~ should trigger a Vercel production deploy when the GitHub integration is connected. Because Vercel deploy quotas are limited, do not push unless Jay explicitly says ~push~.
+- Local verification should use ~pnpm build~ and, when needed, ~pnpm exec astro preview~ or the Playwright e2e suite, which builds and previews the static output itself.
+
 *** Performance
 - Lazy loading for images
 - Masonry layout with CSS (no JS layout library)
@@ -317,8 +325,10 @@ Frequency: Very High
 - Check logs in `/logs` directory
 
 ** Deployment
-- Push to main branch → auto-deploy via Vercel
-- Deployment logs at vercel.com dashboard
+- Push to ~origin/main~ → Vercel Git integration auto-deploys [[https://photos.jaydixit.com][photos.jaydixit.com]] when connected
+- Vercel uses [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/vercel.json][vercel.json]]: ~pnpm install~, ~pnpm build~, output from ~dist~
+- Deployment logs live in the Vercel dashboard
+- Do not push unless Jay explicitly says ~push~
 
 ---
 [[file:the-photos-approach.org][→ Philosophy]] | [[file:design-architecture.org][→ Architecture]] | [[file:../instructions.org][→ Instructions]]

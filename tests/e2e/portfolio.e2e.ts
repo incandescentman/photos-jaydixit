@@ -118,9 +118,17 @@ test('site nav renders redesigned desktop and mobile states', async ({ page }) =
 	const nav = page.locator('nav.site-nav');
 	await expect(nav).toBeVisible();
 	await expect(nav.getByRole('link', { name: 'Jay Dixit Photos' })).toHaveAttribute('href', '/');
-	await expect(nav.getByRole('link', { name: 'Why I Photograph' })).toHaveAttribute(
+	await expect(nav.getByRole('link', { name: 'Why I Shoot' })).toHaveAttribute(
 		'aria-current',
 		'page',
+	);
+	await expect(nav.getByRole('link', { name: 'Red Carpet' })).toHaveAttribute(
+		'href',
+		'/red-carpet',
+	);
+	await expect(nav.getByRole('link', { name: 'Why WikiPortraits' })).toHaveAttribute(
+		'href',
+		'/blog/wikiportraits-story',
 	);
 
 	const externalLink = nav.getByRole('link', { name: 'jaydixit.com' });

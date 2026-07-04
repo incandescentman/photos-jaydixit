@@ -1,6 +1,40 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-04 - Try new generated site logo
+
+** Status
+- Replaced the active site logo assets with Jay's selected generated logo while preserving the previous logo family in an archive folder.
+
+** Shipped
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/assets/archive/logos/2026-07-04-previous-logo/][src/assets/archive/logos/2026-07-04-previous-logo/]]
+  - Archived the previous nav, modal, social-preview, and original logo files before overwriting public derivatives.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/assets/logos/logo-source-2026-07-04-chatgpt.png][src/assets/logos/logo-source-2026-07-04-chatgpt.png]]
+  - Copied the selected source logo from [[file+emacs:/Users/jay/Downloads/ChatGPT Image Jul 4, 2026, 04_32_54 AM.png][/Users/jay/Downloads/ChatGPT Image Jul 4, 2026, 04_32_54 AM.png]].
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/logo-nav.webp][public/logo-nav.webp]], [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/logo-large.webp][public/logo-large.webp]], [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/logo.webp][public/logo.webp]], [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/jaydixit-photos-logo.webp][public/jaydixit-photos-logo.webp]], and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/jaydixit-photos-logo.png][public/jaydixit-photos-logo.png]]
+  - Regenerated the public logo derivatives from the new source while preserving the existing URLs used by the NavBar, logo modal, and default social image metadata.
+
+** Validation
+- Confirmed the new header asset is ~112x112~ and ~4.3 KB~.
+- Confirmed the new modal asset is ~512x512~ and visually inspected it.
+- =git diff --check= passed.
+- =pnpm lint= passed.
+- =pnpm test= passed (21/21).
+- =pnpm exec playwright test= passed (19/19).
+
+* 2026-07-04 - Tighten navigation labels
+
+** Status
+- Shortened three primary nav labels while preserving their existing URLs.
+
+** Shipped
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/NavBar.astro][src/components/NavBar.astro]]
+  - Renamed ~Why I Photograph~ to ~Why I Shoot~.
+  - Renamed ~Red Carpet Photos~ to ~Red Carpet~.
+  - Renamed ~The Story of WikiPortraits~ to ~Why WikiPortraits~.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tests/e2e/portfolio.e2e.ts][tests/e2e/portfolio.e2e.ts]]
+  - Updated the nav smoke test to assert the new labels and unchanged destinations.
+
 * 2026-07-04 - Fix blog date timezone drift
 
 ** Status
