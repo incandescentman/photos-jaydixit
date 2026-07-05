@@ -12,7 +12,7 @@ Live-site observations were made in Chrome on 2026-07-03: gray placeholder boxes
 - *Problem*: every image site-wide is ~loading="lazy"~, including the homepage LCP images (~src/pages/index.astro:701, :726, :783~). First paint shows gray placeholder boxes.
 - *Completed*: homepage now eager-loads the first 6 rendered images, [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/red-carpet/index.astro][📄 red-carpet/index.astro]] eager-loads the first 4 cards, [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/gallery/index.astro][📄 gallery/index.astro]] eager-loads the first category row, and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/before-after.astro][📄 before-after.astro]] eager-loads the first before/after pair.
 
-** TODO Replace the homepage Packery masonry with a deterministic layout
+** CANCELLED Replace the homepage Packery masonry (2026-07-05 — Jay's decision: Packery stays; do not re-propose)
 - *Problem*: while loading, the homepage shows large blank regions; images pop into place one at a time as Packery re-lays-out; the grid overflows the viewport horizontally (horizontal scrollbar); even settled there's an empty region at bottom-right. The ~300-line custom "gap optimizer" (~src/pages/index.astro:90–381~) fights the layout engine.
 - *Implementation options* (pick one):
   1. /Recommended:/ ~justified-layout~ (Flickr's algorithm — *already in package.json*). Compute row-based layout at build time in the frontmatter using the known aspect ratios from [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/image-metadata.json][📄 image-metadata.json]], emit absolutely-positioned items with inline ~top/left/width/height~. Zero client JS, zero CLS, no gaps by construction. PhotoSwipe still works unchanged.
@@ -74,12 +74,12 @@ CLOSED: [2026-07-05 Sun]
 - *Problem*: image hover zooms of 1.02×, 1.03×, 1.05×, and 1.10× with durations 0.2s–0.6s depending on page.
 - *Implementation*: pick one treatment (suggest: ~scale(1.03)~, ~0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)~, matching the homepage) and define it once as a utility class or component style; sweep PhotoGrid.astro, gallery/index.astro, red-carpet/index.astro, Gallery.astro.
 
-** TODO Consolidate five gallery layout engines into one
-- *Current state*: Packery (homepage + folder pages), CSS columns twice ([[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/Gallery.astro][📄 Gallery.astro]] and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/MasonryGallery.astro][📄 MasonryGallery.astro]] — near-duplicates with different breakpoints), an absolute-position JS grid ([[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/PhotoGrid.astro][📄 PhotoGrid.astro]] + photo-grid.ts), and CSS Grid cards on the index pages.
-- *Implementation*: after the homepage moves to justified-layout (Tier 1), make that the one ~<PhotoMasonry>~ component. Keep CSS Grid for card-style index pages (that's a different, appropriate pattern). Delete Gallery.astro or MasonryGallery.astro (keep one), photo-grid.ts, masonry.ts (Isotope, only used by a prototype page).
+** TODO Reduce gallery layout engine duplication (Packery stays — scope narrowed 2026-07-05)
+- *Current state*: Packery (homepage + folder pages — *staying, per Jay's decision*), CSS columns twice ([[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/Gallery.astro][📄 Gallery.astro]] and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/MasonryGallery.astro][📄 MasonryGallery.astro]] — near-duplicates with different breakpoints), an absolute-position JS grid ([[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/PhotoGrid.astro][📄 PhotoGrid.astro]] + photo-grid.ts), and CSS Grid cards on the index pages.
+- *Implementation*: keep Packery as the masonry engine and CSS Grid for card-style index pages. The remaining cleanup is deduplication only: merge Gallery.astro and MasonryGallery.astro into one component, and delete photo-grid.ts if PhotoGrid.astro can share the survivor. masonry.ts (Isotope) stays while salient-photography-demo.astro exists.
 
-** TODO Accessibility pass
-Partially resolved since original review: the global ~focus-visible~ rule now exists (global.css:88–92) and the logo-zoom control is a real ~<button>~ with ~aria-label~. Remaining:
+** TODO Accessibility pass (only alt-text audit remains)
+Partially resolved since original review: the global ~focus-visible~ rule now exists (global.css:88–92) and the logo-zoom control is a real ~<button>~ with ~aria-label~. Contrast and empty-state copy were fixed 2026-07-05. Remaining:
 - DONE Fix contrast: ~text-gray-400~ on white (~2.8:1) fails WCAG AA — a few instances remain (red-carpet/[person].astro ×2, gallery/index.astro ×1); bump to ~text-gray-500~/600.
 - Improve alt-text fallbacks: several components fall back to de-slugified filenames; fine, but ensure it never emits raw "img 1234" style strings.
 - DONE Replace visitor-facing developer copy in empty states ("Add people to src/data/people.json" — red-carpet/index.astro:222; "Add entries to the comparisons array" — before-after.astro:120) with human copy ("More coming soon").
@@ -88,8 +88,8 @@ Partially resolved since original review: the global ~focus-visible~ rule now ex
 
 ** TODO Delete unused dependencies and subsystems
 - ~fslightbox~ — zero references in src/. ~pnpm remove fslightbox~.
-- ~isotope-layout~ — only used by the salient prototype page. Remove with the prototypes.
-- After the Packery replacement: ~packery~, ~imagesloaded~, ~draggabilly~.
+- ~isotope-layout~ — only used by salient-photography-demo.astro, which Jay chose to keep (2026-07-05); the dependency stays with it.
+- ~packery~, ~imagesloaded~, ~draggabilly~ — KEEP. Packery is staying as the homepage layout engine (Jay's decision, 2026-07-05).
 - The dead YAML gallery subsystem: ~src/data/galleryData.ts~, ~src/data/gallery-generator.ts~, ~src/data/galleryEntityFactory.ts~, ~src/data/imageStore.ts~, ~src/gallery/gallery.yaml~ — no live page uses them. Note the existing Vitest suite /only/ tests this dead subsystem, so removing it means replacing the tests (next item).
 - Committed clutter: [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/astro-jay-dixit-photos-starter/][📁 astro-jay-dixit-photos-starter/]] (a whole nested starter project), ~src/pages/gallery/_[folder].astro.backup~, ~src/wikiportraits-story.mdx.disabled~.
 - ~src/pages/api/save-order.ts~ has ~prerender = true~ on a static build, so the POST endpoint can never run in production; the admin toolbar already falls back to localStorage. Delete or document as dev-only.
@@ -128,15 +128,14 @@ Not part of the original review: the 2026-07-04 nav-logo enlargement (44px → 8
 
 * Suggested implementation order
 
-(Done as of 2026-07-04: logo compression, nav active-state, social icons, before/after image right-sizing, eager above-the-fold images, typography cleanup, homepage story block, red-carpet search, initial albums, and the site-wide --nav-clearance fix.)
+(Done as of 2026-07-04: logo compression, nav active-state, social icons, before/after image right-sizing, eager above-the-fold images, typography cleanup, homepage story block, red-carpet search, initial albums, and the site-wide --nav-clearance fix. Done as of 2026-07-05: CI fix, head/meta cleanup, accent/contrast/empty-state sweep.)
 
-1. CI fix (small, unblocks everything else being tested)
-2. Head/meta cleanup (small but site-wide)
-3. Supabase RLS verification + /popular aggregation
-4. Accent-color, contrast, and empty-state copy cleanup
-5. Homepage masonry replacement with justified-layout (the big one — do on a branch)
-6. /gallery/ index content strategy and shared glob/dedupe helper
-7. Dead-code deletion sweep + shared photoNaming module + tests
-8. Provenance fields and photo-detail Wikimedia blocks
+(2026-07-05: the Packery replacement is CANCELLED — Packery stays on the homepage per Jay's decision.)
 
-Items 1–4 and 6–8 are low-risk and mostly independent. Item 5 changes the site's centerpiece — verify against the live look before deploying, and remember: no git push without explicit say-so (Vercel deploy limits).
+1. Supabase RLS verification + /popular aggregation (needs Jay for the Supabase dashboard; SQL can be prepped in advance)
+2. /gallery/ index content strategy and shared glob/dedupe helper (needs Jay's decision on gallery content)
+3. Dead-code deletion sweep + shared photoNaming module + tests
+4. Provenance fields and photo-detail Wikimedia blocks (overlaps with the Wikimedia metadata plan in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/site-wide-improvements-implementation-plan.org][📄 site-wide-improvements-implementation-plan.org]] §5 — do them together)
+5. Remaining small items: hover/transition standardization, alt-text audit, Gallery/MasonryGallery dedup, neutral-system consolidation
+
+All low-risk and mostly independent. Remember: no git push without explicit say-so (Vercel deploy limits).

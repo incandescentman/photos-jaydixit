@@ -338,6 +338,8 @@ manifest.
 
 - Two gallery modes exist: YAML (src/gallery/gallery.yaml) and filesystem (src/gallery/photos/**). Avoid route conflicts; prefer one source per route.
 
+- Packery is the homepage/folder-page masonry engine by deliberate choice (Jay, 2026-07-05). Do NOT propose replacing it with justified-layout or any other engine; the packery/imagesloaded/draggabilly dependencies stay.
+
 - Highlights are part of the real photo system: homepage and red-carpet pages also read from src/gallery/highlights/
 
 - Shared metadata helpers now live in src/lib/seo.ts, and JSON-LD rendering is centralized in src/components/StructuredData.astro
