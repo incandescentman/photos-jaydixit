@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Jay Dixit Photos favicon contact sheet</title>
+		<style>
+			:root {
+				--paper: #faf9f6;
+				--paper-deep: #f4f1ea;
+				--ink: #1a1714;
+				--muted: #8a8175;
+				--hairline: #ebe6dc;
+				--accent: #96773f;
+				--accent-soft: #d8c9a8;
+				--tab-light: #eef1f4;
+				--tab-dark: #20242a;
+				--sans: "Instrument Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+				--serif: "Newsreader", Georgia, "Times New Roman", serif;
+				--mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+			}
+
+			* {
+				box-sizing: border-box;
+			}
+
+			body {
+				margin: 0;
+				background: var(--paper);
+				color: var(--ink);
+				font-family: var(--sans);
+				line-height: 1.5;
+				-webkit-font-smoothing: antialiased;
+			}
+
+			.wrap {
+				max-width: 1440px;
+				margin: 0 auto;
+				padding: 42px 36px 72px;
+			}
+
+			.mast {
+				display: grid;
+				grid-template-columns: minmax(0, 1fr) auto;
+				gap: 32px;
+				align-items: end;
+				border-bottom: 1px solid var(--hairline);
+				padding-bottom: 24px;
+				margin-bottom: 24px;
+			}
+
+			.eyebrow {
+				margin: 0 0 10px;
+				font-family: var(--mono);
+				font-size: 11px;
+				letter-spacing: 0.18em;
+				text-transform: uppercase;
+				color: var(--accent);
+			}
+
+			h1 {
+				margin: 0;
+				font-family: var(--serif);
+				font-size: clamp(34px, 5vw, 64px);
+				font-weight: 400;
+				line-height: 0.98;
+				letter-spacing: -0.01em;
+			}
+
+			.lede {
+				max-width: 72ch;
+				margin: 16px 0 0;
+				color: #5d564d;
+				font-family: var(--serif);
+				font-size: 18px;
+				line-height: 1.45;
+			}
+
+			.key {
+				display: grid;
+				gap: 8px;
+				min-width: 280px;
+				padding: 18px;
+				border: 1px solid var(--hairline);
+				background: #fff;
+			}
+
+			.key p {
+				margin: 0;
+				font-size: 12px;
+				color: var(--muted);
+			}
+
+			.key b {
+				color: var(--ink);
+				font-weight: 600;
+			}
+
+			.group {
+				margin-top: 32px;
+			}
+
+			.group-head {
+				display: grid;
+				grid-template-columns: minmax(0, 1fr) auto;
+				gap: 20px;
+				align-items: end;
+				margin-bottom: 12px;
+				padding-top: 18px;
+				border-top: 2px solid var(--ink);
+			}
+
+			.group-kicker {
+				margin: 0 0 6px;
+				font-family: var(--mono);
+				font-size: 11px;
+				letter-spacing: 0.16em;
+				text-transform: uppercase;
+				color: var(--accent);
+			}
+
+			h2 {
+				margin: 0;
+				font-family: var(--serif);
+				font-size: 30px;
+				font-weight: 400;
+				line-height: 1.05;
+			}
+
+			.group-note {
+				max-width: 64ch;
+				margin: 8px 0 0;
+				color: var(--muted);
+				font-size: 14px;
+			}
+
+			.sheet {
+				display: grid;
+				gap: 0;
+				border: 1px solid var(--hairline);
+				background: var(--hairline);
+			}
+
+			.row,
+			.header-row {
+				display: grid;
+				grid-template-columns: minmax(220px, 1.2fr) 132px 132px 92px 72px 60px minmax(260px, 1fr) 132px;
+				gap: 1px;
+			}
+
+			.header-row > div {
+				padding: 10px 12px;
+				background: var(--paper-deep);
+				color: var(--muted);
+				font-family: var(--mono);
+				font-size: 10px;
+				letter-spacing: 0.12em;
+				text-transform: uppercase;
+			}
+
+			.cell {
+				min-height: 128px;
+				padding: 16px;
+				background: #fff;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.desc {
+				align-items: flex-start;
+				justify-content: flex-start;
+				flex-direction: column;
+				gap: 8px;
+			}
+
+			.no {
+				font-family: var(--mono);
+				font-size: 11px;
+				letter-spacing: 0.14em;
+				text-transform: uppercase;
+				color: var(--accent);
+			}
+
+			.name {
+				margin: 0;
+				font-family: var(--serif);
+				font-size: 22px;
+				font-weight: 400;
+				line-height: 1.05;
+			}
+
+			.desc-text {
+				margin: 0;
+				color: var(--muted);
+				font-size: 13px;
+				line-height: 1.4;
+			}
+
+			.verdict {
+				margin-top: auto;
+				font-family: var(--mono);
+				font-size: 10px;
+				letter-spacing: 0.08em;
+				text-transform: uppercase;
+				color: #5e6a45;
+			}
+
+			.iconbox {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border: 1px solid var(--hairline);
+				background:
+					linear-gradient(0deg, rgba(26, 23, 20, 0.02), rgba(26, 23, 20, 0.02)),
+					repeating-linear-gradient(45deg, transparent 0 8px, rgba(26, 23, 20, 0.035) 8px 9px);
+			}
+
+			.iconbox svg {
+				display: block;
+			}
+
+			.large-preview {
+				width: 104px;
+				height: 104px;
+			}
+
+			.s128 {
+				width: 128px;
+				height: 128px;
+			}
+
+			.s64 {
+				width: 64px;
+				height: 64px;
+			}
+
+			.s32 {
+				width: 32px;
+				height: 32px;
+			}
+
+			.s16 {
+				width: 16px;
+				height: 16px;
+			}
+
+			.tab {
+				width: 100%;
+				display: flex;
+				align-items: center;
+				gap: 9px;
+				padding: 9px 12px;
+				border: 1px solid #d8dde4;
+				border-radius: 10px 10px 0 0;
+				background: var(--tab-light);
+				color: #29313b;
+				font-size: 13px;
+				box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.04);
+			}
+
+			.tab.dark {
+				background: var(--tab-dark);
+				border-color: #343941;
+				color: #e9edf2;
+			}
+
+			.tab .favicon {
+				width: 16px;
+				height: 16px;
+				flex: 0 0 auto;
+			}
+
+			.tab .close {
+				margin-left: auto;
+				opacity: 0.4;
+			}
+
+			.pixel-wrap {
+				width: 112px;
+				height: 112px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border: 1px solid var(--hairline);
+				background: #fff;
+			}
+
+			canvas.pixel {
+				width: 96px;
+				height: 96px;
+				image-rendering: pixelated;
+				image-rendering: crisp-edges;
+			}
+
+			.footer {
+				margin-top: 28px;
+				max-width: 78ch;
+				color: var(--muted);
+				font-family: var(--serif);
+				font-size: 16px;
+			}
+
+			.footer strong {
+				color: var(--ink);
+				font-family: var(--sans);
+				font-weight: 600;
+			}
+
+			@media (max-width: 1180px) {
+				.row,
+				.header-row {
+					grid-template-columns: minmax(220px, 1.1fr) 118px 86px 68px 56px minmax(220px, 1fr) 118px;
+				}
+
+				.header-row .hide-mid,
+				.row .hide-mid {
+					display: none;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrap">
+			<header class="mast">
+				<div>
+					<p class="eyebrow">Jay Dixit Photos / favicon exploration</p>
+					<h1>Three photographic directions</h1>
+					<p class="lede">
+						Approved starting points: aperture plus gold dot, focus brackets, and lens or
+						viewfinder. This sheet favors bold shapes, high contrast, and enough simplicity to
+						survive a browser tab at 16 pixels.
+					</p>
+				</div>
+				<div class="key">
+					<p><b>Read the 16px column first.</b> If it fails there, the concept is too rich.</p>
+					<p><b>Gold:</b> the site's editorial accent, #96773f.</p>
+					<p><b>No live assets changed.</b> This is a review sheet only.</p>
+				</div>
+			</header>
+
+			<div id="root"></div>
+
+			<p class="footer">
+				<strong>My current bias:</strong> #05 or #06 for focus brackets if we want the clearest
+				photography read; #10 or #11 for lens/viewfinder if we want something more editorial
+				and less utility-camera. The aperture marks are useful but risk feeling more like a
+				generic photo app unless the gold dot becomes the distinctive cue.
+			</p>
+		</div>
+
+		<script>
+			const C = {
+				paper: "#faf9f6",
+				deep: "#f4f1ea",
+				ink: "#1a1714",
+				muted: "#8a8175",
+				hair: "#ebe6dc",
+				gold: "#96773f",
+				goldSoft: "#d8c9a8",
+				white: "#fffdf9",
+			};
+
+			function svgWrap(inner) {
+				return `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${inner}</svg>`;
+			}
+
+			function aperture(o) {
+				const bg = o.tile
+					? `<rect x="2" y="2" width="60" height="60" rx="${o.round ? 30 : 12}" fill="${o.tile}" />`
+					: "";
+				const stroke = o.reverse ? C.white : C.ink;
+				const fill = o.reverse ? C.white : C.ink;
+				const center = o.center || C.gold;
+				const ring = `<circle cx="32" cy="32" r="22" fill="none" stroke="${stroke}" stroke-width="${o.thick ? 5 : 3.8}" />`;
+				const blades = Array.from({ length: 6 }, (_, i) => {
+					const a = i * 60;
+					return `<path d="M32 32 L32 10 L40 26 Z" fill="${fill}" opacity="${o.bladeOpacity || 0.9}" transform="rotate(${a} 32 32)" />`;
+				}).join("");
+				const pupil = `<circle cx="32" cy="32" r="${o.core || 6}" fill="${center}" />`;
+				const glint = o.glint
+					? `<circle cx="39" cy="23" r="3" fill="${o.reverse ? C.goldSoft : C.white}" opacity="0.92" />`
+					: "";
+				return svgWrap(`${bg}<g>${ring}${blades}${pupil}${glint}</g>`);
+			}
+
+			function focus(o) {
+				const bg = o.tile
+					? `<rect x="2" y="2" width="60" height="60" rx="${o.round ? 30 : 10}" fill="${o.tile}" />`
+					: "";
+				const stroke = o.reverse ? C.white : C.ink;
+				const accent = o.center || C.gold;
+				const w = o.thick ? 5 : 4;
+				const len = o.len || 14;
+				const inset = o.inset || 10;
+				const corners = `
+					<path d="M${inset} ${inset + len} V${inset} H${inset + len}" />
+					<path d="M${64 - inset - len} ${inset} H${64 - inset} V${inset + len}" />
+					<path d="M${64 - inset} ${64 - inset - len} V${64 - inset} H${64 - inset - len}" />
+					<path d="M${inset + len} ${64 - inset} H${inset} V${64 - inset - len}" />`;
+				const center = o.portrait
+					? `<circle cx="32" cy="27" r="6" fill="${accent}" /><path d="M21 47 C23.5 38 40.5 38 43 47" fill="none" stroke="${accent}" stroke-width="4" stroke-linecap="round" />`
+					: `<circle cx="32" cy="32" r="${o.dot || 5}" fill="${accent}" />`;
+				const crosshair = o.cross
+					? `<path d="M32 18 V26 M32 38 V46 M18 32 H26 M38 32 H46" stroke="${accent}" stroke-width="2.6" stroke-linecap="round" />`
+					: "";
+				return svgWrap(
+					`${bg}<g fill="none" stroke="${stroke}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round">${corners}</g>${crosshair}${center}`,
+				);
+			}
+
+			function lens(o) {
+				const bg = o.tile
+					? `<rect x="2" y="2" width="60" height="60" rx="${o.round ? 30 : 12}" fill="${o.tile}" />`
+					: "";
+				const stroke = o.reverse ? C.white : C.ink;
+				const accent = o.accent || C.gold;
+				const glass = o.glass || "none";
+				const outer = `<circle cx="32" cy="32" r="23" fill="${glass}" stroke="${stroke}" stroke-width="${o.thick ? 5 : 4}" />`;
+				const inner = `<circle cx="32" cy="32" r="12" fill="none" stroke="${stroke}" stroke-width="2.8" opacity="0.95" />`;
+				const shine = `<path d="M39 16 C45 19 48 24 48 31" fill="none" stroke="${accent}" stroke-width="${o.shine || 4}" stroke-linecap="round" />`;
+				const glint = `<circle cx="42" cy="22" r="${o.glint || 3.2}" fill="${accent}" />`;
+				const slot = o.viewfinder
+					? `<rect x="17" y="20" width="30" height="24" rx="5" fill="none" stroke="${stroke}" stroke-width="4" /><circle cx="40" cy="25" r="3" fill="${accent}" />`
+					: "";
+				return svgWrap(`${bg}${o.viewfinder ? slot : `${outer}${inner}${shine}${glint}`}`);
+			}
+
+			const groups = [
+				{
+					kicker: "Direction 1",
+					title: "Aperture + gold dot",
+					note: "The most literal photo signal. The gold core needs to do the brand work so this does not read as a stock camera-app icon.",
+					items: [
+						{
+							id: "01",
+							name: "Aperture, open core",
+							desc: "Classic iris around a gold center. Crisp, but familiar.",
+							verdict: "clear at 16; generic risk",
+							mark: aperture({ core: 6, bladeOpacity: 0.92 }),
+						},
+						{
+							id: "02",
+							name: "Bold aperture tile",
+							desc: "Paper tile, heavier iris, larger gold center.",
+							verdict: "stronger tab footprint",
+							mark: aperture({ tile: C.paper, thick: true, core: 7 }),
+						},
+						{
+							id: "03",
+							name: "Reverse aperture",
+							desc: "Ink tile with white blades and gold core for maximum contrast.",
+							verdict: "best dark/light contrast",
+							mark: aperture({ tile: C.ink, reverse: true, thick: true, core: 7 }),
+							darkTab: true,
+						},
+						{
+							id: "04",
+							name: "Aperture glint",
+							desc: "Iris plus small reflected highlight, closer to lens glass.",
+							verdict: "richer at 32; okay at 16",
+							mark: aperture({ tile: C.white, core: 5, glint: true }),
+						},
+					],
+				},
+				{
+					kicker: "Direction 2",
+					title: "Focus brackets",
+					note: "Probably the cleanest photographic cue at favicon size. It says seeing, framing, and subject without drawing a whole camera.",
+					items: [
+						{
+							id: "05",
+							name: "Brackets + gold dot",
+							desc: "Four corners, one subject point. Minimal and durable.",
+							verdict: "clearest 16px read",
+							mark: focus({ dot: 5 }),
+						},
+						{
+							id: "06",
+							name: "Heavy focus tile",
+							desc: "Paper tile and thicker brackets, built for browser tabs.",
+							verdict: "boldest bracket option",
+							mark: focus({ tile: C.paper, thick: true, dot: 5.5 }),
+						},
+						{
+							id: "07",
+							name: "Active focus reticle",
+							desc: "Gold crosshair suggests the exact moment of focus.",
+							verdict: "sharp but more technical",
+							mark: focus({ cross: true, dot: 3.8, len: 13 }),
+						},
+						{
+							id: "08",
+							name: "Portrait in frame",
+							desc: "A tiny subject/head inside focus brackets.",
+							verdict: "more human; denser at 16",
+							mark: focus({ portrait: true, tile: C.white, len: 13 }),
+						},
+					],
+				},
+				{
+					kicker: "Direction 4",
+					title: "Lens / viewfinder",
+					note: "More editorial than utility if we keep it as glass, reflection, and framing rather than a camera-body drawing.",
+					items: [
+						{
+							id: "09",
+							name: "Lens ring",
+							desc: "Simple lens circle with gold reflection arc.",
+							verdict: "good; slightly app-like",
+							mark: lens({ glass: C.paper }),
+						},
+						{
+							id: "10",
+							name: "Gold glass lens",
+							desc: "Warm lens field, black ring, and small highlight.",
+							verdict: "editorial and distinct",
+							mark: lens({ glass: "#eadfca", shine: 3.5 }),
+						},
+						{
+							id: "11",
+							name: "Reverse lens",
+							desc: "Ink roundel with gold glint. Compact and high contrast.",
+							verdict: "strongest lens at 16",
+							mark: lens({ tile: C.ink, reverse: true, glass: "none", shine: 4.2 }),
+							darkTab: true,
+						},
+						{
+							id: "12",
+							name: "Viewfinder window",
+							desc: "Rounded finder rectangle with gold focus point.",
+							verdict: "clean; less camera-icon cliche",
+							mark: lens({ viewfinder: true, tile: C.white }),
+						},
+					],
+				},
+			];
+
+			function iconSpan(mark, cls) {
+				return `<span class="${cls}">${mark}</span>`;
+			}
+
+			function row(item) {
+				const tabClass = item.darkTab ? "tab dark" : "tab";
+				return `
+					<div class="row" data-id="${item.id}">
+						<div class="cell desc">
+							<div class="no">${item.id}</div>
+							<h3 class="name">${item.name}</h3>
+							<p class="desc-text">${item.desc}</p>
+							<div class="verdict">${item.verdict}</div>
+						</div>
+						<div class="cell">${iconSpan(item.mark, "large-preview iconbox")}</div>
+						<div class="cell">${iconSpan(item.mark, "s128")}</div>
+						<div class="cell hide-mid">${iconSpan(item.mark, "s64")}</div>
+						<div class="cell">${iconSpan(item.mark, "s32")}</div>
+						<div class="cell">${iconSpan(item.mark, "s16")}</div>
+						<div class="cell">
+							<div class="${tabClass}">
+								<span class="favicon">${item.mark}</span>
+								<span>photos.jaydixit.com</span>
+								<span class="close">x</span>
+							</div>
+						</div>
+						<div class="cell"><div class="pixel-wrap"><canvas class="pixel" width="16" height="16" data-svg="${encodeURIComponent(item.mark)}"></canvas></div></div>
+					</div>`;
+			}
+
+			function group(g) {
+				return `
+					<section class="group">
+						<div class="group-head">
+							<div>
+								<p class="group-kicker">${g.kicker}</p>
+								<h2>${g.title}</h2>
+								<p class="group-note">${g.note}</p>
+							</div>
+						</div>
+						<div class="sheet">
+							<div class="header-row">
+								<div>Candidate</div>
+								<div>Large</div>
+								<div>128</div>
+								<div class="hide-mid">64</div>
+								<div>32</div>
+								<div>16</div>
+								<div>Browser tab</div>
+								<div>16px x6</div>
+							</div>
+							${g.items.map(row).join("")}
+						</div>
+					</section>`;
+			}
+
+			document.getElementById("root").innerHTML = groups.map(group).join("");
+
+			async function drawPixelCanvases() {
+				const canvases = document.querySelectorAll("canvas.pixel");
+				for (const canvas of canvases) {
+					const svg = decodeURIComponent(canvas.dataset.svg);
+					const blob = new Blob([svg], { type: "image/svg+xml" });
+					const url = URL.createObjectURL(blob);
+					await new Promise((resolve) => {
+						const img = new Image();
+						img.onload = () => {
+							const ctx = canvas.getContext("2d");
+							ctx.clearRect(0, 0, 16, 16);
+							ctx.drawImage(img, 0, 0, 16, 16);
+							URL.revokeObjectURL(url);
+							resolve();
+						};
+						img.src = url;
+					});
+				}
+			}
+
+			drawPixelCanvases();
+		</script>
+	</body>
+</html>

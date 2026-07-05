@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Favicon contact sheet — Gold-Ring Lens — photos.jaydixit.com</title>
+<style>
+  :root{
+    --paper:#fdfcfb;
+    --paper-warm:#FAF6EF;
+    --ink:#141312;
+    --muted:#6b655c;
+    --line:#e7e0d4;
+    --gold:#C6A15B;
+    --gold-deep:#A88434;
+    --red:#A32C2A;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+    --sans:"Karla",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+    padding:56px 40px 100px;
+  }
+  .wrap{max-width:1100px;margin:0 auto}
+  .eyebrow{
+    font-family:var(--mono);
+    text-transform:uppercase;
+    letter-spacing:.22em;
+    font-size:11px;
+    color:var(--muted);
+    margin:0 0 22px;
+  }
+  h1{
+    font-family:var(--serif);
+    font-weight:300;
+    font-size:clamp(38px,6vw,64px);
+    line-height:1.02;
+    letter-spacing:-.01em;
+    margin:0 0 18px;
+  }
+  .lede{
+    font-family:var(--serif);
+    font-size:21px;
+    font-style:italic;
+    color:var(--muted);
+    max-width:60ch;
+    margin:0 0 12px;
+  }
+  .meta{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--muted);
+    letter-spacing:.04em;
+    margin:0 0 44px;
+  }
+  h2{
+    font-family:var(--mono);
+    text-transform:uppercase;
+    letter-spacing:.2em;
+    font-size:11px;
+    color:var(--muted);
+    font-weight:600;
+    margin:56px 0 20px;
+    padding-bottom:10px;
+    border-bottom:1px solid var(--line);
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .card{
+    background:var(--paper);
+    padding:22px 20px 20px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+  .chips{display:flex;align-items:flex-end;gap:16px}
+  .chip{
+    display:flex;align-items:center;justify-content:center;
+    border-radius:9px;
+    background:var(--paper-warm);
+    border:1px solid var(--line);
+  }
+  .chip.big{width:48px;height:48px}
+  .chip.small{width:18px;height:18px;border-radius:5px}
+  .chip svg{display:block}
+  .num{
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.14em;
+    color:var(--gold-deep);
+  }
+  .name{
+    font-family:var(--sans);
+    font-weight:700;
+    font-size:15px;
+    letter-spacing:-.01em;
+    margin-top:-4px;
+  }
+  .why{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:15px;
+    color:var(--muted);
+    line-height:1.35;
+  }
+
+  /* Tab simulation */
+  .tabsim{margin-top:14px}
+  .tabbar{
+    display:flex;
+    align-items:flex-end;
+    gap:2px;
+    padding:8px 10px 0;
+    border-radius:12px 12px 0 0;
+    overflow-x:auto;
+    border:1px solid var(--line);
+  }
+  .tabbar.light{background:#dee1e6}
+  .tabbar.dark{background:#2b2d30;border-color:#1c1d1f}
+  .tab{
+    display:flex;align-items:center;gap:7px;
+    flex:0 0 auto;
+    width:132px;
+    height:34px;
+    padding:0 10px;
+    border-radius:9px 9px 0 0;
+    font-size:12px;
+    line-height:1;
+    white-space:nowrap;
+    overflow:hidden;
+  }
+  .tab .lbl{
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+    flex:1 1 auto;
+  }
+  .tab .x{opacity:.5;font-size:13px;flex:0 0 auto}
+  .tabbar.light .tab{background:#f6f7f9;color:#3c4043}
+  .tabbar.dark .tab{background:#3c3f43;color:#e3e3e3}
+  .tab .fav{width:16px;height:16px;flex:0 0 auto;display:block}
+  .tab .num{flex:0 0 auto;font-size:8px;opacity:.55}
+  .barlabel{
+    font-family:var(--mono);font-size:10px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--muted);margin:22px 0 8px;
+  }
+  .note{font-family:var(--serif);font-style:italic;color:var(--muted);font-size:15px;margin-top:26px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">Favicon contact sheet — photos.jaydixit.com</p>
+  <h1>Gold-Ring Lens</h1>
+  <p class="lede">A circle with a gold rim — echoing the site logo's signature gold ring — cradling a dark camera lens. Meant to read at once as “camera lens” and as “the logo,” down to 16&nbsp;px.</p>
+  <p class="meta">16 variants · 32×32 viewBox · palette: paper #FAF6EF · ink #141312 · gold #C6A15B / #A88434 · carpet red #A32C2A</p>
+
+  <!-- ============ SYMBOL DEFINITIONS ============ -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <radialGradient id="glass" cx="38%" cy="34%" r="75%">
+        <stop offset="0%" stop-color="#33302c"/>
+        <stop offset="60%" stop-color="#161513"/>
+        <stop offset="100%" stop-color="#0c0b0a"/>
+      </radialGradient>
+    </defs>
+
+    <!-- 1 Hairline Ring -->
+    <symbol id="m1" viewBox="0 0 32 32">
+      <circle cx="16" cy="16" r="14" fill="#C6A15B"/>
+      <circle cx="16" cy="16" r="12.4" fill="#141312"/>
+    </symbol>
+
+    <!-- 2 Thick Ring -->
+    <symbol id="m2" viewBox="0 0 32 32">
+      <circle cx="16" cy="16" r="14" fill="#C6A15B"/>
+      <circle cx="16" cy="16" r="9.5" fill="#141312"/>
+    </symbol>
+
+    <!-- 3 Double Ring -->
+    <symbol id="m3" viewBox="0 0 32 32">
+      <circle cx="16" cy="16" r="14" fill="#C6A15B"/>
+      <circle cx="16" cy="16" r="11.6" fill="#141312"/>
+      <circle cx="16" cy="16" r="9.6" fill="#C6A15B"/>
+      <circle cx="16" cy="16" r="7.8" fill="#141312"/>
+    </symbol>
+
+    <!-- 4 Gold Glint -->
+    <symbol id="m4" viewBox="0 0 32 32">
+      <circle cx="16" cy="16" r="14" fill="#C6A15B"/>
+      <circle cx="16" cy="16" r="9.5" fill="#141312"/>
+      <circle cx="12.2" cy="12.2" r="2.1" fill="#E9CE93"/>
+    </symbol>
+
+    <!-- 5 Cream Glint -->
+    <symbol id="m5" viewBox="0 0 32 32">
+      <circle cx="16" cy="16" r="14" fill="#C6A15B"/>
+      <circle cx="16" cy="16" r="9.5" fill="#141312"/>
+      <circle cx="12.2" cy="12.2" r="2.1" fill="#FAF6EF"/>
+    </symbol>
+
+    <!-- 6 Lens Elements -->
+    <symbol id="m6" viewBox="0 0 32 32">
+      <circle cx="16" cy="16" r="14" fill="#C6A15B"/>
+      <circle cx="16" cy="16" r="12" fill="#141312"/>
+      <circle cx="16" cy="16" r="8.6" fill="#C6A15B"/>
+      <circle cx="16" cy="16" r="6.8" fill="#141312"/>
+      <circle cx="16" cy="16" r="2.4" fill="#A88434"/>
+    </symbol>
+
+    <!-- 7 Gold Pupil -->
+    <symbol id="m7" viewBox="0 0 32 32">
+      <circle cx="16" cy="16" r="14" fill="#C6A15B"/>
+      <circle cx="16" cy="16" r="11" fill="#141312"/>
+      <circle cx="16" cy="16" r="4.2" fill="#A88434"/>
+    </symbol>
+
+    <!-- 8 Cream Tile -->
+    <symbol id="m8" viewBox="0 0 32 32">
+      <rect x="1" y="1" width="30" height="30" rx="7" fill="#FAF6EF"/>
+      <circle cx="16" cy="16" r="11" fill="#C6A15B"/>
+      <circle cx="16" cy="16" r="7.6" fill="#141312"/>
+    </symbol>
+
+    <!-- 9 Noir Tile -->
+    <symbol id="m9" viewBox="0 0 32 32">
+      <rect x="1" y="1" width="30" height="30" rx="7" fill="#141312"/>
+      <circle cx="16" cy="16" r="11" fill="#C6A15B"/>
+      <circle cx="16" cy="16" r="8.4" fill="#141312"/>
+      <circle cx="16" cy="16" r="2" fill="#C6A15B"/>
+    </symbol>
+
+    <!-- 10 Inverted -->
+    <symbol id="m10" viewBox="0 0 32 32">
+      <circle cx="16" cy="16" r="14" fill="#141312"/>
+      <circle cx="16" cy="16" r="11" fill="#C6A15B"/>
+      <circle cx="16" cy="16" r="3.2" fill="#141312"/>
+    </symbol>
+
+    <!-- 11 Gold-on-Black -->
+    <symbol id="m11" viewBox="0 0 32 32">
+      <circle cx="16" cy="16" r="14" fill="#141312"/>
+      <circle cx="16" cy="16" r="12.6" fill="none" stroke="#C6A15B" stroke-width="2.4"/>
+      <circle cx="16" cy="16" r="7" fill="none" stroke="#C6A15B" stroke-width="2"/>
+      <circle cx="16" cy="16" r="1.8" fill="#C6A15B"/>
+    </symbol>
+
+    <!-- 12 Rec Light -->
+    <symbol id="m12" viewBox="0 0 32 32">
+      <circle cx="16" cy="16" r="14" fill="#C6A15B"/>
+      <circle cx="16" cy="16" r="9.5" fill="#141312"/>
+      <circle cx="12.4" cy="12.4" r="1.9" fill="#FAF6EF"/>
+      <circle cx="19.6" cy="19.6" r="1.9" fill="#A32C2A"/>
+    </symbol>
+
+    <!-- 13 Red Glint -->
+    <symbol id="m13" viewBox="0 0 32 32">
+      <circle cx="16" cy="16" r="14" fill="#C6A15B"/>
+      <circle cx="16" cy="16" r="9.5" fill="#141312"/>
+      <circle cx="12.2" cy="12.2" r="2.3" fill="#A32C2A"/>
+    </symbol>
+
+    <!-- 14 Viewfinder Ticks -->
+    <symbol id="m14" viewBox="0 0 32 32">
+      <g fill="none" stroke="#C6A15B" stroke-width="2" stroke-linecap="square">
+        <path d="M4 8 V4 H8"/>
+        <path d="M24 4 H28 V8"/>
+        <path d="M4 24 V28 H8"/>
+        <path d="M28 24 V28 H24"/>
+      </g>
+      <circle cx="16" cy="16" r="10" fill="#C6A15B"/>
+      <circle cx="16" cy="16" r="6.5" fill="#141312"/>
+    </symbol>
+
+    <!-- 15 Tile + Ticks -->
+    <symbol id="m15" viewBox="0 0 32 32">
+      <rect x="1" y="1" width="30" height="30" rx="7" fill="#FAF6EF"/>
+      <g fill="none" stroke="#C6A15B" stroke-width="1.8" stroke-linecap="square">
+        <path d="M6 10 V6 H10"/>
+        <path d="M22 6 H26 V10"/>
+        <path d="M6 22 V26 H10"/>
+        <path d="M26 22 V26 H22"/>
+      </g>
+      <circle cx="16" cy="16" r="9" fill="#C6A15B"/>
+      <circle cx="16" cy="16" r="6" fill="#141312"/>
+    </symbol>
+
+    <!-- 16 Aperture Hex -->
+    <symbol id="m16" viewBox="0 0 32 32">
+      <circle cx="16" cy="16" r="14" fill="#C6A15B"/>
+      <circle cx="16" cy="16" r="10.5" fill="url(#glass)"/>
+      <polygon points="21,16 18.5,20.33 13.5,20.33 11,16 13.5,11.67 18.5,11.67"
+        fill="none" stroke="#C6A15B" stroke-width="1.8" stroke-linejoin="round"/>
+    </symbol>
+  </svg>
+
+  <!-- ============ CONTACT GRID ============ -->
+  <div class="grid" id="grid"></div>
+
+  <!-- ============ TAB SIMULATION ============ -->
+  <h2>Browser tab simulation — the money shot</h2>
+  <p class="note">Every mark at its true 16&nbsp;px, beside a truncated “Jay Dixit Photos” tab label. Judge which survives the scrum.</p>
+
+  <p class="barlabel">Light mode — macOS Chrome</p>
+  <div class="tabbar light" id="tabs-light"></div>
+
+  <p class="barlabel">Dark mode — macOS Chrome</p>
+  <div class="tabbar dark" id="tabs-dark"></div>
+</div>
+
+<script>
+  const V = [
+    ["Hairline Ring","A whisper-thin gold rim around a full black lens — pure logo echo, most elegant when it renders clean."],
+    ["Thick Ring","A confident gold band that reads as a lens barrel; the safest bet for legibility at 16px."],
+    ["Double Ring","Two concentric gold rings suggest a lens mount collar — mechanical, precise, camera-forward."],
+    ["Gold Glint","Thick ring with a bright specular glint — the catchlight that makes glass look like glass."],
+    ["Cream Glint","Same catchlight in paper-cream, tying the mark back to the site's warm background."],
+    ["Lens Elements","Nested gold rings and a gold pupil — the layered optics of a real telephoto barrel."],
+    ["Gold Pupil","Black lens with a single deep-gold pupil — an eye that meets the red carpet's gaze."],
+    ["Cream Tile","The lens floated on a warm rounded tile — sibling to storytelling.nyc's cream chip."],
+    ["Noir Tile","Gold ring on a black tile — the most 'app icon' of the set, dramatic and premium."],
+    ["Inverted","Black rim, gold lens — flips the figure/ground for a warmer, coin-like read."],
+    ["Gold-on-Black","All-gold optics etched on black glass — engraved, jeweler's-loupe refinement."],
+    ["Rec Light","A tiny red record dot answering a cream glint — a live camera in one glance."],
+    ["Red Glint","The catchlight rendered in carpet red — the site's one drop of red, spent well."],
+    ["Viewfinder Ticks","Gold corner brackets frame the lens — the act of composing a shot, miniaturized."],
+    ["Tile + Ticks","Brackets and lens on a cream tile — editorial press-kit polish in one mark."],
+    ["Aperture Hex","A hexagonal aperture opening inside the glass — the diaphragm, unmistakably a lens."]
+  ];
+
+  const grid = document.getElementById('grid');
+  V.forEach((v,i)=>{
+    const n = i+1;
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="chips">
+        <span class="chip big"><svg width="42" height="42" viewBox="0 0 32 32"><use href="#m${n}"/></svg></span>
+        <span class="chip small"><svg width="16" height="16" viewBox="0 0 32 32"><use href="#m${n}"/></svg></span>
+      </div>
+      <div class="num">VARIANT ${String(n).padStart(2,'0')}</div>
+      <div class="name">${v[0]}</div>
+      <div class="why">${v[1]}</div>`;
+    grid.appendChild(card);
+  });
+
+  function buildTabs(id){
+    const bar = document.getElementById(id);
+    V.forEach((v,i)=>{
+      const n=i+1;
+      const t=document.createElement('div');
+      t.className='tab';
+      t.innerHTML = `
+        <svg class="fav" viewBox="0 0 32 32"><use href="#m${n}"/></svg>
+        <span class="lbl">Jay Dixit Photos</span>
+        <span class="num">${String(n).padStart(2,'0')}</span>
+        <span class="x">×</span>`;
+      bar.appendChild(t);
+    });
+  }
+  buildTabs('tabs-light');
+  buildTabs('tabs-dark');
+</script>
+</body>
+</html>

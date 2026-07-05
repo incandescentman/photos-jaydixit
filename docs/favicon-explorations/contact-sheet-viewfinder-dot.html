@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Favicon contact sheet — Viewfinder / Dot — photos.jaydixit.com</title>
+<style>
+  :root{
+    --paper:#fdfcfb;
+    --paper-warm:#faf6ef;
+    --ink:#141312;
+    --muted:#6f675c;
+    --hair:#e4ddd0;
+    --gold:#c6a15b;
+    --gold-deep:#a88434;
+    --red:#a32c2a;
+    --chip-bg:#fbf8f2;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:Georgia,"Times New Roman",serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+  .wrap{max-width:1120px;margin:0 auto;padding:64px 32px 96px;}
+
+  .eyebrow{
+    font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+    text-transform:uppercase;
+    letter-spacing:.22em;
+    font-size:11px;
+    color:var(--muted);
+    margin:0 0 20px;
+  }
+  h1{
+    font-weight:300;
+    font-size:clamp(34px,5vw,58px);
+    line-height:1.04;
+    letter-spacing:-.01em;
+    margin:0 0 18px;
+  }
+  h1 em{font-style:italic;color:var(--gold-deep);}
+  .lede{
+    max-width:60ch;
+    font-size:19px;
+    color:var(--muted);
+    margin:0 0 8px;
+  }
+  .lede + .lede{font-size:16px;margin-top:14px;}
+
+  .section-label{
+    font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+    text-transform:uppercase;
+    letter-spacing:.2em;
+    font-size:11px;
+    color:var(--muted);
+    margin:72px 0 20px;
+    padding-bottom:12px;
+    border-bottom:1px solid var(--hair);
+  }
+
+  /* hairline-gapped grid */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+    gap:1px;
+    background:var(--hair);
+    border:1px solid var(--hair);
+  }
+  .card{
+    background:var(--chip-bg);
+    padding:24px 24px 26px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+  .card-top{display:flex;align-items:center;gap:18px;}
+  .chips{display:flex;align-items:flex-end;gap:16px;}
+  .chip48{width:48px;height:48px;flex:0 0 48px;}
+  .chip18{width:18px;height:18px;flex:0 0 18px;}
+  .num{
+    margin-left:auto;
+    font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+    font-size:12px;
+    color:var(--muted);
+  }
+  .name{font-size:20px;font-weight:400;letter-spacing:-.005em;margin:0;}
+  .why{font-style:italic;color:var(--muted);font-size:15px;margin:0;}
+
+  /* tab simulations */
+  .tabsim{margin-top:22px;border-radius:12px;overflow:hidden;border:1px solid var(--hair);}
+  .tabbar{display:flex;align-items:flex-end;gap:2px;padding:10px 10px 0;overflow-x:auto;}
+  .tabbar-light{background:#dee1e6;}
+  .tabbar-dark{background:#202124;border-color:#3c4043;}
+  .tab{
+    display:flex;align-items:center;gap:7px;
+    min-width:150px;max-width:172px;
+    height:34px;padding:0 12px;
+    border-radius:9px 9px 0 0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:12px;line-height:1;
+    white-space:nowrap;
+  }
+  .tab .fav{width:16px;height:16px;flex:0 0 16px;}
+  .tab .lbl{overflow:hidden;text-overflow:ellipsis;}
+  .tab .tnum{margin-left:auto;font-size:9px;opacity:.5;font-family:ui-monospace,monospace;}
+  .tabbar-light .tab{background:#f1f3f4;color:#3c4043;}
+  .tabbar-light .tab.active{background:#fff;color:#202124;}
+  .tabbar-dark .tab{background:#292a2d;color:#c8cace;}
+  .tabbar-dark .tab.active{background:#35363a;color:#e8eaed;}
+  .simcaption{
+    font-family:ui-monospace,monospace;font-size:11px;color:var(--muted);
+    text-transform:uppercase;letter-spacing:.14em;margin:0 0 10px;
+  }
+  .simblock{margin-bottom:8px;}
+  .footnote{margin-top:40px;font-size:14px;color:var(--muted);max-width:64ch;font-style:italic;}
+</style>
+</head>
+<body>
+
+<!-- ============ MASTER SYMBOL DEFS ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <radialGradient id="haloGold" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#c6a15b" stop-opacity="0.55"/>
+      <stop offset="55%" stop-color="#c6a15b" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#c6a15b" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- 01 Focus Frame: black L-brackets, solid gold dot, transparent -->
+  <symbol id="fav01" viewBox="0 0 32 32">
+    <g fill="none" stroke="#141312" stroke-width="2.6" stroke-linecap="butt">
+      <path d="M5 12 L5 5 L12 5"/><path d="M20 5 L27 5 L27 12"/>
+      <path d="M27 20 L27 27 L20 27"/><path d="M12 27 L5 27 L5 20"/>
+    </g>
+    <circle cx="16" cy="16" r="4.2" fill="#c6a15b"/>
+  </symbol>
+
+  <!-- 02 Focus Frame Bold: heavier stroke, deeper gold dot -->
+  <symbol id="fav02" viewBox="0 0 32 32">
+    <g fill="none" stroke="#141312" stroke-width="3.4" stroke-linecap="butt">
+      <path d="M5 13 L5 5 L13 5"/><path d="M19 5 L27 5 L27 13"/>
+      <path d="M27 19 L27 27 L19 27"/><path d="M13 27 L5 27 L5 19"/>
+    </g>
+    <circle cx="16" cy="16" r="4.6" fill="#a88434"/>
+  </symbol>
+
+  <!-- 03 Rounded Frame: round joins/caps, gold dot -->
+  <symbol id="fav03" viewBox="0 0 32 32">
+    <g fill="none" stroke="#141312" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 12 L6 6 L12 6"/><path d="M20 6 L26 6 L26 12"/>
+      <path d="M26 20 L26 26 L20 26"/><path d="M12 26 L6 26 L6 20"/>
+    </g>
+    <circle cx="16" cy="16" r="4.2" fill="#c6a15b"/>
+  </symbol>
+
+  <!-- 04 Two-Corner Crop: only TL + BR crop marks, gold dot -->
+  <symbol id="fav04" viewBox="0 0 32 32">
+    <g fill="none" stroke="#141312" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 13 L6 6 L13 6"/><path d="M26 19 L26 26 L19 26"/>
+    </g>
+    <circle cx="16" cy="16" r="4.4" fill="#c6a15b"/>
+  </symbol>
+
+  <!-- 05 Gold Frame: gold brackets, black dot -->
+  <symbol id="fav05" viewBox="0 0 32 32">
+    <g fill="none" stroke="#a88434" stroke-width="2.8" stroke-linecap="butt">
+      <path d="M5 12 L5 5 L12 5"/><path d="M20 5 L27 5 L27 12"/>
+      <path d="M27 20 L27 27 L20 27"/><path d="M12 27 L5 27 L5 20"/>
+    </g>
+    <circle cx="16" cy="16" r="4.2" fill="#141312"/>
+  </symbol>
+
+  <!-- 06 Halo Subject: black brackets, gold dot + soft halo -->
+  <symbol id="fav06" viewBox="0 0 32 32">
+    <circle cx="16" cy="16" r="8.5" fill="url(#haloGold)"/>
+    <g fill="none" stroke="#141312" stroke-width="2.6" stroke-linecap="butt">
+      <path d="M5 12 L5 5 L12 5"/><path d="M20 5 L27 5 L27 12"/>
+      <path d="M27 20 L27 27 L20 27"/><path d="M12 27 L5 27 L5 20"/>
+    </g>
+    <circle cx="16" cy="16" r="3.9" fill="#c6a15b"/>
+  </symbol>
+
+  <!-- 07 Ringed Lens: black brackets, black dot with gold ring (lens hybrid) -->
+  <symbol id="fav07" viewBox="0 0 32 32">
+    <g fill="none" stroke="#141312" stroke-width="2.6" stroke-linecap="butt">
+      <path d="M5 12 L5 5 L12 5"/><path d="M20 5 L27 5 L27 12"/>
+      <path d="M27 20 L27 27 L20 27"/><path d="M12 27 L5 27 L5 20"/>
+    </g>
+    <circle cx="16" cy="16" r="5.2" fill="none" stroke="#c6a15b" stroke-width="2.4"/>
+    <circle cx="16" cy="16" r="2.1" fill="#141312"/>
+  </symbol>
+
+  <!-- 08 Carpet Cue: black brackets, red-carpet red dot -->
+  <symbol id="fav08" viewBox="0 0 32 32">
+    <g fill="none" stroke="#141312" stroke-width="2.6" stroke-linecap="butt">
+      <path d="M5 12 L5 5 L12 5"/><path d="M20 5 L27 5 L27 12"/>
+      <path d="M27 20 L27 27 L20 27"/><path d="M12 27 L5 27 L5 20"/>
+    </g>
+    <circle cx="16" cy="16" r="4.4" fill="#a32c2a"/>
+  </symbol>
+
+  <!-- 09 Night Shoot: black tile, gold brackets + gold dot -->
+  <symbol id="fav09" viewBox="0 0 32 32">
+    <rect x="0" y="0" width="32" height="32" rx="7" fill="#141312"/>
+    <g fill="none" stroke="#c6a15b" stroke-width="2.6" stroke-linecap="butt">
+      <path d="M6 13 L6 6 L13 6"/><path d="M19 6 L26 6 L26 13"/>
+      <path d="M26 19 L26 26 L19 26"/><path d="M13 26 L6 26 L6 19"/>
+    </g>
+    <circle cx="16" cy="16" r="4.2" fill="#c6a15b"/>
+  </symbol>
+
+  <!-- 10 Cream on Black: black tile, cream brackets, gold dot -->
+  <symbol id="fav10" viewBox="0 0 32 32">
+    <rect x="0" y="0" width="32" height="32" rx="7" fill="#141312"/>
+    <g fill="none" stroke="#faf6ef" stroke-width="2.6" stroke-linecap="butt">
+      <path d="M6 13 L6 6 L13 6"/><path d="M19 6 L26 6 L26 13"/>
+      <path d="M26 19 L26 26 L19 26"/><path d="M13 26 L6 26 L6 19"/>
+    </g>
+    <circle cx="16" cy="16" r="4.2" fill="#c6a15b"/>
+  </symbol>
+
+  <!-- 11 Rule of Thirds: dot upper-right third, brackets reframing -->
+  <symbol id="fav11" viewBox="0 0 32 32">
+    <g fill="none" stroke="#141312" stroke-width="2.6" stroke-linecap="butt">
+      <path d="M5 12 L5 5 L12 5"/><path d="M20 5 L27 5 L27 12"/>
+      <path d="M27 20 L27 27 L20 27"/><path d="M12 27 L5 27 L5 20"/>
+    </g>
+    <circle cx="21.5" cy="10.5" r="4" fill="#c6a15b"/>
+  </symbol>
+
+  <!-- 12 Off-Center Gold: dot lower-left third, red accent tick -->
+  <symbol id="fav12" viewBox="0 0 32 32">
+    <g fill="none" stroke="#141312" stroke-width="2.6" stroke-linecap="butt">
+      <path d="M5 12 L5 5 L12 5"/><path d="M20 5 L27 5 L27 12"/>
+      <path d="M27 20 L27 27 L20 27"/><path d="M12 27 L5 27 L5 20"/>
+    </g>
+    <circle cx="16" cy="16" r="0.9" fill="#141312"/>
+    <circle cx="10.5" cy="21.5" r="4" fill="#c6a15b"/>
+  </symbol>
+
+  <!-- 13 Cream Tile: warm rounded tile, black brackets, gold dot -->
+  <symbol id="fav13" viewBox="0 0 32 32">
+    <rect x="0" y="0" width="32" height="32" rx="7" fill="#faf6ef"/>
+    <g fill="none" stroke="#141312" stroke-width="2.6" stroke-linecap="butt">
+      <path d="M6 13 L6 6 L13 6"/><path d="M19 6 L26 6 L26 13"/>
+      <path d="M26 19 L26 26 L19 26"/><path d="M13 26 L6 26 L6 19"/>
+    </g>
+    <circle cx="16" cy="16" r="4.2" fill="#c6a15b"/>
+  </symbol>
+
+  <!-- 14 Lens Tile: cream tile, brackets framing gold-ringed lens -->
+  <symbol id="fav14" viewBox="0 0 32 32">
+    <rect x="0" y="0" width="32" height="32" rx="7" fill="#faf6ef"/>
+    <g fill="none" stroke="#141312" stroke-width="2.4" stroke-linecap="butt">
+      <path d="M6 13 L6 6 L13 6"/><path d="M19 6 L26 6 L26 13"/>
+      <path d="M26 19 L26 26 L19 26"/><path d="M13 26 L6 26 L6 19"/>
+    </g>
+    <circle cx="16" cy="16" r="5.2" fill="none" stroke="#c6a15b" stroke-width="2.4"/>
+    <circle cx="16" cy="16" r="1.9" fill="#141312"/>
+  </symbol>
+
+  <!-- 15 Heavy Square: square joins, thick brackets, deep gold dot -->
+  <symbol id="fav15" viewBox="0 0 32 32">
+    <g fill="none" stroke="#141312" stroke-width="3.6" stroke-linecap="butt" stroke-linejoin="miter">
+      <path d="M4.5 14 L4.5 4.5 L14 4.5"/><path d="M18 4.5 L27.5 4.5 L27.5 14"/>
+      <path d="M27.5 18 L27.5 27.5 L18 27.5"/><path d="M14 27.5 L4.5 27.5 L4.5 18"/>
+    </g>
+    <circle cx="16" cy="16" r="4.6" fill="#a88434"/>
+  </symbol>
+
+  <!-- 16 Light Minimal: thin brackets, small centered gold dot -->
+  <symbol id="fav16" viewBox="0 0 32 32">
+    <g fill="none" stroke="#141312" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M7 12 L7 7 L12 7"/><path d="M20 7 L25 7 L25 12"/>
+      <path d="M25 20 L25 25 L20 25"/><path d="M12 25 L7 25 L7 20"/>
+    </g>
+    <circle cx="16" cy="16" r="3.4" fill="#c6a15b"/>
+  </symbol>
+</svg>
+
+<div class="wrap">
+  <p class="eyebrow">Favicon contact sheet — photos.jaydixit.com</p>
+  <h1>Viewfinder framing a <em>gold dot</em></h1>
+  <p class="lede">Corner brackets — camera focus frame, crop marks — closing in on a single dot as “the subject.” The mark is a small argument about what this site does: photography as the deliberate act of framing.</p>
+  <p class="lede">Sixteen variants across bracket weight, dot treatment, color assignment, tile, and composition. Every mark is bold, geometric, and built to survive at 16px next to a family of siblings — the pink halo-dot of jaydixit.com, the navy sunburst of storytelling.nyc.</p>
+
+  <div class="section-label">The marks — 48px &amp; 18px, with rationale</div>
+  <div class="grid" id="cardgrid"></div>
+
+  <div class="section-label">Browser tab simulation — every variant at 16px</div>
+
+  <div class="simblock">
+    <p class="simcaption">Light mode — macOS Chrome</p>
+    <div class="tabsim"><div class="tabbar tabbar-light" id="tablight"></div></div>
+  </div>
+
+  <div class="simblock">
+    <p class="simcaption">Dark mode — macOS Chrome</p>
+    <div class="tabsim"><div class="tabbar tabbar-dark" id="tabdark"></div></div>
+  </div>
+
+  <p class="footnote">The dark strip is the honest test: transparent-background marks with black brackets (01–08, 11, 12) go quiet on a dark tab, while the tiled variants (09, 10, 13, 14) and the gold-bracket 05 hold their own in both. That trade — cleaner on cream vs. dependable everywhere — is the real decision this sheet is for.</p>
+</div>
+
+<script>
+  const variants = [
+    ["01","Focus Frame","Four black L-brackets snap onto a solid gold subject — the plainest, most legible read of “framing.”"],
+    ["02","Focus Frame Bold","Same idea with heavier stroke and deeper gold, engineered to stay crisp when the tab shrinks it."],
+    ["03","Rounded Frame","Round joins and caps soften the crop marks into something warmer and more editorial."],
+    ["04","Two-Corner Crop","Only the top-left and bottom-right corners — the minimum gesture that still reads as a viewfinder."],
+    ["05","Gold Frame","Inverts the palette: gold brackets, black dot. Reads confidently on both light and dark tabs."],
+    ["06","Halo Subject","A soft gold halo behind the dot echoes the jaydixit.com pink halo-dot for direct family resemblance."],
+    ["07","Ringed Lens","The dot becomes a tiny gold-ringed lens — a hybrid nodding at the logo’s gold-rim circle."],
+    ["08","Carpet Cue","A red-carpet red subject inside black brackets — the one variant that names the beat literally."],
+    ["09","Night Shoot","All-gold marks on a black tile: the most dramatic, most Cannes-at-night option."],
+    ["10","Cream on Black","Cream brackets, gold dot, black tile — warm paper marks glowing out of the dark."],
+    ["11","Rule of Thirds","The subject slides to the upper-right third while the brackets keep framing — a photographer’s wink."],
+    ["12","Off-Center Gold","Subject in the lower-left third with a faint center tick, dramatizing the choice of where to point."],
+    ["13","Cream Tile","Black brackets and gold dot on a warm rounded tile — the safest sibling-matching workhorse."],
+    ["14","Lens Tile","Brackets frame a gold-ringed lens on a cream tile — the logo’s gold rim, distilled to a favicon."],
+    ["15","Heavy Square","Thick miter-joined brackets and a deep-gold dot — the most architectural, poster-like cut."],
+    ["16","Light Minimal","Thin rounded brackets and a small dot — quiet and refined, the airiest read of the concept."]
+  ];
+
+  const useSVG = (id, cls) =>
+    `<svg class="${cls}" viewBox="0 0 32 32" role="img" aria-label="favicon ${id}"><use href="#fav${id}"/></svg>`;
+
+  document.getElementById("cardgrid").innerHTML = variants.map(([id,name,why]) => `
+    <div class="card">
+      <div class="card-top">
+        <div class="chips">
+          ${useSVG(id,"chip48")}
+          ${useSVG(id,"chip18")}
+        </div>
+        <span class="num">${id}</span>
+      </div>
+      <h3 class="name">${name}</h3>
+      <p class="why">${why}</p>
+    </div>`).join("");
+
+  const tab = (id, active) =>
+    `<div class="tab${active ? " active" : ""}">
+       ${useSVG(id,"fav")}
+       <span class="lbl">Jay Dixit Photos</span>
+       <span class="tnum">${id}</span>
+     </div>`;
+
+  const strip = variants.map(([id],i) => tab(id, i===0)).join("");
+  document.getElementById("tablight").innerHTML = strip;
+  document.getElementById("tabdark").innerHTML = strip;
+</script>
+
+</body>
+</html>

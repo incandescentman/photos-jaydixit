@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Favicon contact sheet — Red Carpet — photos.jaydixit.com</title>
+<style>
+  :root{
+    --paper:#fdfcfb;
+    --paper-warm:#faf6ef;
+    --ink:#141312;
+    --muted:#6b6459;
+    --hair:#e7e0d4;
+    --gold:#a88434;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+  .wrap{max-width:1120px;margin:0 auto;padding:64px 40px 96px;}
+  .eyebrow{
+    font-family:"SFMono-Regular",ui-monospace,Menlo,Consolas,monospace;
+    text-transform:uppercase;
+    letter-spacing:.22em;
+    font-size:11px;
+    color:var(--muted);
+    margin:0 0 22px;
+  }
+  h1{
+    font-weight:300;
+    font-size:clamp(38px,6vw,64px);
+    line-height:1.02;
+    letter-spacing:-.01em;
+    margin:0 0 18px;
+  }
+  h1 em{font-style:italic;color:var(--gold);}
+  .lede{
+    font-size:20px;
+    color:var(--muted);
+    max-width:60ch;
+    margin:0 0 8px;
+  }
+  .lede + .lede{margin-top:0;}
+  .section-label{
+    font-family:"SFMono-Regular",ui-monospace,Menlo,Consolas,monospace;
+    text-transform:uppercase;
+    letter-spacing:.2em;
+    font-size:10px;
+    color:var(--muted);
+    margin:72px 0 20px;
+    padding-bottom:10px;
+    border-bottom:1px solid var(--hair);
+  }
+
+  /* hairline-gapped grid */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(232px,1fr));
+    gap:1px;
+    background:var(--hair);
+    border:1px solid var(--hair);
+  }
+  .card{
+    background:var(--paper);
+    padding:22px 22px 24px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+  .chips{display:flex;align-items:center;gap:16px;}
+  .chip svg{display:block;border-radius:7px;}
+  .chip-48 svg{box-shadow:0 1px 3px rgba(20,19,18,.14);}
+  .chip-lab{
+    font-family:"SFMono-Regular",ui-monospace,Menlo,Consolas,monospace;
+    font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+    margin-top:6px;text-align:center;
+  }
+  .chip{display:flex;flex-direction:column;align-items:center;}
+  .meta .num{
+    font-family:"SFMono-Regular",ui-monospace,Menlo,Consolas,monospace;
+    font-size:10px;color:var(--gold);letter-spacing:.15em;
+  }
+  .meta .name{font-weight:700;font-size:19px;line-height:1.15;margin:2px 0 4px;}
+  .meta .why{font-style:italic;font-size:15.5px;color:var(--muted);line-height:1.35;}
+
+  /* tab strips */
+  .tabstrip{
+    border-radius:12px 12px 0 0;
+    padding:10px 12px 0;
+    display:flex;
+    gap:6px;
+    overflow-x:auto;
+    border:1px solid var(--hair);
+    border-bottom:none;
+  }
+  .tabstrip.light{background:#dee1e6;}
+  .tabstrip.dark{background:#2b2b2e;border-color:#3a3a3e;}
+  .tab{
+    flex:0 0 auto;
+    width:172px;
+    height:34px;
+    border-radius:9px 9px 0 0;
+    display:flex;align-items:center;gap:8px;
+    padding:0 10px;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Karla,sans-serif;
+    font-size:12px;
+    white-space:nowrap;
+  }
+  .tabstrip.light .tab{background:#f6f6f7;color:#3c4043;}
+  .tabstrip.dark .tab{background:#3a3a3e;color:#dcdce0;}
+  .tab svg{display:block;flex:0 0 16px;border-radius:3px;}
+  .tab .lbl{overflow:hidden;text-overflow:ellipsis;}
+  .tab .x{margin-left:auto;opacity:.5;font-size:13px;}
+  .tabnote{
+    font-family:"SFMono-Regular",ui-monospace,Menlo,Consolas,monospace;
+    font-size:10px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;
+    margin:10px 0 32px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ SVG SYMBOL LIBRARY ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <clipPath id="tileClip"><rect width="32" height="32" rx="7"/></clipPath>
+    <clipPath id="ringInner"><circle cx="16" cy="16" r="10.4"/></clipPath>
+
+    <!-- 1. Perspective Runner -->
+    <symbol id="fav1" viewBox="0 0 32 32">
+      <rect width="32" height="32" rx="7" fill="#faf6ef"/>
+      <g clip-path="url(#tileClip)">
+        <polygon points="11,5 21,5 30,29 2,29" fill="#b3272d"/>
+      </g>
+    </symbol>
+
+    <!-- 2. Runner + Horizon -->
+    <symbol id="fav2" viewBox="0 0 32 32">
+      <rect width="32" height="32" rx="7" fill="#faf6ef"/>
+      <g clip-path="url(#tileClip)">
+        <rect x="8" y="4.2" width="16" height="2.6" rx="1.3" fill="#a88434"/>
+        <polygon points="11,7.5 21,7.5 30,29 2,29" fill="#b3272d"/>
+      </g>
+    </symbol>
+
+    <!-- 3. Runner + Stanchions -->
+    <symbol id="fav3" viewBox="0 0 32 32">
+      <rect width="32" height="32" rx="7" fill="#faf6ef"/>
+      <g clip-path="url(#tileClip)">
+        <polygon points="12,6 20,6 26,29 6,29" fill="#b3272d"/>
+        <circle cx="5" cy="21" r="2.7" fill="#a88434"/>
+        <circle cx="27" cy="21" r="2.7" fill="#a88434"/>
+      </g>
+    </symbol>
+
+    <!-- 4. Red Ribbon -->
+    <symbol id="fav4" viewBox="0 0 32 32">
+      <rect width="32" height="32" rx="7" fill="#faf6ef"/>
+      <g clip-path="url(#tileClip)">
+        <polygon points="0,13 13,0 32,19 19,32" fill="#b3272d"/>
+      </g>
+    </symbol>
+
+    <!-- 5. The Subject (ink) -->
+    <symbol id="fav5" viewBox="0 0 32 32">
+      <rect width="32" height="32" rx="7" fill="#faf6ef"/>
+      <g clip-path="url(#tileClip)">
+        <polygon points="11,7 21,7 30,29 2,29" fill="#b3272d"/>
+        <circle cx="16" cy="13.5" r="3.3" fill="#141312"/>
+      </g>
+    </symbol>
+
+    <!-- 6. The Subject (gold) -->
+    <symbol id="fav6" viewBox="0 0 32 32">
+      <rect width="32" height="32" rx="7" fill="#faf6ef"/>
+      <g clip-path="url(#tileClip)">
+        <polygon points="11,7 21,7 30,29 2,29" fill="#b3272d"/>
+        <circle cx="16" cy="13.5" r="3.4" fill="#a88434"/>
+      </g>
+    </symbol>
+
+    <!-- 7. Rope & Post -->
+    <symbol id="fav7" viewBox="0 0 32 32">
+      <rect width="32" height="32" rx="7" fill="#faf6ef"/>
+      <g clip-path="url(#tileClip)">
+        <path d="M6.5 12 Q16 25 25.5 12" stroke="#a88434" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <rect x="4.6" y="11" width="3.8" height="15" rx="1.9" fill="#a88434"/>
+        <rect x="23.6" y="11" width="3.8" height="15" rx="1.9" fill="#a88434"/>
+        <circle cx="6.5" cy="10.5" r="2.7" fill="#c6a15b"/>
+        <circle cx="25.5" cy="10.5" r="2.7" fill="#c6a15b"/>
+      </g>
+    </symbol>
+
+    <!-- 8. Flashbulb -->
+    <symbol id="fav8" viewBox="0 0 32 32">
+      <rect width="32" height="32" rx="7" fill="#faf6ef"/>
+      <g clip-path="url(#tileClip)">
+        <polygon points="11,14 21,14 28,29 4,29" fill="#b3272d"/>
+        <polygon points="16,1.5 17.9,6.1 22.5,8 17.9,9.9 16,14.5 14.1,9.9 9.5,8 14.1,6.1" fill="#a88434"/>
+      </g>
+    </symbol>
+
+    <!-- 9. Night Premiere -->
+    <symbol id="fav9" viewBox="0 0 32 32">
+      <rect width="32" height="32" rx="7" fill="#141312"/>
+      <g clip-path="url(#tileClip)">
+        <polygon points="11,5 21,5 30,29 2,29" fill="#b3272d"/>
+        <circle cx="6" cy="22" r="2.7" fill="#c6a15b"/>
+        <circle cx="26" cy="22" r="2.7" fill="#c6a15b"/>
+      </g>
+    </symbol>
+
+    <!-- 10. Cream Runner (inverted) -->
+    <symbol id="fav10" viewBox="0 0 32 32">
+      <rect width="32" height="32" rx="7" fill="#a32c2a"/>
+      <g clip-path="url(#tileClip)">
+        <polygon points="11,5 21,5 30,29 2,29" fill="#faf6ef"/>
+      </g>
+    </symbol>
+
+    <!-- 11. Ring & Runner -->
+    <symbol id="fav11" viewBox="0 0 32 32">
+      <rect width="32" height="32" rx="7" fill="#faf6ef"/>
+      <g clip-path="url(#ringInner)">
+        <polygon points="12,7 20,7 27,26 5,26" fill="#b3272d"/>
+      </g>
+      <circle cx="16" cy="16" r="11.6" fill="none" stroke="#a88434" stroke-width="3.1"/>
+    </symbol>
+
+    <!-- 12. Ribbon Nocturne -->
+    <symbol id="fav12" viewBox="0 0 32 32">
+      <rect width="32" height="32" rx="7" fill="#141312"/>
+      <g clip-path="url(#tileClip)">
+        <polygon points="0,13 13,0 32,19 19,32" fill="#b3272d"/>
+        <path d="M13 0 L32 19" stroke="#c6a15b" stroke-width="1.8"/>
+        <path d="M0 13 L19 32" stroke="#c6a15b" stroke-width="1.8"/>
+      </g>
+    </symbol>
+
+    <!-- 13. Overhead Runner -->
+    <symbol id="fav13" viewBox="0 0 32 32">
+      <rect width="32" height="32" rx="7" fill="#faf6ef"/>
+      <g clip-path="url(#tileClip)">
+        <rect x="10" y="0" width="12" height="32" fill="#b3272d"/>
+        <rect x="8.3" y="0" width="1.7" height="32" fill="#a88434"/>
+        <rect x="22" y="0" width="1.7" height="32" fill="#a88434"/>
+      </g>
+    </symbol>
+
+    <!-- 14. Corner Flash -->
+    <symbol id="fav14" viewBox="0 0 32 32">
+      <rect width="32" height="32" rx="7" fill="#faf6ef"/>
+      <g clip-path="url(#tileClip)">
+        <polygon points="11,6 21,6 30,29 2,29" fill="#b3272d"/>
+        <polygon points="24,3.5 25.3,6.7 28.5,8 25.3,9.3 24,12.5 22.7,9.3 19.5,8 22.7,6.7" fill="#a88434"/>
+      </g>
+    </symbol>
+
+    <!-- 15. Ring & Star -->
+    <symbol id="fav15" viewBox="0 0 32 32">
+      <rect width="32" height="32" rx="7" fill="#faf6ef"/>
+      <g clip-path="url(#ringInner)">
+        <polygon points="12,11 20,11 25,26 7,26" fill="#b3272d"/>
+      </g>
+      <circle cx="16" cy="16" r="11.6" fill="none" stroke="#a88434" stroke-width="3.1"/>
+      <polygon points="16,7.5 17,10.2 19.7,11 17,11.8 16,14.5 15,11.8 12.3,11 15,10.2" fill="#a88434"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <p class="eyebrow">Favicon contact sheet — photos.jaydixit.com</p>
+  <h1>The <em>Red Carpet</em> Mark</h1>
+  <p class="lede">Fifteen radically simplified evocations of the red carpet — the site's own niche, distilled to a chunky wedge, a bold ribbon, a lone star, a flashbulb. Each is a 32×32 mark built to survive at 16px.</p>
+  <p class="lede">Warm-cream tile, red-carpet red, antique gold — the family grammar shared with jaydixit.com and storytelling.nyc. Every card shows the mark at 48px and at true 18px; the tab strips at the bottom are the money shot.</p>
+
+  <div class="grid" id="grid"></div>
+
+  <p class="section-label">Browser tab simulation — light mode (macOS Chrome)</p>
+  <div class="tabstrip light" id="strip-light"></div>
+  <p class="tabnote">Every variant at true 16px, beside a truncated "Jay Dixit Photos" tab label.</p>
+
+  <p class="section-label">Browser tab simulation — dark mode</p>
+  <div class="tabstrip dark" id="strip-dark"></div>
+  <p class="tabnote">Watch how cream-tile marks hold their edge against the dark chrome — and how the ink-tile variants (09, 12) vanish into it.</p>
+</div>
+
+<script>
+  const V = [
+    {n:"Perspective Runner", why:"A red carpet receding to a vanishing point — the whole event in one wedge."},
+    {n:"Runner + Horizon", why:"A gold horizon bar seals the wedge like the top edge of a step-and-repeat."},
+    {n:"Runner + Stanchions", why:"Two gold stanchion dots flank the carpet — the velvet-rope grammar, legible at 16px."},
+    {n:"Red Ribbon", why:"A single bold diagonal — editorial, abstract, unmistakably a swath of carpet."},
+    {n:"The Subject", why:"A lone ink dot stands on the carpet: the star, caught mid-pose."},
+    {n:"The Subject, Lit", why:"Same stance in gold — the subject glows as if lit for the shot."},
+    {n:"Rope & Post", why:"Two chunky gold posts and one rope swag — maximum stanchion, minimum thread."},
+    {n:"Flashbulb", why:"A chunky gold burst over the carpet — the paparazzi pop, frozen."},
+    {n:"Night Premiere", why:"Red and gold on tuxedo-black — the after-dark red carpet."},
+    {n:"Cream Runner", why:"Inverted: a pale carpet on a field of red, the negative-space premiere."},
+    {n:"Ring & Runner", why:"The logo's gold ring embracing a red wedge — favicon meets brand mark."},
+    {n:"Ribbon Nocturne", why:"The diagonal ribbon on black with gold selvedge — dressier, after-hours."},
+    {n:"Overhead Runner", why:"Straight down the runner: a red strip with twin gold selvedge edges."},
+    {n:"Corner Flash", why:"Carpet plus one gold burst tucked in the corner — asymmetry that reads instantly."},
+    {n:"Ring & Star", why:"Gold ring, red wedge, gold spark — the fullest badge that still holds at 16px."}
+  ];
+
+  const grid = document.getElementById('grid');
+  V.forEach((v,i)=>{
+    const id = 'fav'+(i+1);
+    const card = document.createElement('div');
+    card.className='card';
+    card.innerHTML = `
+      <div class="chips">
+        <div class="chip chip-48">
+          <svg width="48" height="48"><use href="#${id}"/></svg>
+          <div class="chip-lab">48px</div>
+        </div>
+        <div class="chip chip-18">
+          <svg width="18" height="18"><use href="#${id}"/></svg>
+          <div class="chip-lab">18px</div>
+        </div>
+      </div>
+      <div class="meta">
+        <div class="num">${String(i+1).padStart(2,'0')}</div>
+        <div class="name">${v.n}</div>
+        <div class="why">${v.why}</div>
+      </div>`;
+    grid.appendChild(card);
+  });
+
+  function buildStrip(el){
+    V.forEach((v,i)=>{
+      const id='fav'+(i+1);
+      const tab=document.createElement('div');
+      tab.className='tab';
+      tab.innerHTML=`<svg width="16" height="16"><use href="#${id}"/></svg><span class="lbl">Jay Dixit Photos</span><span class="x">×</span>`;
+      el.appendChild(tab);
+    });
+  }
+  buildStrip(document.getElementById('strip-light'));
+  buildStrip(document.getElementById('strip-dark'));
+</script>
+</body>
+</html>

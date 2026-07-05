@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Favicon contact sheet, round 5 — Bright Hairline refinements — photos.jaydixit.com</title>
+<style>
+  :root{
+    --paper:#fdfcfb;
+    --paper-warm:#faf6ef;
+    --ink:#141312;
+    --muted:#6b6459;
+    --hair:#e7e0d4;
+    --gold:#a88434;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+  .wrap{max-width:1120px;margin:0 auto;padding:64px 40px 96px;}
+  .eyebrow{
+    font-family:"SFMono-Regular",ui-monospace,Menlo,Consolas,monospace;
+    text-transform:uppercase;
+    letter-spacing:.22em;
+    font-size:11px;
+    color:var(--muted);
+    margin:0 0 22px;
+  }
+  h1{
+    font-weight:300;
+    font-size:clamp(38px,6vw,64px);
+    line-height:1.02;
+    letter-spacing:-.01em;
+    margin:0 0 18px;
+  }
+  h1 em{font-style:italic;color:var(--gold);}
+  .lede{
+    font-size:20px;
+    color:var(--muted);
+    max-width:60ch;
+    margin:0 0 8px;
+  }
+  .section-label{
+    font-family:"SFMono-Regular",ui-monospace,Menlo,Consolas,monospace;
+    text-transform:uppercase;
+    letter-spacing:.2em;
+    font-size:10px;
+    color:var(--muted);
+    margin:72px 0 20px;
+    padding-bottom:10px;
+    border-bottom:1px solid var(--hair);
+  }
+  .section-label:first-of-type{margin-top:56px;}
+
+  /* hairline-gapped grid */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(248px,1fr));
+    gap:1px;
+    background:var(--hair);
+    border:1px solid var(--hair);
+  }
+  .card{
+    background:var(--paper);
+    padding:22px 22px 24px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+  .chips{display:flex;align-items:flex-start;gap:13px;}
+  .chip{display:flex;flex-direction:column;align-items:center;}
+  .chip svg{display:block;}
+  .chip-64 svg{border-radius:14px;}
+  .chip-32 svg{border-radius:7px;}
+  .chip-24 svg{border-radius:5px;}
+  .chip-16 svg{border-radius:3.5px;}
+  .chip-lab{
+    font-family:"SFMono-Regular",ui-monospace,Menlo,Consolas,monospace;
+    font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+    margin-top:6px;text-align:center;
+  }
+  .meta .num{
+    font-family:"SFMono-Regular",ui-monospace,Menlo,Consolas,monospace;
+    font-size:10px;color:var(--gold);letter-spacing:.15em;
+  }
+  .meta .name{font-weight:700;font-size:19px;line-height:1.15;margin:2px 0 4px;}
+  .meta .why{font-style:italic;font-size:15.5px;color:var(--muted);line-height:1.35;}
+
+  /* tab strips */
+  .tabstrip{
+    border-radius:12px 12px 0 0;
+    padding:10px 12px 0;
+    display:flex;
+    gap:6px;
+    overflow-x:auto;
+    border:1px solid var(--hair);
+    border-bottom:none;
+  }
+  .tabstrip.light{background:#dee1e6;}
+  .tabstrip.dark{background:#2b2b2e;border-color:#3a3a3e;}
+  .tab{
+    flex:0 0 auto;
+    width:172px;
+    height:34px;
+    border-radius:9px 9px 0 0;
+    display:flex;align-items:center;gap:8px;
+    padding:0 10px;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Karla,sans-serif;
+    font-size:12px;
+    white-space:nowrap;
+  }
+  .tabstrip.light .tab{background:#f6f6f7;color:#3c4043;}
+  .tabstrip.dark .tab{background:#3a3a3e;color:#dcdce0;}
+  .tab svg{display:block;flex:0 0 16px;border-radius:3px;}
+  .tab .lbl{overflow:hidden;text-overflow:ellipsis;}
+  .tab .x{margin-left:auto;opacity:.5;font-size:13px;}
+  .tabnote{
+    font-family:"SFMono-Regular",ui-monospace,Menlo,Consolas,monospace;
+    font-size:10px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;
+    margin:10px 0 32px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ SVG SYMBOL LIBRARY ============ -->
+<!--
+  Base mark (round 4, variant 07 "Bright Hairline"):
+  ring: circle cx16 cy16 r12.6, stroke #c6a15b, no tile
+  runner: polygon 12.8,6.5 19.2,6.5 28,30.5 4,30.5 fill #b3272d, clipped to r11.8 (arc base, fused to ring)
+-->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <clipPath id="c118"><circle cx="16" cy="16" r="11.8"/></clipPath>
+
+    <!-- ===== GROUP 1 — RING WEIGHT LADDER (01-06) ===== -->
+
+    <symbol id="fav1" viewBox="0 0 32 32">
+      <g clip-path="url(#c118)"><polygon points="12.8,6.5 19.2,6.5 28,30.5 4,30.5" fill="#b3272d"/></g>
+      <circle cx="16" cy="16" r="12.6" fill="none" stroke="#c6a15b" stroke-width="1.0"/>
+    </symbol>
+
+    <symbol id="fav2" viewBox="0 0 32 32">
+      <g clip-path="url(#c118)"><polygon points="12.8,6.5 19.2,6.5 28,30.5 4,30.5" fill="#b3272d"/></g>
+      <circle cx="16" cy="16" r="12.6" fill="none" stroke="#c6a15b" stroke-width="1.25"/>
+    </symbol>
+
+    <symbol id="fav3" viewBox="0 0 32 32">
+      <g clip-path="url(#c118)"><polygon points="12.8,6.5 19.2,6.5 28,30.5 4,30.5" fill="#b3272d"/></g>
+      <circle cx="16" cy="16" r="12.6" fill="none" stroke="#c6a15b" stroke-width="1.5"/>
+    </symbol>
+
+    <symbol id="fav4" viewBox="0 0 32 32">
+      <g clip-path="url(#c118)"><polygon points="12.8,6.5 19.2,6.5 28,30.5 4,30.5" fill="#b3272d"/></g>
+      <circle cx="16" cy="16" r="12.6" fill="none" stroke="#c6a15b" stroke-width="1.8"/>
+    </symbol>
+
+    <symbol id="fav5" viewBox="0 0 32 32">
+      <g clip-path="url(#c118)"><polygon points="12.8,6.5 19.2,6.5 28,30.5 4,30.5" fill="#b3272d"/></g>
+      <circle cx="16" cy="16" r="12.6" fill="none" stroke="#c6a15b" stroke-width="2.0"/>
+    </symbol>
+
+    <symbol id="fav6" viewBox="0 0 32 32">
+      <g clip-path="url(#c118)"><polygon points="12.8,6.5 19.2,6.5 28,30.5 4,30.5" fill="#b3272d"/></g>
+      <circle cx="16" cy="16" r="12.6" fill="none" stroke="#c6a15b" stroke-width="2.5"/>
+    </symbol>
+
+    <!-- ===== GROUP 2 — GOLD TONE (07-09) ===== -->
+
+    <symbol id="fav7" viewBox="0 0 32 32">
+      <g clip-path="url(#c118)"><polygon points="12.8,6.5 19.2,6.5 28,30.5 4,30.5" fill="#b3272d"/></g>
+      <circle cx="16" cy="16" r="12.6" fill="none" stroke="#c6a15b" stroke-width="1.8"/>
+    </symbol>
+
+    <symbol id="fav8" viewBox="0 0 32 32">
+      <g clip-path="url(#c118)"><polygon points="12.8,6.5 19.2,6.5 28,30.5 4,30.5" fill="#b3272d"/></g>
+      <circle cx="16" cy="16" r="12.6" fill="none" stroke="#a88434" stroke-width="1.8"/>
+    </symbol>
+
+    <symbol id="fav9" viewBox="0 0 32 32">
+      <g clip-path="url(#c118)"><polygon points="12.8,6.5 19.2,6.5 28,30.5 4,30.5" fill="#b3272d"/></g>
+      <circle cx="16" cy="16" r="12.6" fill="none" stroke="#d2ae5e" stroke-width="1.8"/>
+    </symbol>
+
+    <!-- ===== GROUP 3 — RUNNER GEOMETRY (10-13) ===== -->
+
+    <symbol id="fav10" viewBox="0 0 32 32">
+      <g clip-path="url(#c118)"><polygon points="12.8,6.5 19.2,6.5 23.6,25 8.4,25" fill="#b3272d"/></g>
+      <circle cx="16" cy="16" r="12.6" fill="none" stroke="#c6a15b" stroke-width="1.8"/>
+    </symbol>
+
+    <symbol id="fav11" viewBox="0 0 32 32">
+      <g clip-path="url(#c118)"><polygon points="13.4,6.5 18.6,6.5 20.3,27 11.7,27" fill="#b3272d"/></g>
+      <circle cx="16" cy="16" r="12.6" fill="none" stroke="#c6a15b" stroke-width="1.8"/>
+    </symbol>
+
+    <symbol id="fav12" viewBox="0 0 32 32">
+      <g clip-path="url(#c118)"><polygon points="14.6,6 17.4,6 27,31 5,31" fill="#b3272d"/></g>
+      <circle cx="16" cy="16" r="12.6" fill="none" stroke="#c6a15b" stroke-width="1.8"/>
+    </symbol>
+
+    <symbol id="fav13" viewBox="0 0 32 32">
+      <g clip-path="url(#c118)"><polygon points="11.6,7 20.4,7 26.5,30 5.5,30" fill="#b3272d"/></g>
+      <circle cx="16" cy="16" r="12.6" fill="none" stroke="#c6a15b" stroke-width="1.8"/>
+    </symbol>
+
+    <!-- ===== GROUP 4 — MICRO-ACCENTS (14-15) ===== -->
+
+    <symbol id="fav14" viewBox="0 0 32 32">
+      <g clip-path="url(#c118)"><polygon points="12.8,6.5 19.2,6.5 28,30.5 4,30.5" fill="#b3272d"/></g>
+      <circle cx="16" cy="13" r="2.2" fill="#c6a15b"/>
+      <circle cx="16" cy="16" r="12.6" fill="none" stroke="#c6a15b" stroke-width="1.8"/>
+    </symbol>
+
+    <symbol id="fav15" viewBox="0 0 32 32">
+      <g clip-path="url(#c118)">
+        <rect x="12" y="5" width="8" height="1.1" fill="#c6a15b"/>
+        <polygon points="12.8,6.9 19.2,6.9 28,30.5 4,30.5" fill="#b3272d"/>
+      </g>
+      <circle cx="16" cy="16" r="12.6" fill="none" stroke="#c6a15b" stroke-width="1.8"/>
+    </symbol>
+
+    <!-- ===== GROUP 5 — DARK-TAB INSURANCE (16-17) ===== -->
+
+    <symbol id="fav16" viewBox="0 0 32 32">
+      <circle cx="16" cy="16" r="12.6" fill="#faf6ef" fill-opacity="0.45"/>
+      <g clip-path="url(#c118)"><polygon points="12.8,6.5 19.2,6.5 28,30.5 4,30.5" fill="#b3272d"/></g>
+      <circle cx="16" cy="16" r="12.6" fill="none" stroke="#c6a15b" stroke-width="1.8"/>
+    </symbol>
+
+    <symbol id="fav17" viewBox="0 0 32 32">
+      <circle cx="16" cy="16" r="12.6" fill="#faf6ef" fill-opacity="0.9"/>
+      <g clip-path="url(#c118)"><polygon points="12.8,6.5 19.2,6.5 28,30.5 4,30.5" fill="#b3272d"/></g>
+      <circle cx="16" cy="16" r="12.6" fill="none" stroke="#c6a15b" stroke-width="1.8"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <p class="eyebrow">Favicon contact sheet — round 5 — photos.jaydixit.com</p>
+  <h1><em>Bright Hairline,</em> refined</h1>
+  <p class="lede">Seventeen close variants of the round-four winner: the tile-less gold ring with the red runner fused to its inner edge. This is a fine-tuning round — every variant is recognizably the same mark, one parameter moved at a time.</p>
+  <p class="lede">The ring-weight ladder (01–06) is the decision Jay asked for — six strokes from 1.0 to 2.5 in the 32-unit viewBox, identical gold and runner throughout. In the tab strips below, the ladder sits adjacent so the weights can be judged side by side at true 16px.</p>
+
+  <p class="section-label">Group 1 — Ring weight ladder (01–06) · gold and runner held constant</p>
+  <div class="grid" id="grid-1"></div>
+
+  <p class="section-label">Group 2 — Gold tone (07–09) · geometry held constant at weight 1.8</p>
+  <div class="grid" id="grid-2"></div>
+
+  <p class="section-label">Group 3 — Runner geometry (10–13) · ring held constant</p>
+  <div class="grid" id="grid-3"></div>
+
+  <p class="section-label">Group 4 — Micro-accents (14–15)</p>
+  <div class="grid" id="grid-4"></div>
+
+  <p class="section-label">Group 5 — Dark-tab insurance (16–17)</p>
+  <div class="grid" id="grid-5"></div>
+
+  <p class="section-label">Browser tab simulation — light mode (macOS Chrome)</p>
+  <div class="tabstrip light" id="strip-light"></div>
+  <p class="tabnote">Weight ladder first (01–06, adjacent for the side-by-side call), then tone, runner, accents, backing discs.</p>
+
+  <p class="section-label">Browser tab simulation — dark mode</p>
+  <div class="tabstrip dark" id="strip-dark"></div>
+  <p class="tabnote">The judging strip: the mark floats on dark chrome. Compare gold luminance across 07–09 and the backing discs 16–17 against the pure floaters.</p>
+</div>
+
+<script>
+  const V = [
+    // Group 1 — Weight ladder
+    {n:"Weight 1.0", why:"True hairline — 0.5px at 16: the finest, and the likeliest to shimmer away."},
+    {n:"Weight 1.25", why:"A breath heavier — 0.63px at 16, still whisper-thin."},
+    {n:"Weight 1.5", why:"Round three's original hairline — 0.75px at 16."},
+    {n:"Weight 1.8", why:"The round-four winner as picked — 0.9px at 16. The reference rung."},
+    {n:"Weight 2.0", why:"The explicit ask: the same mark, slightly thicker — a clean 1px at 16."},
+    {n:"Weight 2.5", why:"The heaviest that still reads as a hairline — 1.25px at 16, no shimmer left."},
+    // Group 2 — Gold tone
+    {n:"Bright Gold", why:"The current #c6a15b — the reference tone, repeated here for side-by-side."},
+    {n:"Antique Gold", why:"Deeper #a88434 — richer on cream, but watch it sink on dark chrome."},
+    {n:"Brass", why:"Warmer, lighter #d2ae5e — the most luminous of the three at 16px on dark."},
+    // Group 3 — Runner geometry
+    {n:"Wide Chord", why:"The base flattened to a broad chord, corners on the ring — a stage edge."},
+    {n:"Narrow Chord", why:"A slimmer chord low in the circle — more taper, more recession."},
+    {n:"Steep Vanish", why:"The vanishing point pinched near-closed — the longest read of depth."},
+    {n:"Shallow Vanish", why:"A wider mouth at the top — less vertigo, more red."},
+    // Group 4 — Micro-accents
+    {n:"The Subject", why:"One small gold figure on the runner — the star, and nothing else added."},
+    {n:"Horizon Tick", why:"A hairline gold tick capping the runner — the step-and-repeat, whispered."},
+    // Group 5 — Dark-tab insurance
+    {n:"Ghost Disc", why:"The faintest cream backing — barely there in light, a soft halo on dark."},
+    {n:"Backing Disc", why:"A near-solid cream disc — the full insurance policy, judged against the floaters."}
+  ];
+
+  const SIZES = [64, 32, 24, 16];
+
+  function card(i){
+    const id = 'fav'+(i+1), v = V[i];
+    const el = document.createElement('div');
+    el.className='card';
+    const chips = SIZES.map(s => `
+        <div class="chip chip-${s}">
+          <svg width="${s}" height="${s}"><use href="#${id}"/></svg>
+          <div class="chip-lab">${s}</div>
+        </div>`).join('');
+    el.innerHTML = `
+      <div class="chips">${chips}</div>
+      <div class="meta">
+        <div class="num">${String(i+1).padStart(2,'0')}</div>
+        <div class="name">${v.n}</div>
+        <div class="why">${v.why}</div>
+      </div>`;
+    return el;
+  }
+
+  const GROUPS = [[0,6],[6,9],[9,13],[13,15],[15,17]];
+  GROUPS.forEach((g,gi)=>{
+    const grid=document.getElementById('grid-'+(gi+1));
+    for(let i=g[0];i<g[1];i++) grid.appendChild(card(i));
+  });
+
+  function buildStrip(el){
+    V.forEach((v,i)=>{
+      const id='fav'+(i+1);
+      const tab=document.createElement('div');
+      tab.className='tab';
+      tab.innerHTML=`<svg width="16" height="16"><use href="#${id}"/></svg><span class="lbl">Jay Dixit Photos</span><span class="x">×</span>`;
+      el.appendChild(tab);
+    });
+  }
+  buildStrip(document.getElementById('strip-light'));
+  buildStrip(document.getElementById('strip-dark'));
+</script>
+</body>
+</html>

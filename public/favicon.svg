@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Jay Dixit Photos">
+  <!-- Ghost Disc: gold hairline ring with fused red-carpet runner over a 45% cream disc -->
+  <defs>
+    <clipPath id="carpet-clip"><circle cx="16" cy="16" r="11.8"/></clipPath>
+  </defs>
+  <circle cx="16" cy="16" r="12.6" fill="#FAF6EF" fill-opacity="0.45"/>
+  <g clip-path="url(#carpet-clip)">
+    <polygon points="12.8,6.5 19.2,6.5 28,30.5 4,30.5" fill="#B3272D"/>
+  </g>
+  <circle cx="16" cy="16" r="12.6" fill="none" stroke="#C6A15B" stroke-width="1.8"/>
+</svg>

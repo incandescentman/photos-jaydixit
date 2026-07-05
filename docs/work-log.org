@@ -1,6 +1,22 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-04 - Replace favicon with Ghost Disc mark
+
+** Status
+- Shipped a new production favicon: the "Ghost Disc" mark — a bright-gold hairline ring with the red-carpet runner fused to its inner edge, floating over a 45%-opacity cream backing disc.
+- Chosen through a five-round contact-sheet process preserved in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/favicon-explorations/][docs/favicon-explorations/]] (red-carpet directions, ribbon/flash riffs, ring-and-field families, carpet-meets-ring refinements, then a Bright Hairline fine-tuning round; final pick was round-5 variant 16).
+
+** Shipped
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/favicon.svg][public/favicon.svg]] — new canonical vector mark (32x32 viewBox, ring r12.6 stroke ~#C6A15B~ at 1.8, runner ~#B3272D~ clipped to r11.8, disc ~#FAF6EF~ at 45%).
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/favicon-16x16.png][public/favicon-16x16.png]] and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/favicon-32x32.png][public/favicon-32x32.png]] — regenerated from the SVG via rsvg-convert.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/favicon.ico][public/favicon.ico]] — rebuilt with 16/32/48 layers via ImageMagick.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/apple-touch-icon.png][public/apple-touch-icon.png]] — 180x180 on a solid full-bleed ~#FAF6EF~ ground (iOS composites icons on arbitrary backgrounds and applies its own mask, so no ghost transparency there).
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/layouts/MainLayout.astro][src/layouts/MainLayout.astro]] — added a ~rel="icon" type="image/svg+xml"~ link ahead of the ico so modern browsers prefer the vector.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/android-chrome-192x192.png][public/android-chrome-192x192.png]] and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/android-chrome-512x512.png][public/android-chrome-512x512.png]] — regenerated on the same solid cream ground (Android masks/composites manifest icons, so no transparency); filenames and sizes match what ~site.webmanifest~ expects, manifest unchanged.
+- Previous favicon set archived to [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/assets/archive/favicons/2026-07-04-previous-favicon/][src/assets/archive/favicons/2026-07-04-previous-favicon/]] (ico, 16/32 PNGs, apple-touch, android-chrome 192/512), mirroring the logo-archive convention.
+- Validation: ~npm run build~ passes (86 pages).
+
 * 2026-07-04 - Match about-page essay copy to larger lead size
 
 ** Status

@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Favicon contact sheet - Corner Flash - photos.jaydixit.com</title>
+    <style>
+      :root {
+        --paper: #fdfcfb;
+        --paper-warm: #faf6ef;
+        --ink: #141312;
+        --muted: #6b6459;
+        --hair: #e7e0d4;
+        --gold: #a88434;
+        --red: #b3272d;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+        -webkit-font-smoothing: antialiased;
+        line-height: 1.5;
+      }
+
+      .wrap {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 64px 40px 96px;
+      }
+
+      .eyebrow,
+      .label,
+      .tabnote,
+      .size-label,
+      .number {
+        font-family:
+          "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace;
+        text-transform: uppercase;
+      }
+
+      .eyebrow {
+        margin: 0 0 22px;
+        color: var(--muted);
+        font-size: 11px;
+        letter-spacing: 0.22em;
+      }
+
+      h1 {
+        margin: 0 0 18px;
+        font-size: clamp(38px, 6vw, 66px);
+        font-weight: 300;
+        letter-spacing: -0.01em;
+        line-height: 1.02;
+      }
+
+      h1 em {
+        color: var(--gold);
+        font-style: italic;
+      }
+
+      .lede {
+        max-width: 62ch;
+        margin: 0 0 8px;
+        color: var(--muted);
+        font-size: 20px;
+      }
+
+      .section-label {
+        margin: 72px 0 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--hair);
+        color: var(--muted);
+        font-family:
+          "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace;
+        font-size: 10px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 1px;
+        border: 1px solid var(--hair);
+        background: var(--hair);
+      }
+
+      .card {
+        display: flex;
+        min-height: 318px;
+        flex-direction: column;
+        gap: 18px;
+        background: var(--paper);
+        padding: 22px;
+      }
+
+      .sizes {
+        display: grid;
+        grid-template-columns: 72px 48px 32px 24px 72px;
+        align-items: end;
+        column-gap: 13px;
+      }
+
+      .sample {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .sample .icon {
+        display: block;
+        border-radius: 7px;
+        box-shadow: 0 1px 3px rgba(20, 19, 18, 0.12);
+      }
+
+      .sample[data-size="64"] .icon {
+        width: 64px;
+        height: 64px;
+      }
+
+      .sample[data-size="32"] .icon {
+        width: 32px;
+        height: 32px;
+      }
+
+      .sample[data-size="24"] .icon {
+        width: 24px;
+        height: 24px;
+      }
+
+      .sample[data-size="16"] .icon {
+        width: 16px;
+        height: 16px;
+      }
+
+      .size-label {
+        color: var(--muted);
+        font-size: 9px;
+        letter-spacing: 0.12em;
+      }
+
+      .pixel-preview {
+        width: 64px;
+        height: 64px;
+        border-radius: 8px;
+        background:
+          linear-gradient(45deg, #eee 25%, transparent 25%),
+          linear-gradient(-45deg, #eee 25%, transparent 25%),
+          linear-gradient(45deg, transparent 75%, #eee 75%),
+          linear-gradient(-45deg, transparent 75%, #eee 75%);
+        background-color: #fff;
+        background-position:
+          0 0,
+          0 8px,
+          8px -8px,
+          -8px 0;
+        background-size: 16px 16px;
+        overflow: hidden;
+      }
+
+      .pixel-preview canvas {
+        width: 64px;
+        height: 64px;
+        image-rendering: pixelated;
+      }
+
+      .number {
+        margin-bottom: 2px;
+        color: var(--gold);
+        font-size: 10px;
+        letter-spacing: 0.15em;
+      }
+
+      .name {
+        margin: 0 0 4px;
+        font-size: 21px;
+        font-weight: 700;
+        line-height: 1.12;
+      }
+
+      .why {
+        margin: 0;
+        color: var(--muted);
+        font-size: 15.5px;
+        font-style: italic;
+        line-height: 1.35;
+      }
+
+      .tabstrip {
+        display: flex;
+        gap: 6px;
+        overflow-x: auto;
+        padding: 10px 12px 0;
+        border: 1px solid var(--hair);
+        border-bottom: none;
+        border-radius: 12px 12px 0 0;
+      }
+
+      .tabstrip.light {
+        background: #dee1e6;
+      }
+
+      .tabstrip.dark {
+        border-color: #3a3a3e;
+        background: #2b2b2e;
+      }
+
+      .tab {
+        display: flex;
+        flex: 0 0 auto;
+        width: 172px;
+        height: 34px;
+        align-items: center;
+        gap: 8px;
+        padding: 0 10px;
+        border-radius: 9px 9px 0 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Karla,
+          sans-serif;
+        font-size: 12px;
+        white-space: nowrap;
+      }
+
+      .tabstrip.light .tab {
+        background: #f6f6f7;
+        color: #3c4043;
+      }
+
+      .tabstrip.dark .tab {
+        background: #3a3a3e;
+        color: #dcdce0;
+      }
+
+      .tab .icon {
+        display: block;
+        width: 16px;
+        height: 16px;
+        flex: 0 0 16px;
+        border-radius: 3px;
+      }
+
+      .tab .lbl {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .tab .x {
+        margin-left: auto;
+        opacity: 0.5;
+        font-size: 13px;
+      }
+
+      .tabnote {
+        margin: 10px 0 32px;
+        color: var(--muted);
+        font-size: 10px;
+        letter-spacing: 0.12em;
+      }
+
+      @media (max-width: 720px) {
+        .wrap {
+          padding: 44px 20px 72px;
+        }
+
+        .sizes {
+          grid-template-columns: 68px 44px 30px 24px 68px;
+          column-gap: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <p class="eyebrow">Favicon contact sheet - photos.jaydixit.com</p>
+      <h1>The <em>Corner Flash</em> Family</h1>
+      <p class="lede">
+        Twelve variations on the red-carpet wedge with a gold flash in the
+        upper corner. This sheet tests whether the flash can become a real
+        signal at 16px instead of a tiny decorative speck.
+      </p>
+      <p class="lede">
+        The useful tension is simple: make the flash large enough to read, but
+        keep the mark from becoming generic sparkle clip art.
+      </p>
+
+      <div class="grid" id="grid"></div>
+
+      <p class="section-label">Browser tab simulation - light mode</p>
+      <div class="tabstrip light" id="strip-light"></div>
+      <p class="tabnote">
+        Every variant appears at true 16px beside a truncated "Jay Dixit
+        Photos" label.
+      </p>
+
+      <p class="section-label">Browser tab simulation - dark mode</p>
+      <div class="tabstrip dark" id="strip-dark"></div>
+      <p class="tabnote">
+        Cream-backed marks are expected to hold their edge best against dark
+        browser chrome.
+      </p>
+    </div>
+
+    <script>
+      const RED = "#b3272d";
+      const RED_DARK = "#a32c2a";
+      const GOLD = "#a88434";
+      const GOLD_LIGHT = "#c6a15b";
+      const CREAM = "#faf6ef";
+      const INK = "#141312";
+
+      const variants = [
+        {
+          key: "original",
+          name: "Original Corner Flash",
+          why: "The baseline from the red-carpet sheet: balanced, but the flash is shy at favicon size.",
+          bg: CREAM,
+          body: `<polygon points="11,6 21,6 30,29 2,29" fill="${RED}"/>
+                 <polygon points="24,3.5 25.3,6.7 28.5,8 25.3,9.3 24,12.5 22.7,9.3 19.5,8 22.7,6.7" fill="${GOLD}"/>`,
+        },
+        {
+          key: "big-flash",
+          name: "Bigger Flash",
+          why: "Same composition, but the flash gets enough mass to register in the browser tab.",
+          bg: CREAM,
+          body: `<polygon points="11,6 21,6 30,29 2,29" fill="${RED}"/>
+                 <polygon points="23.7,2.2 25.5,6.7 30,8.5 25.5,10.3 23.7,14.8 21.9,10.3 17.4,8.5 21.9,6.7" fill="${GOLD}"/>`,
+        },
+        {
+          key: "chunky-flash",
+          name: "Chunky Flash",
+          why: "The four-point burst becomes blockier, less elegant, and more durable at 16px.",
+          bg: CREAM,
+          body: `<polygon points="11,6 21,6 30,29 2,29" fill="${RED}"/>
+                 <polygon points="24,2 26.3,6.2 31,8 26.3,9.8 24,14 21.7,9.8 17,8 21.7,6.2" fill="${GOLD}"/>`,
+        },
+        {
+          key: "corner-crop",
+          name: "Corner Crop",
+          why: "Pushes the flash into the tile edge so it feels tucked into the corner, not pasted on.",
+          bg: CREAM,
+          body: `<polygon points="11,6 21,6 30,29 2,29" fill="${RED}"/>
+                 <polygon points="27,0.4 28.7,4.8 33.1,6.5 28.7,8.2 27,12.6 25.3,8.2 20.9,6.5 25.3,4.8" fill="${GOLD}"/>`,
+        },
+        {
+          key: "near-flash",
+          name: "Near Flash",
+          why: "Moves the burst closer to the carpet edge so the two shapes read as one event.",
+          bg: CREAM,
+          body: `<polygon points="10.8,6 21.2,6 30,29 2,29" fill="${RED}"/>
+                 <polygon points="22,4 23.9,8.4 28.2,10.2 23.9,12 22,16.3 20.1,12 15.8,10.2 20.1,8.4" fill="${GOLD}"/>`,
+        },
+        {
+          key: "low-carpet",
+          name: "Lower Carpet",
+          why: "Drops the red wedge slightly so the flash gets a clean field of cream around it.",
+          bg: CREAM,
+          body: `<polygon points="11,9 21,9 29,30 3,30" fill="${RED}"/>
+                 <polygon points="24,2.5 26.1,7.3 31,9.2 26.1,11.1 24,16 21.9,11.1 17,9.2 21.9,7.3" fill="${GOLD}"/>`,
+        },
+        {
+          key: "subject-flash",
+          name: "Subject + Flash",
+          why: "Adds the portrait idea back in: carpet, subject, and flash all in one compact glyph.",
+          bg: CREAM,
+          body: `<polygon points="11,7 21,7 30,29 2,29" fill="${RED}"/>
+                 <circle cx="16" cy="14.2" r="3.2" fill="${INK}"/>
+                 <polygon points="24.5,2.7 26,6.6 30,8.1 26,9.6 24.5,13.5 23,9.6 19,8.1 23,6.6" fill="${GOLD}"/>`,
+        },
+        {
+          key: "gold-subject",
+          name: "Gold Subject + Flash",
+          why: "Warmer than the ink subject, but the two gold forms compete at tiny size.",
+          bg: CREAM,
+          body: `<polygon points="11,7 21,7 30,29 2,29" fill="${RED}"/>
+                 <circle cx="16" cy="14.2" r="3.2" fill="${GOLD}"/>
+                 <polygon points="24.6,2.9 26.1,6.7 30,8.2 26.1,9.7 24.6,13.5 23.1,9.7 19.2,8.2 23.1,6.7" fill="${GOLD_LIGHT}"/>`,
+        },
+        {
+          key: "ring-flash",
+          name: "Ring + Flash",
+          why: "Pulls the new site-logo circle into the favicon family while keeping the flash motif.",
+          bg: CREAM,
+          body: `<polygon points="11.5,8.2 20.5,8.2 27,27 5,27" fill="${RED}"/>
+                 <polygon points="24,3 25.6,6.9 29.5,8.5 25.6,10.1 24,14 22.4,10.1 18.5,8.5 22.4,6.9" fill="${GOLD}"/>`,
+          after: `<circle cx="16" cy="16" r="11.6" fill="none" stroke="${GOLD}" stroke-width="2.8"/>`,
+        },
+        {
+          key: "open-ring-flash",
+          name: "Open Ring + Flash",
+          why: "A lighter ring variant: more editorial, less badge-like, and less crowded near the flash.",
+          bg: CREAM,
+          body: `<polygon points="11,7.5 21,7.5 28,28 4,28" fill="${RED}"/>
+                 <polygon points="24.2,2.6 25.8,6.6 30,8.2 25.8,9.8 24.2,13.8 22.6,9.8 18.4,8.2 22.6,6.6" fill="${GOLD}"/>`,
+          after: `<path d="M7.8 22.5A11.4 11.4 0 1 1 23 25" fill="none" stroke="${GOLD}" stroke-width="2.8" stroke-linecap="round"/>`,
+        },
+        {
+          key: "red-field",
+          name: "Red Field",
+          why: "Inverts the tile: maximum red-carpet signal, with the flash and cream runner cut through it.",
+          bg: RED_DARK,
+          body: `<polygon points="11,6 21,6 30,29 2,29" fill="${CREAM}"/>
+                 <polygon points="24,2.6 26,7.1 30.5,9 26,10.9 24,15.4 22,10.9 17.5,9 22,7.1" fill="${GOLD_LIGHT}"/>`,
+        },
+        {
+          key: "ribbon-flash",
+          name: "Ribbon + Flash",
+          why: "Combines the clean red-ribbon abstraction with the corner flash as a premiere cue.",
+          bg: CREAM,
+          body: `<polygon points="-1,13 13,-1 33,19 19,33" fill="${RED}"/>
+                 <polygon points="24,2.4 26,7 30.5,8.8 26,10.6 24,15.2 22,10.6 17.5,8.8 22,7" fill="${GOLD}"/>`,
+        },
+      ];
+
+      function renderIcon(variant, suffix) {
+        const clipId = `clip-${variant.key}-${suffix}`;
+        return `<svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true">
+          <defs><clipPath id="${clipId}"><rect width="32" height="32" rx="7"/></clipPath></defs>
+          <rect width="32" height="32" rx="7" fill="${variant.bg}"/>
+          <g clip-path="url(#${clipId})">${variant.body}</g>
+          ${variant.after || ""}
+        </svg>`;
+      }
+
+      const grid = document.getElementById("grid");
+
+      variants.forEach((variant, index) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        const number = String(index + 1).padStart(2, "0");
+        card.innerHTML = `
+          <div class="sizes">
+            <div class="sample" data-size="64">
+              ${renderIcon(variant, `card-${number}-64`)}
+              <div class="size-label">64px</div>
+            </div>
+            <div class="sample" data-size="32">
+              ${renderIcon(variant, `card-${number}-32`)}
+              <div class="size-label">32px</div>
+            </div>
+            <div class="sample" data-size="24">
+              ${renderIcon(variant, `card-${number}-24`)}
+              <div class="size-label">24px</div>
+            </div>
+            <div class="sample" data-size="16">
+              ${renderIcon(variant, `card-${number}-16`)}
+              <div class="size-label">16px</div>
+            </div>
+            <div class="sample">
+              <div class="pixel-preview">
+                <canvas width="16" height="16" data-variant="${index}" aria-hidden="true"></canvas>
+              </div>
+              <div class="size-label">16px x4</div>
+            </div>
+          </div>
+          <div class="meta">
+            <div class="number">${number}</div>
+            <h2 class="name">${variant.name}</h2>
+            <p class="why">${variant.why}</p>
+          </div>`;
+        grid.appendChild(card);
+      });
+
+      function buildStrip(el, suffix) {
+        variants.forEach((variant, index) => {
+          const tab = document.createElement("div");
+          tab.className = "tab";
+          const number = String(index + 1).padStart(2, "0");
+          tab.innerHTML = `${renderIcon(variant, `${suffix}-${number}`)}
+            <span class="lbl">Jay Dixit Photos</span><span class="x">x</span>`;
+          el.appendChild(tab);
+        });
+      }
+
+      buildStrip(document.getElementById("strip-light"), "light");
+      buildStrip(document.getElementById("strip-dark"), "dark");
+
+      document.querySelectorAll("canvas[data-variant]").forEach((canvas) => {
+        const variant = variants[Number(canvas.dataset.variant)];
+        const raw = renderIcon(variant, `raster-${variant.key}`);
+        const image = new Image();
+        image.onload = () => {
+          const context = canvas.getContext("2d");
+          context.clearRect(0, 0, 16, 16);
+          context.drawImage(image, 0, 0, 16, 16);
+        };
+        image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(raw)}`;
+      });
+    </script>
+  </body>
+</html>
