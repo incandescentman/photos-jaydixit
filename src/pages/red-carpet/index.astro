@@ -180,7 +180,7 @@ const portraitsStructuredData = {
 	<section class="rc-page">
 		<div class="rc-shell">
 			<header class="rc-header">
-				<p class="rc-kicker">Portrait Archive</p>
+				<p class="rc-kicker eyebrow">Portrait Archive</p>
 				<h1 class="rc-title">Red Carpet Photos</h1>
 				<p class="rc-standfirst">
 					Subjects photographed at film festivals, Nobel ceremonies, and cultural events around the
@@ -234,8 +234,8 @@ const portraitsStructuredData = {
 								</div>
 								<div class="rc-meta">
 									<h3 class="rc-name">{person.name}</h3>
-									{person.bio && <p class="rc-bio">{person.bio}</p>}
-									<p class="rc-count">
+									{person.bio && <p class="rc-bio photo-caption">{person.bio}</p>}
+									<p class="rc-count photo-credit">
 										{person.photoCount} {person.photoCount === 1 ? 'photo' : 'photos'}
 									</p>
 								</div>
@@ -273,12 +273,6 @@ const portraitsStructuredData = {
 
 	.rc-kicker {
 		margin: 0 0 1.4rem;
-		font-family: var(--sans);
-		font-size: 0.75rem;
-		font-weight: 500;
-		letter-spacing: 0.32em;
-		text-transform: uppercase;
-		color: var(--accent);
 	}
 
 	.rc-title {
@@ -412,20 +406,10 @@ const portraitsStructuredData = {
 
 	.rc-bio {
 		margin: 0.4rem 0 0;
-		font-family: var(--sans);
-		font-size: 0.85rem;
-		line-height: 1.4;
-		color: #6e675c;
 	}
 
 	.rc-count {
 		margin: 0.55rem 0 0;
-		font-family: var(--sans);
-		font-size: 0.72rem;
-		font-weight: 500;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
-		color: var(--muted);
 	}
 
 	.rc-empty {

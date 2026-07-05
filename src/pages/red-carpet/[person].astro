@@ -320,7 +320,7 @@ export function getStaticPaths() {
 							href={personData.wikipedia}
 							target="_blank"
 							rel="noopener noreferrer"
-							class="inline-block mt-2 text-base text-brand hover:text-brand-dark hover:underline"
+							class="editorial-link inline-block mt-2"
 						>
 							Wikipedia &rarr;
 						</a>
@@ -349,7 +349,7 @@ export function getStaticPaths() {
 									<p class="text-base font-medium text-gray-800 group-hover:text-gray-900">
 										{photo.caption}
 									</p>
-									<p class="text-sm text-gray-500 mt-0.5">{photo.galleryName}</p>
+									<p class="photo-credit mt-0.5">{photo.galleryName}</p>
 								</div>
 							</a>
 						) : (
@@ -368,7 +368,7 @@ export function getStaticPaths() {
 								</div>
 								<div class="mt-3 px-1">
 									<p class="text-base font-medium text-gray-800">{photo.caption}</p>
-									<p class="text-sm text-gray-500 mt-0.5">{photo.galleryName}</p>
+									<p class="photo-credit mt-0.5">{photo.galleryName}</p>
 								</div>
 							</div>
 						),

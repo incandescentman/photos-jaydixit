@@ -12,7 +12,7 @@ import { comparisons } from '../data/beforeAfter';
 	<!-- Hero -->
 	<section class="ba-hero">
 		<div class="ba-shell">
-			<p class="ba-kicker">The WikiPortraits Project</p>
+			<p class="ba-kicker eyebrow">The WikiPortraits Project</p>
 			<h1 class="ba-title">Before &amp; After</h1>
 			<p class="ba-standfirst">
 				Wikipedia deserves better photographs. As a red-carpet photographer for Wikipedia, I replace
@@ -44,7 +44,7 @@ import { comparisons } from '../data/beforeAfter';
 											href={comparison.article}
 											target="_blank"
 											rel="noopener noreferrer"
-											class="ba-wiki"
+											class="ba-wiki editorial-link"
 										>
 											View on Wikipedia
 											<span aria-hidden="true">&rarr;</span>
@@ -93,7 +93,7 @@ import { comparisons } from '../data/beforeAfter';
 	<!-- Context -->
 	<section class="ba-context">
 		<div class="ba-shell ba-shell--narrow">
-			<p class="ba-kicker ba-kicker--center">Why This Matters</p>
+			<p class="ba-kicker ba-kicker--center eyebrow">Why This Matters</p>
 			<p class="ba-pullquote">
 				For many people, a Wikipedia article is the first place they go to learn about someone. The
 				photo at the top shapes how millions perceive that person.
@@ -102,8 +102,9 @@ import { comparisons } from '../data/beforeAfter';
 				Yet countless articles still feature outdated, poorly lit, or unflattering images — awkward
 				crops from group shots, grainy phone photos, stills pulled from video interviews. Through
 				the
-				<a href="/blog/wikiportraits-story" class="ba-inline-link">WikiPortraits initiative</a>, I'm
-				working to change that, one portrait at a time.
+				<a href="/blog/wikiportraits-story" class="ba-inline-link editorial-link"
+					>WikiPortraits initiative</a
+				>, I'm working to change that, one portrait at a time.
 			</p>
 		</div>
 	</section>
@@ -152,12 +153,6 @@ import { comparisons } from '../data/beforeAfter';
 
 	.ba-kicker {
 		margin: 0 0 1.6rem;
-		font-family: var(--sans);
-		font-size: 0.75rem;
-		font-weight: 500;
-		letter-spacing: 0.32em;
-		text-transform: uppercase;
-		color: var(--accent);
 	}
 
 	.ba-kicker--center {
@@ -257,16 +252,9 @@ import { comparisons } from '../data/beforeAfter';
 		font-family: var(--sans);
 		font-size: 0.81rem;
 		letter-spacing: 0.04em;
-		color: var(--accent);
-		text-decoration: none;
 		white-space: nowrap;
 		padding-bottom: 0.375rem;
 		border-bottom: 1px solid transparent;
-		transition: border-color 0.3s ease;
-	}
-
-	.ba-wiki:hover {
-		border-bottom-color: #c9b792;
 	}
 
 	.ba-images {
@@ -416,7 +404,6 @@ import { comparisons } from '../data/beforeAfter';
 	}
 
 	.ba-inline-link {
-		color: var(--accent);
 		text-decoration: underline;
 		text-underline-offset: 2px;
 		text-decoration-thickness: 1px;

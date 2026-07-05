@@ -4,7 +4,7 @@ import MainLayout from '../layouts/MainLayout.astro';
 
 const pressEntry = await getEntry('press', 'media-kit');
 if (!pressEntry) {
-  throw new Error('Press collection entry "media-kit" is required.');
+	throw new Error('Press collection entry "media-kit" is required.');
 }
 
 const { data } = pressEntry;
@@ -19,322 +19,331 @@ const contactEmail = data.contactEmail ?? 'press@jaydixit.com';
 const quote = data.quote;
 
 const formattedDate = lastUpdated
-  ? lastUpdated.toLocaleDateString('en-US', {
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric',
-    })
-  : null;
+	? lastUpdated.toLocaleDateString('en-US', {
+			month: 'long',
+			day: 'numeric',
+			year: 'numeric',
+		})
+	: null;
 ---
 
 <MainLayout title={data.title} description={subtitle}>
-  <section class="press-hero">
-    <div class="press-hero__content">
-      <p class="press-kicker">Press Kit</p>
-      <h1>{data.title}</h1>
-      <p class="press-subtitle">{subtitle}</p>
-      <div class="press-meta">
-        <span>Contact: <a href={`mailto:${contactEmail}`}>{contactEmail}</a></span>
-        {formattedDate && <span>Updated {formattedDate}</span>}
-      </div>
-      {quote && (
-        <blockquote class="press-quote">
-          <p>“{quote.text}”</p>
-          {quote.attribution && <cite>— {quote.attribution}</cite>}
-        </blockquote>
-      )}
-    </div>
-  </section>
+	<section class="press-hero">
+		<div class="press-hero__content">
+			<p class="press-kicker eyebrow">Press Kit</p>
+			<h1>{data.title}</h1>
+			<p class="press-subtitle">{subtitle}</p>
+			<div class="press-meta">
+				<span>Contact: <a href={`mailto:${contactEmail}`}>{contactEmail}</a></span>
+				{formattedDate && <span>Updated {formattedDate}</span>}
+			</div>
+			{
+				quote && (
+					<blockquote class="press-quote">
+						<p>“{quote.text}”</p>
+						{quote.attribution && <cite>— {quote.attribution}</cite>}
+					</blockquote>
+				)
+			}
+		</div>
+	</section>
 
-  {heroShots.length > 0 && (
-    <section class="press-gallery">
-      <h2>Hero Images</h2>
-      <p class="press-gallery__hint">Click any image for a high-resolution download.</p>
-      <div class="press-gallery__grid">
-        {heroShots.map((shot) => (
-          <figure class="press-gallery__item">
-            <a href={shot.downloadUrl ?? shot.image} target="_blank" rel="noopener">
-              <img src={shot.image} alt={shot.caption ?? shot.title} loading="lazy" decoding="async" />
-            </a>
-            <figcaption>
-              <strong>{shot.title}</strong>
-              {shot.caption && <span>{shot.caption}</span>}
-            </figcaption>
-          </figure>
-        ))}
-      </div>
-    </section>
-  )}
+	{
+		heroShots.length > 0 && (
+			<section class="press-gallery">
+				<h2>Hero Images</h2>
+				<p class="press-gallery__hint">Click any image for a high-resolution download.</p>
+				<div class="press-gallery__grid">
+					{heroShots.map((shot) => (
+						<figure class="press-gallery__item">
+							<a href={shot.downloadUrl ?? shot.image} target="_blank" rel="noopener">
+								<img
+									src={shot.image}
+									alt={shot.caption ?? shot.title}
+									loading="lazy"
+									decoding="async"
+								/>
+							</a>
+							<figcaption>
+								<strong>{shot.title}</strong>
+								{shot.caption && <span>{shot.caption}</span>}
+							</figcaption>
+						</figure>
+					))}
+				</div>
+			</section>
+		)
+	}
 
-  {downloads.length > 0 && (
-    <section class="press-downloads">
-      <h2>Downloads</h2>
-      <ul>
-        {downloads.map((item) => (
-          <li>
-            <a href={item.url} target="_blank" rel="noopener">
-              {item.label}
-            </a>
-            {item.description && <p>{item.description}</p>}
-          </li>
-        ))}
-      </ul>
-    </section>
-  )}
+	{
+		downloads.length > 0 && (
+			<section class="press-downloads">
+				<h2>Downloads</h2>
+				<ul>
+					{downloads.map((item) => (
+						<li>
+							<a href={item.url} target="_blank" rel="noopener">
+								{item.label}
+							</a>
+							{item.description && <p>{item.description}</p>}
+						</li>
+					))}
+				</ul>
+			</section>
+		)
+	}
 
-  {guidelines.length > 0 && (
-    <section class="press-guidelines">
-      <h2>Usage Guidelines</h2>
-      <div class="press-guidelines__grid">
-        {guidelines.map((rule) => (
-          <article>
-            <h3>{rule.title}</h3>
-            <p>{rule.description}</p>
-          </article>
-        ))}
-      </div>
-    </section>
-  )}
+	{
+		guidelines.length > 0 && (
+			<section class="press-guidelines">
+				<h2>Usage Guidelines</h2>
+				<div class="press-guidelines__grid">
+					{guidelines.map((rule) => (
+						<article>
+							<h3>{rule.title}</h3>
+							<p>{rule.description}</p>
+						</article>
+					))}
+				</div>
+			</section>
+		)
+	}
 
-  <section class="press-body">
-    <Content />
-  </section>
+	<section class="press-body">
+		<Content />
+	</section>
 </MainLayout>
 
 <style>
-  .press-hero {
-    padding: var(--nav-clearance) 0 80px;
-    background: linear-gradient(135deg, rgba(30, 58, 138, 0.08), rgba(30, 64, 175, 0.03));
-  }
+	.press-hero {
+		padding: var(--nav-clearance) 0 80px;
+		background: linear-gradient(135deg, rgba(30, 58, 138, 0.08), rgba(30, 64, 175, 0.03));
+	}
 
-  .press-hero__content {
-    max-width: 840px;
-    margin: 0 auto;
-    padding: 0 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-  }
+	.press-hero__content {
+		max-width: 840px;
+		margin: 0 auto;
+		padding: 0 24px;
+		display: flex;
+		flex-direction: column;
+		gap: 18px;
+	}
 
-  .press-kicker {
-    text-transform: uppercase;
-    letter-spacing: 0.36em;
-    font-size: 12px;
-    color: #1e3a8a;
-    font-weight: 600;
-  }
+	.press-kicker {
+		margin: 0;
+	}
 
-  .press-hero h1 {
-    font-size: clamp(2.75rem, 5vw, 3.75rem);
-    margin: 0;
-    font-family: 'Cormorant Garamond', serif;
-    color: #0f172a;
-  }
+	.press-hero h1 {
+		font-size: clamp(2.75rem, 5vw, 3.75rem);
+		margin: 0;
+		font-family: 'Cormorant Garamond', serif;
+		color: #0f172a;
+	}
 
-  .press-subtitle {
-    font-size: 1.125rem;
-    color: #334155;
-    max-width: 640px;
-    line-height: 1.6;
-  }
+	.press-subtitle {
+		font-size: 1.125rem;
+		color: #334155;
+		max-width: 640px;
+		line-height: 1.6;
+	}
 
-  .press-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    font-size: 0.95rem;
-    color: #475569;
-  }
+	.press-meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 16px;
+		font-size: 0.95rem;
+		color: #475569;
+	}
 
-  .press-meta a {
-    color: inherit;
-    text-decoration: none;
-    font-weight: 600;
-  }
+	.press-meta a {
+		color: inherit;
+		text-decoration: none;
+		font-weight: 600;
+	}
 
-  .press-meta a:hover {
-    text-decoration: underline;
-  }
+	.press-meta a:hover {
+		text-decoration: underline;
+	}
 
-  .press-quote {
-    margin: 12px 0 0;
-    padding-left: 20px;
-    border-left: 3px solid rgba(30, 58, 138, 0.4);
-    color: #1f2937;
-    font-size: 1rem;
-    line-height: 1.6;
-  }
+	.press-quote {
+		margin: 12px 0 0;
+		padding-left: 20px;
+		border-left: 3px solid rgba(30, 58, 138, 0.4);
+		color: #1f2937;
+		font-size: 1rem;
+		line-height: 1.6;
+	}
 
-  .press-quote cite {
-    display: block;
-    margin-top: 8px;
-    font-size: 0.9rem;
-    color: #64748b;
-    font-style: normal;
-    font-weight: 600;
-  }
+	.press-quote cite {
+		display: block;
+		margin-top: 8px;
+		font-size: 0.9rem;
+		color: #64748b;
+		font-style: normal;
+		font-weight: 600;
+	}
 
-  .press-gallery {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 60px 24px;
-  }
+	.press-gallery {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 60px 24px;
+	}
 
-  .press-gallery h2,
-  .press-downloads h2,
-  .press-guidelines h2,
-  .press-body h2 {
-    font-size: 2rem;
-    margin-bottom: 24px;
-    font-family: 'Cormorant Garamond', serif;
-  }
+	.press-gallery h2,
+	.press-downloads h2,
+	.press-guidelines h2,
+	.press-body h2 {
+		font-size: 2rem;
+		margin-bottom: 24px;
+		font-family: 'Cormorant Garamond', serif;
+	}
 
-  .press-gallery__hint {
-    color: #64748b;
-    margin: -12px 0 28px;
-    font-size: 0.95rem;
-  }
+	.press-gallery__hint {
+		color: #64748b;
+		margin: -12px 0 28px;
+		font-size: 0.95rem;
+	}
 
-  .press-gallery__grid {
-    display: grid;
-    gap: 28px;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  }
+	.press-gallery__grid {
+		display: grid;
+		gap: 28px;
+		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	}
 
-  .press-gallery__item {
-    background: #fff;
-    border-radius: 18px;
-    overflow: hidden;
-    box-shadow: 0 20px 45px -35px rgba(15, 23, 42, 0.5);
-    border: 1px solid rgba(226, 232, 240, 0.8);
-  }
+	.press-gallery__item {
+		background: #fff;
+		border-radius: 18px;
+		overflow: hidden;
+		box-shadow: 0 20px 45px -35px rgba(15, 23, 42, 0.5);
+		border: 1px solid rgba(226, 232, 240, 0.8);
+	}
 
-  .press-gallery__item img {
-    display: block;
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    transition: transform 0.35s ease;
-  }
+	.press-gallery__item img {
+		display: block;
+		width: 100%;
+		height: auto;
+		object-fit: cover;
+		transition: transform 0.35s ease;
+	}
 
-  .press-gallery__item a:hover img {
-    transform: scale(1.02);
-  }
+	.press-gallery__item a:hover img {
+		transform: scale(1.02);
+	}
 
-  .press-gallery__item figcaption {
-    padding: 18px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    color: #334155;
-    font-size: 0.95rem;
-  }
+	.press-gallery__item figcaption {
+		padding: 18px 20px;
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		color: #334155;
+		font-size: 0.95rem;
+	}
 
-  .press-gallery__item figcaption strong {
-    font-size: 1rem;
-    color: #0f172a;
-  }
+	.press-gallery__item figcaption strong {
+		font-size: 1rem;
+		color: #0f172a;
+	}
 
-  .press-downloads {
-    max-width: 840px;
-    margin: 0 auto;
-    padding: 20px 24px 60px;
-  }
+	.press-downloads {
+		max-width: 840px;
+		margin: 0 auto;
+		padding: 20px 24px 60px;
+	}
 
-  .press-downloads ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 20px;
-  }
+	.press-downloads ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: 20px;
+	}
 
-  .press-downloads li {
-    background: #f8fafc;
-    border-radius: 16px;
-    padding: 20px 24px;
-    border: 1px solid rgba(203, 213, 225, 0.7);
-  }
+	.press-downloads li {
+		background: #f8fafc;
+		border-radius: 16px;
+		padding: 20px 24px;
+		border: 1px solid rgba(203, 213, 225, 0.7);
+	}
 
-  .press-downloads a {
-    font-weight: 600;
-    text-decoration: none;
-    color: #1e3a8a;
-  }
+	.press-downloads a {
+		font-weight: 600;
+		text-decoration: none;
+		color: #1e3a8a;
+	}
 
-  .press-downloads a:hover {
-    text-decoration: underline;
-  }
+	.press-downloads a:hover {
+		text-decoration: underline;
+	}
 
-  .press-downloads p {
-    margin: 10px 0 0;
-    color: #475569;
-    font-size: 0.95rem;
-  }
+	.press-downloads p {
+		margin: 10px 0 0;
+		color: #475569;
+		font-size: 0.95rem;
+	}
 
-  .press-guidelines {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 20px 24px 70px;
-  }
+	.press-guidelines {
+		max-width: 1100px;
+		margin: 0 auto;
+		padding: 20px 24px 70px;
+	}
 
-  .press-guidelines__grid {
-    display: grid;
-    gap: 24px;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  }
+	.press-guidelines__grid {
+		display: grid;
+		gap: 24px;
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	}
 
-  .press-guidelines article {
-    background: linear-gradient(160deg, rgba(30, 64, 175, 0.08), rgba(30, 64, 175, 0));
-    padding: 24px;
-    border-radius: 18px;
-    border: 1px solid rgba(191, 219, 254, 0.6);
-  }
+	.press-guidelines article {
+		background: linear-gradient(160deg, rgba(30, 64, 175, 0.08), rgba(30, 64, 175, 0));
+		padding: 24px;
+		border-radius: 18px;
+		border: 1px solid rgba(191, 219, 254, 0.6);
+	}
 
-  .press-guidelines h3 {
-    margin: 0 0 12px;
-    font-size: 1.15rem;
-    color: #1e3a8a;
-  }
+	.press-guidelines h3 {
+		margin: 0 0 12px;
+		font-size: 1.15rem;
+		color: #1e3a8a;
+	}
 
-  .press-guidelines p {
-    margin: 0;
-    color: #1f2937;
-    font-size: 0.98rem;
-    line-height: 1.55;
-  }
+	.press-guidelines p {
+		margin: 0;
+		color: #1f2937;
+		font-size: 0.98rem;
+		line-height: 1.55;
+	}
 
-  .press-body {
-    max-width: 780px;
-    margin: 0 auto 100px;
-    padding: 20px 24px;
-    color: #1f2937;
-    font-size: 1.02rem;
-    line-height: 1.7;
-  }
+	.press-body {
+		max-width: 780px;
+		margin: 0 auto 100px;
+		padding: 20px 24px;
+		color: #1f2937;
+		font-size: 1.02rem;
+		line-height: 1.7;
+	}
 
-  .press-body p {
-    margin-bottom: 1.3em;
-  }
+	.press-body p {
+		margin-bottom: 1.3em;
+	}
 
-  .press-body ul,
-  .press-body ol {
-    margin-left: 1.5em;
-    padding-left: 0;
-  }
+	.press-body ul,
+	.press-body ol {
+		margin-left: 1.5em;
+		padding-left: 0;
+	}
 
-  @media (max-width: 768px) {
-    .press-hero {
-      padding: var(--nav-clearance) 0 60px;
-    }
+	@media (max-width: 768px) {
+		.press-hero {
+			padding: var(--nav-clearance) 0 60px;
+		}
 
-    .press-meta {
-      flex-direction: column;
-      gap: 8px;
-    }
+		.press-meta {
+			flex-direction: column;
+			gap: 8px;
+		}
 
-    .press-gallery__grid {
-      grid-template-columns: 1fr;
-    }
-  }
+		.press-gallery__grid {
+			grid-template-columns: 1fr;
+		}
+	}
 </style>

@@ -11,10 +11,9 @@ The goal is not a full redesign for its own sake. The goal is to make the site f
 This plan still applies, but several first-pass items have already landed or are in the current working tree.
 
 - 2026-07-05: Section 3's before/after typed-data extraction and reusable [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/EditorialPhotoFrame.astro][EditorialPhotoFrame]] component landed.
+- 2026-07-05: Section 1's shared editorial text classes (~.eyebrow~, ~.photo-caption~, ~.photo-credit~, and ~.editorial-link~) landed.
 
 Still-current work:
-- shared editorial caption, credit, and link styling
-- before-and-after data extraction into typed data
 - reusable editorial photo/card components
 - richer discovery paths for events, publications, Wikipedia upgrades, and recently added work
 - Wikimedia/Wikipedia status metadata and provenance display

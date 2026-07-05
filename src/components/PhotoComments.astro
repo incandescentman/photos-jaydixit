@@ -5,7 +5,7 @@ const discussionTerm = photoId ? `${galleryName}-${photoId}` : galleryName;
 
 <section class="comments-section" aria-label="Comments">
 	<div class="comments-header">
-		<p class="comments-kicker">Discussion</p>
+		<p class="comments-kicker eyebrow">Discussion</p>
 		<h2 class="comments-title">Comments</h2>
 		<p class="comments-subtitle">Join the conversation on GitHub.</p>
 	</div>
@@ -16,94 +16,90 @@ const discussionTerm = photoId ? `${galleryName}-${photoId}` : galleryName;
 </section>
 
 <script is:inline>
-function loadGiscusComments() {
-  const container = document.getElementById('giscus-container');
-  if (!container || container.dataset.loaded === 'true') return;
+	function loadGiscusComments() {
+		const container = document.getElementById('giscus-container');
+		if (!container || container.dataset.loaded === 'true') return;
 
-  const term = container.dataset.term;
-  if (!term) return;
+		const term = container.dataset.term;
+		if (!term) return;
 
-  // Create Giscus script element
-  const script = document.createElement('script');
-  script.src = 'https://giscus.app/client.js';
-  script.setAttribute('data-repo', 'incandescentman/photos-jaydixit');
-  script.setAttribute('data-repo-id', 'R_kgDOPg12Gg');
-  script.setAttribute('data-category', 'General');
-  script.setAttribute('data-category-id', 'DIC_kwDOPg12Gs4C2qOO');
-  script.setAttribute('data-mapping', 'specific');
-  script.setAttribute('data-term', term);
-  script.setAttribute('data-strict', '0');
-  script.setAttribute('data-reactions-enabled', '1');
-  script.setAttribute('data-emit-metadata', '0');
-  script.setAttribute('data-input-position', 'bottom');
-  script.setAttribute('data-theme', 'light');
-  script.setAttribute('data-lang', 'en');
-  script.setAttribute('data-loading', 'lazy');
-  script.crossOrigin = 'anonymous';
-  script.async = true;
+		// Create Giscus script element
+		const script = document.createElement('script');
+		script.src = 'https://giscus.app/client.js';
+		script.setAttribute('data-repo', 'incandescentman/photos-jaydixit');
+		script.setAttribute('data-repo-id', 'R_kgDOPg12Gg');
+		script.setAttribute('data-category', 'General');
+		script.setAttribute('data-category-id', 'DIC_kwDOPg12Gs4C2qOO');
+		script.setAttribute('data-mapping', 'specific');
+		script.setAttribute('data-term', term);
+		script.setAttribute('data-strict', '0');
+		script.setAttribute('data-reactions-enabled', '1');
+		script.setAttribute('data-emit-metadata', '0');
+		script.setAttribute('data-input-position', 'bottom');
+		script.setAttribute('data-theme', 'light');
+		script.setAttribute('data-lang', 'en');
+		script.setAttribute('data-loading', 'lazy');
+		script.crossOrigin = 'anonymous';
+		script.async = true;
 
-  container.innerHTML = '';
-  container.appendChild(script);
-  container.dataset.loaded = 'true';
-}
+		container.innerHTML = '';
+		container.appendChild(script);
+		container.dataset.loaded = 'true';
+	}
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', loadGiscusComments);
-} else {
-  loadGiscusComments();
-}
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', loadGiscusComments);
+	} else {
+		loadGiscusComments();
+	}
 </script>
 
 <style>
-.comments-section {
-  margin-top: 4rem;
-  padding: 2rem;
-  border: 1px solid rgba(226, 232, 240, 0.95);
-  border-radius: 2rem;
-  background: linear-gradient(180deg, rgba(248, 250, 252, 0.98), rgba(255, 255, 255, 1));
-  box-shadow: 0 30px 80px -55px rgba(15, 23, 42, 0.45);
-}
+	.comments-section {
+		margin-top: 4rem;
+		padding: 2rem;
+		border: 1px solid rgba(226, 232, 240, 0.95);
+		border-radius: 2rem;
+		background: linear-gradient(180deg, rgba(248, 250, 252, 0.98), rgba(255, 255, 255, 1));
+		box-shadow: 0 30px 80px -55px rgba(15, 23, 42, 0.45);
+	}
 
-.comments-header {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
+	.comments-header {
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+		margin-bottom: 1.5rem;
+		text-align: center;
+	}
 
-.comments-kicker {
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: #94a3b8;
-}
+	.comments-kicker {
+		margin: 0;
+	}
 
-.comments-title {
-  font-size: clamp(1.6rem, 2.2vw, 2rem);
-  font-weight: 700;
-  color: #0f172a;
-}
+	.comments-title {
+		font-size: clamp(1.6rem, 2.2vw, 2rem);
+		font-weight: 700;
+		color: #0f172a;
+	}
 
-.comments-subtitle {
-  font-size: 1rem;
-  color: #64748b;
-}
+	.comments-subtitle {
+		font-size: 1rem;
+		color: #64748b;
+	}
 
-.comments-frame {
-  max-width: 64rem;
-  margin: 0 auto;
-}
+	.comments-frame {
+		max-width: 64rem;
+		margin: 0 auto;
+	}
 
-#giscus-container {
-  min-height: 200px;
-}
+	#giscus-container {
+		min-height: 200px;
+	}
 
-@media (max-width: 768px) {
-  .comments-section {
-    padding: 1.5rem;
-    border-radius: 1.5rem;
-  }
-}
+	@media (max-width: 768px) {
+		.comments-section {
+			padding: 1.5rem;
+			border-radius: 1.5rem;
+		}
+	}
 </style>

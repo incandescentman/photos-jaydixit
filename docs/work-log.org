@@ -1,6 +1,32 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-05 - Land shared editorial text classes
+
+** Status
+- Completed Section 1's shared editorial typography pass from [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/site-wide-improvements-implementation-plan.org][docs/site-wide-improvements-implementation-plan.org]] without changing public-facing copy or touching Packery-related files.
+
+** Changed
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/styles/global.css][src/styles/global.css]]
+  - Added the shared ~.eyebrow~, ~.photo-caption~, ~.photo-credit~, and ~.editorial-link~ component classes.
+  - Derived the typography from the before/after page's existing kicker, caption source, and quiet-link treatments.
+  - Chose an AA-safe muted value for ~.photo-credit~ so the credit line remains readable on the site's warm paper background.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/before-after.astro][src/pages/before-after.astro]], [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/red-carpet/index.astro][src/pages/red-carpet/index.astro]], [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/about.astro][src/pages/about.astro]], [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/contact.astro][src/pages/contact.astro]], [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/blog/index.astro][src/pages/blog/index.astro]], [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/press.astro][src/pages/press.astro]], and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/PhotoComments.astro][src/components/PhotoComments.astro]]
+  - Rewired local kicker classes to compose with ~.eyebrow~ and left page-local rules responsible only for spacing/layout.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/gallery/index.astro][src/pages/gallery/index.astro]], [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/gallery/photo][src/pages/gallery/photo]], and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/red-carpet][src/pages/red-carpet]]
+  - Applied ~.photo-caption~, ~.photo-credit~, and ~.editorial-link~ to the requested card, person, gallery-name, photo-detail, EXIF, and Wikipedia-link surfaces while preserving layout classes and visible words.
+
+** Validation
+- ~pnpm lint~ passed.
+- ~pnpm test~ passed: 21 Vitest tests; the existing missing fixture warnings for ~unknown.jpg~ appeared.
+- ~pnpm run build~ passed: Astro built 84 pages; only the existing Node ~DEP0205~ warning appeared.
+- ~pnpm exec playwright test tests/e2e/portfolio.e2e.ts~ passed: 19 Playwright tests.
+- ~git diff --check~ passed.
+- Local dev route checks on ~http://127.0.0.1:4330/~ returned 200 for ~/red-carpet/~, ~/gallery/~, ~/before-after/~, ~/about/~, ~/red-carpet/conan-obrien/~, and ~/gallery/photo/red-carpet/sundance/conan-obrien_sundance_2024/~.
+- Desktop and mobile screenshots for those routes were captured against both local dev and production; comparison artifacts live in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/test-results/editorial-step-2/][test-results/editorial-step-2/]]. The only large production mismatch is from earlier local, unpushed work: the red-carpet 3-card layout and the before/after refactor state.
+- Computed-style spot checks confirmed shared-class usage on the requested routes, including ~.photo-credit~ at ~rgb(110, 103, 92)~ and ~.eyebrow~ at the before/after kicker treatment.
+- Source grep confirmed local kicker/card leftovers no longer duplicate the shared typography rules.
+
 * 2026-07-05 - Enlarge red-carpet index cards to 3 per row
 
 ** Status
