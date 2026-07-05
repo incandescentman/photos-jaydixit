@@ -1,242 +1,246 @@
 {
-  "jaydixit-photos-logo.png": {
-    "width": 1200,
-    "height": 1200
-  },
-  "logo.png": {
-    "width": 2048,
-    "height": 2048
-  },
-  "images/profile.webp": {
-    "width": 1024,
-    "height": 1024
-  },
-  "highlights/2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07141.jpg": {
-    "width": 4000,
-    "height": 6000
-  },
-  "highlights/ron-livingston_sxsw-office-space-event_2024.jpg": {
-    "width": 4000,
-    "height": 6000
-  },
-  "highlights/2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07162.jpg": {
-    "width": 4000,
-    "height": 6000
-  },
-  "highlights/2024-03-09_SXSW_UCB_ASSSSCAT_10.jpg": {
-    "width": 4000,
-    "height": 6000
-  },
-  "highlights/Frank_Oz_2024_Cropped.jpg": {
-    "width": 1768,
-    "height": 2628
-  },
-  "highlights/Ana_de_Armas_at_the_2024_Toronto_International_Film_Festival_02_(cropped2).jpg": {
-    "width": 2721,
-    "height": 4079
-  },
-  "highlights/Ana_de_Armas_and_Sydney_Sweeney_at_the_2024_Toronto_International_Film_Festival_04.jpg": {
-    "width": 4000,
-    "height": 6000
-  },
-  "highlights/Gabriel_LaBelle_at_the_2024_Toronto_International_Film_Festival_03_cropped.jpg": {
-    "width": 1583,
-    "height": 2491
-  },
-  "highlights/Jason_Collett_at_Ottawa_Jazz_Festival_in_2025_-_3.jpg": {
-    "width": 1706,
-    "height": 2560
-  },
-  "highlights/lisa-gilroy_sxsw_2025.jpg": {
-    "width": 1707,
-    "height": 2560
-  },
-  "highlights/Sydney_Sweeney_at_the_2024_Toronto_International_Film_Festival_(cropped_2).jpg": {
-    "width": 960,
-    "height": 1354
-  },
-  "highlights/conan-obrien_sundance_2024.jpg": {
-    "width": 1707,
-    "height": 2560
-  },
-  "highlights/Kaia_Gerber_at_the_2024_Toronto_International_Film_Festival_03_(cropped).jpg": {
-    "width": 1853,
-    "height": 2233
-  },
-  "highlights/Willem_Dafoe_at_the_2024_Toronto_International_Film_Festival_02.jpg": {
-    "width": 2898,
-    "height": 3623
-  },
-  "highlights/john-hopfield_nobel-physics_2024.jpg": {
-    "width": 2048,
-    "height": 2560
-  },
-  "highlights/jude-law_tiff.jpg": {
-    "width": 1707,
-    "height": 2560
-  },
-  "highlights/jay-dixit_red-carpet_05456.jpg": {
-    "width": 2048,
-    "height": 2560
-  },
-  "highlights/emma-stone_nyff.jpg": {
-    "width": 1707,
-    "height": 2560
-  },
-  "highlights/jay-dixit_red-carpet_08042.jpg": {
-    "width": 2560,
-    "height": 1707
-  },
-  "highlights/group-portrait_ana-de-armas-sydney-sweeney-ron-howard_2024.jpg": {
-    "width": 2560,
-    "height": 1707
-  },
-  "highlights/dave-franco_sundance_2025.jpg": {
-    "width": 2048,
-    "height": 2560
-  },
-  "highlights/steven-yeun_sundance_2025.jpg": {
-    "width": 2048,
-    "height": 2560
-  },
-  "highlights/himesh-patel.jpg": {
-    "width": 2266,
-    "height": 2560
-  },
-  "highlights/sebastian-stan.jpg": {
-    "width": 1707,
-    "height": 2560
-  },
-  "highlights/kieran-culkin_new-york-film-festival.jpg": {
-    "width": 1707,
-    "height": 2560
-  },
-  "highlights/kaia-gerber_cory-michael-smith_saturday-night-sundance-premiere.jpg": {
-    "width": 1707,
-    "height": 2560
-  },
-  "highlights/jeremy-strong-before.jpg": {
-    "width": 708,
-    "height": 944
-  },
-  "highlights/jeremy-strong_the-apprentice-premiere_2024.jpg": {
-    "width": 2048,
-    "height": 2560
-  },
-  "highlights/judd-apatow_sxsw_2024.jpg": {
-    "width": 1519,
-    "height": 2560
-  },
-  "highlights/nicholas-braun_toronto-film-festival.jpg": {
-    "width": 1707,
-    "height": 2560
-  },
-  "highlights/ella-hunt_toronto-film-festival.jpg": {
-    "width": 1707,
-    "height": 2560
-  },
-  "highlights/vinod-khosla_sxsw.jpg": {
-    "width": 2560,
-    "height": 1707
-  },
-  "highlights/vanessa-kirby_tiff_2024.jpg": {
-    "width": 1978,
-    "height": 2560
-  },
-  "salient-demo-images/abstract-art-450x600.jpg": {
-    "width": 450,
-    "height": 600
-  },
-  "salient-demo-images/claire-swimming-900x600.jpg": {
-    "width": 900,
-    "height": 600
-  },
-  "salient-demo-images/creative-portrait-450x600.jpg": {
-    "width": 450,
-    "height": 600
-  },
-  "salient-demo-images/featured-portrait-1-900x1200.jpg": {
-    "width": 900,
-    "height": 1200
-  },
-  "salient-demo-images/fashion-portrait-450x600.jpg": {
-    "width": 450,
-    "height": 600
-  },
-  "salient-demo-images/featured-portrait-2-900x1200.jpg": {
-    "width": 900,
-    "height": 1200
-  },
-  "salient-demo-images/high-end-fashion-450x600.jpg": {
-    "width": 450,
-    "height": 600
-  },
-  "salient-demo-images/lifestyle-portrait-450x600.jpg": {
-    "width": 450,
-    "height": 600
-  },
-  "salient-demo-images/nature-landscape-900x600.jpg": {
-    "width": 900,
-    "height": 600
-  },
-  "salient-demo-images/nature-scene-450x600.jpg": {
-    "width": 450,
-    "height": 600
-  },
-  "salient-demo-images/restaurant-week-450x600.jpg": {
-    "width": 450,
-    "height": 600
-  },
-  "salient-demo-images/portrait-session-450x600.jpg": {
-    "width": 450,
-    "height": 600
-  },
-  "salient-demo-images/restaurant-scene-450x600.jpg": {
-    "width": 450,
-    "height": 600
-  },
-  "photos/events/nobel/john-hopfield_nobel-physics_2024.jpg": {
-    "width": 2048,
-    "height": 2560
-  },
-  "salient-demo-images/urban-lifestyle-450x600.jpg": {
-    "width": 450,
-    "height": 600
-  },
-  "salient-demo-images/swimming-pool-900x600.jpg": {
-    "width": 900,
-    "height": 600
-  },
-  "photos/portraits/studio/group-portrait_ana-de-armas-sydney-sweeney-ron-howard_2024.jpg": {
-    "width": 2560,
-    "height": 1707
-  },
-  "photos/portraits/studio/dave-franco_sundance_2025.jpg": {
-    "width": 2048,
-    "height": 2560
-  },
-  "photos/portraits/studio/sebastian-stan.jpg": {
-    "width": 1707,
-    "height": 2560
-  },
-  "photos/portraits/studio/himesh-patel.jpg": {
-    "width": 2266,
-    "height": 2560
-  },
-  "photos/portraits/studio/jeremy-strong_the-apprentice-premiere_2024.jpg": {
-    "width": 2048,
-    "height": 2560
-  },
-  "photos/red-carpet/sundance/conan-obrien_sundance_2024.jpg": {
-    "width": 1707,
-    "height": 2560
-  },
-  "photos/red-carpet/tiff/vanessa-kirby_tiff_2024.jpg": {
-    "width": 1978,
-    "height": 2560
-  },
-  "photos/red-carpet/sxsw/judd-apatow_sxsw_2024.jpg": {
-    "width": 1519,
-    "height": 2560
-  }
+	"og-card.png": {
+		"width": 1200,
+		"height": 630
+	},
+	"jaydixit-photos-logo.png": {
+		"width": 1200,
+		"height": 1200
+	},
+	"logo.png": {
+		"width": 2048,
+		"height": 2048
+	},
+	"images/profile.webp": {
+		"width": 1024,
+		"height": 1024
+	},
+	"highlights/2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07141.jpg": {
+		"width": 4000,
+		"height": 6000
+	},
+	"highlights/ron-livingston_sxsw-office-space-event_2024.jpg": {
+		"width": 4000,
+		"height": 6000
+	},
+	"highlights/2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07162.jpg": {
+		"width": 4000,
+		"height": 6000
+	},
+	"highlights/2024-03-09_SXSW_UCB_ASSSSCAT_10.jpg": {
+		"width": 4000,
+		"height": 6000
+	},
+	"highlights/Frank_Oz_2024_Cropped.jpg": {
+		"width": 1768,
+		"height": 2628
+	},
+	"highlights/Ana_de_Armas_at_the_2024_Toronto_International_Film_Festival_02_(cropped2).jpg": {
+		"width": 2721,
+		"height": 4079
+	},
+	"highlights/Ana_de_Armas_and_Sydney_Sweeney_at_the_2024_Toronto_International_Film_Festival_04.jpg": {
+		"width": 4000,
+		"height": 6000
+	},
+	"highlights/Gabriel_LaBelle_at_the_2024_Toronto_International_Film_Festival_03_cropped.jpg": {
+		"width": 1583,
+		"height": 2491
+	},
+	"highlights/Jason_Collett_at_Ottawa_Jazz_Festival_in_2025_-_3.jpg": {
+		"width": 1706,
+		"height": 2560
+	},
+	"highlights/lisa-gilroy_sxsw_2025.jpg": {
+		"width": 1707,
+		"height": 2560
+	},
+	"highlights/Sydney_Sweeney_at_the_2024_Toronto_International_Film_Festival_(cropped_2).jpg": {
+		"width": 960,
+		"height": 1354
+	},
+	"highlights/conan-obrien_sundance_2024.jpg": {
+		"width": 1707,
+		"height": 2560
+	},
+	"highlights/Kaia_Gerber_at_the_2024_Toronto_International_Film_Festival_03_(cropped).jpg": {
+		"width": 1853,
+		"height": 2233
+	},
+	"highlights/Willem_Dafoe_at_the_2024_Toronto_International_Film_Festival_02.jpg": {
+		"width": 2898,
+		"height": 3623
+	},
+	"highlights/john-hopfield_nobel-physics_2024.jpg": {
+		"width": 2048,
+		"height": 2560
+	},
+	"highlights/jude-law_tiff.jpg": {
+		"width": 1707,
+		"height": 2560
+	},
+	"highlights/jay-dixit_red-carpet_05456.jpg": {
+		"width": 2048,
+		"height": 2560
+	},
+	"highlights/emma-stone_nyff.jpg": {
+		"width": 1707,
+		"height": 2560
+	},
+	"highlights/jay-dixit_red-carpet_08042.jpg": {
+		"width": 2560,
+		"height": 1707
+	},
+	"highlights/group-portrait_ana-de-armas-sydney-sweeney-ron-howard_2024.jpg": {
+		"width": 2560,
+		"height": 1707
+	},
+	"highlights/dave-franco_sundance_2025.jpg": {
+		"width": 2048,
+		"height": 2560
+	},
+	"highlights/steven-yeun_sundance_2025.jpg": {
+		"width": 2048,
+		"height": 2560
+	},
+	"highlights/himesh-patel.jpg": {
+		"width": 2266,
+		"height": 2560
+	},
+	"highlights/sebastian-stan.jpg": {
+		"width": 1707,
+		"height": 2560
+	},
+	"highlights/kieran-culkin_new-york-film-festival.jpg": {
+		"width": 1707,
+		"height": 2560
+	},
+	"highlights/kaia-gerber_cory-michael-smith_saturday-night-sundance-premiere.jpg": {
+		"width": 1707,
+		"height": 2560
+	},
+	"highlights/jeremy-strong-before.jpg": {
+		"width": 708,
+		"height": 944
+	},
+	"highlights/jeremy-strong_the-apprentice-premiere_2024.jpg": {
+		"width": 2048,
+		"height": 2560
+	},
+	"highlights/judd-apatow_sxsw_2024.jpg": {
+		"width": 1519,
+		"height": 2560
+	},
+	"highlights/nicholas-braun_toronto-film-festival.jpg": {
+		"width": 1707,
+		"height": 2560
+	},
+	"highlights/ella-hunt_toronto-film-festival.jpg": {
+		"width": 1707,
+		"height": 2560
+	},
+	"highlights/vinod-khosla_sxsw.jpg": {
+		"width": 2560,
+		"height": 1707
+	},
+	"highlights/vanessa-kirby_tiff_2024.jpg": {
+		"width": 1978,
+		"height": 2560
+	},
+	"salient-demo-images/abstract-art-450x600.jpg": {
+		"width": 450,
+		"height": 600
+	},
+	"salient-demo-images/claire-swimming-900x600.jpg": {
+		"width": 900,
+		"height": 600
+	},
+	"salient-demo-images/creative-portrait-450x600.jpg": {
+		"width": 450,
+		"height": 600
+	},
+	"salient-demo-images/featured-portrait-1-900x1200.jpg": {
+		"width": 900,
+		"height": 1200
+	},
+	"salient-demo-images/fashion-portrait-450x600.jpg": {
+		"width": 450,
+		"height": 600
+	},
+	"salient-demo-images/featured-portrait-2-900x1200.jpg": {
+		"width": 900,
+		"height": 1200
+	},
+	"salient-demo-images/high-end-fashion-450x600.jpg": {
+		"width": 450,
+		"height": 600
+	},
+	"salient-demo-images/lifestyle-portrait-450x600.jpg": {
+		"width": 450,
+		"height": 600
+	},
+	"salient-demo-images/nature-landscape-900x600.jpg": {
+		"width": 900,
+		"height": 600
+	},
+	"salient-demo-images/nature-scene-450x600.jpg": {
+		"width": 450,
+		"height": 600
+	},
+	"salient-demo-images/restaurant-week-450x600.jpg": {
+		"width": 450,
+		"height": 600
+	},
+	"salient-demo-images/portrait-session-450x600.jpg": {
+		"width": 450,
+		"height": 600
+	},
+	"salient-demo-images/restaurant-scene-450x600.jpg": {
+		"width": 450,
+		"height": 600
+	},
+	"photos/events/nobel/john-hopfield_nobel-physics_2024.jpg": {
+		"width": 2048,
+		"height": 2560
+	},
+	"salient-demo-images/urban-lifestyle-450x600.jpg": {
+		"width": 450,
+		"height": 600
+	},
+	"salient-demo-images/swimming-pool-900x600.jpg": {
+		"width": 900,
+		"height": 600
+	},
+	"photos/portraits/studio/group-portrait_ana-de-armas-sydney-sweeney-ron-howard_2024.jpg": {
+		"width": 2560,
+		"height": 1707
+	},
+	"photos/portraits/studio/dave-franco_sundance_2025.jpg": {
+		"width": 2048,
+		"height": 2560
+	},
+	"photos/portraits/studio/sebastian-stan.jpg": {
+		"width": 1707,
+		"height": 2560
+	},
+	"photos/portraits/studio/himesh-patel.jpg": {
+		"width": 2266,
+		"height": 2560
+	},
+	"photos/portraits/studio/jeremy-strong_the-apprentice-premiere_2024.jpg": {
+		"width": 2048,
+		"height": 2560
+	},
+	"photos/red-carpet/sundance/conan-obrien_sundance_2024.jpg": {
+		"width": 1707,
+		"height": 2560
+	},
+	"photos/red-carpet/tiff/vanessa-kirby_tiff_2024.jpg": {
+		"width": 1978,
+		"height": 2560
+	},
+	"photos/red-carpet/sxsw/judd-apatow_sxsw_2024.jpg": {
+		"width": 1519,
+		"height": 2560
+	}
 }

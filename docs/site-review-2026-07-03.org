@@ -29,8 +29,10 @@ Live-site observations were made in Chrome on 2026-07-03: gray placeholder boxes
 
 * ⚙️ Tier 2 — Infrastructure & integrity
 
-** TODO Fix or delete the broken GitHub Actions
+** DONE Fix or delete the broken GitHub Actions
+CLOSED: [2026-07-05 Sun]
 - *Problem*: all three workflows in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/.github/workflows/][📁 .github/workflows/]] run ~npm ci~, but the repo is pnpm-only (no ~package-lock.json~) — they cannot succeed. ~deploy.yml~ also still deploys ~dist~ to GitHub Pages even though production is Vercel Git integration.
+- *Completed*: removed the obsolete GitHub Pages deploy workflow, converted the remaining CI workflows to ~pnpm/action-setup~, Node 22, ~cache: pnpm~, and ~pnpm install --frozen-lockfile~, and added a Node >=22 engine pin.
 - *Implementation*:
   1. Delete ~deploy.yml~ (Vercel already handles deploys).
   2. In ~test.yml~ / ~quality.yml~: use ~pnpm/action-setup~ + ~actions/setup-node~ with ~cache: pnpm~, then ~pnpm install --frozen-lockfile~ and ~pnpm test~ / ~pnpm lint~.
@@ -47,11 +49,13 @@ Live-site observations were made in Chrome on 2026-07-03: gray placeholder boxes
 - *Problem*: ~src/pages/popular.astro:267~ fetches *every like row ever* (~select('photo_id')~) and counts client-side; it also renders a card for every photo on the site and hides zero-like ones in JS.
 - *Implementation*: create a Postgres view or RPC in Supabase (~select photo_id, count(*) from photo_user_likes group by photo_id order by count desc limit 50~) and call that instead. Render only photos that have likes.
 
-** TODO Head/meta cleanup
+** DONE Head/meta cleanup
+CLOSED: [2026-07-05 Sun]
 - Duplicate OG/Twitter tags on the homepage: emitted by both [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/layouts/MainLayout.astro][📄 MainLayout.astro]] (~:132–157~) and ~index.astro~ (~:635–655~). Remove the page-level copies.
 - Viewport is ~width=device-width~ without ~initial-scale=1~ (~MainLayout.astro:119~). Add it.
 - Prototype pages (~salient-photography-demo.astro~, ~about-prototype.astro~, ~about-prototype-editorial.astro~, ~prototype-documentary.astro~) are publicly indexable and in the sitemap. Either delete them, rename with a leading underscore (Astro skips ~_~-prefixed pages), or add ~<meta name="robots" content="noindex">~. Also add a ~public/robots.txt~.
 - Alpine.js loads un-pinned from unpkg on every page (~MainLayout.astro:178~) though only the NavBar uses it. Either bundle it (~pnpm add alpinejs~ + hoisted script) or replace the mobile menu with a ~<details>~/vanilla toggle and drop the dependency.
+- *Completed*: homepage head tags now flow through MainLayout with only page-specific OG image/JSON-LD extras, viewport includes ~initial-scale=1~, obsolete about prototypes were deleted, surviving prototypes are noindexed and excluded from the sitemap, [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/robots.txt][📄 robots.txt]] exists, and Alpine is bundled through Vite.
 
 * 🎨 Tier 3 — Design-system consolidation
 
@@ -60,9 +64,11 @@ Live-site observations were made in Chrome on 2026-07-03: gray placeholder boxes
 - *Recommendation*: keep the Cormorant Garamond + Karla pairing (distinctive, editorial, suits a photo portfolio) and eliminate Inter.
 - *Completed*: fonts now load once; the duplicate Dancing Script load, NavBar's Inter stylesheet injection, unused Playfair Tailwind entry, and ~font-black~ usage are gone. Tailwind ~font-sans~ maps to Karla, ~font-serif~ maps to Cormorant Garamond, and obvious heading-level ~font-sans~ overrides were removed. Self-hosting via ~@fontsource~ remains an optional later performance pass, not part of this typography cleanup.
 
-** TODO Finish the accent-color sweep
+** DONE Finish the accent-color sweep
+CLOSED: [2026-07-05 Sun]
 - *Mostly resolved since original review*: ~--accent: #96773f~ now exists in global.css:46, and the NavBar blues/purple gradient are gone.
 - *Remaining*: a handful of hardcoded blues survive (~index.astro~ ×2, ~gallery/index.astro~ ×1, ~red-carpet/[person].astro~ ×1) — sweep and replace with the accent token. Also collapse the two parallel neutral systems (shadcn HSL vars + hardcoded ~--neutral-50…900~) into one.
+- *Completed*: replaced the remaining live-page hardcoded blues with the editorial accent/brand token and added a Tailwind ~brand~ color because the existing shadcn-style ~accent~ key is already occupied. Neutral-system consolidation remains a separate later cleanup.
 
 ** TODO Standardize hover/transition behavior
 - *Problem*: image hover zooms of 1.02×, 1.03×, 1.05×, and 1.10× with durations 0.2s–0.6s depending on page.
@@ -74,9 +80,9 @@ Live-site observations were made in Chrome on 2026-07-03: gray placeholder boxes
 
 ** TODO Accessibility pass
 Partially resolved since original review: the global ~focus-visible~ rule now exists (global.css:88–92) and the logo-zoom control is a real ~<button>~ with ~aria-label~. Remaining:
-- Fix contrast: ~text-gray-400~ on white (~2.8:1) fails WCAG AA — a few instances remain (red-carpet/[person].astro ×2, gallery/index.astro ×1); bump to ~text-gray-500~/600.
+- DONE Fix contrast: ~text-gray-400~ on white (~2.8:1) fails WCAG AA — a few instances remain (red-carpet/[person].astro ×2, gallery/index.astro ×1); bump to ~text-gray-500~/600.
 - Improve alt-text fallbacks: several components fall back to de-slugified filenames; fine, but ensure it never emits raw "img 1234" style strings.
-- Replace visitor-facing developer copy in empty states ("Add people to src/data/people.json" — red-carpet/index.astro:222; "Add entries to the comparisons array" — before-after.astro:120) with human copy ("More coming soon").
+- DONE Replace visitor-facing developer copy in empty states ("Add people to src/data/people.json" — red-carpet/index.astro:222; "Add entries to the comparisons array" — before-after.astro:120) with human copy ("More coming soon").
 
 * 🧹 Tier 4 — Dead code & repo hygiene
 

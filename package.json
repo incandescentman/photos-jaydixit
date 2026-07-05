@@ -2,6 +2,9 @@
 	"name": "photos-jaydixit",
 	"type": "module",
 	"version": "0.0.1",
+	"engines": {
+		"node": ">=22"
+	},
 	"scripts": {
 		"dev": "astro dev --open",
 		"build": "astro build",
@@ -56,6 +59,7 @@
 		"@astrojs/sitemap": "^3.7.3",
 		"@jaydixit/astro-utils": "^1.0.6",
 		"@supabase/supabase-js": "^2.96.0",
+		"alpinejs": "^3.15.12",
 		"chalk": "^5.6.2",
 		"cloudinary": "^2.7.0",
 		"dotenv": "^17.2.2",

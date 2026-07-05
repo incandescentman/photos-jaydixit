@@ -49,11 +49,11 @@ const canonicalUrl = resolveCanonicalUrl(canonicalSource, siteUrl, Astro.url.pat
 
 const rawImage =
 	props.image ?? (typeof frontmatter.image === 'string' ? frontmatter.image : undefined);
-const ogImage = resolveOgImage(rawImage, siteUrl, '/jaydixit-photos-logo.png');
+const ogImage = resolveOgImage(rawImage, siteUrl, '/og-card.png');
 const ogImageAlt =
 	props.imageAlt ??
 	(typeof frontmatter.imageAlt === 'string' ? frontmatter.imageAlt : undefined) ??
-	`${owner} photography`;
+	`${owner} — Red Carpet & Portrait Photographer, WikiPortraits · Wikipedia`;
 const ogType =
 	props.ogType ?? (typeof frontmatter.ogType === 'string' ? frontmatter.ogType : 'website');
 const twitterCard =
@@ -118,7 +118,7 @@ gtag('config', '${gaMeasurementId}', {
 			rel="stylesheet"
 		/>
 
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{pageTitle}</title>
 		<meta name="author" content={owner} />
@@ -176,5 +176,3 @@ gtag('config', '${gaMeasurementId}', {
 		<Footer />
 	</body>
 </html>
-
-<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>

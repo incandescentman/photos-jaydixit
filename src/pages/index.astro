@@ -545,11 +545,14 @@ const ogImages = shareCandidates.slice(0, 4).map((photo) => {
 });
 
 const primaryOgImage = ogImages[0];
+const additionalOgImages = ogImages.slice(1);
 
 const layoutFrontmatter = {
 	title: metaTitle,
 	description: pageDescription,
 	canonical: canonicalUrl,
+	image: primaryOgImage?.url,
+	imageAlt: primaryOgImage?.alt,
 };
 
 const criticalStyles = `
@@ -646,12 +649,6 @@ const criticalStyles = `
 <MainLayout frontmatter={layoutFrontmatter}>
 	<Fragment slot="head">
 		<style is:inline set:html={criticalStyles}></style>
-		<meta property="og:type" content="website" />
-		<meta property="og:title" content={fullTitle} />
-		<meta property="og:description" content={pageDescription} />
-		<meta property="og:url" content={canonicalUrl} />
-		{ogImages.map((image) => <meta property="og:image" content={image.url} />)}
-		{ogImages.map((image) => <meta property="og:image:alt" content={image.alt} />)}
 		{
 			primaryOgImage?.width && (
 				<meta property="og:image:width" content={String(primaryOgImage.width)} />
@@ -662,11 +659,16 @@ const criticalStyles = `
 				<meta property="og:image:height" content={String(primaryOgImage.height)} />
 			)
 		}
-		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:title" content={fullTitle} />
-		<meta name="twitter:description" content={pageDescription} />
-		{primaryOgImage && <meta name="twitter:image" content={primaryOgImage.url} />}
-		{primaryOgImage?.alt && <meta name="twitter:image:alt" content={primaryOgImage.alt} />}
+		{
+			additionalOgImages.map((image) => (
+				<>
+					<meta property="og:image" content={image.url} />
+					<meta property="og:image:alt" content={image.alt} />
+					<meta property="og:image:width" content={String(image.width)} />
+					<meta property="og:image:height" content={String(image.height)} />
+				</>
+			))
+		}
 		<script type="application/ld+json" set:html={jsonLdString} />
 	</Fragment>
 	<div class="portfolio-wrap">
@@ -1202,9 +1204,9 @@ const criticalStyles = `
 	.edit-popover input:focus,
 	.edit-popover textarea:focus {
 		outline: none;
-		border-color: #3b82f6;
+		border-color: var(--accent);
 		background: #ffffff;
-		box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+		box-shadow: 0 0 0 3px rgba(150, 119, 63, 0.12);
 	}
 
 	.edit-popover select {
@@ -1226,9 +1228,9 @@ const criticalStyles = `
 
 	.edit-popover select:focus {
 		outline: none;
-		border-color: #3b82f6;
+		border-color: var(--accent);
 		background-color: #ffffff;
-		box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+		box-shadow: 0 0 0 3px rgba(150, 119, 63, 0.12);
 	}
 
 	.edit-popover .row {

@@ -16,6 +16,7 @@ export default [
 			'.cache/**',
 			'playwright-report/**',
 			'test-results/**',
+			'docs/**',
 			'venv/**',
 			'astro-jay-dixit-photos-starter/**',
 		],

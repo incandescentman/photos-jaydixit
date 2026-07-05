@@ -15,7 +15,13 @@ export default defineConfig({
 	server: {
 		port: 4322,
 	},
-	integrations: [mdx(), sitemap()],
+	integrations: [
+		mdx(),
+		sitemap({
+			filter: (page) =>
+				!page.includes('/prototype-documentary') && !page.includes('/salient-photography-demo'),
+		}),
+	],
 	vite: {
 		plugins: [tailwindcss()],
 		resolve: {

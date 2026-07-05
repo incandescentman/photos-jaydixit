@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OG card contact sheet — photos.jaydixit.com</title>
+<style>
+  /* Same Google Fonts load as src/styles/global.css */
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Karla:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+
+  :root{
+    --paper:#fdfcfb;
+    --cream:#FAF6EF;
+    --ink:#141312;
+    --muted:#6b6459;
+    --hair:#e7e0d4;
+    --gold:#C6A15B;
+    --gold-deep:#A88434;
+    --red:#B3272D;
+    --red-field:#A32C2A;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+  .wrap{max-width:1340px;margin:0 auto;padding:64px 40px 96px;}
+  .eyebrow{
+    font-family:'Karla','SFMono-Regular',ui-monospace,monospace;
+    text-transform:uppercase;letter-spacing:.22em;font-size:11px;
+    color:var(--muted);margin:0 0 22px;
+  }
+  h1{font-weight:300;font-size:clamp(38px,6vw,64px);line-height:1.02;letter-spacing:-.01em;margin:0 0 18px;}
+  h1 em{font-style:italic;color:var(--gold-deep);}
+  .lede{font-size:20px;color:var(--muted);max-width:62ch;margin:0 0 8px;}
+  .section-label{
+    font-family:'Karla',ui-monospace,monospace;
+    text-transform:uppercase;letter-spacing:.2em;font-size:10px;
+    color:var(--muted);margin:72px 0 20px;padding-bottom:10px;
+    border-bottom:1px solid var(--hair);
+  }
+  .section-label:first-of-type{margin-top:56px;}
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(620px,1fr));
+    gap:1px;background:var(--hair);border:1px solid var(--hair);
+  }
+  .card{background:var(--paper);padding:24px;display:flex;flex-direction:column;gap:16px;align-items:flex-start;}
+  .meta .num{font-family:'Karla',monospace;font-size:10px;color:var(--gold-deep);letter-spacing:.15em;text-transform:uppercase;}
+  .meta .name{font-weight:700;font-size:20px;line-height:1.15;margin:2px 0 4px;}
+  .meta .why{font-style:italic;font-size:16px;color:var(--muted);line-height:1.35;max-width:56ch;}
+
+  /* true-size OG composition, scaled via transform */
+  .frame{overflow:hidden;position:relative;box-shadow:0 1px 4px rgba(20,19,18,.15);}
+  .og{
+    width:1200px;height:630px;position:absolute;top:0;left:0;
+    transform-origin:top left;background:var(--cream);overflow:hidden;
+    font-family:'Cormorant Garamond',Georgia,serif;color:var(--ink);
+  }
+  .og img{display:block;}
+
+  /* link-preview mockups */
+  .previews{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start;}
+  .sys{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Karla',sans-serif;}
+  .tw{width:534px;border:1px solid #e1e8ed;border-radius:16px;padding:14px 16px;background:#fff;}
+  .tw .head{display:flex;gap:10px;align-items:center;margin-bottom:8px;}
+  .tw .av{width:40px;height:40px;border-radius:50%;background:var(--gold);flex:none;}
+  .tw .who b{font-size:14px;color:#0f1419;}
+  .tw .who span{font-size:13px;color:#536471;margin-left:4px;}
+  .tw .txt{font-size:14px;color:#0f1419;margin:0 0 10px;}
+  .tw .imgwrap{border-radius:16px;border:1px solid #e1e8ed;overflow:hidden;position:relative;}
+  .tw .pill{position:absolute;left:10px;bottom:10px;background:rgba(0,0,0,.72);color:#fff;font-size:11px;padding:2px 8px;border-radius:5px;z-index:5;}
+  .imsg-scene{background:#f4f4f6;border-radius:14px;padding:22px;display:flex;justify-content:flex-end;width:380px;}
+  .imsg{width:300px;border-radius:18px;overflow:hidden;background:#e9e9eb;}
+  .imsg .info{padding:9px 12px;}
+  .imsg .info b{font-size:13px;color:#111;display:block;line-height:1.25;}
+  .imsg .info span{font-size:11.5px;color:#8e8e93;}
+  .slack{width:430px;display:flex;gap:12px;background:#fff;border:1px solid #eee;border-radius:8px;padding:12px 14px;}
+  .slack .bar{width:4px;border-radius:4px;background:#ddd8cf;flex:none;}
+  .slack .body{min-width:0;}
+  .slack .site{display:flex;gap:6px;align-items:center;font-size:12px;font-weight:700;color:#454245;margin-bottom:3px;}
+  .slack .site img{width:16px;height:16px;}
+  .slack .title{font-size:14.5px;font-weight:700;color:#1264a3;margin-bottom:2px;}
+  .slack .desc{font-size:13px;color:#616061;margin-bottom:9px;}
+  .slack .imgwrap{border-radius:8px;overflow:hidden;}
+  .prevlab{
+    font-family:'Karla',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);margin-top:8px;
+  }
+  .prevcell{display:flex;flex-direction:column;}
+  .footer-note{
+    font-family:'Karla',monospace;font-size:11px;letter-spacing:.08em;
+    color:var(--muted);border-top:1px solid var(--hair);margin-top:72px;padding-top:18px;
+    text-transform:uppercase;line-height:1.8;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">OG card contact sheet — photos.jaydixit.com</p>
+  <h1>The <em>share card</em></h1>
+  <p class="lede">Twelve 1200×630 compositions for og:image / twitter:image — the face of the site everywhere a link lands. Each card below is the true canvas scaled to half size.</p>
+  <p class="lede">Revised copy, per Jay's approval: a three-line lockup replaces the old wordmark and tagline everywhere — <strong>Jay Dixit</strong> in Cormorant, the descriptor <strong>Red Carpet <em>&amp;</em> Portrait Photographer</strong> with Cormorant's italic ampersand, and the affiliation badge <strong>WIKIPORTRAITS · WIKIPEDIA</strong> in small gold letterspaced Karla caps. Gold is reserved for the badge line only; each composition is re-balanced around the shorter name.</p>
+
+  <p class="section-label">Variants 01–12 · each shown at 50% of true 1200×630</p>
+  <div class="grid" id="grid"></div>
+
+  <p class="section-label">Link-preview simulation — Twitter / X large-image card</p>
+  <div class="previews" id="prev-tw"></div>
+
+  <p class="section-label">Link-preview simulation — iMessage link bubble</p>
+  <div class="previews" id="prev-im"></div>
+
+  <p class="section-label">Link-preview simulation — Slack unfurl</p>
+  <div class="previews" id="prev-sl"></div>
+
+  <p class="footer-note">
+    og:image best practice — 1200×630 (1.91:1), &lt;1&nbsp;MB, absolute URL.
+    Keep critical content inside a centered safe zone: some clients center-crop toward square
+    (~600×600 of the middle), so keep wordmark and mark near the horizontal center and clear of the outer ~150px on each side where possible.
+    Photo-forward cards should tolerate both edge crops and a square crop.
+  </p>
+</div>
+
+<script>
+  const LOGO = '../../public/jaydixit-photos-logo.png';
+  const MARK = '../../public/favicon.svg';
+  const PHOTO_GROUP = '../../src/gallery/highlights/group-portrait_ana-de-armas-sydney-sweeney-ron-howard_2024.jpg';
+  const PHOTO_EMMA = '../../src/gallery/highlights/emma-stone_nyff.jpg';
+
+  const C = { cream:'#FAF6EF', ink:'#141312', gold:'#C6A15B', goldDeep:'#A88434', red:'#B3272D', redField:'#A32C2A' };
+  const KARLA = "font-family:'Karla',sans-serif;";
+
+  /* Three-line copy system (approved 2026-07-04):
+     Line 1: Jay Dixit (Cormorant, primary)
+     Line 2: Red Carpet & Portrait Photographer (Cormorant, italic ampersand)
+     Line 3: WIKIPORTRAITS · WIKIPEDIA (Karla, gold letterspaced caps — gold lives here ONLY) */
+  const AMP = '<span style="font-style:italic;">&amp;</span>';
+  function nameLine(size, opts={}){
+    const {color=C.ink, weight=600, extra=''} = opts;
+    return `<div style="font-size:${size}px;font-weight:${weight};line-height:1.0;color:${color};${extra}">Jay Dixit</div>`;
+  }
+  function descLine(size, opts={}){
+    const {color=C.ink, weight=500, italic=false, extra=''} = opts;
+    return `<div style="font-size:${size}px;font-weight:${weight};line-height:1.18;color:${color};${italic?'font-style:italic;':''}${extra}">Red Carpet ${AMP} Portrait Photographer</div>`;
+  }
+  function badgeLine(size, opts={}){
+    const {color=C.goldDeep, ls='.26em', extra=''} = opts;
+    return `<div style="${KARLA}font-weight:700;text-transform:uppercase;letter-spacing:${ls};font-size:${size}px;color:${color};${extra}">Wikiportraits &middot; Wikipedia</div>`;
+  }
+
+  // inline ghost-disc mark for dark grounds (ring + fused runner, near-invisible disc)
+  function nightMark(size){
+    return `<svg width="${size}" height="${size}" viewBox="0 0 32 32">
+      <defs><clipPath id="nm${size}"><circle cx="16" cy="16" r="11.8"/></clipPath></defs>
+      <circle cx="16" cy="16" r="12.6" fill="#FAF6EF" fill-opacity="0.06"/>
+      <g clip-path="url(#nm${size})"><polygon points="12.8,6.5 19.2,6.5 28,30.5 4,30.5" fill="${C.red}"/></g>
+      <circle cx="16" cy="16" r="12.6" fill="none" stroke="${C.gold}" stroke-width="1.4"/>
+    </svg>`;
+  }
+
+  const VARIANTS = [
+    { n:'Classic Lockup', why:'The illustrated logo carries the story; the three-line lockup does the introductions. The default answer.',
+      html:`<div style="position:absolute;inset:0;display:flex;align-items:center;padding:0 96px;gap:76px;">
+        <img src="${LOGO}" style="width:390px;height:390px;border-radius:50%;flex:none;">
+        <div>
+          ${nameLine(138)}
+          ${descLine(44, {extra:'margin-top:18px;'})}
+          <div style="width:130px;height:2px;background:${C.goldDeep};margin:26px 0 20px;"></div>
+          ${badgeLine(23)}
+        </div>
+      </div>`},
+    { n:'Classic, No Badge', why:'Name and descriptor only — bigger type, more air; the descriptor earns the presence the old tagline never had.',
+      html:`<div style="position:absolute;inset:0;display:flex;align-items:center;padding:0 100px;gap:80px;">
+        <img src="${LOGO}" style="width:430px;height:430px;border-radius:50%;flex:none;">
+        <div>
+          ${nameLine(156, {weight:500})}
+          ${descLine(50, {extra:'margin-top:20px;'})}
+          <div style="width:150px;height:2px;background:${C.goldDeep};margin-top:30px;"></div>
+        </div>
+      </div>`},
+    { n:'Classic, Light', why:'Lighter serif, the whole descriptor set italic in carpet red — the most editorial of the classic lockups.',
+      html:`<div style="position:absolute;inset:0;display:flex;align-items:center;padding:0 110px;gap:70px;">
+        <img src="${LOGO}" style="width:310px;height:310px;border-radius:50%;flex:none;">
+        <div>
+          ${nameLine(148, {weight:400})}
+          ${descLine(46, {italic:true, color:C.red, weight:400, extra:'margin-top:16px;'})}
+          ${badgeLine(21, {extra:'margin-top:26px;'})}
+        </div>
+      </div>`},
+    { n:'Ceremonial Center', why:'Logo enthroned, three lines beneath, gold hairlines above and below — an invitation, not an ad.',
+      html:`<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+        <div style="width:220px;height:1.5px;background:${C.goldDeep};margin-bottom:30px;"></div>
+        <img src="${LOGO}" style="width:250px;height:250px;border-radius:50%;">
+        ${nameLine(100, {extra:'margin-top:24px;text-align:center;'})}
+        ${descLine(38, {extra:'margin-top:10px;text-align:center;'})}
+        ${badgeLine(20, {extra:'margin-top:16px;text-align:center;'})}
+        <div style="width:220px;height:1.5px;background:${C.goldDeep};margin-top:28px;"></div>
+      </div>`},
+    { n:'Ghost Disc Hero', why:'The finalized favicon mark, monumental, instead of the illustration — the three lines beside it, quiet and level.',
+      html:`<div style="position:absolute;inset:0;display:flex;align-items:center;padding:0 110px;gap:86px;">
+        <img src="${MARK}" style="width:400px;height:400px;flex:none;">
+        <div>
+          ${nameLine(126)}
+          ${descLine(42, {extra:'margin-top:16px;'})}
+          ${badgeLine(22, {extra:'margin-top:26px;'})}
+        </div>
+      </div>`},
+    { n:'Monumental Mark', why:'The mark alone at the center of the canvas, the three lines stacked quietly under it — maximum confidence.',
+      html:`<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+        <img src="${MARK}" style="width:390px;height:390px;">
+        ${nameLine(62, {extra:'margin-top:22px;text-align:center;'})}
+        ${descLine(28, {extra:'margin-top:6px;text-align:center;'})}
+        ${badgeLine(16, {extra:'margin-top:12px;text-align:center;'})}
+      </div>`},
+    { n:'Carpet Band', why:'Name and descriptor above, a red runner with gold selvedge across the bottom third carrying the badge — the favicon rounds, unrolled to landscape.',
+      html:`<div style="position:absolute;inset:0;">
+        <div style="position:absolute;left:0;right:0;top:0;height:440px;display:flex;align-items:center;justify-content:center;gap:64px;">
+          <img src="${LOGO}" style="width:250px;height:250px;border-radius:50%;flex:none;">
+          <div>
+            ${nameLine(122)}
+            ${descLine(42, {extra:'margin-top:16px;'})}
+          </div>
+        </div>
+        <div style="position:absolute;left:0;right:0;bottom:0;height:190px;background:${C.red};display:flex;align-items:center;justify-content:center;">
+          <div style="position:absolute;top:0;left:0;right:0;height:7px;background:${C.gold};"></div>
+          <div style="position:absolute;bottom:0;left:0;right:0;height:7px;background:${C.gold};"></div>
+          ${badgeLine(28, {color:C.gold, ls:'.3em'})}
+        </div>
+      </div>`},
+    { n:'Red Premiere', why:'Full-bleed carpet red, a gold ring, cream serif — the after-dark inversion of the whole system.',
+      html:`<div style="position:absolute;inset:0;background:${C.redField};display:flex;flex-direction:column;align-items:center;justify-content:center;">
+        <div style="width:190px;height:190px;border-radius:50%;border:5px solid ${C.gold};"></div>
+        ${nameLine(112, {color:C.cream, extra:'margin-top:28px;text-align:center;'})}
+        ${descLine(42, {color:C.cream, extra:'margin-top:10px;text-align:center;'})}
+        ${badgeLine(21, {color:C.gold, extra:'margin-top:18px;text-align:center;'})}
+      </div>`},
+    { n:'Night Premiere', why:'Tuxedo black, the mark rebuilt for dark ground, cream and gold type — dressiest card in the set.',
+      html:`<div style="position:absolute;inset:0;background:${C.ink};display:flex;align-items:center;padding:0 120px;gap:90px;">
+        <div style="flex:none;">${nightMark(370)}</div>
+        <div>
+          ${nameLine(126, {color:C.cream, weight:500})}
+          ${descLine(42, {color:C.cream, weight:400, extra:'margin-top:16px;'})}
+          <div style="width:130px;height:2px;background:${C.gold};margin:26px 0 20px;"></div>
+          ${badgeLine(22, {color:C.gold})}
+        </div>
+      </div>`},
+    { n:'Editorial Type', why:'The name IS the image — huge Cormorant with the mark as the full stop, descriptor and badge tucked beneath.',
+      html:`<div style="position:absolute;inset:0;padding:96px 100px;">
+        <div style="font-size:230px;font-weight:500;line-height:.94;letter-spacing:-.01em;display:flex;align-items:center;gap:40px;">Jay Dixit <img src="${MARK}" style="width:118px;height:118px;margin-top:22px;"></div>
+        ${descLine(60, {weight:400, extra:'margin-top:46px;'})}
+        ${badgeLine(26, {extra:'margin-top:26px;'})}
+      </div>`},
+    { n:'Photo Full-Bleed', why:'A real carpet moment — Ana de Armas, Sydney Sweeney, Ron Howard — the band carrying all three lines. Caveat: the descriptor rides the legibility line at Slack-unfurl scale; judge it in the simulations below.',
+      html:`<div style="position:absolute;inset:0;">
+        <img src="${PHOTO_GROUP}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 22%;">
+        <div style="position:absolute;left:0;right:0;bottom:0;height:168px;background:${C.redField};display:flex;align-items:center;justify-content:space-between;padding:0 70px;">
+          <div style="position:absolute;top:0;left:0;right:0;height:6px;background:${C.gold};"></div>
+          <div style="display:flex;align-items:center;gap:26px;">
+            <img src="${MARK}" style="width:84px;height:84px;">
+            <div>
+              ${nameLine(58, {color:C.cream})}
+              ${descLine(28, {color:C.cream, weight:400, extra:'margin-top:5px;'})}
+            </div>
+          </div>
+          ${badgeLine(19, {color:C.gold, ls:'.22em'})}
+        </div>
+      </div>`},
+    { n:'Photo Split', why:'Cream panel for the three lines, a single portrait — Emma Stone — full-height beside it, gold hairline seam.',
+      html:`<div style="position:absolute;inset:0;display:flex;">
+        <div style="width:55%;display:flex;flex-direction:column;justify-content:center;padding:0 80px;">
+          <img src="${LOGO}" style="width:200px;height:200px;border-radius:50%;">
+          ${nameLine(108, {extra:'margin-top:32px;'})}
+          ${descLine(38, {extra:'margin-top:12px;'})}
+          <div style="width:120px;height:2px;background:${C.goldDeep};margin:24px 0 18px;"></div>
+          ${badgeLine(21)}
+        </div>
+        <div style="width:3px;background:${C.gold};flex:none;"></div>
+        <div style="flex:1;position:relative;">
+          <img src="${PHOTO_EMMA}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 18%;">
+        </div>
+      </div>`}
+  ];
+
+  function comp(i, scale){
+    const v = VARIANTS[i];
+    return `<div class="frame" style="width:${Math.round(1200*scale)}px;height:${Math.round(630*scale)}px;">
+      <div class="og" style="transform:scale(${scale});">${v.html}</div>
+    </div>`;
+  }
+
+  // main grid at 50%
+  const grid = document.getElementById('grid');
+  VARIANTS.forEach((v,i)=>{
+    const el = document.createElement('div');
+    el.className='card';
+    el.innerHTML = `${comp(i, 0.5)}
+      <div class="meta">
+        <div class="num">${String(i+1).padStart(2,'0')} · 1200×630</div>
+        <div class="name">${v.n}</div>
+        <div class="why">${v.why}</div>
+      </div>`;
+    grid.appendChild(el);
+  });
+
+  // link-preview simulations for the strongest four
+  const PICKS = [0, 6, 9, 10]; // 01 Classic, 07 Carpet Band, 10 Editorial Type, 11 Photo Full-Bleed
+
+  const tw = document.getElementById('prev-tw');
+  PICKS.forEach(i=>{
+    const cell = document.createElement('div');
+    cell.className = 'prevcell';
+    cell.innerHTML = `<div class="tw sys">
+        <div class="head"><div class="av"></div><div class="who"><b>Jay Dixit</b><span>@jaydixit · 2h</span></div></div>
+        <p class="txt">Photos from the carpet &rarr; photos.jaydixit.com</p>
+        <div class="imgwrap">${comp(i, 0.418)}<div class="pill">photos.jaydixit.com</div></div>
+      </div>
+      <div class="prevlab">Variant ${String(i+1).padStart(2,'0')} — ${VARIANTS[i].n}</div>`;
+    tw.appendChild(cell);
+  });
+
+  const im = document.getElementById('prev-im');
+  PICKS.forEach(i=>{
+    const cell = document.createElement('div');
+    cell.className = 'prevcell';
+    cell.innerHTML = `<div class="imsg-scene"><div class="imsg sys">
+        ${comp(i, 0.25)}
+        <div class="info"><b>Jay Dixit — Red Carpet &amp; Portrait Photographer</b><span>photos.jaydixit.com</span></div>
+      </div></div>
+      <div class="prevlab">Variant ${String(i+1).padStart(2,'0')} — ${VARIANTS[i].n}</div>`;
+    im.appendChild(cell);
+  });
+
+  const sl = document.getElementById('prev-sl');
+  PICKS.forEach(i=>{
+    const cell = document.createElement('div');
+    cell.className = 'prevcell';
+    cell.innerHTML = `<div class="slack sys">
+        <div class="bar"></div>
+        <div class="body">
+          <div class="site"><img src="${MARK}"> Jay Dixit Photos</div>
+          <div class="title">Jay Dixit — Red Carpet &amp; Portrait Photographer</div>
+          <div class="desc">Wikiportraits · Wikipedia. Celebrity and film-festival photography.</div>
+          <div class="imgwrap">${comp(i, 0.3)}</div>
+        </div>
+      </div>
+      <div class="prevlab">Variant ${String(i+1).padStart(2,'0')} — ${VARIANTS[i].n}</div>`;
+    sl.appendChild(cell);
+  });
+</script>
+</body>
+</html>

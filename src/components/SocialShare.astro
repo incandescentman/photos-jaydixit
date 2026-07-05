@@ -116,17 +116,17 @@ const shareUrl = new URL(url ?? Astro.url.pathname, siteUrl).toString();
 	}
 
 	.social-share-button:hover {
-		color: rgb(37, 99, 235);
-		border-color: rgba(147, 197, 253, 0.95);
+		color: var(--accent);
+		border-color: rgba(150, 119, 63, 0.55);
 		background: rgba(255, 255, 255, 0.96);
-		box-shadow: 0 10px 30px -20px rgba(37, 99, 235, 0.45);
+		box-shadow: 0 10px 30px -20px rgba(150, 119, 63, 0.35);
 	}
 
 	.social-share-button[data-state='copied'] {
-		color: rgb(37, 99, 235);
-		border-color: rgba(96, 165, 250, 0.95);
-		background: rgb(239, 246, 255);
-		box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.12);
+		color: var(--accent);
+		border-color: rgba(150, 119, 63, 0.65);
+		background: rgba(250, 249, 246, 0.96);
+		box-shadow: 0 0 0 2px rgba(150, 119, 63, 0.12);
 	}
 
 	.social-share-icon {

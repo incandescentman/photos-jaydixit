@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://photos.jaydixit.com/sitemap-index.xml

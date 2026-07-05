@@ -1,6 +1,71 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-05 - Business card export (Night Premiere print artifact)
+
+** Status
+- Built and exported a two-sided US business card (3.5 × 2 in, landscape) in the Night Premiere brand style. This is a PRINT artifact, not a site asset — nothing in ~public/~ or ~src/~ was touched.
+
+** Shipped
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/business-card/business-card-night-premiere.html][docs/business-card/business-card-night-premiere.html]]
+  - Standalone editable source rendering both faces at true print proportion (each face 1050 × 600 CSS px = 3.5 × 2 in @ 300dpi). Reuses the OG card's design language verbatim: tuxedo-black ground, ghost-disc mark rebuilt for dark ground (cream 6%-opacity disc + red-carpet runner + gold hairline ring), Cormorant Garamond cream type, Karla letterspaced gold caps for the badge line, same Google Fonts load.
+  - FRONT (revised per Jay's review — first pass had a small mark at top-left): text block left-aligned and vertically centered on the left — "Jay Dixit" (Cormorant 500, dominant, cream) / "Red Carpet & Portrait Photographer" (Cormorant, ampersand in Cormorant italic) / hairline gold rule / "WIKIPORTRAITS · WIKIPEDIA" (Karla gold letterspaced caps) / two quiet soft-cream contact lines "jay@jaydixit.com" and "photos.jaydixit.com". The mark is LARGE on the right — 460px SVG box, vertically centered, FULLY CONTAINED inside the card (Jay rejected an earlier edge-cropped version — the complete outer gold ring must be visible, nothing clipped — then asked for the mark very slightly smaller, so it went 500px → 460px). The ring's visible edge sits ~59px from the right trim and ~109px from top/bottom. Gold is confined to the badge line, the rule, and the mark ring.
+  - BACK: the mark large and centered on tuxedo black, nothing else.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/business-card/business-card-front.png][docs/business-card/business-card-front.png]] and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/business-card/business-card-back.png][docs/business-card/business-card-back.png]]
+  - 2100 × 1200 PNGs (front ~90 KB, back ~33 KB). Render method: Playwright (~@playwright/test~ chromium, driven by [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/business-card/export.mjs][docs/business-card/export.mjs]]) at deviceScaleFactor 2 so each 1050 × 600 face renders to 2100 × 1200 (600dpi-class for print sharpness); waits for ~document.fonts.ready~, screenshots the ~#front~ / ~#back~ elements; then optimized with ~oxipng -o max --strip safe~.
+
+** Print notes
+- Proportions are print-true at 300dpi (1050 × 600 CSS px), exported at 2× (2100 × 1200) for 600dpi-class sharpness.
+- Safe zone honored: all text sits inside 80px padding, well past the 1/8 in (37px) minimum from every edge, and the front mark is fully contained — the complete outer gold ring is visible with margin on all sides; nothing touches or crosses the trim line.
+- NO BLEED: faces are trimmed exactly at 3.5 × 2 in with no bleed margin. A print shop will likely want a bleed version (+0.125 in / 37px per edge, background extended). Because the ground is solid tuxedo black and nothing sits near the trim edge, a bleed build is trivial — just extend the black.
+
+* 2026-07-05 - Hygiene batch: CI, head/meta, accent, empty states
+
+** Status
+- Completed the pnpm CI repair, head/meta cleanup, prototype search-visibility cleanup, bundled Alpine migration, accent/contrast sweep, and visitor-facing empty-state copy pass.
+- Preserved the uncommitted OG / social share card work already present in this tree and layered these changes on top of it.
+
+** Shipped
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/.github/workflows/][.github/workflows/]]
+  - Deleted the obsolete GitHub Pages deploy workflow and converted the remaining workflows from ~npm ci~ / Node 23 to pnpm, Node 22, and ~pnpm install --frozen-lockfile~.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/package.json][package.json]] and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/pnpm-lock.yaml][pnpm-lock.yaml]]
+  - Added a Node ~>=22~ engine pin and bundled ~alpinejs~ as a dependency.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/layouts/MainLayout.astro][src/layouts/MainLayout.astro]], [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/NavBar.astro][src/components/NavBar.astro]], and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][src/pages/index.astro]]
+  - Added ~initial-scale=1~, removed the unpinned Alpine CDN load, started Alpine from a hoisted bundled script, and deduped homepage OG/Twitter tags while preserving the homepage's multi-image OG metadata and JSON-LD.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/about-prototype.astro][src/pages/about-prototype.astro]] and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/about-prototype-editorial.astro][src/pages/about-prototype-editorial.astro]]
+  - Deleted obsolete about prototypes.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/prototype-documentary.astro][src/pages/prototype-documentary.astro]], [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/salient-photography-demo.astro][src/pages/salient-photography-demo.astro]], [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/astro.config.mts][astro.config.mts]], and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/robots.txt][public/robots.txt]]
+  - Noindexed the surviving prototypes, excluded them from the sitemap, added a robots file, and kept the salient prototype alive while bundling its existing imagesLoaded/Isotope dependencies instead of serving them from unpkg.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tailwind.config.js][tailwind.config.js]], [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/red-carpet/][src/pages/red-carpet/]], [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/gallery/index.astro][src/pages/gallery/index.astro]], [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/before-after.astro][src/pages/before-after.astro]], [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][src/pages/index.astro]], and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/SocialShare.astro][src/components/SocialShare.astro]]
+  - Added a Tailwind ~brand~ color because the existing shadcn-style ~accent~ key is occupied, replaced remaining live hardcoded blues with the editorial accent, bumped weak gray captions/icons to ~text-gray-500~, and replaced developer-facing empty-state copy with visitor-facing copy.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/eslint.config.js][eslint.config.js]]
+  - Ignored [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/][docs/]] artifacts so local contact sheets/export scripts do not break the source lint command.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/site-review-2026-07-03.org][docs/site-review-2026-07-03.org]]
+  - Marked the GitHub Actions, head/meta cleanup, and accent-color sweep items done; noted the contrast and empty-state accessibility sub-items as done while leaving the alt-text audit open.
+
+* 2026-07-05 - OG / social share card export (Night Premiere)
+
+** Status
+- Exported the winning "Night Premiere" share card (tuxedo black, gold-ring mark rebuilt for dark ground, cream + gold three-line lockup) from the OG contact-sheet explorations and wired it in as the site-wide og:image / twitter:image fallback.
+
+** Shipped
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/og-card-explorations/og-card-night-premiere.html][docs/og-card-explorations/og-card-night-premiere.html]]
+  - New standalone render page and editable source of record: the Night Premiere variant extracted from [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/og-card-explorations/contact-sheet-og-card.html][contact-sheet-og-card.html]], rendered at true 1200×630 with zero scale/margin transforms. Same Google Fonts load (Cormorant Garamond + Karla). Copy: "Jay Dixit" / "Red Carpet & Portrait Photographer" (italic ampersand) / "WIKIPORTRAITS · WIKIPEDIA" gold letterspaced caps.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/og-card.png][public/og-card.png]]
+  - New 1200×630 PNG. Render method: Playwright (~@playwright/test~ chromium) at a 1200×630 viewport, device scale factor 1, waits for ~document.fonts.ready~, screenshots the ~#og-card~ element; then optimized with ~oxipng -o max --strip safe~. Final size 37 KB.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/layouts/MainLayout.astro][src/layouts/MainLayout.astro]]
+  - Changed the ~resolveOgImage~ fallback from ~/jaydixit-photos-logo.png~ to ~/og-card.png~, and updated the default ~ogImageAlt~ to "Jay Dixit — Red Carpet & Portrait Photographer, WikiPortraits · Wikipedia".
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/image-metadata.json][src/data/image-metadata.json]]
+  - Added an ~og-card.png~ entry (1200×630), mirroring the ~jaydixit-photos-logo.png~ listing.
+
+** Notes
+- ~src/pages/index.astro~ photo-based Cloudinary og:images untouched; only the head fallback changed.
+- MainLayout emits no ~og:image:width/height~ meta today, so no dimension tags needed updating.
+
+** Validation
+- ~npm run build~ (passes). Confirmed ~dist/about/index.html~ og:image → ~/og-card.png~ and ~dist/og-card.png~ present.
+- Visual verification of the PNG: black ground, gold ring + red-carpet mark, three crisp correctly-spelled lines, no clipping.
+
 * 2026-07-05 - Brand echo cleanup after favicon replacement
 
 ** Status

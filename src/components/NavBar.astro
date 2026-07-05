@@ -161,6 +161,13 @@ function isActive(item: MenuItem) {
 	</div>
 </div>
 
+<script>
+	import Alpine from 'alpinejs';
+
+	window.Alpine = Alpine;
+	Alpine.start();
+</script>
+
 <style is:global>
 	/* Single source of truth for how much top padding pages need to clear the
 	   fixed nav. Keep in sync with .site-nav sizing below: ~132px tall on
