@@ -1,6 +1,32 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-05 - Session handoff: pause point, next steps, and Jay's action items
+
+** Where we stopped
+- The design track (from [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/site-wide-improvements-implementation-plan.org][📄 site-wide-improvements-implementation-plan.org]]) is through its first three slices: before/after data extraction + EditorialPhotoFrame, shared editorial text classes (~.eyebrow~ / ~.photo-caption~ / ~.photo-credit~ / ~.editorial-link~), and Wikimedia provenance on /before-after.
+- Working pattern for this repo: Claude (Fable) investigates, verifies, and writes instruction blocks; Codex executes and commits; Jay pushes.
+
+** ⚠ Jay's action items (only Jay can do these)
+- *Push the 4 queued commits* when ready: ~a9661a3~ (before/after extraction), ~89bd5fb~ (red-carpet card enlargement), ~fe7a745~ (editorial classes), ~e4840ca~ (provenance). All verified; nothing else is uncommitted.
+- *Conan Commons file*: Jay's Sundance Conan shot could not be found on Wikimedia Commons (his Commons Conan uploads are only the SXSW 2024 Office Space set; the 2025 Sundance set there is Adam Chitayat's). Find the Commons filename or confirm it was never uploaded — then it's a one-line ~commonsUrl~ edit in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/beforeAfter.ts][📄 src/data/beforeAfter.ts]].
+- *Supabase dashboard session*: the RLS verification on ~photo_user_likes~ and the /popular aggregation view need dashboard access. Ask Claude to prep the SQL first; then it's paste-and-run.
+- *Decide the /gallery/ content story*: either move homepage highlight photos into real folders under src/gallery/photos/ so galleries are substantive, or drop "Photo Galleries" from the nav until there's content.
+- *Decide the unused image folders*: ~78 MB of committed originals in unused top-level src/gallery/ folders (nature, street, travel, cannes-2024, …) — wire them in or remove them.
+- *FYI, verified 2026-07-05*: the Wikipedia articles for Jeremy Strong and Conan O'Brien no longer use Jay's photos (current leads by Bryan Berlin and Adam Chitayat respectively). Vanessa Kirby, John Hopfield, and Sydney Sweeney still lead with Jay's photos. The site's ~articleUsageStatus~ data reflects this; only positive statuses render publicly.
+
+** Next steps (AI-executable, roughly in order)
+1. Photo-detail-page provenance blocks — extend the beforeAfter.ts provenance pattern to individual photo pages (per-photo ~commonsUrl~ data source needed, likely per-folder json or people.json extension). Review item + plan §5 second slice.
+2. Supabase SQL prep (schema + RLS policies + /popular aggregation view/RPC as ~supabase/schema.sql~) so Jay's dashboard session is paste-and-run; then fix the unbounded query in src/pages/popular.astro:267.
+3. Dead-code sweep + shared photoNaming module + real tests (review Tier 4): fslightbox removal, dead YAML gallery subsystem, starter-project clutter, extracting the copy-pasted caption/filename logic into src/lib/photoNaming.ts with Vitest coverage. NOTE: packery/imagesloaded/draggabilly and isotope-layout STAY (see decisions below).
+4. Design track continuation: homepage first-viewport edit + contextual captions (plan §2 — data/caption changes only, no layout-engine changes), then discovery indexes (events, Wikipedia upgrades, recently added — plan §4).
+5. Small items: hover/transition standardization, alt-text audit, Gallery/MasonryGallery dedup, neutral-color-system consolidation, albums index design pass.
+
+** Standing decisions (do not relitigate)
+- Packery stays as the homepage/folder masonry engine (Jay, 2026-07-05; recorded in CLAUDE.org). Never propose replacing it.
+- No "formerly on Wikipedia" / replacement language ever renders on the public site; ~'formerly-lead'~ is internal bookkeeping only.
+- prototype-documentary.astro and salient-photography-demo.astro are kept (noindexed, out of sitemap); the two about-prototypes are deleted.
+
 * 2026-07-05 - Add before/after Wikimedia provenance
 
 ** Status
