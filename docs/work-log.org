@@ -1,6 +1,21 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-05 - Brand echo cleanup after favicon replacement
+
+** Status
+- Tightened the brand-color echoes after the Ghost Disc favicon replacement so browser/PWA surfaces and OG metadata match the new cream icon ground.
+
+** Shipped
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/site.webmanifest][public/site.webmanifest]]
+  - Changed ~theme_color~ and ~background_color~ from white to ~#FAF6EF~.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/layouts/MainLayout.astro][src/layouts/MainLayout.astro]]
+  - Added ~<meta name="theme-color" content="#FAF6EF" />~ near the favicon and manifest links.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/image-metadata.json][src/data/image-metadata.json]]
+  - Corrected the ~jaydixit-photos-logo.png~ metadata from ~2048x2048~ to the current ~1200x1200~ file.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/jaydixit-photos-logo.png][public/jaydixit-photos-logo.png]]
+  - Losslessly optimized the 1200x1200 logo PNG in place.
+
 * 2026-07-04 - Replace favicon with Ghost Disc mark
 
 ** Status
