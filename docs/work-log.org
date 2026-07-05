@@ -1,6 +1,21 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-05 - Enlarge red-carpet index cards to 3 per row
+
+** Status
+- Enlarged the portrait cards on [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/red-carpet/index.astro][src/pages/red-carpet/index.astro]] by changing the desktop grid from 4 cards per row to 3 cards per row.
+
+** Changed
+- Desktop grid now renders 3 cards per row with slightly larger gaps.
+- Tablet grid steps down to 2 cards per row; small screens use 1 card per row.
+- Card images now request responsive 480/720/960px candidates so the larger cards stay sharp.
+
+** Validation
+- Local dev route [[http://127.0.0.1:4330/red-carpet/][http://127.0.0.1:4330/red-carpet/]] returned 200 and rendered 3 desktop columns, 2 tablet columns, and 1 mobile column.
+- ~pnpm lint~ passed.
+- ~pnpm exec playwright test tests/e2e/portfolio.e2e.ts -g "red-carpet"~ passed: 3 tests.
+
 * 2026-07-05 - Extract before/after data and EditorialPhotoFrame
 
 ** Status
