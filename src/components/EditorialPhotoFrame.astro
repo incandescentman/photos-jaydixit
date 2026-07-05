@@ -1,0 +1,59 @@
+---
+import { Image, getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro:assets';
+
+interface Props {
+	image: ImageMetadata;
+	alt: string;
+	caption: string;
+	label: string;
+	source: string;
+	objectPosition: string;
+	eager?: boolean;
+	labelVariant?: string;
+}
+
+const {
+	image,
+	alt,
+	caption,
+	label,
+	source,
+	objectPosition,
+	eager = false,
+	labelVariant,
+} = Astro.props;
+
+const lightboxImage = await getImage({
+	src: image,
+	width: image.width,
+	inferSize: true,
+});
+---
+
+<figure class="ba-figure">
+	<a
+		href={lightboxImage.src}
+		data-pswp-item="true"
+		class="portfolio-lightbox ba-frame"
+		data-pswp-width={image.width}
+		data-pswp-height={image.height}
+		data-pswp-caption={caption}
+		data-cropped="true"
+	>
+		<Image
+			src={image}
+			alt={alt}
+			widths={[400, 800]}
+			sizes="(min-width: 768px) 50vw, 100vw"
+			class="ba-img"
+			style={`object-position:${objectPosition}`}
+			loading={eager ? 'eager' : 'lazy'}
+			fetchpriority={eager ? 'high' : undefined}
+		/>
+	</a>
+	<figcaption class:list={['ba-cap', labelVariant]}>
+		<span class="ba-cap-label">{label}</span>
+		<span class="ba-cap-src">{source}</span>
+	</figcaption>
+</figure>

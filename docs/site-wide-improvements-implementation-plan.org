@@ -10,6 +10,8 @@ The goal is not a full redesign for its own sake. The goal is to make the site f
 * Current Applicability
 This plan still applies, but several first-pass items have already landed or are in the current working tree.
 
+- 2026-07-05: Section 3's before/after typed-data extraction and reusable [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/EditorialPhotoFrame.astro][EditorialPhotoFrame]] component landed.
+
 Still-current work:
 - shared editorial caption, credit, and link styling
 - before-and-after data extraction into typed data

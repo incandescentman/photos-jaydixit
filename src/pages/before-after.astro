@@ -1,97 +1,8 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
-import { Image, getImage } from 'astro:assets';
+import EditorialPhotoFrame from '../components/EditorialPhotoFrame.astro';
 import PhotoSwipeLightbox from '../components/PhotoSwipeLightbox.astro';
-import vanessaBeforeImg from '../assets/images/wikiportraits/vanessa-kirby-before-2018.jpg';
-import vanessaAfterImg from '../assets/images/wikiportraits/vanessa-kirby_tiff_2024.jpg';
-import johnBeforeImg from '../assets/images/wikiportraits/john-hopfield-before-2016.jpg';
-import johnAfterImg from '../assets/images/wikiportraits/john-hopfield_nobel-physics_2024.jpg';
-import jeremyBeforeImg from '../assets/images/wikiportraits/jeremy-strong-before.jpg';
-import jeremyAfterImg from '../assets/images/wikiportraits/jeremy-strong_the-apprentice-premiere_2024.jpg';
-import conanBeforeImg from '../assets/images/wikiportraits/conan-obrien-before.jpg';
-import conanAfterImg from '../assets/images/wikiportraits/conan-obrien_sundance_2024.jpg';
-import sydneyBeforeImg from '../assets/images/wikiportraits/sydney-sweeney-before-2019.jpg';
-import sydneyAfterImg from '../assets/images/wikiportraits/sydney-sweeney_tiff_2024.jpg';
-
-// Before/after pairs - Wikipedia portrait upgrades.
-// beforePos / afterPos hand-tune each cover-crop so faces stay in frame.
-const comparisons = [
-	{
-		name: 'Vanessa Kirby',
-		beforeImage: vanessaBeforeImg,
-		afterImage: vanessaAfterImg,
-		article: 'https://en.wikipedia.org/wiki/Vanessa_Kirby',
-		event: 'Toronto International Film Festival 2024',
-		beforeSource: 'Wikipedia portrait, 2018',
-		afterSource: 'Jay Dixit, TIFF 2024',
-		beforePos: 'center 20%',
-		afterPos: 'center top',
-	},
-	{
-		name: 'John Hopfield',
-		beforeImage: johnBeforeImg,
-		afterImage: johnAfterImg,
-		article: 'https://en.wikipedia.org/wiki/John_Hopfield',
-		event: 'Nobel Prize Lectures, Stockholm 2024',
-		beforeSource: 'Wikipedia portrait, 2016',
-		afterSource: 'Jay Dixit, Nobel Lectures 2024',
-		beforePos: 'center 18%',
-		afterPos: 'center 15%',
-	},
-	{
-		name: 'Jeremy Strong',
-		beforeImage: jeremyBeforeImg,
-		afterImage: jeremyAfterImg,
-		article: 'https://en.wikipedia.org/wiki/Jeremy_Strong',
-		event: 'BFI London Film Festival 2025',
-		beforeSource: 'Previous Wikipedia portrait',
-		afterSource: 'Jay Dixit, BFI London 2025',
-		beforePos: 'center 18%',
-		afterPos: 'center 8%',
-	},
-	{
-		name: "Conan O'Brien",
-		beforeImage: conanBeforeImg,
-		afterImage: conanAfterImg,
-		article: 'https://en.wikipedia.org/wiki/Conan_O%27Brien',
-		event: 'Sundance Film Festival 2025',
-		beforeSource: 'Previous Wikipedia portrait',
-		afterSource: 'Jay Dixit, Sundance 2025',
-		beforePos: 'center 18%',
-		afterPos: 'center 12%',
-	},
-	{
-		name: 'Sydney Sweeney',
-		beforeImage: sydneyBeforeImg,
-		afterImage: sydneyAfterImg,
-		article: 'https://en.wikipedia.org/wiki/Sydney_Sweeney',
-		event: 'Toronto International Film Festival 2024',
-		beforeSource: 'Glenn Francis, 2019',
-		afterSource: 'Jay Dixit, TIFF 2024',
-		beforePos: 'center 18%',
-		afterPos: 'center top',
-	},
-];
-
-const comparisonsWithLightbox = await Promise.all(
-	comparisons.map(async (comparison) => ({
-		...comparison,
-		beforeLightboxHref: (
-			await getImage({
-				src: comparison.beforeImage,
-				width: comparison.beforeImage.width,
-				inferSize: true,
-			})
-		).src,
-		afterLightboxHref: (
-			await getImage({
-				src: comparison.afterImage,
-				width: comparison.afterImage.width,
-				inferSize: true,
-			})
-		).src,
-	})),
-);
+import { comparisons } from '../data/beforeAfter';
 ---
 
 <MainLayout
@@ -120,7 +31,7 @@ const comparisonsWithLightbox = await Promise.all(
 					</div>
 				) : (
 					<div class="ba-list">
-						{comparisonsWithLightbox.map((comparison, i) => (
+						{comparisons.map((comparison, i) => (
 							<article class="ba-pair">
 								<header class="ba-pair-head">
 									<span class="ba-index">{String(i + 1).padStart(2, '0')}</span>
@@ -142,32 +53,16 @@ const comparisonsWithLightbox = await Promise.all(
 								</header>
 
 								<div class="ba-images">
-									<figure class="ba-figure">
-										<a
-											href={comparison.beforeLightboxHref}
-											data-pswp-item="true"
-											class="portfolio-lightbox ba-frame"
-											data-pswp-width={comparison.beforeImage.width}
-											data-pswp-height={comparison.beforeImage.height}
-											data-pswp-caption={`${comparison.name} - previous Wikipedia photo`}
-											data-cropped="true"
-										>
-											<Image
-												src={comparison.beforeImage}
-												alt={`${comparison.name} - previous Wikipedia photo`}
-												widths={[400, 800]}
-												sizes="(min-width: 768px) 50vw, 100vw"
-												class="ba-img"
-												style={`object-position:${comparison.beforePos}`}
-												loading={i === 0 ? 'eager' : 'lazy'}
-												fetchpriority={i === 0 ? 'high' : undefined}
-											/>
-										</a>
-										<figcaption class="ba-cap ba-cap--before">
-											<span class="ba-cap-label">Before</span>
-											<span class="ba-cap-src">{comparison.beforeSource}</span>
-										</figcaption>
-									</figure>
+									<EditorialPhotoFrame
+										image={comparison.beforeImage}
+										alt={`${comparison.name} - previous Wikipedia photo`}
+										caption={`${comparison.name} - previous Wikipedia photo`}
+										label="Before"
+										source={comparison.beforeSource}
+										objectPosition={comparison.beforePos}
+										eager={i === 0}
+										labelVariant="ba-cap--before"
+									/>
 
 									<div class="ba-arrow" aria-hidden="true">
 										<svg viewBox="0 0 32 32" focusable="false">
@@ -176,32 +71,16 @@ const comparisonsWithLightbox = await Promise.all(
 										</svg>
 									</div>
 
-									<figure class="ba-figure">
-										<a
-											href={comparison.afterLightboxHref}
-											data-pswp-item="true"
-											class="portfolio-lightbox ba-frame"
-											data-pswp-width={comparison.afterImage.width}
-											data-pswp-height={comparison.afterImage.height}
-											data-pswp-caption={`${comparison.name} - upgraded Wikipedia photo by Jay Dixit`}
-											data-cropped="true"
-										>
-											<Image
-												src={comparison.afterImage}
-												alt={`${comparison.name} - upgraded Wikipedia photo by Jay Dixit`}
-												widths={[400, 800]}
-												sizes="(min-width: 768px) 50vw, 100vw"
-												class="ba-img"
-												style={`object-position:${comparison.afterPos}`}
-												loading={i === 0 ? 'eager' : 'lazy'}
-												fetchpriority={i === 0 ? 'high' : undefined}
-											/>
-										</a>
-										<figcaption class="ba-cap ba-cap--after">
-											<span class="ba-cap-label">After</span>
-											<span class="ba-cap-src">{comparison.afterSource}</span>
-										</figcaption>
-									</figure>
+									<EditorialPhotoFrame
+										image={comparison.afterImage}
+										alt={`${comparison.name} - upgraded Wikipedia photo by Jay Dixit`}
+										caption={`${comparison.name} - upgraded Wikipedia photo by Jay Dixit`}
+										label="After"
+										source={comparison.afterSource}
+										objectPosition={comparison.afterPos}
+										eager={i === 0}
+										labelVariant="ba-cap--after"
+									/>
 								</div>
 							</article>
 						))}
@@ -397,7 +276,7 @@ const comparisonsWithLightbox = await Promise.all(
 		align-items: start;
 	}
 
-	.ba-figure {
+	:global(.ba-figure) {
 		margin: 0;
 	}
 
@@ -428,7 +307,7 @@ const comparisonsWithLightbox = await Promise.all(
 		stroke-linejoin: round;
 	}
 
-	.ba-frame {
+	:global(.ba-frame) {
 		display: block;
 		width: 100%;
 		aspect-ratio: 3 / 4;
@@ -437,7 +316,7 @@ const comparisonsWithLightbox = await Promise.all(
 		cursor: zoom-in;
 	}
 
-	.ba-img {
+	:global(.ba-img) {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
@@ -445,11 +324,11 @@ const comparisonsWithLightbox = await Promise.all(
 		transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
 	}
 
-	.ba-frame:hover .ba-img {
+	:global(.ba-frame:hover .ba-img) {
 		transform: scale(1.035);
 	}
 
-	.ba-cap {
+	:global(.ba-cap) {
 		display: flex;
 		justify-content: space-between;
 		align-items: baseline;
@@ -458,15 +337,15 @@ const comparisonsWithLightbox = await Promise.all(
 		padding-top: 0.75rem;
 	}
 
-	.ba-cap--before {
+	:global(.ba-cap--before) {
 		border-top: 1px solid var(--hairline);
 	}
 
-	.ba-cap--after {
+	:global(.ba-cap--after) {
 		border-top: 1px solid var(--ink);
 	}
 
-	.ba-cap-label {
+	:global(.ba-cap-label) {
 		flex-shrink: 0;
 		font-family: var(--sans);
 		font-size: 0.69rem;
@@ -475,15 +354,15 @@ const comparisonsWithLightbox = await Promise.all(
 		text-transform: uppercase;
 	}
 
-	.ba-cap--before .ba-cap-label {
+	:global(.ba-cap--before .ba-cap-label) {
 		color: #a79e90;
 	}
 
-	.ba-cap--after .ba-cap-label {
+	:global(.ba-cap--after .ba-cap-label) {
 		color: var(--ink);
 	}
 
-	.ba-cap-src {
+	:global(.ba-cap-src) {
 		min-width: 0;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -493,11 +372,11 @@ const comparisonsWithLightbox = await Promise.all(
 		font-size: 0.78rem;
 	}
 
-	.ba-cap--before .ba-cap-src {
+	:global(.ba-cap--before .ba-cap-src) {
 		color: var(--muted);
 	}
 
-	.ba-cap--after .ba-cap-src {
+	:global(.ba-cap--after .ba-cap-src) {
 		color: #4a443c;
 	}
 
@@ -638,7 +517,7 @@ const comparisonsWithLightbox = await Promise.all(
 			transform: rotate(90deg);
 		}
 
-		.ba-cap-src {
+		:global(.ba-cap-src) {
 			white-space: normal;
 		}
 	}
