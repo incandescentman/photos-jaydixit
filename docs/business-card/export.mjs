@@ -3,14 +3,35 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const htmlPath = join(here, 'business-card-night-premiere.html');
 
-// Optionally pass face names as CLI args (e.g. `node export.mjs front`) to export a subset.
-const wanted = process.argv.slice(2);
-const faces = [
-  { name: 'front', id: '#front', out: join(here, 'business-card-front.png') },
-  { name: 'back', id: '#back', out: join(here, 'business-card-back.png') },
-].filter((f) => wanted.length === 0 || wanted.includes(f.name));
+// Usage: node export.mjs [design] [face ...]
+//   design: "night" (default) or "ghost"
+//   faces:  "front" and/or "back"; omit to export all faces of the design.
+const DESIGNS = {
+  night: {
+    html: 'business-card-night-premiere.html',
+    faces: {
+      front: 'business-card-front.png',
+      back: 'business-card-back.png',
+    },
+  },
+  ghost: {
+    html: 'business-card-ghost-disc-hero.html',
+    faces: {
+      front: 'business-card-ghost-hero-front.png',
+      back: 'business-card-ghost-hero-back.png',
+    },
+  },
+};
+
+const args = process.argv.slice(2);
+const designName = args[0] in DESIGNS ? args.shift() : 'night';
+const design = DESIGNS[designName];
+const htmlPath = join(here, design.html);
+const wanted = args;
+const faces = Object.entries(design.faces)
+  .map(([name, out]) => ({ name, id: '#' + name, out: join(here, out) }))
+  .filter((f) => wanted.length === 0 || wanted.includes(f.name));
 
 const browser = await chromium.launch();
 // deviceScaleFactor 2 => 1050x600 CSS px renders to 2100x1200 PNG (600dpi-class)

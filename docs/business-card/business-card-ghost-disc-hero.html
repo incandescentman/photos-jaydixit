@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Business card — Ghost Disc Hero — Jay Dixit</title>
+<!--
+  PRINT ARTIFACT — NOT a site asset.
+  Second card design: "Ghost Disc Hero" — light/cream counterpart to the
+  Night Premiere card, adapted from variant 05 of
+  docs/og-card-explorations/contact-sheet-og-card.html (the finalized Ghost
+  Disc favicon as monumental hero on cream, three-line lockup level beside it).
+
+  Standard US business card: 3.5 x 2 in, landscape, two faces.
+  Each face is built at 1050 x 600 CSS px (3.5x2in @ 300dpi). All px values are
+  scaled to this canvas so proportions are print-true.
+  Exported via Playwright at deviceScaleFactor 2 -> 2100 x 1200 PNG (600dpi-class).
+
+  SAFE ZONE: keep all text >= 1/8 in (37px at this scale) from every edge.
+  All type sits well inside the safe zone. The mark is FULLY CONTAINED on both
+  faces — the complete outer gold ring is visible with margin on every side;
+  nothing touches or crosses the trim line.
+
+  NO BLEED: these faces are trimmed exactly at 3.5x2in with no bleed margin.
+  A print shop may ask for a bleed version (typically +0.125in / 37px per edge,
+  background extended). Because the ground is solid cream and nothing sits near
+  the trim edge, a bleed build is trivial — just extend the cream.
+
+  Mark geometry is the light-ground Ghost Disc from public/favicon.svg
+  (45%-opacity cream disc + red-carpet runner + gold hairline ring). On the
+  cream card ground the disc reads near-invisible by design — same as on the
+  contact sheet — leaving ring + runner as the mark.
+-->
+<style>
+  /* Same Google Fonts load as the OG cards and src/styles/global.css */
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Karla:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+
+  :root{
+    --cream:#FAF6EF;      /* card ground — the Ghost Disc's home turf */
+    --ink:#141312;
+    --gold:#C6A15B;       /* ring gold */
+    --gold-deep:#A88434;  /* badge + rule gold for light ground, per contact sheet */
+    --muted:#6b6459;      /* muted gray-brown for contact lines */
+    --red:#B3272D;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#d8d2c6;}
+  body{display:flex;flex-direction:column;align-items:center;gap:48px;padding:48px;}
+
+  /* TRUE print-proportion face: 1050 x 600 = 3.5 x 2 in @ 300dpi */
+  .card{
+    width:1050px;height:600px;position:relative;overflow:hidden;
+    background:var(--cream);
+    font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- FRONT ----------
+     Per the sheet variant: the mark leads on the LEFT, monumental, with the
+     lockup level beside it. Mark box 380px (visible ring ~320px = 53% of card
+     height — the same ring-to-canvas proportion as the OG variant), fully
+     contained: visible ring edge ~90px from the left trim, ~140px top/bottom. */
+  #front .inner{
+    position:absolute;inset:0;
+    display:flex;align-items:center;
+    padding:0 64px 0 60px;gap:44px;
+  }
+  #front .mark{flex:none;line-height:0;}
+  #front .name{
+    font-size:110px;font-weight:600;line-height:1.0;color:var(--ink);
+  }
+  #front .desc{
+    font-size:32px;font-weight:500;line-height:1.16;color:var(--ink);
+    margin-top:14px;white-space:nowrap;   /* three-line lockup: descriptor stays one line */
+  }
+  #front .desc em{font-style:italic;}
+  #front .badge{
+    font-family:'Karla',sans-serif;font-weight:700;text-transform:uppercase;
+    letter-spacing:.26em;font-size:19px;color:var(--gold-deep);
+    margin-top:22px;
+  }
+  #front .rule{width:120px;height:2px;background:var(--gold-deep);margin:24px 0 16px;}
+  #front .contact{
+    font-family:'Karla',sans-serif;font-weight:400;
+    font-size:19px;letter-spacing:.02em;line-height:1.5;
+    color:var(--muted);   /* muted gray-brown */
+  }
+
+  /* ---------- BACK ---------- */
+  #back .inner{
+    position:absolute;inset:0;
+    display:flex;align-items:center;justify-content:center;
+  }
+</style>
+</head>
+<body>
+
+  <!-- FRONT FACE -->
+  <div class="card" id="front">
+    <div class="inner">
+      <div class="mark">
+        <!-- Light-ground Ghost Disc, geometry verbatim from public/favicon.svg:
+             45%-cream disc + red-carpet runner + gold hairline ring (stroke 1.8).
+             380px box, fully inside the card — complete ring visible. -->
+        <svg width="380" height="380" viewBox="0 0 32 32" aria-label="Jay Dixit Photos">
+          <defs><clipPath id="gf"><circle cx="16" cy="16" r="11.8"/></clipPath></defs>
+          <circle cx="16" cy="16" r="12.6" fill="#FAF6EF" fill-opacity="0.45"/>
+          <g clip-path="url(#gf)"><polygon points="12.8,6.5 19.2,6.5 28,30.5 4,30.5" fill="#B3272D"/></g>
+          <circle cx="16" cy="16" r="12.6" fill="none" stroke="#C6A15B" stroke-width="1.8"/>
+        </svg>
+      </div>
+      <div class="lockup">
+        <div class="name">Jay Dixit</div>
+        <div class="desc">Red Carpet <em>&amp;</em> Portrait Photographer</div>
+        <div class="badge">Wikiportraits &middot; Wikipedia</div>
+        <div class="rule"></div>
+        <div class="contact">
+          jay@jaydixit.com<br>
+          photos.jaydixit.com
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BACK FACE -->
+  <div class="card" id="back">
+    <div class="inner">
+      <!-- Mark large and centered on cream, nothing else —
+           the light-ground mirror of the Night Premiere back. -->
+      <svg width="320" height="320" viewBox="0 0 32 32" aria-label="Jay Dixit Photos">
+        <defs><clipPath id="gb"><circle cx="16" cy="16" r="11.8"/></clipPath></defs>
+        <circle cx="16" cy="16" r="12.6" fill="#FAF6EF" fill-opacity="0.45"/>
+        <g clip-path="url(#gb)"><polygon points="12.8,6.5 19.2,6.5 28,30.5 4,30.5" fill="#B3272D"/></g>
+        <circle cx="16" cy="16" r="12.6" fill="none" stroke="#C6A15B" stroke-width="1.8"/>
+      </svg>
+    </div>
+  </div>
+
+</body>
+</html>

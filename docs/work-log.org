@@ -1,6 +1,24 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-05 - Second business card design: Ghost Disc Hero (print artifact)
+
+** Status
+- Built and exported a second two-sided card design, "Ghost Disc Hero" — the light/cream counterpart to the Night Premiere card, adapted from variant 05 of [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/og-card-explorations/contact-sheet-og-card.html][docs/og-card-explorations/contact-sheet-og-card.html]] (the finalized Ghost Disc favicon as monumental hero on cream, three-line lockup level beside it). The Night Premiere card files were not touched.
+
+** Shipped
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/business-card/business-card-ghost-disc-hero.html][docs/business-card/business-card-ghost-disc-hero.html]]
+  - Both faces at 1050 × 600 CSS px (3.5 × 2 in @ 300dpi), same conventions as the Night Premiere source. Cream #FAF6EF ground; mark geometry verbatim from [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/favicon.svg][public/favicon.svg]] (45%-opacity cream disc — near-invisible on cream by design, as on the contact sheet — + red-carpet runner + gold hairline ring, stroke 1.8).
+  - FRONT: per the sheet variant, the mark leads on the LEFT — 380px SVG box, vertically centered, fully contained (visible ring ~320px = the OG variant's 53% ring-to-canvas proportion; ring edge ~90px from the left trim, ~140px from top/bottom). Lockup level beside it: "Jay Dixit" (Cormorant 600, ink) / "Red Carpet & Portrait Photographer" (Cormorant 500 at 32px with nowrap so the descriptor holds one line, italic ampersand) / "WIKIPORTRAITS · WIKIPEDIA" (Karla caps in the light-ground deep gold #A88434) / hairline deep-gold rule / contacts "jay@jaydixit.com" and "photos.jaydixit.com" in muted gray-brown Karla (#6b6459). Gold confined to badge, rule, and ring.
+  - BACK: the mark large (320px, mirroring the Night Premiere back) and centered on cream, nothing else.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/business-card/business-card-ghost-hero-front.png][docs/business-card/business-card-ghost-hero-front.png]] and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/business-card/business-card-ghost-hero-back.png][docs/business-card/business-card-ghost-hero-back.png]]
+  - 2100 × 1200 PNGs (front ~78 KB, back ~31 KB), same pipeline: Playwright chromium at deviceScaleFactor 2, ~document.fonts.ready~ wait, element screenshots, ~oxipng -o max --strip safe~.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/business-card/export.mjs][docs/business-card/export.mjs]]
+  - Extended to take a design argument: ~node export.mjs [night|ghost] [front|back ...]~ (defaults to night, all faces).
+
+** Print notes
+- Same print profile as the Night Premiere card: 300dpi proportions, 2× export, no bleed (a print shop may want +0.125 in bleed — solid cream ground, trivial to extend), all type and the full ring inside the safe zone.
+
 * 2026-07-05 - Business card export (Night Premiere print artifact)
 
 ** Status
