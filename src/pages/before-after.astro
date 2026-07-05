@@ -82,6 +82,34 @@ import { comparisons } from '../data/beforeAfter';
 										labelVariant="ba-cap--after"
 									/>
 								</div>
+
+								{comparison.license && comparison.licenseUrl && (
+									<div class="ba-provenance-row">
+										<p class="ba-provenance photo-credit">
+											{comparison.articleUsageStatus === 'lead' && (
+												<span>Currently the lead photo on Wikipedia</span>
+											)}
+											<a
+												href={comparison.licenseUrl}
+												target="_blank"
+												rel="noopener noreferrer"
+												class="editorial-link"
+											>
+												{comparison.license}
+											</a>
+											{comparison.commonsUrl && (
+												<a
+													href={comparison.commonsUrl}
+													target="_blank"
+													rel="noopener noreferrer"
+													class="editorial-link"
+												>
+													View on Wikimedia Commons
+												</a>
+											)}
+										</p>
+									</div>
+								)}
 							</article>
 						))}
 					</div>
@@ -262,6 +290,22 @@ import { comparisons } from '../data/beforeAfter';
 		grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
 		gap: 1.25rem;
 		align-items: start;
+	}
+
+	.ba-provenance-row {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+		gap: 1.25rem;
+		margin-top: 0.75rem;
+	}
+
+	.ba-provenance {
+		grid-column: 3;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.25rem 2ch;
+		margin: 0;
 	}
 
 	:global(.ba-figure) {
@@ -490,6 +534,11 @@ import { comparisons } from '../data/beforeAfter';
 		.ba-images {
 			grid-template-columns: 1fr;
 			gap: 1.5rem;
+		}
+
+		.ba-provenance-row {
+			display: block;
+			margin-top: 0.75rem;
 		}
 
 		.ba-arrow {

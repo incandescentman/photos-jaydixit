@@ -12,6 +12,7 @@ This plan still applies, but several first-pass items have already landed or are
 
 - 2026-07-05: Section 3's before/after typed-data extraction and reusable [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/EditorialPhotoFrame.astro][EditorialPhotoFrame]] component landed.
 - 2026-07-05: Section 1's shared editorial text classes (~.eyebrow~, ~.photo-caption~, ~.photo-credit~, and ~.editorial-link~) landed.
+- 2026-07-05: Section 5's first Wikimedia provenance slice for before/after comparisons landed.
 
 Still-current work:
 - reusable editorial photo/card components

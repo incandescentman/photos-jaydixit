@@ -23,7 +23,7 @@ export interface BeforeAfterComparison {
 	afterPos: string;
 	commonsUrl?: string;
 	uploadStatus?: string;
-	articleUsageStatus?: string;
+	articleUsageStatus?: 'lead' | 'formerly-lead' | 'unknown';
 	sourceCredit?: string;
 	license?: string;
 	licenseUrl?: string;
@@ -42,6 +42,13 @@ export const comparisons: BeforeAfterComparison[] = [
 		afterSource: 'Jay Dixit, TIFF 2024',
 		beforePos: 'center 20%',
 		afterPos: 'center top',
+		commonsUrl:
+			'https://commons.wikimedia.org/wiki/File:Vanessa_Kirby_at_the_2024_Toronto_International_Film_Festival_08_(Cropped).jpg',
+		uploadStatus: 'uploaded',
+		articleUsageStatus: 'lead',
+		sourceCredit: 'Jay Dixit',
+		license: 'CC BY-SA 4.0',
+		licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
 	},
 	{
 		name: 'John Hopfield',
@@ -53,6 +60,13 @@ export const comparisons: BeforeAfterComparison[] = [
 		afterSource: 'Jay Dixit, Nobel Lectures 2024',
 		beforePos: 'center 18%',
 		afterPos: 'center 15%',
+		commonsUrl:
+			'https://commons.wikimedia.org/wiki/File:John_J._Hopfield_delivering_his_lecture_at_the_2024_Nobel_Prize_Lectures_in_Stockholm.jpg',
+		uploadStatus: 'uploaded',
+		articleUsageStatus: 'lead',
+		sourceCredit: 'Jay Dixit',
+		license: 'CC BY-SA 4.0',
+		licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
 	},
 	{
 		name: 'Jeremy Strong',
@@ -64,6 +78,13 @@ export const comparisons: BeforeAfterComparison[] = [
 		afterSource: 'Jay Dixit, BFI London 2025',
 		beforePos: 'center 18%',
 		afterPos: 'center 8%',
+		commonsUrl:
+			'https://commons.wikimedia.org/wiki/File:Jeremy_Strong_at_%22The_Apprentice%22_in_NYC_01.jpg',
+		uploadStatus: 'uploaded',
+		articleUsageStatus: 'formerly-lead',
+		sourceCredit: 'Jay Dixit',
+		license: 'CC BY-SA 4.0',
+		licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
 	},
 	{
 		name: "Conan O'Brien",
@@ -75,6 +96,11 @@ export const comparisons: BeforeAfterComparison[] = [
 		afterSource: 'Jay Dixit, Sundance 2025',
 		beforePos: 'center 18%',
 		afterPos: 'center 12%',
+		uploadStatus: 'uploaded',
+		articleUsageStatus: 'formerly-lead',
+		sourceCredit: 'Jay Dixit',
+		license: 'CC BY-SA 4.0',
+		licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
 	},
 	{
 		name: 'Sydney Sweeney',
@@ -86,5 +112,12 @@ export const comparisons: BeforeAfterComparison[] = [
 		afterSource: 'Jay Dixit, TIFF 2024',
 		beforePos: 'center 18%',
 		afterPos: 'center top',
+		commonsUrl:
+			'https://commons.wikimedia.org/wiki/File:Sydney_Sweeney_at_the_2024_Toronto_International_Film_Festival_01_(3x4_cropped_and_rotated).jpg',
+		uploadStatus: 'uploaded',
+		articleUsageStatus: 'lead',
+		sourceCredit: 'Jay Dixit',
+		license: 'CC BY-SA 4.0',
+		licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
 	},
 ];
