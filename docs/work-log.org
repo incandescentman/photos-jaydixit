@@ -1,6 +1,57 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-06 - Update about-page WikiPortraits credit
+
+** Changed
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/about.astro][src/pages/about.astro]]
+  - Changed the lead bio line from "founding photographer" to "first photographer" and named WikiPortraits founders Jennifer 8. Lee and Kevin Payravi.
+
+** Validation
+- Browser check against [[http://localhost:4327/about/][http://localhost:4327/about/]] confirmed the updated sentence renders.
+- ~pnpm lint~ passed.
+- ~pnpm run build~ passed: Astro built 84 pages.
+- ~git diff --check~ passed.
+
+* 2026-07-06 - Tighten before-after standfirst copy
+
+** Changed
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/before-after.astro][src/pages/before-after.astro]]
+  - Updated the hero standfirst to say the page replaces "low-quality or outdated portraits" with professional images Jay shoots at film festivals and cultural events.
+
+** Validation
+- Browser check against [[http://localhost:4327/before-after/][http://localhost:4327/before-after/]] confirmed the updated standfirst renders.
+- ~pnpm lint~ passed.
+- ~pnpm run build~ passed: Astro built 84 pages.
+- ~git diff --check~ passed.
+
+* 2026-07-06 - Lead before-after page with Jeremy Strong
+
+** Changed
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/beforeAfter.ts][src/data/beforeAfter.ts]]
+  - Moved the Jeremy Strong comparison to the top of the before/after sequence so [[http://localhost:4327/before-after/][the before/after page]] opens with a different pair than the WikiPortraits story hero.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tests/e2e/portfolio.e2e.ts][tests/e2e/portfolio.e2e.ts]]
+  - Added a focused assertion that the first before/after card is Jeremy Strong.
+
+** Validation
+- Browser check against [[http://localhost:4327/before-after/][http://localhost:4327/before-after/]] confirmed the visible order starts Jeremy Strong, Vanessa Kirby, John Hopfield, Conan O'Brien, Sydney Sweeney.
+- ~PLAYWRIGHT_BASE_URL=http://localhost:4327 pnpm exec playwright test tests/e2e/portfolio.e2e.ts -g "before-after page renders source captions"~ passed.
+- ~pnpm lint~ passed.
+- ~pnpm run build~ passed: Astro built 84 pages.
+- ~git diff --check~ passed.
+
+* 2026-07-06 - Shrink WikiPortraits Emil screenshot
+
+** Changed
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/blog/[slug].astro][src/pages/blog/[slug].astro]]
+  - Reduced the ~article-image-medium~ max width from ~38rem~ to ~24rem~ so the Emil Wakim screenshot on the WikiPortraits story renders smaller without changing the post copy.
+
+** Validation
+- Browser check against [[http://localhost:4327/blog/wikiportraits-story/][http://localhost:4327/blog/wikiportraits-story/]] confirmed the Emil screenshot renders at 384px wide on a 1280px viewport.
+- ~pnpm lint~ passed.
+- ~pnpm run build~ passed: Astro built 84 pages.
+- ~git diff --check~ passed.
+
 * 2026-07-06 - Add WikiPortraits hero and tighten caption layout
 
 ** Changed

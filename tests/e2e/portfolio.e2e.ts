@@ -304,6 +304,7 @@ test('before-after page renders source captions and loads comparison images afte
 
 	const comparisonCards = page.locator('.ba-pair');
 	await expect(comparisonCards).toHaveCount(5);
+	await expect(comparisonCards.first().locator('.ba-name')).toHaveText('Jeremy Strong');
 	await expect(page.locator('.ba-arrow')).toHaveCount(5);
 	await expect(page.locator('.ba-cap-src')).toHaveCount(10);
 	await expect(page.locator('.ba-cap-src', { hasText: 'Glenn Francis, 2019' })).toBeVisible();
