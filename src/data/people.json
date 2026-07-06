@@ -104,7 +104,12 @@
 		"name": "Lisa Gilroy",
 		"match": ["lisa-gilroy"],
 		"bio": "Comedian and improviser",
-		"wikipedia": "https://en.wikipedia.org/wiki/Lisa_Gilroy"
+		"wikipedia": "https://en.wikipedia.org/wiki/Lisa_Gilroy",
+		"commonsUrl": "https://commons.wikimedia.org/wiki/File:Lisa_Gilroy_at_SXSW_in_2025.jpg",
+		"articleUsageStatus": "lead",
+		"sourceCredit": "Jay Dixit",
+		"license": "CC BY 4.0",
+		"licenseUrl": "https://creativecommons.org/licenses/by/4.0/"
 	},
 	{
 		"slug": "nicholas-braun",
@@ -142,7 +147,12 @@
 			"Sydney_Sweeney_at_the_2024_Toronto_International_Film_Festival_(cropped_2)",
 			"Ana_de_Armas_and_Sydney_Sweeney_at_the_2024_Toronto_International_Film_Festival_04"
 		],
-		"wikipedia": "https://en.wikipedia.org/wiki/Sydney_Sweeney"
+		"wikipedia": "https://en.wikipedia.org/wiki/Sydney_Sweeney",
+		"commonsUrl": "https://commons.wikimedia.org/wiki/File:Sydney_Sweeney_at_the_2024_Toronto_International_Film_Festival_01_(3x4_cropped_and_rotated).jpg",
+		"articleUsageStatus": "lead",
+		"sourceCredit": "Jay Dixit",
+		"license": "CC BY-SA 4.0",
+		"licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
 	},
 	{
 		"slug": "steven-yeun",

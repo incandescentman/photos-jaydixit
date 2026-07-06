@@ -1,6 +1,42 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-06 - Remove accidental italic styling from about-page note
+
+** Changed
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/about.astro][src/pages/about.astro]]
+  - Removed the one-off ~ed-essay-emph~ class from the final paragraph of the opening essay and deleted its italic CSS rule.
+  - Left the paragraph text unchanged.
+
+** Validation
+- ~pnpm lint~ passed.
+- ~pnpm run build~ passed: Astro built 84 pages.
+- Browser computed-style check against [[http://127.0.0.1:4330/about/][http://127.0.0.1:4330/about/]] confirmed the final essay paragraph now has ~font-style: normal~.
+
+* 2026-07-06 - Add person-level Wikipedia provenance examples
+
+** Status
+- Added person-level Wikimedia provenance for confirmed current lead-photo examples with existing local red-carpet pages: Lisa Gilroy and Sydney Sweeney.
+- Verified 2026-07-06 via Wikipedia and Commons APIs: [[https://en.wikipedia.org/wiki/Lisa_Gilroy][Lisa Gilroy]] currently uses [[https://commons.wikimedia.org/wiki/File:Lisa_Gilroy_at_SXSW_in_2025.jpg][File:Lisa Gilroy at SXSW in 2025.jpg]], artist Jay Dixit, license CC BY 4.0.
+- Verified 2026-07-06 via Wikipedia and Commons APIs: [[https://en.wikipedia.org/wiki/Sydney_Sweeney][Sydney Sweeney]] currently uses [[https://commons.wikimedia.org/wiki/File:Sydney_Sweeney_at_the_2024_Toronto_International_Film_Festival_01_(3x4_cropped_and_rotated).jpg][File:Sydney Sweeney at the 2024 Toronto International Film Festival 01 (3x4 cropped and rotated).jpg]], artist Jay Dixit, license CC BY-SA 4.0.
+- Verified 2026-07-06 via Wikipedia and Commons APIs: [[https://en.wikipedia.org/wiki/Gabriel_LaBelle][Gabriel LaBelle]] currently uses [[https://commons.wikimedia.org/wiki/File:Gabriel_LaBelle_at_the_2024_Toronto_International_Film_Festival_03_(cropped)(2).jpg][File:Gabriel LaBelle at the 2024 Toronto International Film Festival 03 (cropped)(2).jpg]], artist Jay Dixit, license CC BY-SA 4.0. Left this out of [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/people.json][src/data/people.json]] for now because there is no local gallery/highlight asset under [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/gallery/][src/gallery/]], so adding a person record would generate a dead/404 person route until the local asset coverage task is done.
+- Verified 2026-07-06 via Wikipedia and Commons APIs: [[https://en.wikipedia.org/wiki/Nicholas_Braun][Nicholas Braun]] currently uses [[https://commons.wikimedia.org/wiki/File:NicholasBraun-byPhilipRomano.jpg][File:NicholasBraun-byPhilipRomano.jpg]], artist PhilipRomanoPhoto. Did not mark Nicholas Braun as current Jay-photo usage.
+
+** Changed
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/people.json][src/data/people.json]]
+  - Added ~commonsUrl~, ~articleUsageStatus~, ~sourceCredit~, ~license~, and ~licenseUrl~ to Lisa Gilroy and Sydney Sweeney.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/red-carpet/[person].astro][src/pages/red-carpet/[person].astro]]
+  - Extended the person schema with the same optional provenance fields used by before/after data.
+  - Added a compact ~photo-credit~ provenance row in person-page headers when confirmed data exists.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tests/e2e/portfolio.e2e.ts][tests/e2e/portfolio.e2e.ts]]
+  - Added a focused browser test confirming Lisa Gilroy renders provenance and Nicholas Braun does not render a current Jay-photo claim.
+
+** Validation
+- ~pnpm lint~ passed.
+- ~pnpm test -- --run~ passed: 21 Vitest tests; existing missing fixture warnings for ~unknown.jpg~ appeared.
+- ~pnpm exec playwright test tests/e2e/portfolio.e2e.ts -g "red-carpet person pages render confirmed Wikimedia provenance only"~ passed.
+- ~pnpm run build~ passed: Astro built 84 pages.
+
 * 2026-07-05 - Session handoff: pause point, next steps, and Jay's action items
 
 ** Where we stopped

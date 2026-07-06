@@ -13,6 +13,11 @@ interface Person {
 	photoSlugs?: string[];
 	bio?: string;
 	wikipedia?: string;
+	commonsUrl?: string;
+	articleUsageStatus?: 'lead' | 'formerly-lead' | 'unknown';
+	sourceCredit?: string;
+	license?: string;
+	licenseUrl?: string;
 }
 
 const people = rawPeople as Person[];
@@ -236,6 +241,14 @@ const pageDescription = personData.bio
 	? `${personData.bio}. ${photos.length} ${photos.length === 1 ? 'red carpet photo' : 'red carpet photos'} by ${siteConfig.owner}.`
 	: `${photos.length} ${photos.length === 1 ? 'red carpet photo' : 'red carpet photos'} of ${personData.name} by ${siteConfig.owner}.`;
 const primaryImage = photos[0]?.originalSrc;
+const provenanceParts = [
+	personData.articleUsageStatus === 'lead' ? 'Currently the lead photo on Wikipedia' : null,
+	personData.sourceCredit ? `Photo by ${personData.sourceCredit}` : null,
+].filter((part): part is string => Boolean(part));
+const showProvenance =
+	provenanceParts.length > 0 ||
+	Boolean(personData.license && personData.licenseUrl) ||
+	Boolean(personData.commonsUrl);
 
 const breadcrumbs = [
 	{ name: 'Home', url: '/' },
@@ -324,6 +337,42 @@ export function getStaticPaths() {
 						>
 							Wikipedia &rarr;
 						</a>
+					)
+				}
+				{
+					showProvenance && (
+						<p class="photo-credit mt-4">
+							{provenanceParts.join(' · ')}
+							{personData.license && personData.licenseUrl && (
+								<>
+									{provenanceParts.length > 0 && <span aria-hidden="true"> · </span>}
+									<a
+										href={personData.licenseUrl}
+										target="_blank"
+										rel="noopener noreferrer"
+										class="editorial-link"
+									>
+										{personData.license}
+									</a>
+								</>
+							)}
+							{personData.commonsUrl && (
+								<>
+									{(provenanceParts.length > 0 ||
+										Boolean(personData.license && personData.licenseUrl)) && (
+										<span aria-hidden="true"> · </span>
+									)}
+									<a
+										href={personData.commonsUrl}
+										target="_blank"
+										rel="noopener noreferrer"
+										class="editorial-link"
+									>
+										View on Wikimedia Commons
+									</a>
+								</>
+							)}
+						</p>
 					)
 				}
 			</header>

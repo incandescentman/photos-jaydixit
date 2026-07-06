@@ -213,6 +213,29 @@ test('red-carpet index renders editorial person cards from generated data', asyn
 	expect(await getBrokenCompletedImages(page)).toEqual([]);
 });
 
+test('red-carpet person pages render confirmed Wikimedia provenance only', async ({ page }) => {
+	await page.goto('/red-carpet/lisa-gilroy/');
+	await waitForInitialImages(page);
+
+	await expect(page.getByText('Currently the lead photo on Wikipedia')).toBeVisible();
+	await expect(page.getByText('Photo by Jay Dixit')).toBeVisible();
+	await expect(page.getByRole('link', { name: 'CC BY 4.0' })).toHaveAttribute(
+		'href',
+		'https://creativecommons.org/licenses/by/4.0/',
+	);
+	await expect(page.getByRole('link', { name: 'View on Wikimedia Commons' })).toHaveAttribute(
+		'href',
+		'https://commons.wikimedia.org/wiki/File:Lisa_Gilroy_at_SXSW_in_2025.jpg',
+	);
+
+	await page.goto('/red-carpet/nicholas-braun/');
+	await waitForInitialImages(page);
+
+	await expect(page.getByText('Currently the lead photo on Wikipedia')).toHaveCount(0);
+	await expect(page.getByText('Photo by Jay Dixit')).toHaveCount(0);
+	await expect(page.getByRole('link', { name: 'View on Wikimedia Commons' })).toHaveCount(0);
+});
+
 test('blog index renders editorial post list with live thumbnails', async ({ page }) => {
 	await page.goto('/blog/');
 	await waitForInitialImages(page);
