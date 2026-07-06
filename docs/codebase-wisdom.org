@@ -1,6 +1,20 @@
 #+TITLE: Codebase Wisdom
 #+DATE: 2025-10-03
 
+* 2026-07-06 - Local PhotoSwipe Failures Can Be Vite Optimized-Dependency Cache Drift
+
+** Trigger
+The homepage lightbox opened correctly on [[https://photos.jaydixit.com/][photos.jaydixit.com]] but clicking the same kind of photo on [[http://localhost:4327/][localhost]] did nothing.
+
+** Mechanism
+The local dev page had the correct ~portfolio-lightbox~ anchors and PhotoSwipe data attributes, but the browser console showed Vite returning ~504 (Outdated Optimize Dep)~ for ~node_modules/.vite/deps/photoswipe.js~. In that state, the PhotoSwipe dynamic import never resolves, so clicks look like a broken lightbox even though the production bundle is fine.
+
+** Fix
+Check the browser console before changing lightbox code. If the error is Vite's outdated optimized dependency for ~photoswipe.js~, force local dependency reoptimization, usually by restarting the dev server or clearing Vite's generated dependency cache. Verify production or a fresh build before treating it as an application regression.
+
+** Rule of Thumb
+If PhotoSwipe works in production but not in local dev, first distinguish code failures from Vite dependency-cache failures. A ~504 (Outdated Optimize Dep)~ on ~photoswipe.js~ is a local dev-server artifact, not proof that the shipped lightbox is broken.
+
 * 2026-06-24 - ESLint Flat Config Must Ignore Playwright Artifact Directories Directly
 
 ** Trigger

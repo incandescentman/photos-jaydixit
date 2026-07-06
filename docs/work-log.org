@@ -1,6 +1,59 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-06 - Add WikiPortraits hero and tighten caption layout
+
+** Changed
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/content/blog/wikiportraits-story.mdx][src/content/blog/wikiportraits-story.mdx]]
+  - Made the second Pete Davidson image use the same small inline figure treatment as the first image.
+  - Shortened the transition sentence and added Jay's caption for the current Wikipedia photo.
+  - Added a Vanessa Kirby before/after hero using the existing WikiPortraits before/after assets.
+  - Set the Vanessa hero metadata to mirror left/right order: ~Before~ then source, ~After~ then photo description.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/blog/[slug].astro][src/pages/blog/[slug].astro]]
+  - Gave article captions a consistent readable max width and decoupled small-image width from caption width.
+  - Added responsive styling for the WikiPortraits Vanessa Kirby hero.
+  - Prevented MDX paragraph-wrapped captions and hero metadata from inheriting the article body typography.
+  - Kept the Vanessa hero before/after image frames top-aligned.
+  - Added a medium-width treatment for the Emil Wakim screenshot.
+
+** Validation
+- ~pnpm lint~ passed.
+- ~pnpm run build~ passed: Astro built 84 pages.
+- ~git diff --check~ passed.
+- Browser check against [[http://localhost:4327/blog/wikiportraits-story/][http://localhost:4327/blog/wikiportraits-story/]] confirmed both Pete Davidson figures use the small 288px treatment, the replacement line now reads "It was eventually replaced with this:", and the new caption appears below the second Pete image.
+- Browser check against [[http://localhost:4327/blog/wikiportraits-story/][http://localhost:4327/blog/wikiportraits-story/]] confirmed the Vanessa hero before/after image frames have a top-position difference of 0px, the metadata reads ~Before~ / ~Wikipedia portrait, 2018~ and ~After~ / ~Vanessa Kirby - Wikipedia photo by Jay Dixit~, the hero no longer contains "upgraded", the Emil image renders at 608px wide, and all article captions render at 14.08px / 21.12px instead of inheriting article body type.
+
+* 2026-07-06 - Fix before-after standfirst italics and diagnose local homepage lightbox
+
+** Changed
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/before-after.astro][src/pages/before-after.astro]]
+  - Removed italic styling from the hero standfirst beginning "Wikipedia deserves better photographs."
+
+** Notes
+- Investigated homepage PhotoSwipe on [[http://localhost:4327/][http://localhost:4327/]] versus [[https://photos.jaydixit.com/][https://photos.jaydixit.com/]].
+- The first local browser probe failed to dynamically import ~photoswipe.js~ with Vite's ~504 (Outdated Optimize Dep)~ error, while the live production homepage opened PhotoSwipe successfully. After Vite reoptimized dependencies during a fresh build, the local homepage lightbox opened successfully too.
+
+** Validation
+- ~pnpm lint~ passed.
+- ~pnpm run build~ passed: Astro built 84 pages.
+- ~git diff --check~ passed.
+- Browser check against [[http://localhost:4327/before-after][http://localhost:4327/before-after]] confirmed the standfirst renders with ~font-style: normal~.
+- Browser check confirmed homepage PhotoSwipe opens on both [[http://localhost:4327/][http://localhost:4327/]] and [[https://photos.jaydixit.com/][https://photos.jaydixit.com/]] after local Vite dependency reoptimization.
+
+* 2026-07-06 - Align blog article typography with editorial pages
+
+** Changed
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/blog/[slug].astro][src/pages/blog/[slug].astro]]
+  - Replaced the old Tailwind Typography-driven blog article treatment with page-scoped editorial typography using the same ~Newsreader~ and ~Instrument Sans~ system as the about page.
+  - Restyled blog post title, metadata, tags, excerpt, body copy, headings, links, blockquotes, figures, and captions.
+
+** Validation
+- ~pnpm lint~ passed.
+- ~pnpm run build~ passed: Astro built 84 pages.
+- ~git diff --check~ passed.
+- Browser check against [[http://localhost:4327/about][http://localhost:4327/about]] and [[http://localhost:4327/blog/wikiportraits-story/][http://localhost:4327/blog/wikiportraits-story/]] confirmed matching body typography: ~Newsreader~, 24px, weight 300, 36px line height, and matching text color.
+- Browser check against [[http://localhost:4327/blog/hello-world/][http://localhost:4327/blog/hello-world/]] and [[http://localhost:4327/blog/nobel-portrait-session/][http://localhost:4327/blog/nobel-portrait-session/]] confirmed the same blog article typography applies to other posts.
+
 * 2026-07-06 - Replace WikiPortraits story draft
 
 ** Changed

@@ -12,6 +12,45 @@ tags:
 
 import jeremyBeforeImg from '../../assets/images/wikiportraits/jeremy-strong-before.jpg';
 import jeremyAfterImg from '../../assets/images/wikiportraits/jeremy-strong_the-apprentice-premiere_2024.jpg';
+import vanessaBeforeImg from '../../assets/images/wikiportraits/vanessa-kirby-before-2018.jpg';
+import vanessaAfterImg from '../../assets/images/wikiportraits/vanessa-kirby_tiff_2024.jpg';
+
+<figure className="wikiportraits-hero">
+	<div className="wikiportraits-hero-grid">
+		<div className="wikiportraits-hero-panel">
+			<div className="wikiportraits-hero-frame">
+				<img
+					className="wikiportraits-hero-img wikiportraits-hero-img--before"
+					src={vanessaBeforeImg.src}
+					alt="Vanessa Kirby's 2018 Wikipedia portrait"
+				/>
+			</div>
+			<div className="wikiportraits-hero-meta wikiportraits-hero-meta--before">
+				<strong>Before</strong>
+				<span>Wikipedia portrait, 2018</span>
+			</div>
+		</div>
+
+	<div className="wikiportraits-hero-arrow" aria-hidden="true">→</div>
+
+	<div className="wikiportraits-hero-panel">
+		<div className="wikiportraits-hero-frame">
+			<img
+				className="wikiportraits-hero-img wikiportraits-hero-img--after"
+				src={vanessaAfterImg.src}
+				alt="Vanessa Kirby - Wikipedia photo by Jay Dixit"
+			/>
+		</div>
+		<div className="wikiportraits-hero-meta wikiportraits-hero-meta--after">
+			<strong>After</strong>
+			<span className="wikiportraits-hero-title">
+				Vanessa Kirby - Wikipedia photo by Jay Dixit
+			</span>
+		</div>
+	</div>
+    </div>
+
+</figure>
 
 Wikipedia's articles are amazing but the photos are horrible.
 
@@ -29,20 +68,24 @@ As a result, most photos on Wikipedia come from amateurs — often, ordinary civ
 	<figcaption>For years, this was Pete Davidson's Wikipedia photo.</figcaption>
 </figure>
 
-It was eventually replaced with this, apparently a screenshot with the background cut out:
+It was eventually replaced with this:
 
-<figure>
+<figure className="article-image-small">
 	<img
 		src="https://upload.wikimedia.org/wikipedia/commons/a/af/Pete_Davidson_portrait_%28cropped%29.png"
 		alt="Pete Davidson's newer Wikipedia portrait"
 	/>
+	<figcaption>
+		Mr. Davidson's current Wikipedia photo, which appears to be a screenshot with the background cut
+		out.
+	</figcaption>
 </figure>
 
 While it may be amusing to see how awful some celebrities' photos are, low-quality Wikipedia photos are a bigger problem than it may seem. When you google someone, their Wikipedia article is the first result that comes up - and their Wikipedia photo is the first thing you see. For a public figure, their Wikipedia photo basically becomes their official portrait - whether they like it or not.
 
 Portraits on Wikipedia are so bad there are Instagram pages dedicated to them: [Bad Wikipedia Photos](https://www.instagram.com/badwikiphotos/?hl=en), [Bad Wiki Photos](https://www.instagram.com/badwikipediaphotos/?hl=en). Some photos are so bad that editors simply delete them, noting that having no photo at all would be better than some of the photos that get uploaded.
 
-<figure>
+<figure className="article-image-medium">
 	<img
 		src="https://preview.redd.it/emil-wakims-wikipedia-photo-v0-mqeayp52mq0e1.png?auto=webp&amp;s=c968afb4bda32043daacc4a7b9744368c90f0591"
 		alt="A screenshot of a low-quality Wikipedia portrait discussed online"
