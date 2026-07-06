@@ -1,6 +1,24 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-06 - Replace WikiPortraits story draft
+
+** Changed
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/content/blog/wikiportraits-story.mdx][src/content/blog/wikiportraits-story.mdx]]
+  - Replaced the short WikiPortraits essay body with Jay's new longform draft.
+  - Added the Pete Davidson Wikipedia-image examples, the Reddit screenshot example, and the Jeremy Strong before/after image pair.
+  - Added Jay's caption to the Emil Wakim Wikipedia-photo example.
+  - Used the section heading ~“For the love of God, please take down that photo.”~.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/blog/[slug].astro][src/pages/blog/[slug].astro]]
+  - Added a small responsive helper for inline before/after grids inside blog content.
+  - Constrained the first Pete Davidson example figure to a smaller inline width.
+  - Added a responsive arrow treatment for the Jeremy Strong before/after image pair.
+
+** Validation
+- ~pnpm lint~ passed.
+- ~pnpm run build~ passed: Astro built 84 pages.
+- Browser check against [[http://127.0.0.1:4330/blog/wikiportraits-story/][http://127.0.0.1:4330/blog/wikiportraits-story/]] confirmed the quoted subhead, copy fixes, four article figures, no broken article images, the first Pete Davidson figure at 288px wide, image-arrow-image desktop before/after layout, one-column mobile layout with a rotated arrow, and the Jeremy Strong caption text.
+
 * 2026-07-06 - Remove accidental italic styling from about-page note
 
 ** Changed
