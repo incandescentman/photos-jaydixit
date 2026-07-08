@@ -17,11 +17,11 @@ Historical documentation for the photography portfolio project.
 - Irrelevant TODO lists
 
 ** Current Archive
-None yet. Files to be moved here during documentation reorganization:
-- Root `change-log.org` (historical changelog)
+- [[file:source-snapshots/index-before-edge-to-edge-packery-2026-07-08.astro][source-snapshots/index-before-edge-to-edge-packery-2026-07-08.astro]] - Previous homepage source before the edge-to-edge Packery promotion on 2026-07-08.
+- Root ~change-log.org~ (historical changelog, still to be archived)
 - Other legacy docs as identified
 
 ---
 [[file:../CLAUDE.org][← Docs Map]]
 
-Last Updated: 2025-10-04
+Last Updated: 2026-07-08

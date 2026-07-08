@@ -1,0 +1,117 @@
+#+TITLE: Packery Edge-to-Edge Homepage Configuration
+#+DATE: 2026-07-08
+
+* Purpose
+
+This note records the Packery homepage configuration that currently fills the viewport cleanly from left edge to right edge, without the old right-side empty band.
+
+Use this before changing homepage masonry behavior in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][src/pages/index.astro]] or the shared Packery initializer in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/scripts/packeryGallery.ts][src/scripts/packeryGallery.ts]].
+
+* Current Source Of Truth
+
+- Homepage route: [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][src/pages/index.astro]]
+- Packery initializer: [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/scripts/packeryGallery.ts][src/scripts/packeryGallery.ts]]
+- Archived pre-promotion homepage: [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/archive/source-snapshots/index-before-edge-to-edge-packery-2026-07-08.astro][docs/archive/source-snapshots/index-before-edge-to-edge-packery-2026-07-08.astro]]
+
+The experimental route [[http://localhost:4324/masonry-centered/][http://localhost:4324/masonry-centered/]] was promoted into the homepage on 2026-07-08 and then removed, so the canonical review route is now [[http://localhost:4324/][http://localhost:4324/]].
+
+* Working Contract
+
+Desktop and tablet widths above 768px use Packery. The wrapper and Packery container must stay full-width:
+
+- ~.portfolio-wrap~ uses ~width: 100%~ and no horizontal padding.
+- ~.masonry-items~ uses ~width: 100%~, ~padding: 0~, ~margin: 0 auto~, and ~overflow-x: hidden~.
+- ~initPackeryGallery~ keeps the default ~mobileBreakpoint = 768~.
+- Packery uses ~columnWidth: '.grid-sizer'~, ~gutter: 8~, ~percentPosition: false~, ~resize: false~, and ~initLayout: false~.
+
+Mobile widths at 768px and below use the flex fallback. Packery is not initialized; CSS forces natural document flow with:
+
+- ~.masonry-items~ as a column flex container.
+- ~.masonry-item~ reset to ~position: relative~, ~width: 100%~, and ~height: auto~.
+- ~.grid-sizer~ hidden.
+- images at natural height with ~object-fit: contain~.
+
+* Column Math
+
+The key is not centering a fixed-width stage. The key is making the columns themselves fluid and gutter-aware.
+
+For an ~N~-column row with an 8px Packery gutter:
+
+- Regular item width is ~100% / N - 8px * (N - 1) / N~.
+- Wide item width is ~200% / N - 8px * (N - 2) / N~.
+
+That produces exact rows where:
+
+- ~N~ regular items plus ~N - 1~ gutters equal 100% of the viewport.
+- A wide item spans two regular columns plus the one gutter between them.
+
+Current breakpoints:
+
+- ~769px-1099px~: 3 columns, regular ~calc(33.333333% - 5.333333px)~, wide ~calc(66.666667% - 2.666667px)~
+- ~1100px-1303px~: 4 columns, regular ~calc(25% - 6px)~, wide ~calc(50% - 4px)~
+- ~1304px-1631px~: 4 columns, regular ~calc(25% - 6px)~, wide ~calc(50% - 4px)~
+- ~1632px-1959px~: 5 columns, regular ~calc(20% - 6.4px)~, wide ~calc(40% - 4.8px)~
+- ~1960px-2287px~: 6 columns, regular ~calc(16.666667% - 6.666667px)~, wide ~calc(33.333333% - 5.333333px)~
+- ~2288px-2615px~: 7 columns, regular ~calc(14.285714% - 6.857143px)~, wide ~calc(28.571429% - 5.714286px)~
+- ~2616px+~: 8 columns, regular ~calc(12.5% - 7px)~, wide ~calc(25% - 6px)~
+
+These rules intentionally appear twice in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][src/pages/index.astro]]:
+
+- inside the ~criticalStyles~ string, so first paint has the same geometry Packery will read
+- inside the page-level ~<style is:inline>~ block, so the settled page keeps the same geometry
+
+Keep both copies synchronized.
+
+* Why Earlier Attempts Failed
+
+The previous problem was trying to center or pad a fixed-width Packery stage while columns still used the historical 320px / 648px widths.
+
+That can move the grid, but it cannot make four fixed columns fill an arbitrary viewport. The result was always some version of the same bug: a right-side empty band, mismatched left and right gutters, or a stage that collapsed when ~fitWidth~ interacted with Packery sizing.
+
+The working solution changes the premise: the stage is full-width, and each Packery item gets a viewport-relative width that already accounts for the 8px gutters.
+
+One more detail matters for polish: Packery's staggered first layout can briefly position items off to the right before the settled layout is perfect. Keeping ~overflow-x: hidden~ on ~.masonry-items~ prevents a transient horizontal scrollbar during that settle period.
+
+* What Not To Change Casually
+
+- Do not enable Packery ~fitWidth~ for this homepage layout.
+- Do not reintroduce side padding on ~.portfolio-wrap~ or ~.masonry-items~ unless you also rework the column formulas.
+- Do not remove ~overflow-x: hidden~ from ~.masonry-items~ unless you have verified there is no transient horizontal scroll during first layout.
+- Do not change the mobile breakpoint in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/scripts/packeryGallery.ts][src/scripts/packeryGallery.ts]] without changing the CSS fallback threshold in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][src/pages/index.astro]].
+- Do not remove the duplicated critical and settled CSS copies unless the homepage gets a single generated source for those rules.
+- Do not leave experiment metadata on the homepage. Canonical must be ~/~, title must be ~Red Carpet Highlights~, and the homepage must not set ~noindex~.
+- Do not propose replacing Packery. Packery is the deliberate homepage and folder-page masonry engine.
+
+* Verification Checklist
+
+Run:
+
+#+begin_src sh
+pnpm exec prettier --check src/pages/index.astro
+pnpm build
+git diff --check
+#+end_src
+
+Browser-check [[http://localhost:4324/][http://localhost:4324/]] at representative widths:
+
+- 390px: mobile fallback, no Packery instance, no horizontal overflow.
+- 800px: 3-column desktop/tablet Packery, no left or right gap.
+- 1440px: 4-column Packery, no left or right gap.
+- 1728px: 5-column Packery, no left or right gap.
+- 1960px or wider if available: expanded column tiers still have no overflow or empty right band.
+
+Wait for Packery's staggered first layout to settle before measuring geometry. A fixed delay of about 2.5 seconds after all masonry items have received ~.animated-in~ was enough in the 2026-07-08 verification sweep.
+
+Useful browser assertions:
+
+- left edge of visible masonry items equals the viewport left edge
+- right edge of visible masonry items equals the viewport right edge
+- no horizontal document overflow
+- no overlapping visible masonry items
+- no broken visible images
+- homepage canonical is ~/~
+- no robots ~noindex~ tag on the homepage
+
+* Reverting
+
+To revert to the pre-promotion homepage source, copy [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/archive/source-snapshots/index-before-edge-to-edge-packery-2026-07-08.astro][docs/archive/source-snapshots/index-before-edge-to-edge-packery-2026-07-08.astro]] back over [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][src/pages/index.astro]], then rerun the verification checklist.

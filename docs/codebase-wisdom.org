@@ -1,6 +1,35 @@
 #+TITLE: Codebase Wisdom
 #+DATE: 2025-10-03
 
+* 2026-07-08 - Edge-to-Edge Packery Needs Gutter-Aware Fluid Columns
+
+** Trigger
+The homepage Packery masonry looked good, but on wider viewports it left a persistent empty band on the right. Earlier attempts to center the whole stage made the grid more balanced but did not actually fill both viewport edges.
+
+** Mechanism
+Packery was laying out a full-width container, but the masonry items still used historical fixed widths: 320px regular columns and 648px wide columns with an 8px gutter. Centering, padding, or using ~fitWidth~ can only move that fixed grid; it cannot make the columns consume arbitrary viewport widths.
+
+The fix is to let CSS define fluid item widths that already include gutter math before Packery measures the DOM. For an ~N~-column row with an 8px gutter:
+
+- regular width: ~100% / N - 8px * (N - 1) / N~
+- wide width: ~200% / N - 8px * (N - 2) / N~
+
+** Fix
+Keep [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][src/pages/index.astro]] edge-to-edge at the wrapper and item levels:
+
+- ~.portfolio-wrap~ and ~.masonry-items~ stay 100% wide with no horizontal padding.
+- Desktop/tablet breakpoints use gutter-aware ~calc()~ widths for ~.grid-sizer~, ~.masonry-item.regular~, ~.masonry-item.wide~, and ~.masonry-item.wide_tall~.
+- The same width rules appear in both ~criticalStyles~ and the main inline style block so first paint and settled layout match.
+- ~.masonry-items~ keeps ~overflow-x: hidden~ so Packery's staggered first layout cannot expose a temporary horizontal scrollbar while items settle.
+- The 768px-and-below mobile fallback stays flex-column and bypasses Packery.
+
+The dedicated configuration note is [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/packery-edge-to-edge-configuration.org][docs/packery-edge-to-edge-configuration.org]].
+
+** Rule of Thumb
+If a Packery page has a left/right balance problem, do not start by moving a fixed stage around. First ask whether item widths plus gutters mathematically fill the container. If the page uses critical CSS, update the critical and settled CSS copies together before testing.
+
+When browser-testing the homepage, wait for Packery's staggered first layout to settle before judging overlap or right-edge geometry. Mid-animation rects can briefly look wrong even when the final layout is correct.
+
 * 2026-07-06 - Local PhotoSwipe Failures Can Be Vite Optimized-Dependency Cache Drift
 
 ** Trigger

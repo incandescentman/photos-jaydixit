@@ -16,6 +16,7 @@ Last Synced for AI Context: 2025-10-04
 The root **CLAUDE.md** file contains legacy documentation. This file (docs/CLAUDE.org) is the canonical documentation entry point. Both should be maintained during transition.
 
 * Recent Updates
+- 2026-07-08: Promoted edge-to-edge Packery homepage sizing; current configuration lives in [[file:packery-edge-to-edge-configuration.org][packery-edge-to-edge-configuration.org]]
 - 2026-07-04: Confirmed Vercel deployment contract: ~vercel.json~ runs ~pnpm build~ and serves Astro static output from ~dist~
 - 2026-04-01: Replaced the dead ~=t_gallery=~ Cloudinary transform fallback with explicit transforms and made blog post images auto-wire into PhotoSwipe
 - 2026-04-01: Renamed the public people directory to ~/red-carpet/~, added recognition + related-essays sections, and standardized metadata helpers
@@ -56,6 +57,7 @@ If you're new to this project, read these in order:
 - Root [[file:../astro-cloudinary.org][astro-cloudinary.org]] - Astro Cloudinary implementation
 - Root [[file:../cloudinary-assets-content-layer.org][cloudinary-assets-content-layer.org]] - Content layer architecture
 - [[file:masonry-architecture-improvements.org][masonry-architecture-improvements.org]] - Masonry layout enhancements
+- [[file:packery-edge-to-edge-configuration.org][packery-edge-to-edge-configuration.org]] - Current homepage Packery edge-to-edge configuration
 - Root [[file:../photo-resequencing-guide.org][photo-resequencing-guide.org]] - Photo ordering guide
 - Root [[file:../image-configuration-guide.org][image-configuration-guide.org]] - Image configuration
 - [[file:wikimedia-commons-upload.org][wikimedia-commons-upload.org]] - Wikimedia Commons workflow
@@ -209,7 +211,7 @@ Documentation structure:
 
 *** Performance
 - Lazy loading for images
-- Masonry layout with CSS (no JS layout library)
+- Homepage and folder-page masonry use deliberate Packery progressive enhancement on desktop/tablet, with a flex-column mobile fallback
 - Minimal client-side JavaScript
 - Cloudinary for automatic optimization
 
@@ -221,11 +223,11 @@ Fix: **Always fix the code**, never modify photo organization - content is sourc
 Prevention: Load [[file:CLAUDE.org::*Core Philosophy][CLAUDE.org::*Core Philosophy]] before working with galleries
 Frequency: High - Violates fundamental principle
 
-*** Pattern: Adding Heavy JS Libraries for Layout           :performance:HIGH_SEVERITY:2025-10:
-Problem: LLM suggests using Masonry.js or Packery instead of CSS
-Fix: Use CSS-based layout (column-count, break-inside: avoid)
-Prevention: Check [[file:design-architecture.org::*Masonry Layout][design-architecture.org::*Masonry Layout]]
-Frequency: Medium - Performance impact
+*** Pattern: Replacing The Deliberate Packery Layout        :performance:HIGH_SEVERITY:2025-10:
+Problem: LLM suggests replacing the existing Packery homepage or folder-page masonry engine.
+Fix: Keep Packery. For homepage edge-balance work, use the current contract in [[file:packery-edge-to-edge-configuration.org][packery-edge-to-edge-configuration.org]] instead of proposing a new layout engine.
+Prevention: Check [[file:design-architecture.org::*Masonry Layout][design-architecture.org::*Masonry Layout]] and [[file:packery-edge-to-edge-configuration.org][packery-edge-to-edge-configuration.org]]
+Frequency: Medium - Packery is a deliberate product choice
 
 *** Pattern: Breaking Cloudinary URL Patterns                :cloudinary:HIGH_SEVERITY:2025-10:
 Problem: LLM modifies Cloudinary transformation URLs incorrectly

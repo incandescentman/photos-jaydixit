@@ -1,6 +1,47 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-08 - Tighten homepage intro-to-grid transition
+
+** Changed
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][src/pages/index.astro]]
+  - Tried the subtle transition-band option for the wide-monitor intro issue: kept the intro text readable and centered, but reduced the intro bottom margin so the edge-to-edge image grid begins closer to the CTA.
+  - Reduced the CTA top margin slightly so the intro reads as one compact editorial block.
+
+** Validation
+- Browser check against [[http://localhost:4324/][http://localhost:4324/]] confirmed the intro-to-grid gap is now about 20px on both 1440px desktop and 390px mobile, with no horizontal overflow.
+- Screenshots reviewed from ~/tmp/photos-home-tight-intro-1440.png~ and ~/tmp/photos-home-tight-intro-390.png~.
+
+* 2026-07-08 - Promote edge-to-edge Packery homepage
+
+** Changed
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][src/pages/index.astro]]
+  - Promoted the successful edge-to-edge Packery masonry experiment to the homepage.
+  - Kept the homepage metadata canonical: ~/~, ~Red Carpet Highlights~, and no ~noindex~ flag.
+  - Changed desktop/tablet masonry sizing from fixed historical widths to gutter-aware fluid formulas so visible columns fill the viewport left-to-right.
+  - Added an ~overflow-x: hidden~ guard on the Packery container so the staggered first layout cannot expose a transient horizontal scrollbar.
+  - Kept the 768px-and-below mobile flex fallback intact.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/archive/source-snapshots/index-before-edge-to-edge-packery-2026-07-08.astro][docs/archive/source-snapshots/index-before-edge-to-edge-packery-2026-07-08.astro]]
+  - Archived the previous homepage source outside [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/][src/pages/]] so it can be restored without exposing a backup route.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/packery-edge-to-edge-configuration.org][docs/packery-edge-to-edge-configuration.org]]
+  - Added the current working Packery configuration, column formulas, failure explanation, verification checklist, and revert path.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/codebase-wisdom.org][docs/codebase-wisdom.org]] and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/CLAUDE.org][docs/CLAUDE.org]]
+  - Recorded the reusable edge-to-edge Packery lesson and updated the docs map so future agents see the current Packery contract.
+- Removed temporary experiment route [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/masonry-centered.astro][src/pages/masonry-centered.astro]] after promotion.
+
+** Solution
+- The earlier empty right band was caused by trying to center or pad a fixed-width Packery stage. That can move the grid, but it cannot make fixed 320px / 648px columns fill an arbitrary viewport.
+- The working layout keeps the stage full-width and makes the columns themselves fluid: regular item width is ~100% / N - 8px * (N - 1) / N~, and wide item width is ~200% / N - 8px * (N - 2) / N~.
+- The formulas live in both the critical inline CSS and the settled page CSS because Packery reads item widths from first-rendered DOM geometry.
+
+** Validation
+- ~pnpm exec prettier --check src/pages/index.astro~ passed.
+- ~pnpm build~ passed: Astro built 84 pages.
+- ~pnpm lint~ passed.
+- ~pnpm test -- --run~ passed: 21 Vitest tests; existing ~unknown.jpg~ fixture warnings appeared.
+- ~git diff --check~ passed.
+- Browser check against [[http://localhost:4324/][http://localhost:4324/]] passed at 390, 800, 1024, 1200, 1300, 1366, 1440, 1728, 1960, 2288, and 2616px after waiting for Packery's staggered first layout to settle. Assertions covered: no meaningful left/right gaps, no horizontal overflow, no overlapping masonry items, no visible broken images, canonical ~/~, no robots ~noindex~, Packery enabled on desktop/tablet, and Packery disabled on mobile.
+
 * 2026-07-06 - Update about-page WikiPortraits credit
 
 ** Changed
