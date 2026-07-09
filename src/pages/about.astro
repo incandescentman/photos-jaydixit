@@ -27,9 +27,9 @@ import RecognitionSection from '../components/RecognitionSection.astro';
 					<p>
 						I&rsquo;m a red carpet photographer for Wikipedia and the first photographer of the
 						WikiPortraits initiative founded by Jennifer 8. Lee and Kevin Payravi. I&rsquo;ve
-						covered the Nobel Prizes in Stockholm and Oslo, Sundance, SXSW, the Toronto International
-						Film Festival, the New York Film Festival, and cultural events in New York, San
-						Francisco, and Toronto.
+						covered the Nobel Prizes in Stockholm and Oslo, Sundance, SXSW, the Toronto
+						International Film Festival, the New York Film Festival, and cultural events in New
+						York, San Francisco, and Toronto.
 					</p>
 					<p>
 						I&rsquo;m also a writer, writing professor, and AI educator. I taught storytelling at
@@ -56,7 +56,7 @@ import RecognitionSection from '../components/RecognitionSection.astro';
 					<p>
 						It&rsquo;s physical and chaotic and exhausting. Sometimes it almost feels like being a
 						sniper, braced and still, peering through a long lens, waiting and breathing, finger on
-						the shutter ready to fire the second the starlet looks your way.
+						the shutter ready to fire the second the movie star looks your way.
 					</p>
 					<p>
 						Like writing, photography is all craft and strategy. It&rsquo;s about making decisions,
@@ -77,7 +77,7 @@ import RecognitionSection from '../components/RecognitionSection.astro';
 				</div>
 
 				<div class="ed-actions">
-					<a href="#photography" class="ed-btn ed-btn--solid">View My Work</a>
+					<a href="/before-after" class="ed-btn ed-btn--solid">View My Work</a>
 					<a href="/contact" class="ed-btn ed-btn--ghost">Get In Touch</a>
 				</div>
 			</div>
@@ -148,89 +148,15 @@ import RecognitionSection from '../components/RecognitionSection.astro';
 					consulting. If you want to talk about photography, writing, or what AI can actually do for
 					your team, I&rsquo;d love to hear from you.
 				</p>
+				<p class="ed-cta-route">
+					My AI work lives at
+					<a href="https://socraticai.co/" target="_blank" rel="noopener noreferrer"
+						>socraticai.co</a
+					>.
+				</p>
 				<div class="ed-actions ed-actions--center">
 					<a href="/contact" class="ed-btn ed-btn--solid">Get In Touch</a>
 					<a href="/gallery" class="ed-btn ed-btn--ghost">View Portfolio</a>
-				</div>
-			</div>
-		</section>
-
-		<!-- Writing & Teaching -->
-		<section class="ed-section">
-			<div class="ed-shell ed-shell--wide">
-				<header class="ed-block-head ed-block-head--split">
-					<div>
-						<p class="ed-kicker eyebrow">Academic &amp; Editorial</p>
-						<h2 class="ed-h2">Writing &amp; Teaching</h2>
-					</div>
-				</header>
-
-				<div class="ed-three">
-					<div class="ed-col">
-						<h3 class="ed-col-title">Yale University</h3>
-						<span class="ed-col-rule" aria-hidden="true"></span>
-						<p class="ed-col-body">
-							&ldquo;The Art of Storytelling&rdquo; — teaching writers how to make readers actually
-							want to keep reading, using suspense, curiosity, and narrative structure.
-						</p>
-					</div>
-					<div class="ed-col">
-						<h3 class="ed-col-title">Major Publications</h3>
-						<span class="ed-col-rule" aria-hidden="true"></span>
-						<p class="ed-col-body">
-							Contributor to The New York Times, Rolling Stone, and Harvard Business Review.
-						</p>
-					</div>
-					<div class="ed-col">
-						<h3 class="ed-col-title">Psychology Today</h3>
-						<span class="ed-col-rule" aria-hidden="true"></span>
-						<p class="ed-col-body">
-							Senior editor for four years, covering psychology, behavior, and what makes people
-							tick.
-						</p>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<!-- AI Work -->
-		<section class="ed-section ed-ai-section">
-			<div class="ed-shell ed-shell--wide">
-				<header class="ed-block-head">
-					<p class="ed-kicker eyebrow">AI Work</p>
-					<h2 class="ed-h2">Practical AI for writers, educators, and creative teams</h2>
-					<p class="ed-block-intro">
-						My focus is hands-on: helping people use AI as a thought partner without losing voice,
-						judgment, or craft.
-					</p>
-				</header>
-
-				<div class="ed-two">
-					<article class="ed-ai-card">
-						<div class="ed-ai-top">
-							<h3 class="ed-ai-name">Socratic AI</h3>
-							<span class="ed-badge ed-badge--current">Current</span>
-						</div>
-						<p class="ed-ai-role">Founder &amp; Educator</p>
-						<ul class="ed-ai-list">
-							<li>Design and lead AI education workshops for organizations</li>
-							<li>Train teams to use AI for thinking, drafting, and revision</li>
-							<li>Advise on practical, responsible AI adoption in creative workflows</li>
-						</ul>
-					</article>
-
-					<article class="ed-ai-card">
-						<div class="ed-ai-top">
-							<h3 class="ed-ai-name">OpenAI</h3>
-							<span class="ed-badge ed-badge--previous">Previous</span>
-						</div>
-						<p class="ed-ai-role">Community Lead</p>
-						<ul class="ed-ai-list">
-							<li>Led the writing community</li>
-							<li>Built educator-focused programs and resources</li>
-							<li>Developed frameworks for creative and ethical AI use</li>
-						</ul>
-					</article>
 				</div>
 			</div>
 		</section>
@@ -389,13 +315,6 @@ import RecognitionSection from '../components/RecognitionSection.astro';
 		text-align: center;
 	}
 
-	.ed-block-head--split {
-		max-width: none;
-		text-align: left;
-		border-bottom: 1px solid var(--hairline);
-		padding-bottom: 2.5rem;
-	}
-
 	.ed-h2 {
 		margin: 0;
 		font-family: var(--serif);
@@ -414,7 +333,7 @@ import RecognitionSection from '../components/RecognitionSection.astro';
 		color: #5c554c;
 	}
 
-	.ed-block-head:not(.ed-block-head--split) .ed-block-intro {
+	.ed-block-head .ed-block-intro {
 		max-width: 36rem;
 	}
 
@@ -524,147 +443,26 @@ import RecognitionSection from '../components/RecognitionSection.astro';
 		color: #2a2620;
 	}
 
-	/* Writing & Teaching */
-	.ed-three {
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: 3rem;
-		margin-top: 3.25rem;
-	}
-
-	.ed-col-title {
-		margin: 0;
-		font-family: var(--serif);
-		font-weight: 400;
-		font-size: 1.55rem;
-		line-height: 1.1;
-		color: #161310;
-	}
-
-	.ed-col-rule {
-		display: block;
-		width: 2rem;
-		height: 1px;
-		background: #cfc6b3;
-		margin: 1rem 0 1.4rem;
-	}
-
-	.ed-col-body {
-		margin: 0;
+	.ed-cta-route {
+		margin: 1.4rem 0 0;
 		font-family: var(--sans);
 		font-size: 1rem;
-		line-height: 1.65;
+		line-height: 1.6;
 		color: #5c554c;
 	}
 
-	/* AI Work */
-	.ed-ai-section {
-		background: var(--paper-deep);
-		border-top: 1px solid var(--hairline);
-	}
-
-	.ed-ai-section .ed-block-head {
-		max-width: 42rem;
-		margin-left: 0;
-		text-align: left;
-	}
-
-	.ed-ai-section .ed-block-intro {
-		max-width: 40rem;
-		margin-left: 0;
-	}
-
-	.ed-two {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 1.75rem;
-	}
-
-	.ed-ai-card {
-		background: #fff;
-		border: 1px solid var(--hairline);
-		padding: 2.25rem;
-	}
-
-	.ed-ai-top {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 1rem;
-		margin-bottom: 1.4rem;
-	}
-
-	.ed-ai-name {
-		margin: 0;
-		font-family: var(--serif);
-		font-weight: 400;
-		font-size: 1.7rem;
-		line-height: 1;
-		color: #161310;
-	}
-
-	.ed-badge {
-		flex-shrink: 0;
-		font-family: var(--sans);
-		font-size: 0.64rem;
+	.ed-cta-route a {
+		color: var(--ink);
 		font-weight: 600;
-		letter-spacing: 0.16em;
-		text-transform: uppercase;
-		padding: 0.3rem 0.7rem;
-		border-radius: 999px;
-	}
-
-	.ed-badge--current {
-		color: var(--accent);
-		border: 1px solid #d8c9a8;
-		background: rgba(150, 119, 63, 0.06);
-	}
-
-	.ed-badge--previous {
-		color: var(--muted);
-		border: 1px solid var(--hairline);
-	}
-
-	.ed-ai-role {
-		margin: 0 0 1.5rem;
-		font-family: var(--sans);
-		font-size: 0.72rem;
-		font-weight: 600;
-		letter-spacing: 0.16em;
-		text-transform: uppercase;
-		color: var(--muted);
-	}
-
-	.ed-ai-list {
-		margin: 0;
-		padding: 0;
-		list-style: none;
-		display: grid;
-		gap: 0.9rem;
-	}
-
-	.ed-ai-list li {
-		padding-left: 1rem;
-		border-left: 2px solid #e0d6c2;
-		font-family: var(--sans);
-		font-size: 0.95rem;
-		line-height: 1.55;
-		color: #4a443c;
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.24em;
 	}
 
 	/* Responsive */
 	@media (max-width: 900px) {
 		.ed-cards {
 			grid-template-columns: repeat(2, 1fr);
-		}
-
-		.ed-three {
-			grid-template-columns: 1fr;
-			gap: 2.25rem;
-		}
-
-		.ed-two {
-			grid-template-columns: 1fr;
 		}
 	}
 

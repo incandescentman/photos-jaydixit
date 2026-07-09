@@ -1,6 +1,30 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-08 - Tune about CTA and self-host WikiPortraits story examples
+
+** Changed
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/about.astro][src/pages/about.astro]]
+  - Changed "starlet" to "movie star" in the red-carpet process paragraph.
+  - Changed the hero "View My Work" CTA from the same-page ~#photography~ anchor to the dedicated ~/before-after~ page.
+  - Removed the duplicate ~Writing & Teaching~ / ~Academic & Editorial~ card section because the lead bio already covers Yale, publications, Psychology Today, and OpenAI.
+  - Removed the résumé-style ~AI Work~ section and replaced it with a single routing line to [[https://socraticai.co/][socraticai.co]] under the existing warm cross-sell paragraph.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/content/blog/wikiportraits-story.mdx][src/content/blog/wikiportraits-story.mdx]]
+  - Replaced the Pete Davidson Wikimedia hotlinks and the Emil Wakim Reddit preview hotlink with local ~/images/blog/...~ paths.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/images/blog/][public/images/blog/]]
+  - Added local copies of the three third-party WikiPortraits story examples so the post no longer depends on expiring Reddit preview URLs or mutable Wikimedia file paths.
+
+** Validation
+- ~file public/images/blog/pete-davidson-former-wikipedia-photo-2015.jpg public/images/blog/pete-davidson-wikipedia-portrait-cropped.png public/images/blog/emil-wakim-wikipedia-photo-reddit.png~ confirmed valid local image files.
+- Built HTML for ~/blog/wikiportraits-story/~ references the local ~/images/blog/...~ files and no longer contains the Reddit preview or Wikimedia upload URLs.
+- Built HTML for ~/about/~ includes the Socratic AI routing line and no longer contains the deleted ~AI Work~, ~Writing & Teaching~, or ~Academic & Editorial~ section headings.
+- Local preview at [[http://127.0.0.1:4323/about/][http://127.0.0.1:4323/about/]] confirms the same about-page content; server is running in tmux session ~photos-jaydixit-4323~.
+- ~pnpm exec prettier --check src/pages/about.astro~ passed.
+- ~pnpm lint~ passed.
+- ~pnpm build~ passed: Astro built 84 pages.
+- ~git diff --check~ passed.
+- ~pnpm exec prettier --check src/content/blog/wikiportraits-story.mdx~ still reports a formatting warning that also reproduces on the HEAD version of the file; left the prose-heavy MDX file unformatted to avoid unrelated prose churn.
+
 * 2026-07-08 - Tighten homepage intro-to-grid transition
 
 ** Changed
