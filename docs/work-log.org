@@ -1,6 +1,17 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-12 - Replace experiment headline and subhead
+
+** Changed
+- Replaced ~Portraits made to be seen.~ on both experimental landing pages with Jay's locked headline, ~The Opposite of Writing~.
+- Replaced both supporting lines with Jay's locked subhead, ~My favorite way to avoid doing any actual work~.
+- Preserved the Contact Sheet's three-line headline composition as ~The~ / ~Opposite of~ / ~Writing~.
+
+** Validation
+- Ran Prettier, ~pnpm run lint~, ~pnpm run test~, and ~pnpm run build~.
+- Confirmed both local experiment routes return HTTP ~200~ and render the exact locked copy.
+
 * 2026-07-12 - Replace grayscale Contact Sheet with completed color version
 
 ** Changed
