@@ -11,7 +11,8 @@ const imageUrl = (image, width = 1000) => {
 		image.cloudinaryPublicId ?? `highlights/${image.filename.replace(/\.[^.]+$/, '')}`;
 	return `https://res.cloudinary.com/${CLOUD}/image/upload/f_auto,q_auto,w_${width}/${publicId}`;
 };
-const selected = [images[2], images[0], images[1], images[3]];
+const fileLabel = (image) => image.filename.replace(/\.[^.]+$/, '');
+const selected = [images[13], images[7], images[15], images[13]];
 ---
 
 <html lang="en">
@@ -26,20 +27,30 @@ const selected = [images[2], images[0], images[1], images[3]];
 		<meta name="robots" content="noindex, nofollow" />
 		<link rel="icon" href="/favicon.ico" />
 		<link rel="preconnect" href="https://res.cloudinary.com" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
 	</head>
 	<body>
 		<main class="record">
 			<header class="record-header">
 				<a href="/" class="record-mark">Jay Dixit / Wikipedia Portraits</a>
 				<nav aria-label="Primary navigation">
-					<a href="/gallery">Work</a><a href="/about">Impact</a><a href="/about">About</a>
+					<a class="active" href="/gallery">Work</a><a href="/about">Impact</a><a href="/about"
+						>About</a
+					>
 				</nav>
 			</header>
 
 			<section class="record-hero" aria-labelledby="record-title">
 				<div class="record-copy">
 					<p class="record-eyebrow">Photographs in the public record</p>
-					<h1 id="record-title">Portraits made to be seen.</h1>
+					<h1 id="record-title">
+						<span>Portraits</span><span>made to</span><span>be seen.</span>
+					</h1>
 					<p class="record-lede">
 						Red carpet portraits, freely licensed for Wikipedia and the commons.
 					</p>
@@ -55,39 +66,66 @@ const selected = [images[2], images[0], images[1], images[3]];
 				</div>
 
 				<div class="contact-sheet" aria-label="Selected portraits">
+					<span class="sheet-axis axis-left" aria-hidden="true">Color portrait / archive</span>
+					<span class="sheet-axis axis-right" aria-hidden="true">Detail / color</span>
+					<span class="sheet-cross cross-left" aria-hidden="true"></span>
+					<span class="sheet-cross cross-right" aria-hidden="true"></span>
+
 					<figure class="frame frame-main">
-						<span class="crop tl" aria-hidden="true"></span><span class="crop br" aria-hidden="true"
-						></span>
-						<img src={imageUrl(selected[0], 1200)} alt={selected[0].caption} loading="eager" />
+						<div class="frame-meta" aria-hidden="true">
+							<span>JD—Archive / 001–004</span><b>001</b>
+						</div>
+						<div class="frame-media">
+							<span class="crop tl" aria-hidden="true"></span><span
+								class="crop br"
+								aria-hidden="true"></span>
+							<img src={imageUrl(selected[0], 1200)} alt={selected[0].caption} loading="eager" />
+						</div>
 						<figcaption>
-							<strong>JD_001</strong><span>{selected[0].caption}</span>
+							<strong>{fileLabel(selected[0])}</strong>
+							<span>{selected[0].caption}</span>
 						</figcaption>
 					</figure>
+
 					<div class="frame-stack">
 						{
 							selected.slice(1, 3).map((photo, index) => (
 								<figure class="frame">
-									<>
+									<div class="frame-meta" aria-hidden="true">
+										<span>JD / Portrait</span>
+										<b>00{index + 2}</b>
+									</div>
+									<div class="frame-media">
 										<span class="crop tl" aria-hidden="true" />
 										<span class="crop br" aria-hidden="true" />
-									</>
-									<img src={imageUrl(photo, 720)} alt={photo.caption} loading="eager" />
+										<img src={imageUrl(photo, 760)} alt={photo.caption} loading="eager" />
+									</div>
 									<figcaption>
-										<>
-											<strong>JD_00{index + 2}</strong>
-											<span>{photo.caption}</span>
-										</>
+										<strong>{fileLabel(photo)}</strong>
+										<span>{photo.caption}</span>
 									</figcaption>
 								</figure>
 							))
 						}
 					</div>
+
 					<figure class="frame frame-detail">
-						<span class="crop tl" aria-hidden="true"></span><span class="crop br" aria-hidden="true"
-						></span>
-						<img src={imageUrl(selected[3], 720)} alt={selected[3].caption} loading="eager" />
+						<div class="frame-meta" aria-hidden="true">
+							<span>Detail</span><b>004</b>
+						</div>
+						<div class="frame-media">
+							<span class="crop tl" aria-hidden="true"></span><span
+								class="crop br"
+								aria-hidden="true"></span>
+							<img
+								class="detail-image"
+								src={imageUrl(selected[3], 900)}
+								alt={`${selected[3].caption}, detail crop`}
+								loading="eager"
+							/>
+						</div>
 						<figcaption>
-							<strong>JD_004</strong><span>{selected[3].caption}</span>
+							<strong>{fileLabel(selected[3])}</strong><span>Detail</span>
 						</figcaption>
 					</figure>
 				</div>
@@ -100,326 +138,553 @@ const selected = [images[2], images[0], images[1], images[3]];
 
 <style is:global>
 	:root {
-		--black: #080a0d;
-		--white: #f2efe8;
-		--gray: #8f949b;
-		--blue: #2f6bff;
-		--rule: #272b31;
+		--record-black: #07090c;
+		--record-panel: #0d1117;
+		--record-white: #f3f0e9;
+		--record-gray: #8d949e;
+		--record-blue: #2872ff;
+		--record-rule: #292e36;
 	}
+
 	* {
 		box-sizing: border-box;
 	}
+
 	html {
-		background: var(--black);
+		background: var(--record-black);
 	}
+
 	body {
 		margin: 0;
 		min-width: 320px;
-		background: var(--black);
-		color: var(--white);
+		background:
+			radial-gradient(circle at 75% 35%, rgba(34, 68, 122, 0.06), transparent 28rem),
+			var(--record-black);
+		color: var(--record-white);
 		font-family: 'Instrument Sans', system-ui, sans-serif;
 	}
+
 	.record {
 		width: min(100%, 1600px);
-		min-height: 100vh;
+		min-height: 100svh;
 		margin: 0 auto;
-		padding: 0 40px 24px;
+		padding: 0 28px 28px;
 	}
+
 	.record-header {
-		height: 76px;
-		border-bottom: 1px solid var(--rule);
+		height: 68px;
+		border-bottom: 1px solid var(--record-rule);
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		gap: 30px;
 	}
+
 	.record-mark {
-		color: var(--white);
+		color: var(--record-white);
 		font-size: 13px;
-		font-weight: 750;
-		letter-spacing: 0.12em;
+		font-weight: 800;
+		letter-spacing: 0.06em;
 		text-decoration: none;
 		text-transform: uppercase;
 	}
+
 	.record-header nav {
 		display: flex;
-		gap: 48px;
+		gap: 54px;
 	}
+
 	.record-header nav a {
 		position: relative;
-		color: var(--white);
-		font-size: 11px;
+		color: var(--record-white);
+		font-size: 10px;
 		font-weight: 700;
-		letter-spacing: 0.18em;
+		letter-spacing: 0.16em;
 		text-decoration: none;
 		text-transform: uppercase;
 	}
+
 	.record-header nav a::after {
-		content: '';
 		position: absolute;
-		left: 0;
 		right: 100%;
-		bottom: -7px;
-		height: 2px;
-		background: var(--blue);
-		transition: right 0.2s;
+		bottom: -9px;
+		left: 0;
+		height: 1px;
+		background: var(--record-blue);
+		content: '';
+		transition: right 0.2s ease;
 	}
-	.record-header nav a:hover::after {
+
+	.record-header nav a.active::after,
+	.record-header nav a:hover::after,
+	.record-header nav a:focus-visible::after {
 		right: 0;
 	}
+
 	.record-hero {
-		min-height: calc(100vh - 112px);
+		min-height: calc(100svh - 68px);
 		display: grid;
-		grid-template-columns: minmax(410px, 0.74fr) minmax(680px, 1.26fr);
-		gap: clamp(48px, 5vw, 82px);
-		align-items: center;
-		padding: 34px 0 26px;
+		grid-template-columns: minmax(410px, 0.74fr) minmax(760px, 1.26fr);
+		gap: clamp(44px, 4.5vw, 76px);
+		align-items: start;
+		padding: 38px 12px 30px;
 	}
+
 	.record-copy {
-		align-self: center;
+		align-self: start;
+		padding-top: 25px;
 	}
+
 	.record-eyebrow {
-		margin: 0 0 26px;
-		color: var(--blue);
+		margin: 0 0 30px;
+		color: var(--record-blue);
 		font-size: 10px;
 		font-weight: 700;
-		letter-spacing: 0.22em;
+		letter-spacing: 0.25em;
 		text-transform: uppercase;
 	}
-	h1 {
-		max-width: 640px;
+
+	#record-title {
+		max-width: 570px;
 		margin: 0;
 		font-family: 'Instrument Sans', system-ui, sans-serif;
-		font-size: clamp(74px, 7vw, 118px);
-		font-weight: 780;
-		letter-spacing: -0.065em;
-		line-height: 0.88;
+		font-size: clamp(70px, 5.9vw, 94px);
+		font-weight: 800;
+		letter-spacing: -0.068em;
+		line-height: 0.9;
 	}
+
+	#record-title span {
+		display: block;
+		white-space: nowrap;
+	}
+
 	.record-lede {
-		max-width: 560px;
+		max-width: 470px;
 		margin: 28px 0 0;
-		color: #c5c7cb;
-		font-size: clamp(18px, 1.45vw, 23px);
-		line-height: 1.45;
+		color: #c5c8cd;
+		font-size: clamp(17px, 1.35vw, 21px);
+		line-height: 1.42;
 	}
+
 	.record-cta {
+		min-width: 290px;
 		display: inline-flex;
 		align-items: center;
 		justify-content: space-between;
-		gap: 36px;
+		gap: 34px;
 		margin-top: 30px;
-		min-width: 280px;
-		padding: 20px 22px;
-		background: var(--blue);
+		padding: 20px 24px;
+		background: var(--record-blue);
 		color: white;
 		font-size: 11px;
 		font-weight: 750;
 		letter-spacing: 0.15em;
 		text-decoration: none;
 		text-transform: uppercase;
-		transition: background 0.2s;
+		transition: background 0.2s ease;
 	}
-	.record-cta:hover {
-		background: #2458d8;
+
+	.record-cta:hover,
+	.record-cta:focus-visible {
+		background: #165ee8;
 	}
+
 	.record-cta span {
-		font-size: 24px;
-		transition: transform 0.2s;
+		font-size: 23px;
+		transition: transform 0.2s ease;
 	}
-	.record-cta:hover span {
+
+	.record-cta:hover span,
+	.record-cta:focus-visible span {
 		transform: translateX(5px);
 	}
+
 	.record-stats {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		margin: 42px 0 0;
-		border-block: 1px solid var(--rule);
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		margin: 40px 0 0;
+		border-top: 1px solid var(--record-rule);
 	}
+
 	.record-stats div {
-		padding: 17px 12px;
-		border-left: 1px solid var(--rule);
+		min-height: 90px;
+		display: flex;
+		padding: 14px 14px 10px;
+		border-left: 1px solid var(--record-rule);
+		flex-direction: column;
 	}
+
 	.record-stats div:first-child {
 		border-left: 0;
 	}
+
 	.record-stats dt {
-		color: var(--gray);
-		font-size: 8px;
-		letter-spacing: 0.17em;
+		order: 2;
+		margin-top: 8px;
+		color: var(--record-gray);
+		font-size: 7px;
+		letter-spacing: 0.14em;
 		text-transform: uppercase;
 	}
+
 	.record-stats dd {
-		margin: 8px 0 0;
-		font-size: 17px;
-		font-weight: 650;
-		letter-spacing: 0.02em;
+		order: 1;
+		margin: 0;
+		color: var(--record-white);
+		font-size: clamp(22px, 2vw, 31px);
+		font-weight: 750;
+		letter-spacing: -0.035em;
+		line-height: 1;
 	}
+
+	.record-stats div:first-child dd::first-letter {
+		color: var(--record-blue);
+	}
+
 	.contact-sheet {
+		position: relative;
+		min-width: 0;
 		display: grid;
-		grid-template-columns: minmax(330px, 1.6fr) minmax(190px, 0.82fr) minmax(120px, 0.42fr);
-		gap: 14px;
+		grid-template-columns: minmax(400px, 1.55fr) minmax(220px, 0.9fr) minmax(72px, 0.28fr);
+		gap: 15px;
 		align-items: start;
+		margin-top: 0;
 	}
+
 	.frame {
 		position: relative;
+		min-width: 0;
 		margin: 0;
-		border: 1px solid #333840;
-		background: #101318;
 	}
+
+	.frame-meta {
+		height: 20px;
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		color: var(--record-blue);
+		font-size: 8px;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+	}
+
+	.frame-meta b {
+		font-weight: 650;
+	}
+
+	.frame-media {
+		position: relative;
+		overflow: hidden;
+		border: 1px solid #3b424c;
+		background: var(--record-panel);
+	}
+
 	.frame img {
 		display: block;
 		width: 100%;
+		height: 100%;
 		object-fit: cover;
-		filter: grayscale(1) contrast(1.06);
-		transition: filter 0.22s;
+		filter: none;
+		transition: filter 0.22s ease;
 	}
+
 	.frame:hover img {
-		filter: grayscale(0.15) contrast(1.04);
+		filter: saturate(1.05) contrast(1.03);
 	}
+
+	.frame-main .frame-media,
+	.frame-detail .frame-media {
+		height: clamp(540px, 68.5vh, 640px);
+	}
+
 	.frame-main img {
-		height: min(68vh, 680px);
+		object-position: center 18%;
 	}
+
 	.frame-stack {
 		display: grid;
-		gap: 14px;
+		gap: 16px;
 	}
+
+	.frame-stack .frame-media {
+		height: clamp(225px, 28.5vh, 260px);
+	}
+
 	.frame-stack img {
-		height: min(29vh, 285px);
+		object-position: center 20%;
 	}
-	.frame-detail img {
-		height: min(68vh, 680px);
-		object-position: 52% center;
+
+	.frame-detail .detail-image {
+		object-position: 47% 22%;
+		filter: brightness(1.12) saturate(1.04);
+		transform: scale(1.65);
+		transform-origin: 47% 22%;
 	}
+
 	.frame figcaption {
-		min-height: 45px;
-		padding: 9px 10px;
+		min-height: 49px;
 		display: grid;
-		gap: 4px;
-		background: var(--black);
-		color: var(--gray);
-		font-size: 8px;
+		gap: 5px;
+		padding: 9px 6px 0;
+		color: var(--record-gray);
+		font-size: 7px;
 		line-height: 1.25;
-		letter-spacing: 0.06em;
+		letter-spacing: 0.05em;
 		text-transform: uppercase;
 	}
+
 	.frame figcaption strong {
-		color: var(--blue);
-		font-weight: 750;
+		overflow: hidden;
+		color: var(--record-blue);
+		font-weight: 600;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
+
+	.frame-detail figcaption {
+		text-align: center;
+	}
+
 	.crop {
 		position: absolute;
-		z-index: 2;
-		width: 18px;
-		height: 18px;
+		z-index: 3;
+		width: 17px;
+		height: 17px;
 		pointer-events: none;
 	}
+
 	.crop.tl {
-		top: -5px;
-		left: -5px;
-		border-top: 2px solid var(--blue);
-		border-left: 2px solid var(--blue);
+		top: 9px;
+		left: 9px;
+		border-top: 1px solid var(--record-blue);
+		border-left: 1px solid var(--record-blue);
 	}
+
 	.crop.br {
-		right: -5px;
-		bottom: 40px;
-		border-right: 2px solid var(--blue);
-		border-bottom: 2px solid var(--blue);
+		right: 9px;
+		bottom: 9px;
+		border-right: 1px solid var(--record-blue);
+		border-bottom: 1px solid var(--record-blue);
 	}
+
+	.sheet-axis {
+		position: absolute;
+		z-index: 4;
+		color: var(--record-blue);
+		font-size: 8px;
+		font-weight: 600;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		writing-mode: vertical-rl;
+	}
+
+	.axis-left {
+		top: 176px;
+		left: -22px;
+		transform: rotate(180deg);
+	}
+
+	.axis-right {
+		right: -19px;
+		bottom: 108px;
+	}
+
+	.sheet-cross {
+		position: absolute;
+		bottom: -1px;
+		width: 17px;
+		height: 17px;
+	}
+
+	.sheet-cross::before,
+	.sheet-cross::after {
+		position: absolute;
+		background: var(--record-blue);
+		content: '';
+	}
+
+	.sheet-cross::before {
+		top: 8px;
+		width: 17px;
+		height: 1px;
+	}
+
+	.sheet-cross::after {
+		left: 8px;
+		width: 1px;
+		height: 17px;
+	}
+
+	.cross-left {
+		left: -4px;
+	}
+
+	.cross-right {
+		right: -4px;
+	}
+
 	.record-return {
 		display: inline-block;
-		color: var(--gray);
-		font-size: 9px;
-		letter-spacing: 0.12em;
+		margin-left: 12px;
+		color: var(--record-gray);
+		font-size: 8px;
+		letter-spacing: 0.13em;
 		text-transform: uppercase;
 		text-underline-offset: 4px;
 	}
-	@media (max-width: 1100px) {
-		.record {
-			padding-inline: 24px;
-		}
+
+	@media (max-width: 1240px) {
 		.record-hero {
-			grid-template-columns: 0.8fr 1.2fr;
-			gap: 30px;
+			grid-template-columns: minmax(380px, 0.72fr) minmax(650px, 1.28fr);
+			gap: 34px;
 		}
+
+		#record-title {
+			font-size: clamp(66px, 6.2vw, 82px);
+		}
+
 		.contact-sheet {
-			grid-template-columns: 1.45fr 0.75fr;
-		}
-		.frame-detail {
-			display: none;
-		}
-		.frame-main img {
-			height: 60vh;
+			grid-template-columns: minmax(350px, 1.5fr) minmax(205px, 0.88fr) 70px;
 		}
 	}
-	@media (max-width: 780px) {
+
+	@media (max-width: 1040px) {
 		.record {
-			padding-inline: 18px;
+			padding-inline: 22px;
 		}
+
+		.record-hero {
+			min-height: auto;
+			grid-template-columns: 1fr;
+			gap: 58px;
+			padding-block: 48px;
+		}
+
+		.record-copy {
+			max-width: 680px;
+		}
+
+		#record-title {
+			font-size: clamp(72px, 9vw, 98px);
+		}
+
+		.contact-sheet {
+			grid-template-columns: minmax(0, 1.5fr) minmax(230px, 0.85fr) 82px;
+		}
+	}
+
+	@media (max-width: 700px) {
+		.record {
+			padding-inline: 17px;
+		}
+
 		.record-header {
 			height: auto;
-			min-height: 70px;
-			padding-block: 18px;
+			min-height: 88px;
 			align-items: flex-start;
+			padding-block: 18px;
 			flex-direction: column;
-			gap: 12px;
+			gap: 14px;
 		}
+
+		.record-mark {
+			font-size: 11px;
+		}
+
 		.record-header nav {
-			gap: 26px;
+			gap: 30px;
 		}
+
 		.record-hero {
-			display: flex;
-			flex-direction: column;
-			padding-top: 28px;
+			gap: 44px;
+			padding: 36px 0 28px;
 		}
-		.contact-sheet {
-			order: -1;
-			width: 100%;
-			grid-template-columns: 1.25fr 0.75fr;
+
+		.record-eyebrow {
+			margin-bottom: 26px;
+			font-size: 9px;
+			letter-spacing: 0.2em;
 		}
-		.frame-main img {
-			height: 58vh;
+
+		#record-title {
+			font-size: clamp(61px, 18vw, 82px);
+			line-height: 0.88;
 		}
-		.frame-stack img {
-			height: 24vh;
+
+		.record-lede {
+			margin-top: 25px;
+			font-size: 18px;
 		}
-		h1 {
-			font-size: clamp(68px, 18vw, 104px);
+
+		.record-cta {
+			width: min(100%, 310px);
+			min-width: 0;
 		}
-	}
-	@media (max-width: 520px) {
+
+		.record-stats div {
+			min-height: 84px;
+			padding-inline: 9px;
+		}
+
+		.record-stats dd {
+			font-size: 20px;
+		}
+
 		.contact-sheet {
 			grid-template-columns: 1fr;
+			gap: 19px;
+			margin-top: 10px;
 		}
+
+		.frame-main .frame-media {
+			height: min(68vh, 610px);
+		}
+
 		.frame-stack {
 			grid-template-columns: 1fr 1fr;
+			gap: 12px;
 		}
-		.frame-stack img {
+
+		.frame-stack .frame-media {
 			height: 38vh;
+			min-height: 260px;
 		}
-		.record-stats {
-			grid-template-columns: 1fr;
+
+		.frame-detail,
+		.sheet-axis,
+		.sheet-cross {
+			display: none;
 		}
-		.record-stats div {
-			border-left: 0;
-			border-top: 1px solid var(--rule);
+
+		.frame figcaption {
+			min-height: 56px;
+			white-space: normal;
 		}
-		.record-stats div:first-child {
-			border-top: 0;
+
+		.record-return {
+			margin: 24px 0 0;
 		}
 	}
+
 	@media (prefers-reduced-motion: no-preference) {
 		.record-copy {
 			animation: copy-in 0.5s ease-out both;
 		}
+
 		.frame {
-			animation: frame-in 0.48s ease-out both;
+			animation: frame-in 0.52s ease-out both;
 		}
+
 		.frame-stack .frame:nth-child(1) {
 			animation-delay: 0.06s;
 		}
+
 		.frame-stack .frame:nth-child(2) {
 			animation-delay: 0.12s;
 		}
+
 		@keyframes copy-in {
 			from {
 				opacity: 0;
@@ -430,6 +695,7 @@ const selected = [images[2], images[0], images[1], images[3]];
 				transform: none;
 			}
 		}
+
 		@keyframes frame-in {
 			from {
 				opacity: 0;

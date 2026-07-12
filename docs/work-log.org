@@ -1,6 +1,17 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-12 - Replace grayscale Contact Sheet with completed color version
+
+** Changed
+- Replaced [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/experiments/contact-sheet.astro][📄 Contact Sheet / Public Record]] with the completed color version recovered from the separate ~codex/wikipedia-portrait-variants~ worktree.
+- Restored the curated color portrait set, full-color resting images, color-enhancing hover treatment, magnified color detail strip, truthful filename labels, and the refined contact-sheet layout.
+- Left [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/experiments/living-archive.astro][📄 The Living Archive]] unchanged.
+
+** Validation
+- Ran Prettier, ~pnpm run lint~, ~pnpm run test~, and ~pnpm run build~.
+- Confirmed the local route returns HTTP ~200~, its route-specific resting-image rule is ~filter: none~, and the Contact Sheet source contains no grayscale rule.
+
 * 2026-07-12 - Add homepage experiment chooser
 
 ** Changed
