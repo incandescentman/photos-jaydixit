@@ -4,6 +4,7 @@
 
 ** Future Tasks
 
+- [ ] IMPORTANT: Add images of Jason Bateman, Russell Crowe, Rami Malek, Jude Law, Matt Damon, and Don Cheadle to the portfolio site.
 - [ ] Review Giscus configuration if the repo or Discussions category changes; current values live in src/components/PhotoComments.astro
 - [ ] More portrait coverage: Download local highlight files for people who only have Cloudinary assets (Willem Dafoe, Gabriel LaBelle, Rose Byrne, Sydney Sweeney solo, Ana de Armas solo, Jason Collett, Kaia Gerber solo). These are referenced in src/data/homepage-images.js but have no files in src/gallery/highlights/, so they don't appear on portrait pages.
 - [ ] Before-and-after page expansion: src/pages/before-after.astro currently showcases 4 people. More Wikipedia-upgraded portraits are now available and could be added.

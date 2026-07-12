@@ -1,0 +1,444 @@
+---
+export const prerender = true;
+
+import { images } from '../../data/homepage-images.js';
+import siteConfig from '../../../site.config.mts';
+import '../../styles/global.css';
+
+const CLOUD = 'dszpm7yps';
+const imageUrl = (image, width = 1000) => {
+	const publicId =
+		image.cloudinaryPublicId ?? `highlights/${image.filename.replace(/\.[^.]+$/, '')}`;
+	return `https://res.cloudinary.com/${CLOUD}/image/upload/f_auto,q_auto,w_${width}/${publicId}`;
+};
+const selected = [images[2], images[0], images[1], images[3]];
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Contact Sheet / Public Record — {siteConfig.owner}</title>
+		<meta
+			name="description"
+			content="An experimental contact-sheet homepage for Jay Dixit's Wikipedia portraits."
+		/>
+		<meta name="robots" content="noindex, nofollow" />
+		<link rel="icon" href="/favicon.ico" />
+		<link rel="preconnect" href="https://res.cloudinary.com" />
+	</head>
+	<body>
+		<main class="record">
+			<header class="record-header">
+				<a href="/" class="record-mark">Jay Dixit / Wikipedia Portraits</a>
+				<nav aria-label="Primary navigation">
+					<a href="/gallery">Work</a><a href="/about">Impact</a><a href="/about">About</a>
+				</nav>
+			</header>
+
+			<section class="record-hero" aria-labelledby="record-title">
+				<div class="record-copy">
+					<p class="record-eyebrow">Photographs in the public record</p>
+					<h1 id="record-title">Portraits made to be seen.</h1>
+					<p class="record-lede">
+						Red carpet portraits, freely licensed for Wikipedia and the commons.
+					</p>
+					<a class="record-cta" href="/gallery"
+						>Explore the archive <span aria-hidden="true">→</span></a
+					>
+
+					<dl class="record-stats">
+						<div><dt>Wikipedia views</dt><dd>10M+</dd></div>
+						<div><dt>License</dt><dd>Open</dd></div>
+						<div><dt>Status</dt><dd>Updating</dd></div>
+					</dl>
+				</div>
+
+				<div class="contact-sheet" aria-label="Selected portraits">
+					<figure class="frame frame-main">
+						<span class="crop tl" aria-hidden="true"></span><span class="crop br" aria-hidden="true"
+						></span>
+						<img src={imageUrl(selected[0], 1200)} alt={selected[0].caption} loading="eager" />
+						<figcaption>
+							<strong>JD_001</strong><span>{selected[0].caption}</span>
+						</figcaption>
+					</figure>
+					<div class="frame-stack">
+						{
+							selected.slice(1, 3).map((photo, index) => (
+								<figure class="frame">
+									<>
+										<span class="crop tl" aria-hidden="true" />
+										<span class="crop br" aria-hidden="true" />
+									</>
+									<img src={imageUrl(photo, 720)} alt={photo.caption} loading="eager" />
+									<figcaption>
+										<>
+											<strong>JD_00{index + 2}</strong>
+											<span>{photo.caption}</span>
+										</>
+									</figcaption>
+								</figure>
+							))
+						}
+					</div>
+					<figure class="frame frame-detail">
+						<span class="crop tl" aria-hidden="true"></span><span class="crop br" aria-hidden="true"
+						></span>
+						<img src={imageUrl(selected[3], 720)} alt={selected[3].caption} loading="eager" />
+						<figcaption>
+							<strong>JD_004</strong><span>{selected[3].caption}</span>
+						</figcaption>
+					</figure>
+				</div>
+			</section>
+
+			<a class="record-return" href="/">← Current photography homepage</a>
+		</main>
+	</body>
+</html>
+
+<style is:global>
+	:root {
+		--black: #080a0d;
+		--white: #f2efe8;
+		--gray: #8f949b;
+		--blue: #2f6bff;
+		--rule: #272b31;
+	}
+	* {
+		box-sizing: border-box;
+	}
+	html {
+		background: var(--black);
+	}
+	body {
+		margin: 0;
+		min-width: 320px;
+		background: var(--black);
+		color: var(--white);
+		font-family: 'Instrument Sans', system-ui, sans-serif;
+	}
+	.record {
+		width: min(100%, 1600px);
+		min-height: 100vh;
+		margin: 0 auto;
+		padding: 0 40px 24px;
+	}
+	.record-header {
+		height: 76px;
+		border-bottom: 1px solid var(--rule);
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 30px;
+	}
+	.record-mark {
+		color: var(--white);
+		font-size: 13px;
+		font-weight: 750;
+		letter-spacing: 0.12em;
+		text-decoration: none;
+		text-transform: uppercase;
+	}
+	.record-header nav {
+		display: flex;
+		gap: 48px;
+	}
+	.record-header nav a {
+		position: relative;
+		color: var(--white);
+		font-size: 11px;
+		font-weight: 700;
+		letter-spacing: 0.18em;
+		text-decoration: none;
+		text-transform: uppercase;
+	}
+	.record-header nav a::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 100%;
+		bottom: -7px;
+		height: 2px;
+		background: var(--blue);
+		transition: right 0.2s;
+	}
+	.record-header nav a:hover::after {
+		right: 0;
+	}
+	.record-hero {
+		min-height: calc(100vh - 112px);
+		display: grid;
+		grid-template-columns: minmax(410px, 0.74fr) minmax(680px, 1.26fr);
+		gap: clamp(48px, 5vw, 82px);
+		align-items: center;
+		padding: 34px 0 26px;
+	}
+	.record-copy {
+		align-self: center;
+	}
+	.record-eyebrow {
+		margin: 0 0 26px;
+		color: var(--blue);
+		font-size: 10px;
+		font-weight: 700;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+	}
+	h1 {
+		max-width: 640px;
+		margin: 0;
+		font-family: 'Instrument Sans', system-ui, sans-serif;
+		font-size: clamp(74px, 7vw, 118px);
+		font-weight: 780;
+		letter-spacing: -0.065em;
+		line-height: 0.88;
+	}
+	.record-lede {
+		max-width: 560px;
+		margin: 28px 0 0;
+		color: #c5c7cb;
+		font-size: clamp(18px, 1.45vw, 23px);
+		line-height: 1.45;
+	}
+	.record-cta {
+		display: inline-flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 36px;
+		margin-top: 30px;
+		min-width: 280px;
+		padding: 20px 22px;
+		background: var(--blue);
+		color: white;
+		font-size: 11px;
+		font-weight: 750;
+		letter-spacing: 0.15em;
+		text-decoration: none;
+		text-transform: uppercase;
+		transition: background 0.2s;
+	}
+	.record-cta:hover {
+		background: #2458d8;
+	}
+	.record-cta span {
+		font-size: 24px;
+		transition: transform 0.2s;
+	}
+	.record-cta:hover span {
+		transform: translateX(5px);
+	}
+	.record-stats {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		margin: 42px 0 0;
+		border-block: 1px solid var(--rule);
+	}
+	.record-stats div {
+		padding: 17px 12px;
+		border-left: 1px solid var(--rule);
+	}
+	.record-stats div:first-child {
+		border-left: 0;
+	}
+	.record-stats dt {
+		color: var(--gray);
+		font-size: 8px;
+		letter-spacing: 0.17em;
+		text-transform: uppercase;
+	}
+	.record-stats dd {
+		margin: 8px 0 0;
+		font-size: 17px;
+		font-weight: 650;
+		letter-spacing: 0.02em;
+	}
+	.contact-sheet {
+		display: grid;
+		grid-template-columns: minmax(330px, 1.6fr) minmax(190px, 0.82fr) minmax(120px, 0.42fr);
+		gap: 14px;
+		align-items: start;
+	}
+	.frame {
+		position: relative;
+		margin: 0;
+		border: 1px solid #333840;
+		background: #101318;
+	}
+	.frame img {
+		display: block;
+		width: 100%;
+		object-fit: cover;
+		filter: grayscale(1) contrast(1.06);
+		transition: filter 0.22s;
+	}
+	.frame:hover img {
+		filter: grayscale(0.15) contrast(1.04);
+	}
+	.frame-main img {
+		height: min(68vh, 680px);
+	}
+	.frame-stack {
+		display: grid;
+		gap: 14px;
+	}
+	.frame-stack img {
+		height: min(29vh, 285px);
+	}
+	.frame-detail img {
+		height: min(68vh, 680px);
+		object-position: 52% center;
+	}
+	.frame figcaption {
+		min-height: 45px;
+		padding: 9px 10px;
+		display: grid;
+		gap: 4px;
+		background: var(--black);
+		color: var(--gray);
+		font-size: 8px;
+		line-height: 1.25;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+	}
+	.frame figcaption strong {
+		color: var(--blue);
+		font-weight: 750;
+	}
+	.crop {
+		position: absolute;
+		z-index: 2;
+		width: 18px;
+		height: 18px;
+		pointer-events: none;
+	}
+	.crop.tl {
+		top: -5px;
+		left: -5px;
+		border-top: 2px solid var(--blue);
+		border-left: 2px solid var(--blue);
+	}
+	.crop.br {
+		right: -5px;
+		bottom: 40px;
+		border-right: 2px solid var(--blue);
+		border-bottom: 2px solid var(--blue);
+	}
+	.record-return {
+		display: inline-block;
+		color: var(--gray);
+		font-size: 9px;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		text-underline-offset: 4px;
+	}
+	@media (max-width: 1100px) {
+		.record {
+			padding-inline: 24px;
+		}
+		.record-hero {
+			grid-template-columns: 0.8fr 1.2fr;
+			gap: 30px;
+		}
+		.contact-sheet {
+			grid-template-columns: 1.45fr 0.75fr;
+		}
+		.frame-detail {
+			display: none;
+		}
+		.frame-main img {
+			height: 60vh;
+		}
+	}
+	@media (max-width: 780px) {
+		.record {
+			padding-inline: 18px;
+		}
+		.record-header {
+			height: auto;
+			min-height: 70px;
+			padding-block: 18px;
+			align-items: flex-start;
+			flex-direction: column;
+			gap: 12px;
+		}
+		.record-header nav {
+			gap: 26px;
+		}
+		.record-hero {
+			display: flex;
+			flex-direction: column;
+			padding-top: 28px;
+		}
+		.contact-sheet {
+			order: -1;
+			width: 100%;
+			grid-template-columns: 1.25fr 0.75fr;
+		}
+		.frame-main img {
+			height: 58vh;
+		}
+		.frame-stack img {
+			height: 24vh;
+		}
+		h1 {
+			font-size: clamp(68px, 18vw, 104px);
+		}
+	}
+	@media (max-width: 520px) {
+		.contact-sheet {
+			grid-template-columns: 1fr;
+		}
+		.frame-stack {
+			grid-template-columns: 1fr 1fr;
+		}
+		.frame-stack img {
+			height: 38vh;
+		}
+		.record-stats {
+			grid-template-columns: 1fr;
+		}
+		.record-stats div {
+			border-left: 0;
+			border-top: 1px solid var(--rule);
+		}
+		.record-stats div:first-child {
+			border-top: 0;
+		}
+	}
+	@media (prefers-reduced-motion: no-preference) {
+		.record-copy {
+			animation: copy-in 0.5s ease-out both;
+		}
+		.frame {
+			animation: frame-in 0.48s ease-out both;
+		}
+		.frame-stack .frame:nth-child(1) {
+			animation-delay: 0.06s;
+		}
+		.frame-stack .frame:nth-child(2) {
+			animation-delay: 0.12s;
+		}
+		@keyframes copy-in {
+			from {
+				opacity: 0;
+				transform: translateY(12px);
+			}
+			to {
+				opacity: 1;
+				transform: none;
+			}
+		}
+		@keyframes frame-in {
+			from {
+				opacity: 0;
+				transform: translateY(10px);
+			}
+			to {
+				opacity: 1;
+				transform: none;
+			}
+		}
+	}
+</style>

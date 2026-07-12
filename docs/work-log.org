@@ -1,6 +1,38 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-12 - Add homepage experiment chooser
+
+** Changed
+- Added [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/experiments/index.astro][📄 experiments index]] as a noindexed review page linking to the canonical homepage, The Living Archive, and Contact Sheet / Public Record.
+
+** Validation
+- Ran ~pnpm run lint~, ~pnpm run test~ (21 tests), and ~pnpm run build~; all passed, and the chooser plus all three linked routes built successfully.
+- Ran Prettier across all three experiment routes.
+- Confirmed the chooser links resolve from the local site.
+
+* 2026-07-11 - Import ChatGPT Work Wikipedia portrait experiments
+
+** Changed
+- Imported the =codex/wikipedia-portrait-variants= designs for [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/experiments/living-archive.astro][📄 The Living Archive]] and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/experiments/contact-sheet.astro][📄 Contact Sheet / Public Record]] into the local main working tree.
+- Kept both designs as standalone, noindexed review routes under ~/experiments/~; the existing homepage at [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][📄 src/pages/index.astro]] was not changed.
+
+** Validation
+- Ran ~pnpm run build~ in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit][📁 /Users/jay/Dropbox/github/photos-jaydixit]]; both experiment routes built successfully.
+- Confirmed the built HTML for both routes contains ~noindex, nofollow~.
+- Confirmed both routes return HTTP ~200~ from the existing local dev server at [[http://127.0.0.1:4323/experiments/living-archive/][The Living Archive]] and [[http://127.0.0.1:4323/experiments/contact-sheet/][Contact Sheet / Public Record]].
+
+* 2026-07-09 - Record pending portfolio image additions
+
+** Changed
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/CLAUDE.org][docs/CLAUDE.org]]
+  - Added an important pending TODO to add images of Jason Bateman, Russell Crowe, Rami Malek, Jude Law, Matt Damon, and Don Cheadle to the portfolio site.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/CLAUDE.org][CLAUDE.org]]
+  - Mirrored the TODO in the legacy handoff file while docs are still maintained in both places.
+
+** Validation
+- Docs-only change; no build run.
+
 * 2026-07-08 - Tune about CTA and self-host WikiPortraits story examples
 
 ** Changed

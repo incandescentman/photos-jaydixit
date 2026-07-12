@@ -1,0 +1,248 @@
+---
+export const prerender = true;
+
+import siteConfig from '../../../site.config.mts';
+import '../../styles/global.css';
+
+const options = [
+	{
+		number: '01',
+		title: 'Current homepage',
+		description: 'The canonical landing page currently live on the site.',
+		href: '/',
+		status: 'Canonical',
+	},
+	{
+		number: '02',
+		title: 'The Living Archive',
+		description: 'An experimental editorial treatment of the portrait archive.',
+		href: '/experiments/living-archive/',
+		status: 'Experiment',
+	},
+	{
+		number: '03',
+		title: 'Contact Sheet / Public Record',
+		description: 'An experimental contact-sheet treatment of the portrait archive.',
+		href: '/experiments/contact-sheet/',
+		status: 'Experiment',
+	},
+];
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Homepage Options — {siteConfig.owner}</title>
+		<meta
+			name="description"
+			content="Review the current and experimental homepage options for Jay Dixit Photos."
+		/>
+		<meta name="robots" content="noindex, nofollow" />
+		<link rel="icon" href="/favicon.ico" />
+	</head>
+	<body>
+		<main>
+			<header>
+				<a class="wordmark" href="/">Jay Dixit Photos</a>
+				<p class="eyebrow">Homepage review</p>
+				<h1>Choose a version to view.</h1>
+				<p class="introduction">
+					These are three approaches to the photography homepage. Open each one and see which
+					direction feels strongest.
+				</p>
+			</header>
+
+			<ol class="option-list">
+				{
+					options.map((option) => (
+						<li>
+							<a href={option.href}>
+								<span class="number" aria-hidden="true">
+									{option.number}
+								</span>
+								<span class="option-copy">
+									<span class="status">{option.status}</span>
+									<strong>{option.title}</strong>
+									<span class="description">{option.description}</span>
+								</span>
+								<span class="arrow" aria-hidden="true">
+									↗
+								</span>
+							</a>
+						</li>
+					))
+				}
+			</ol>
+
+			<footer>
+				<p>Jay Dixit Photography</p>
+			</footer>
+		</main>
+	</body>
+</html>
+
+<style>
+	:global(*) {
+		box-sizing: border-box;
+	}
+
+	:global(html) {
+		background: #f4efe6;
+	}
+
+	:global(body) {
+		margin: 0;
+		min-width: 320px;
+		background:
+			radial-gradient(circle at 82% 10%, rgb(255 255 255 / 72%), transparent 32rem), #f4efe6;
+		color: #1b1b19;
+		font-family: 'Karla', system-ui, sans-serif;
+	}
+
+	main {
+		width: min(1040px, calc(100% - 2rem));
+		margin: 0 auto;
+		padding: 2rem 0 3rem;
+	}
+
+	header {
+		max-width: 760px;
+		padding: clamp(3.5rem, 9vw, 8rem) 0 clamp(3rem, 7vw, 5rem);
+	}
+
+	.wordmark {
+		display: inline-block;
+		margin-bottom: clamp(4rem, 9vw, 8rem);
+		color: inherit;
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.14em;
+		text-decoration: none;
+		text-transform: uppercase;
+	}
+
+	.eyebrow,
+	.status,
+	.number,
+	footer {
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0.13em;
+		text-transform: uppercase;
+	}
+
+	.eyebrow {
+		margin: 0 0 1rem;
+		color: #9d332d;
+	}
+
+	h1 {
+		margin: 0;
+		font-family: 'Cormorant Garamond', Georgia, serif;
+		font-size: clamp(3.3rem, 8vw, 6.8rem);
+		font-weight: 500;
+		letter-spacing: -0.045em;
+		line-height: 0.88;
+	}
+
+	.introduction {
+		max-width: 39rem;
+		margin: 2rem 0 0;
+		color: #57534c;
+		font-size: clamp(1rem, 1.8vw, 1.25rem);
+		line-height: 1.55;
+	}
+
+	.option-list {
+		margin: 0;
+		padding: 0;
+		border-top: 1px solid rgb(27 27 25 / 28%);
+		list-style: none;
+	}
+
+	.option-list li {
+		border-bottom: 1px solid rgb(27 27 25 / 28%);
+	}
+
+	.option-list a {
+		display: grid;
+		grid-template-columns: 3rem 1fr auto;
+		gap: clamp(1rem, 3vw, 2.5rem);
+		align-items: center;
+		min-height: 10rem;
+		padding: 1.6rem 0;
+		color: inherit;
+		text-decoration: none;
+		transition:
+			padding 180ms ease,
+			color 180ms ease;
+	}
+
+	.option-list a:hover,
+	.option-list a:focus-visible {
+		padding-right: 1rem;
+		padding-left: 1rem;
+		color: #9d332d;
+		outline: none;
+	}
+
+	.number {
+		align-self: start;
+		padding-top: 0.25rem;
+		color: #777168;
+	}
+
+	.option-copy {
+		display: grid;
+		gap: 0.5rem;
+	}
+
+	.status {
+		color: #777168;
+	}
+
+	strong {
+		font-family: 'Cormorant Garamond', Georgia, serif;
+		font-size: clamp(2rem, 4.6vw, 3.75rem);
+		font-weight: 500;
+		letter-spacing: -0.025em;
+		line-height: 1;
+	}
+
+	.description {
+		color: #69635b;
+		font-size: 0.94rem;
+		line-height: 1.45;
+	}
+
+	.arrow {
+		font-size: 1.5rem;
+	}
+
+	footer {
+		padding-top: 4rem;
+		color: #777168;
+	}
+
+	@media (max-width: 600px) {
+		main {
+			width: min(100% - 1.5rem, 1040px);
+			padding-top: 1rem;
+		}
+
+		.wordmark {
+			margin-bottom: 4rem;
+		}
+
+		.option-list a {
+			grid-template-columns: 2rem 1fr auto;
+			gap: 0.75rem;
+			min-height: 9rem;
+		}
+
+		.description {
+			max-width: 18rem;
+		}
+	}
+</style>

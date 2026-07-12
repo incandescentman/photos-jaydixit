@@ -28,6 +28,7 @@ The root **CLAUDE.md** file contains legacy documentation. This file (docs/CLAUD
 - 2025-10-04: Organized existing documentation into structured /docs directory
 
 * TODO For Jay
+- [ ] IMPORTANT: Add images of Jason Bateman, Russell Crowe, Rami Malek, Jude Law, Matt Damon, and Don Cheadle to the portfolio site.
 - [ ] Add and upload more photos of famous people so additional named person pages can be generated from real local assets
 
 * Start Here

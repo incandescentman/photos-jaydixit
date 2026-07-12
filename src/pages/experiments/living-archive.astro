@@ -1,0 +1,425 @@
+---
+export const prerender = true;
+
+import { images } from '../../data/homepage-images.js';
+import siteConfig from '../../../site.config.mts';
+import '../../styles/global.css';
+
+const CLOUD = 'dszpm7yps';
+const imageUrl = (image, width = 1200) => {
+	const publicId =
+		image.cloudinaryPublicId ?? `highlights/${image.filename.replace(/\.[^.]+$/, '')}`;
+	return `https://res.cloudinary.com/${CLOUD}/image/upload/f_auto,q_auto,w_${width}/${publicId}`;
+};
+const featured = [images[2], images[0], images[1]];
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>The Living Archive — {siteConfig.owner}</title>
+		<meta
+			name="description"
+			content="An experimental homepage for Jay Dixit's freely licensed Wikipedia portrait work."
+		/>
+		<meta name="robots" content="noindex, nofollow" />
+		<link rel="icon" href="/favicon.ico" />
+		<link rel="preconnect" href="https://res.cloudinary.com" />
+	</head>
+	<body>
+		<main class="archive">
+			<header class="archive-header">
+				<a class="archive-mark" href="/">Jay Dixit / Wikipedia Portraits</a>
+				<nav aria-label="Primary navigation">
+					<a href="/gallery">Work</a><a href="/about">Impact</a><a href="/about">About</a>
+				</nav>
+			</header>
+
+			<section class="archive-hero" aria-labelledby="archive-title">
+				<div class="archive-copy">
+					<p class="archive-eyebrow">Photographs in the public record</p>
+					<h1 id="archive-title">Portraits made to be seen.</h1>
+					<p class="archive-lede">
+						I photograph public figures at film festivals, Nobel ceremonies, and cultural events,
+						then contribute selected portraits to Wikipedia.
+					</p>
+					<a class="archive-cta" href="/gallery"
+						>Explore the archive <span aria-hidden="true">→</span></a
+					>
+
+					<dl class="archive-stats">
+						<div><dt>Wikipedia views</dt><dd>10M+</dd></div>
+						<div><dt>Access</dt><dd>Freely licensed</dd></div>
+						<div><dt>Archive</dt><dd>Continually updated</dd></div>
+					</dl>
+				</div>
+
+				<div class="photo-ledger" aria-label="Selected portraits">
+					<figure class="photo-main">
+						<img src={imageUrl(featured[0], 1200)} alt={featured[0].caption} loading="eager" />
+						<figcaption>
+							<span>01</span><strong>{featured[0].caption}</strong>
+						</figcaption>
+					</figure>
+					<div class="photo-rail">
+						{
+							featured.slice(1).map((photo, index) => (
+								<figure>
+									<img src={imageUrl(photo, 720)} alt={photo.caption} loading="eager" />
+									<figcaption>
+										<>
+											<span>0{index + 2}</span>
+											<strong>{photo.caption}</strong>
+										</>
+									</figcaption>
+								</figure>
+							))
+						}
+						<p class="archive-note">
+							Selected portraits released for the commons<br />Brooklyn · New York
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<a class="archive-return" href="/">← Return to the current photography homepage</a>
+		</main>
+	</body>
+</html>
+
+<style is:global>
+	:root {
+		--paper: #f3ede3;
+		--ink: #171715;
+		--red: #c3312e;
+		--taupe: #a99c8c;
+		--hair: rgba(23, 23, 21, 0.24);
+	}
+	* {
+		box-sizing: border-box;
+	}
+	html {
+		background: var(--paper);
+	}
+	body {
+		margin: 0;
+		min-width: 320px;
+		background:
+			radial-gradient(circle at 16% 14%, rgba(255, 255, 255, 0.58), transparent 34rem), var(--paper);
+		color: var(--ink);
+		font-family: 'Instrument Sans', system-ui, sans-serif;
+	}
+	.archive {
+		width: min(100%, 1600px);
+		min-height: 100vh;
+		margin: 0 auto;
+		padding: 0 48px 24px;
+	}
+	.archive-header {
+		height: 78px;
+		border-bottom: 1px solid var(--hair);
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 30px;
+	}
+	.archive-mark {
+		color: var(--ink);
+		font-size: 13px;
+		font-weight: 700;
+		letter-spacing: 0.13em;
+		text-decoration: none;
+		text-transform: uppercase;
+	}
+	.archive-header nav {
+		display: flex;
+		gap: 50px;
+	}
+	.archive-header nav a {
+		position: relative;
+		color: var(--ink);
+		font-size: 11px;
+		font-weight: 700;
+		letter-spacing: 0.18em;
+		text-decoration: none;
+		text-transform: uppercase;
+	}
+	.archive-header nav a::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 100%;
+		bottom: -7px;
+		height: 2px;
+		background: var(--red);
+		transition: right 0.2s;
+	}
+	.archive-header nav a:hover::after {
+		right: 0;
+	}
+	.archive-hero {
+		min-height: calc(100vh - 116px);
+		display: grid;
+		grid-template-columns: minmax(450px, 0.9fr) minmax(620px, 1.1fr);
+		gap: clamp(60px, 7vw, 112px);
+		align-items: center;
+		padding: 42px 20px 34px;
+	}
+	.archive-copy {
+		align-self: center;
+	}
+	.archive-eyebrow {
+		margin: 0 0 28px;
+		color: var(--red);
+		font-size: 11px;
+		font-weight: 700;
+		letter-spacing: 0.23em;
+		text-transform: uppercase;
+	}
+	.archive-eyebrow::before {
+		content: '';
+		display: inline-block;
+		width: 34px;
+		margin-right: 14px;
+		border-top: 2px solid var(--red);
+		vertical-align: middle;
+	}
+	h1 {
+		max-width: 690px;
+		margin: 0;
+		font-family: 'Newsreader', Georgia, serif;
+		font-size: clamp(76px, 7.5vw, 126px);
+		font-weight: 300;
+		letter-spacing: -0.055em;
+		line-height: 0.86;
+	}
+	.archive-lede {
+		max-width: 620px;
+		margin: 30px 0 0;
+		font-family: 'Newsreader', Georgia, serif;
+		font-size: clamp(20px, 1.75vw, 28px);
+		font-weight: 300;
+		line-height: 1.38;
+	}
+	.archive-cta {
+		display: inline-flex;
+		align-items: center;
+		gap: 18px;
+		margin-top: 32px;
+		padding-bottom: 6px;
+		border-bottom: 2px solid var(--red);
+		color: var(--ink);
+		font-size: 11px;
+		font-weight: 700;
+		letter-spacing: 0.18em;
+		text-decoration: none;
+		text-transform: uppercase;
+	}
+	.archive-cta span {
+		color: var(--red);
+		font-family: 'Newsreader', Georgia, serif;
+		font-size: 28px;
+		transition: transform 0.2s;
+	}
+	.archive-cta:hover span {
+		transform: translateX(6px);
+	}
+	.archive-stats {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		margin: 44px 0 0;
+		border-block: 1px solid var(--hair);
+	}
+	.archive-stats div {
+		min-height: 96px;
+		padding: 18px 15px;
+		border-left: 1px solid var(--hair);
+	}
+	.archive-stats div:first-child {
+		border-left: 0;
+	}
+	.archive-stats dt {
+		color: #776f65;
+		font-size: 9px;
+		letter-spacing: 0.17em;
+		text-transform: uppercase;
+	}
+	.archive-stats dd {
+		margin: 10px 0 0;
+		font-family: 'Newsreader', Georgia, serif;
+		font-size: clamp(19px, 1.6vw, 27px);
+		font-weight: 400;
+		line-height: 1.1;
+	}
+	.photo-ledger {
+		display: grid;
+		grid-template-columns: minmax(360px, 1.35fr) minmax(190px, 0.65fr);
+		gap: 18px;
+		align-items: start;
+	}
+	.photo-ledger figure {
+		margin: 0;
+	}
+	.photo-ledger img {
+		display: block;
+		width: 100%;
+		object-fit: cover;
+		filter: saturate(0.86) contrast(1.02);
+		transition: filter 0.25s;
+	}
+	.photo-ledger figure:hover img {
+		filter: saturate(1) contrast(1.04);
+	}
+	.photo-main img {
+		height: min(72vh, 720px);
+	}
+	.photo-main figcaption,
+	.photo-rail figcaption {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		gap: 10px;
+		margin-top: 8px;
+		color: #665f56;
+		font-size: 9px;
+		line-height: 1.25;
+	}
+	.photo-ledger figcaption span {
+		color: var(--red);
+		font-weight: 700;
+	}
+	.photo-ledger figcaption strong {
+		font-weight: 500;
+	}
+	.photo-rail {
+		display: grid;
+		gap: 22px;
+	}
+	.photo-rail img {
+		height: min(28vh, 270px);
+	}
+	.archive-note {
+		margin: 6px 0 0;
+		padding-top: 18px;
+		border-top: 1px solid var(--red);
+		color: #73695f;
+		font-size: 9px;
+		letter-spacing: 0.12em;
+		line-height: 1.6;
+		text-transform: uppercase;
+	}
+	.archive-return {
+		display: inline-block;
+		color: #776f65;
+		font-size: 9px;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		text-underline-offset: 4px;
+	}
+	@media (max-width: 1080px) {
+		.archive {
+			padding-inline: 24px;
+		}
+		.archive-hero {
+			grid-template-columns: 1fr 1fr;
+			gap: 34px;
+			padding-inline: 0;
+		}
+		.photo-ledger {
+			grid-template-columns: 1fr;
+		}
+		.photo-rail {
+			grid-template-columns: 1fr 1fr;
+		}
+		.archive-note {
+			grid-column: 1/-1;
+		}
+		.photo-rail img {
+			height: 260px;
+		}
+	}
+	@media (max-width: 780px) {
+		.archive {
+			padding-inline: 18px;
+		}
+		.archive-header {
+			height: auto;
+			min-height: 70px;
+			align-items: flex-start;
+			padding-block: 18px;
+			flex-direction: column;
+			gap: 12px;
+		}
+		.archive-header nav {
+			gap: 24px;
+		}
+		.archive-hero {
+			display: flex;
+			flex-direction: column;
+			padding-top: 30px;
+		}
+		.photo-ledger {
+			order: -1;
+			width: 100%;
+		}
+		.photo-main img {
+			height: min(68vh, 680px);
+		}
+		h1 {
+			font-size: clamp(70px, 18vw, 108px);
+		}
+		.archive-stats dd {
+			font-size: 19px;
+		}
+	}
+	@media (max-width: 520px) {
+		.photo-rail {
+			grid-template-columns: 1fr;
+		}
+		.photo-rail img {
+			height: 52vh;
+		}
+		.archive-stats {
+			grid-template-columns: 1fr;
+		}
+		.archive-stats div {
+			border-left: 0;
+			border-top: 1px solid var(--hair);
+		}
+		.archive-stats div:first-child {
+			border-top: 0;
+		}
+	}
+	@media (prefers-reduced-motion: no-preference) {
+		.archive-copy {
+			animation: copy-in 0.55s ease-out both;
+		}
+		.photo-main,
+		.photo-rail figure {
+			animation: photo-in 0.62s ease-out both;
+		}
+		.photo-rail figure:nth-child(2) {
+			animation-delay: 0.08s;
+		}
+		@keyframes copy-in {
+			from {
+				opacity: 0;
+				transform: translateY(12px);
+			}
+			to {
+				opacity: 1;
+				transform: none;
+			}
+		}
+		@keyframes photo-in {
+			from {
+				opacity: 0;
+				clip-path: inset(0 0 100% 0);
+			}
+			to {
+				opacity: 1;
+				clip-path: inset(0);
+			}
+		}
+	}
+</style>
