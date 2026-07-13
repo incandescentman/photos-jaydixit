@@ -16,6 +16,7 @@ Last Synced for AI Context: 2025-10-04
 The root **CLAUDE.md** file contains legacy documentation. This file (docs/CLAUDE.org) is the canonical documentation entry point. Both should be maintained during transition.
 
 * Recent Updates
+- 2026-07-13: Added Jay’s three selected Jason Bateman Packery highlights and documented the one-at-a-time Preview review, approved-subset Cloudinary upload, and current image-dimension protocol in [[file:../instructions.org][the upload instructions]]
 - 2026-07-13: Made Exwalker the canonical human metadata preflight and documented the separate filesystem-gallery, person-page, Packery-highlight, and before/after publication lanes in [[file:../instructions.org][the upload instructions]]
 - 2026-07-08: Promoted edge-to-edge Packery homepage sizing; current configuration lives in [[file:packery-edge-to-edge-configuration.org][packery-edge-to-edge-configuration.org]]
 - 2026-07-04: Confirmed Vercel deployment contract: ~vercel.json~ runs ~pnpm build~ and serves Astro static output from ~dist~
@@ -29,7 +30,7 @@ The root **CLAUDE.md** file contains legacy documentation. This file (docs/CLAUD
 - 2025-10-04: Organized existing documentation into structured /docs directory
 
 * TODO For Jay
-- [ ] Publish the prepared TIFF 2025 photographs of Jason Bateman, Jude Law, John Slattery, and Ben Jackson after choosing any main Packery highlights; Russell Crowe, Rami Malek, Matt Damon, and Don Cheadle still need source photographs prepared
+- [ ] Prepare source photographs for Russell Crowe, Rami Malek, Matt Damon, and Don Cheadle, then run them through Exwalker and the portfolio publication workflow
 - [ ] Add and upload more photos of famous people so additional named person pages can be generated from real local assets
 
 * Start Here

@@ -1,6 +1,17 @@
 #+TITLE: Codebase Wisdom
 #+DATE: 2025-10-03
 
+* 2026-07-13 - The Legacy Image-Metadata Generator Does Not Cover Current Highlights
+
+** Trigger
+Running ~node scripts/generate-image-metadata.js~ after adding selected Packery highlights rewrote ~src/data/image-metadata.json~, regenerated unrelated WebP siblings throughout ~public/~, and modified an existing logo while still omitting the new files under ~src/gallery/highlights/~.
+
+** Mechanism
+The script scans only ~public/~, writes WebP derivatives beside every supported image it finds there, and replaces the entire metadata JSON from that obsolete source tree. The current homepage highlight source directory is ~src/gallery/highlights/~, so the generator is not a safe or complete way to register new Packery assets.
+
+** Actionable Insight
+Do not run ~scripts/generate-image-metadata.js~ for current Packery additions until it is redesigned around the real source directories and made non-destructive by default. For a small selected set, measure the canonical files directly and add only their ~highlights/<filename>~ dimensions to ~src/data/image-metadata.json~.
+
 * 2026-07-13 - Portable Photo Metadata And Site Visibility Are Separate Layers
 
 ** Trigger

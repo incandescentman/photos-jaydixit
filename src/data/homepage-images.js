@@ -182,5 +182,20 @@ export const images = [
     filename: '2024-03-09_SXSW_UCB_ASSSSCAT_10.jpg',
     size: 'portrait',
     caption: 'UCB ASSSSCAT at SXSW'
+  },
+  {
+    filename: 'jason-bateman_tiff_2025.jpg',
+    size: 'portrait',
+    caption: 'Jason Bateman at the Toronto Film Festival.'
+  },
+  {
+    filename: 'jason-bateman-jude-law_tiff_2025.jpg',
+    size: 'landscape',
+    caption: 'Jason Bateman and Jude Law at the Toronto Film Festival.'
+  },
+  {
+    filename: 'jason-bateman-jude-law-09836_tiff_2025.jpg',
+    size: 'landscape',
+    caption: 'Jason Bateman and Jude Law at the Toronto Film Festival.'
   }
 ];

@@ -1,6 +1,24 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-13 - Add Jay’s selected Jason Bateman photographs to Packery highlights
+
+** Changed
+- Opened the four TIFF 2025 photographs containing Jason Bateman one at a time in Preview and collected explicit Spokenly decisions. Jay selected the solo portrait, both Jason Bateman and Jude Law frames, and rejected the larger group frame.
+- Copied the three approved, metadata-reviewed source files into [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/gallery/highlights][📁 /Users/jay/Dropbox/github/photos-jaydixit/src/gallery/highlights/]] without changing their bytes. Uploaded only those three files to Cloudinary as ~highlights/jason-bateman_tiff_2025~, ~highlights/jason-bateman-jude-law_tiff_2025~, and ~highlights/jason-bateman-jude-law-09836_tiff_2025~.
+- Added the approved files to [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/homepage-images.js][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/data/homepage-images.js]] as one portrait and two landscape tiles, reusing the factual TIFF captions. Added their exact source dimensions to [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/image-metadata.json][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/data/image-metadata.json]]. Existing ~saved-order.json~ behavior appends them after the saved sequence; no homepage resequencing was requested.
+- Updated [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/instructions.org][📄 /Users/jay/Dropbox/github/photos-jaydixit/instructions.org]] with the one-at-a-time Preview selection protocol, approved-subset Cloudinary rule, saved-order behavior, and the current dimension workflow. Updated both AI handoffs to remove the completed TIFF publication task while retaining the source-photo work still needed for Russell Crowe, Rami Malek, Matt Damon, and Don Cheadle.
+- Recorded in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/codebase-wisdom.org][📄 /Users/jay/Dropbox/github/photos-jaydixit/docs/codebase-wisdom.org]] that the legacy ~scripts/generate-image-metadata.js~ scans only ~public/~, generates unrelated WebP siblings, and omits current ~src/gallery/highlights/~ assets. The unintended derivatives from the diagnostic run were removed and the two touched tracked files were restored before the exact dimensions were added manually.
+
+** Validation
+- SHA-1 checks confirmed that each highlight copy is byte-for-byte identical to its reviewed TIFF gallery source.
+- All three transformed Cloudinary URLs returned HTTP ~200~.
+- ~pnpm test -- --run~ passed all 21 Vitest tests, ~pnpm lint~ passed, and ~pnpm build~ generated all 99 pages.
+- Playwright checked [[http://127.0.0.1:4323/][the existing localhost homepage]] after Packery settled: each selected filename appeared exactly once and all three Cloudinary images loaded with nonzero natural dimensions. The rejected group frame was not copied, configured, or uploaded.
+
+** Handoff
+The three Jason Bateman selections are live on Cloudinary and fully wired locally, but the repository changes have not been committed or pushed. The public homepage will not change until Jay explicitly requests a push and Vercel completes the deployment.
+
 * 2026-07-13 - Publish the metadata-reviewed TIFF 2025 set locally and add Jason Bateman before/after
 
 ** Changed

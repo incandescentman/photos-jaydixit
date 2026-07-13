@@ -50,9 +50,10 @@ Use ~subject_event_year.jpg~ for solo photographs. Use an unambiguous hyphenated
 
 *** Main Packery highlights page
 
-- Only Jay-selected favorites belong in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/gallery/highlights][📁 /Users/jay/Dropbox/github/photos-jaydixit/src/gallery/highlights/]].
-- Upload those selected files to Cloudinary under ~highlights/<public-id>~.
-- Add each selection to [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/homepage-images.js][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/data/homepage-images.js]]. Use ~cloudinaryPublicId~ when the remote ID differs from the local filename.
+- Only Jay-selected favorites belong in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/gallery/highlights][📁 /Users/jay/Dropbox/github/photos-jaydixit/src/gallery/highlights/]]. When Jay asks to choose among candidates, open each original file individually in Preview, ask for an explicit yes/no decision through Spokenly, and record the selection before showing the next file.
+- Copy only approved files into the highlights directory. Stage only that approved subset for the Cloudinary uploader and publish it under ~highlights/<public-id>~; do not aim the uploader at a complete source gallery.
+- Add each selection to [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/homepage-images.js][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/data/homepage-images.js]]. Use ~cloudinaryPublicId~ when the remote ID differs from the local filename. Without an explicit resequencing request, new entries that are absent from ~src/data/saved-order.json~ append after the saved homepage sequence.
+- Measure approved files directly and add their exact ~highlights/<filename>~ dimensions to ~src/data/image-metadata.json~. Do not run ~scripts/generate-image-metadata.js~ for current highlights: that legacy script scans only ~public/~, rewrites the complete metadata file, and generates unrelated WebP siblings while omitting ~src/gallery/highlights/~.
 - Do not upload an entire gallery merely because one or two photographs may become homepage highlights.
 
 *** Before and after page
