@@ -6,6 +6,74 @@
 
 This guide walks you through uploading photos to Cloudinary with proper metadata (captions, titles, tags) and generating Astro content files for your website.
 
+* Canonical Photo Ingest And Publication Protocol
+
+The publication workflow has two separate jobs: establish truthful portable metadata, then wire each photograph into the intended site surface. A Cloudinary upload by itself does not make a photograph visible on this site.
+
+** 1. Preflight The Lightroom Export With Exwalker
+
+Use [[file+emacs:/Users/jay/Dropbox/github/exwalker][📁 /Users/jay/Dropbox/github/exwalker/]] before copying or uploading new exports:
+
+#+begin_src bash
+cd /Users/jay/Dropbox/github/exwalker
+./exwalker preflight /path/to/lightroom-export
+./exwalker preflight /path/to/lightroom-export \
+  --check \
+  --required title,caption,keywords,people,event
+#+end_src
+
+The guided pass is the factual gate: Jay identifies the people and supplies or approves the title, caption, event, and keywords for every photograph. Exwalker embeds those fields in exported JPEG/TIFF files, creates a one-time hidden backup before the first write, rereads every write, and records resumable progress in ~.exwalker-session.json~.
+
+Do not treat ~npm run photo:validate~ as proof that a caption or identity is true. The portfolio validator checks whether merged fields are present and can fill a missing title from a caption or a missing caption from a title. Exwalker’s human-reviewed audit establishes factual readiness; ~photo:validate~ is the downstream compatibility check.
+
+** 2. Give Published Copies Semantic Filenames
+
+The site does not read embedded people/caption metadata when deciding public routes. Filenames, folder paths, ~tags.json~, and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/people.json][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/data/people.json]] drive the public presentation.
+
+Use ~subject_event_year.jpg~ for solo photographs. Use an unambiguous hyphenated subject list plus explicit ~photoSlugs~ mappings for group photographs. Preserve the metadata-complete Lightroom export; copy it to the site under the semantic publication filename.
+
+** 3. Choose The Site Lane
+
+*** Complete gallery set
+
+- Copy all selected photographs into the appropriate folder under [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/gallery/photos][📁 /Users/jay/Dropbox/github/photos-jaydixit/src/gallery/photos/]].
+- The folder becomes a public ~/gallery/.../~ route. For TIFF, [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/gallery/photos/red-carpet/tiff][📁 /Users/jay/Dropbox/github/photos-jaydixit/src/gallery/photos/red-carpet/tiff/]] renders at [[https://photos.jaydixit.com/gallery/red-carpet/tiff/][photos.jaydixit.com/gallery/red-carpet/tiff/]].
+- Keep factual public captions and tags in that folder’s ~tags.json~. Both the legacy flat filename-to-tags format and the structured ~defaults~ / ~captions~ / ~overrides~ format are supported.
+- A Cloudinary upload is not required for filesystem galleries. Astro processes the local assets during the Vercel build.
+
+*** Red-carpet person pages
+
+- Add each person to [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/people.json][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/data/people.json]].
+- Solo filenames beginning with the person’s ~match~ slug are discovered automatically.
+- Add group-photo slugs to every pictured person’s ~photoSlugs~ array.
+- Person pages render at ~/red-carpet/<person-slug>/~. The index includes only people with at least one qualifying solo photograph.
+
+*** Main Packery highlights page
+
+- Only Jay-selected favorites belong in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/gallery/highlights][📁 /Users/jay/Dropbox/github/photos-jaydixit/src/gallery/highlights/]].
+- Upload those selected files to Cloudinary under ~highlights/<public-id>~.
+- Add each selection to [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/homepage-images.js][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/data/homepage-images.js]]. Use ~cloudinaryPublicId~ when the remote ID differs from the local filename.
+- Do not upload an entire gallery merely because one or two photographs may become homepage highlights.
+
+*** Before and after page
+
+- Store the previous image in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/assets/images/wikiportraits][📁 /Users/jay/Dropbox/github/photos-jaydixit/src/assets/images/wikiportraits/]].
+- Reuse the canonical local gallery image for the new photograph when possible.
+- Add the pair and only verified provenance/license fields to [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/beforeAfter.ts][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/data/beforeAfter.ts]].
+- Cloudinary is not required for this page.
+
+** 4. Validate And Preview Before Publishing
+
+#+begin_src bash
+cd /Users/jay/Dropbox/github/photos-jaydixit
+pnpm run photo:validate -- ./src/gallery/photos/red-carpet/tiff
+pnpm test
+pnpm lint
+pnpm build
+#+end_src
+
+Verify the actual rendered gallery, photo-detail pages, person pages, and any before/after pair in a browser. Commit local assets, data mappings, documentation, and code together. Push only when Jay explicitly says ~push~; the production site changes only after that Vercel deployment completes.
+
 * ✅ Prerequisites
 
 - ~Node.js~ and ~npm~ installed
@@ -53,9 +121,11 @@ Notes:
 - Keep names lowercase, use hyphens between words, and underscores between parts.
 - Ensure filenames are unique within an album to prevent collisions.
 
-* 🏷️ Adding Metadata (Two Methods)
+* 🏷️ Metadata Sources And Manual Fallbacks
 
-** Method 1: Using ExifTool (Professional)
+The canonical human preflight is Exwalker. The methods below remain useful for inspection, recovery, and explicit batch overrides.
+
+** Method 1: Manual ExifTool Fallback
 
 *** Install ExifTool
 #+begin_src bash
@@ -115,7 +185,7 @@ exiftool -overwrite_original \
 exiftool -IPTC:All -XMP:All jeremy-strong_the-apprentice-premiere_2024.jpg
 #+end_src
 
-** Method 2: Using tags.json Files (Simpler)
+** Method 2: Site-Visible tags.json Metadata
 
 Create a ~tags.json~ file in each photo folder:
 
@@ -249,7 +319,7 @@ If you created tags.json files:
 node scripts/upload-with-tags-json.js ./src/gallery/photos
 #+end_src
 
-** Step 4: Full Pipeline with Validation (Recommended)
+** Step 4: Cloudinary Album Pipeline (Only When Needed)
 
 *** First, check your metadata is complete:
 #+begin_src bash
@@ -271,7 +341,7 @@ node scripts/photo-cli.js upload ./src/gallery/photos --dry-run --verbose
 npm run photo:upload -- ./src/gallery/photos
 #+end_src
 
-This is now the recommended workflow. The main CLI will:
+Use this workflow only when intentionally publishing a Cloudinary-backed album or another Cloudinary consumer. Filesystem gallery publication does not require it. The main CLI will:
 - merge metadata from the file and ~tags.json~
 - validate the merged metadata
 - write the merged caption/title metadata back into the source image file

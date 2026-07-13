@@ -8,9 +8,13 @@ import PhotoComments from '../../../components/PhotoComments.astro';
 import PhotoLikeButton from '../../../components/PhotoLikeButton.astro';
 import SocialShare from '../../../components/SocialShare.astro';
 import siteConfig from '../../../../site.config.mts';
+import {
+	buildCaptionAndTags,
+	formatPhrase,
+	type GalleryTagsFile,
+} from '../../../lib/galleryMetadata';
 
-type TagMapping = Record<string, string[]>;
-type TagsByFolder = Record<string, TagMapping>;
+type TagsByFolder = Record<string, GalleryTagsFile>;
 
 const { photo } = Astro.params;
 const photoPath = Array.isArray(photo) ? photo.join('/') : photo;
@@ -34,7 +38,7 @@ const imageModules = import.meta.glob<{ default: ImageMetadata }>(
 	},
 );
 
-const tagModules = import.meta.glob<TagMapping>('../../../gallery/photos/**/tags.json', {
+const tagModules = import.meta.glob<GalleryTagsFile>('../../../gallery/photos/**/tags.json', {
 	import: 'default',
 	eager: true,
 });
@@ -44,77 +48,6 @@ const tagsByFolder = Object.entries(tagModules).reduce<TagsByFolder>((acc, [key,
 	acc[relativeFolder] = value;
 	return acc;
 }, {});
-
-function formatWord(word: string) {
-	const normalized = word.toLowerCase();
-	const acronymMap: Record<string, string> = {
-		sxsw: 'SXSW',
-		tiff: 'TIFF',
-		nyff: 'NYFF',
-		ucb: 'UCB',
-		wikiportraits: 'WikiPortraits',
-	};
-
-	if (acronymMap[normalized]) return acronymMap[normalized];
-	return normalized.charAt(0).toUpperCase() + normalized.slice(1);
-}
-
-function formatPhrase(value: string) {
-	return value
-		.split(/[\s-]+/)
-		.filter(Boolean)
-		.map(formatWord)
-		.join(' ');
-}
-
-function buildCaptionAndTags(file: string, folderSlug: string) {
-	const baseName = file.replace(/\.[^/.]+$/, '');
-	const parts = baseName.split('_');
-	let subject = '';
-	let event = '';
-	let year = '';
-
-	if (parts.length > 0) {
-		subject = formatPhrase(parts[0]);
-	}
-
-	if (parts.length > 1) {
-		const lastPart = parts[parts.length - 1];
-		if (/^\d{4}$/.test(lastPart)) {
-			year = lastPart;
-			if (parts.length > 2) {
-				event = formatPhrase(parts.slice(1, -1).join(' '));
-			}
-		} else {
-			event = formatPhrase(parts.slice(1).join(' '));
-		}
-	}
-
-	let caption = subject;
-	if (event) caption += ` at ${event}`;
-	if (year) caption += ` in ${year}`;
-	if (!caption) {
-		caption = subject || baseName.replace(/[-_]/g, ' ');
-	}
-
-	const overrides = tagsByFolder[folderSlug]?.[file] ?? [];
-	let tags = [...overrides];
-
-	if (tags.length === 0) {
-		const tagMatch = baseName.match(/_([^_]+)$/);
-		if (tagMatch) {
-			tags = tagMatch[1].split('-');
-		}
-		if (folderSlug) {
-			tags.push(...folderSlug.split('/'));
-		}
-	}
-
-	return {
-		caption,
-		tags: [...new Set(tags)],
-	};
-}
 
 function formatFolderName(folderSlug: string) {
 	return folderSlug
@@ -148,7 +81,11 @@ const groupedImages = Object.entries(imageModules)
 		const imageFolder = pathParts.join('/');
 		if (imageFolder !== folderPath) return null;
 
-		const { caption, tags } = buildCaptionAndTags(imageFilename, imageFolder);
+		const { caption, tags } = buildCaptionAndTags(
+			imageFilename,
+			imageFolder,
+			tagsByFolder[imageFolder],
+		);
 
 		return {
 			metadata,

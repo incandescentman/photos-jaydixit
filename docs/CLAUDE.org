@@ -16,6 +16,7 @@ Last Synced for AI Context: 2025-10-04
 The root **CLAUDE.md** file contains legacy documentation. This file (docs/CLAUDE.org) is the canonical documentation entry point. Both should be maintained during transition.
 
 * Recent Updates
+- 2026-07-13: Made Exwalker the canonical human metadata preflight and documented the separate filesystem-gallery, person-page, Packery-highlight, and before/after publication lanes in [[file:../instructions.org][the upload instructions]]
 - 2026-07-08: Promoted edge-to-edge Packery homepage sizing; current configuration lives in [[file:packery-edge-to-edge-configuration.org][packery-edge-to-edge-configuration.org]]
 - 2026-07-04: Confirmed Vercel deployment contract: ~vercel.json~ runs ~pnpm build~ and serves Astro static output from ~dist~
 - 2026-04-01: Replaced the dead ~=t_gallery=~ Cloudinary transform fallback with explicit transforms and made blog post images auto-wire into PhotoSwipe
@@ -28,7 +29,7 @@ The root **CLAUDE.md** file contains legacy documentation. This file (docs/CLAUD
 - 2025-10-04: Organized existing documentation into structured /docs directory
 
 * TODO For Jay
-- [ ] IMPORTANT: Add images of Jason Bateman, Russell Crowe, Rami Malek, Jude Law, Matt Damon, and Don Cheadle to the portfolio site.
+- [ ] Publish the prepared TIFF 2025 photographs of Jason Bateman, Jude Law, John Slattery, and Ben Jackson after choosing any main Packery highlights; Russell Crowe, Rami Malek, Matt Damon, and Don Cheadle still need source photographs prepared
 - [ ] Add and upload more photos of famous people so additional named person pages can be generated from real local assets
 
 * Start Here
@@ -36,7 +37,7 @@ The root **CLAUDE.md** file contains legacy documentation. This file (docs/CLAUD
 If you're new to this project, read these in order:
 1. [[file:the-photos-approach.org][The Approach]] - Philosophy and project purpose
 2. [[file:design-architecture.org][Design Architecture]] - Technical architecture
-3. [[file:instructions.org][Instructions]] - How to use and maintain the site
+3. Root [[file:../instructions.org][instructions.org]] - How to ingest, publish, and maintain photographs
 4. Continue below to "For AI Assistants" section for navigation and invariants
 
 * All Documentation Files
@@ -183,7 +184,9 @@ Documentation structure:
 - Photos organized in `src/gallery/photos/[gallery-name]/` folders
 - Each folder becomes a gallery page
 - Metadata extracted from filenames or tags.json
-- The preferred workflow is `scripts/photo-cli.js`, which merges EXIF/IPTC/XMP with `tags.json` and writes the merged title/caption back into the source file before upload
+- The canonical ingest workflow is: Lightroom export → human review with [[file+emacs:/Users/jay/Dropbox/github/exwalker][Exwalker]] → Exwalker readiness audit → semantic publication filename → local gallery/person/highlight wiring → portfolio validation and rendered preview
+- Embedded EXIF/IPTC/XMP is the portable source record, but live gallery captions and public person routing come from filenames, ~tags.json~, and ~src/data/people.json~
+- ~scripts/photo-cli.js~ validates merged EXIF/IPTC/XMP plus ~tags.json~ and supports intentional Cloudinary album uploads; validator success proves field presence, not factual identity or caption truth
 - Never modify photo organization to fix code issues
 
 *** Cloudinary Integration (Homepage)
@@ -192,6 +195,8 @@ Documentation structure:
 - URL pattern: `https://res.cloudinary.com/dszpm7yps/image/upload/f_auto,q_auto,w_{width}/highlights/{publicId}`
 - Automatic format negotiation (AVIF/WebP/JPEG)
 - Images uploaded via `scripts/upload-to-cloudinary.js`
+- Cloudinary is selective in the current architecture: use it for Jay-approved homepage/Packery highlights and other explicit Cloudinary consumers, not as a required mirror of every filesystem gallery photograph
+- Files under ~src/gallery/photos/~ are the canonical source for public filesystem galleries and are processed by Astro/Vercel without a Cloudinary upload
 - Canonical local highlight source files live in `src/gallery/highlights/` and should stay meaningfully named
 - When a local highlight filename no longer matches the remote Cloudinary asset name, set ~=cloudinaryPublicId=~ in ~src/data/homepage-images.js~ instead of forcing an immediate Cloudinary rename
 - Do not rely on the legacy named transform ~=gallery=~. The safe default in ~src/lib/cloudinary.ts~ is explicit ~f_auto,q_auto~ transforms.

@@ -2,6 +2,8 @@ import type { ImageMetadata } from 'astro:assets';
 
 import conanBeforeImg from '../assets/images/wikiportraits/conan-obrien-before.jpg';
 import conanAfterImg from '../assets/images/wikiportraits/conan-obrien_sundance_2024.jpg';
+import jasonBeforeImg from '../assets/images/wikiportraits/jason-bateman-before.jpg';
+import jasonAfterImg from '../gallery/photos/red-carpet/tiff/jason-bateman_tiff_2025.jpg';
 import jeremyBeforeImg from '../assets/images/wikiportraits/jeremy-strong-before.jpg';
 import jeremyAfterImg from '../assets/images/wikiportraits/jeremy-strong_the-apprentice-premiere_2024.jpg';
 import johnBeforeImg from '../assets/images/wikiportraits/john-hopfield-before-2016.jpg';
@@ -49,6 +51,18 @@ export const comparisons: BeforeAfterComparison[] = [
 		sourceCredit: 'Jay Dixit',
 		license: 'CC BY-SA 4.0',
 		licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
+	},
+	{
+		name: 'Jason Bateman',
+		beforeImage: jasonBeforeImg,
+		afterImage: jasonAfterImg,
+		article: 'https://en.wikipedia.org/wiki/Jason_Bateman',
+		event: 'Toronto International Film Festival 2025',
+		beforeSource: 'Previous Wikipedia portrait',
+		afterSource: 'Jay Dixit, TIFF 2025',
+		beforePos: 'center 18%',
+		afterPos: 'center 10%',
+		sourceCredit: 'Jay Dixit',
 	},
 	{
 		name: 'Vanessa Kirby',

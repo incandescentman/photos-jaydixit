@@ -1,6 +1,34 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-13 - Publish the metadata-reviewed TIFF 2025 set locally and add Jason Bateman before/after
+
+** Changed
+- Copied the six Exwalker-reviewed photographs from [[file+emacs:/Volumes/Pantheon/lightroom/lightroom-exports/red-carpet-new][📁 /Volumes/Pantheon/lightroom/lightroom-exports/red-carpet-new/]] into [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/gallery/photos/red-carpet/tiff][📁 /Users/jay/Dropbox/github/photos-jaydixit/src/gallery/photos/red-carpet/tiff/]] under semantic publication filenames while preserving the embedded metadata and the original export files.
+- Converted the TIFF gallery’s ~tags.json~ to the documented structured format with factual captions, people, year, and shared event tags. Added backward-compatible structured ~tags.json~ support to the gallery, photo-detail, Most Liked, and red-carpet person routes through [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/lib/galleryMetadata.ts][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/lib/galleryMetadata.ts]].
+- Added Jason Bateman, John Slattery, and Ben Jackson to [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/people.json][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/data/people.json]] and explicitly mapped every group photograph to all pictured people. Jude Law’s existing page now includes the new TIFF 2025 photographs.
+- Added the user-supplied previous Jason Bateman photograph at [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/assets/images/wikiportraits/jason-bateman-before.jpg][📷 /Users/jay/Dropbox/github/photos-jaydixit/src/assets/images/wikiportraits/jason-bateman-before.jpg]] and added the new solo TIFF portrait as the second comparison in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/beforeAfter.ts][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/data/beforeAfter.ts]]. Reused the canonical local gallery file for the after image and omitted unverified Commons/license claims.
+- Documented Exwalker as the human truth gate and separated the filesystem-gallery, person-page, Packery-highlight, and before/after lanes in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/instructions.org][📄 /Users/jay/Dropbox/github/photos-jaydixit/instructions.org]], both AI-facing handoff files, the README, and codebase wisdom. Mirrored the portfolio handoff in the Exwalker instructions and work log.
+- Left [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/gallery/highlights][📁 /Users/jay/Dropbox/github/photos-jaydixit/src/gallery/highlights/]] and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/homepage-images.js][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/data/homepage-images.js]] unchanged. No images were uploaded to Cloudinary; Jay will choose the main Packery highlights separately.
+
+** Validation
+- ~pnpm run photo:validate -- ./src/gallery/photos/red-carpet/tiff~ reported ~7/7~ valid photographs from merged embedded metadata and ~tags.json~.
+- ~pnpm test -- --run~ passed all 21 Vitest tests, ~pnpm lint~ passed, and ~pnpm build~ generated 99 pages including all six new photo-detail routes and the new person routes.
+- Playwright confirmed the TIFF gallery renders seven photographs with the human-reviewed captions, all lazy images load after scrolling, the before/after page renders six complete comparison pairs, and the red-carpet index now renders 22 qualifying solo-subject cards.
+- HTTP checks returned ~200~ for the TIFF gallery, Jason Bateman, Jude Law, John Slattery, Ben Jackson, and before/after routes. Rendered screenshots confirmed the new Jason Bateman pair and all seven TIFF gallery photographs.
+
+** Handoff
+The local site is ready for Jay to choose any photographs that should also appear on the main Packery highlights page. Those selected files will need highlight copies, Cloudinary ~highlights/~ uploads, and entries in ~src/data/homepage-images.js~. The complete TIFF gallery does not require Cloudinary. Nothing in this entry has been pushed or deployed.
+
+* 2026-07-13 - Refine experiment subhead
+
+** Changed
+- Replaced ~My favorite way to avoid doing any actual work~ with Jay's exact revised subhead, ~My favorite way to avoid doing my actual work~, on both experimental landing pages.
+- Added the final period to Jay's locked headline, ~The Opposite of Writing.~, on both experimental landing pages.
+
+** Validation
+- Confirmed both local experiment routes return HTTP ~200~ and render the exact revised subhead.
+
 * 2026-07-12 - Replace experiment headline and subhead
 
 ** Changed

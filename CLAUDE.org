@@ -4,10 +4,10 @@
 
 ** Future Tasks
 
-- [ ] IMPORTANT: Add images of Jason Bateman, Russell Crowe, Rami Malek, Jude Law, Matt Damon, and Don Cheadle to the portfolio site.
+- [ ] Publish the prepared TIFF 2025 photographs of Jason Bateman, Jude Law, John Slattery, and Ben Jackson after choosing any main Packery highlights; Russell Crowe, Rami Malek, Matt Damon, and Don Cheadle still need source photographs prepared.
 - [ ] Review Giscus configuration if the repo or Discussions category changes; current values live in src/components/PhotoComments.astro
 - [ ] More portrait coverage: Download local highlight files for people who only have Cloudinary assets (Willem Dafoe, Gabriel LaBelle, Rose Byrne, Sydney Sweeney solo, Ana de Armas solo, Jason Collett, Kaia Gerber solo). These are referenced in src/data/homepage-images.js but have no files in src/gallery/highlights/, so they don't appear on portrait pages.
-- [ ] Before-and-after page expansion: src/pages/before-after.astro currently showcases 4 people. More Wikipedia-upgraded portraits are now available and could be added.
+- [ ] Before-and-after page expansion: src/pages/before-after.astro now showcases 6 people. More Wikipedia-upgraded portraits are available and could be added.
 - [ ] Albums: The content collection at src/content/albums/ is scaffolded but empty. Could be used for curated sets (e.g., "SXSW 2024", "Nobel Laureates").
 
 
@@ -190,11 +190,17 @@ manifest.
 
 - Main CLI for photo management (init, upload, validate)
 
+- Human metadata preflight happens first in /Users/jay/Dropbox/github/exwalker/; see instructions.org for the canonical ingest and publication protocol
+
 - Upload merges EXIF/IPTC/XMP, tags.json, and per-file overrides
 
 - Writes merged title/caption back into source image before upload (--no-embed-metadata to skip)
 
 - Validate checks merged metadata, not just raw EXIF
+
+- Validation proves required fields are present, not that inferred identities or captions are factually true
+
+- Filesystem galleries use local files under src/gallery/photos/ and do not require Cloudinary; only Jay-selected homepage/Packery highlights must be uploaded under Cloudinary highlights/
 
 
 ​**** scripts/generate-tags-json.js

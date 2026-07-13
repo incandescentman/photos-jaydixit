@@ -6,14 +6,14 @@ import PhotoComments from '../../components/PhotoComments.astro';
 import SocialShare from '../../components/SocialShare.astro';
 import PhotoLikeButton from '../../components/PhotoLikeButton.astro';
 import siteConfig from '../../../site.config.mts';
+import { buildCaptionAndTags, formatPhrase, type GalleryTagsFile } from '../../lib/galleryMetadata';
 
 const { folder } = Astro.params;
 
 // Handle nested folder paths (e.g., "red-carpet/tiff")
 const folderPath = Array.isArray(folder) ? folder.join('/') : folder;
 
-type TagMapping = Record<string, string[]>;
-type TagsByFolder = Record<string, TagMapping>;
+type TagsByFolder = Record<string, GalleryTagsFile>;
 
 const imageModules = import.meta.glob<{ default: ImageMetadata }>(
 	'../../gallery/photos/**/*.{jpg,jpeg,png,gif}',
@@ -22,7 +22,7 @@ const imageModules = import.meta.glob<{ default: ImageMetadata }>(
 	},
 );
 
-const tagModules = import.meta.glob<TagMapping>('../../gallery/photos/**/tags.json', {
+const tagModules = import.meta.glob<GalleryTagsFile>('../../gallery/photos/**/tags.json', {
 	import: 'default',
 	eager: true,
 });
@@ -32,28 +32,6 @@ const tagsByFolder = Object.entries(tagModules).reduce<TagsByFolder>((acc, [key,
 	acc[relativeFolder] = value;
 	return acc;
 }, {});
-
-function formatWord(word: string) {
-	const normalized = word.toLowerCase();
-	const acronymMap: Record<string, string> = {
-		sxsw: 'SXSW',
-		tiff: 'TIFF',
-		nyff: 'NYFF',
-		ucb: 'UCB',
-		wikiportraits: 'WikiPortraits',
-	};
-
-	if (acronymMap[normalized]) return acronymMap[normalized];
-	return normalized.charAt(0).toUpperCase() + normalized.slice(1);
-}
-
-function formatPhrase(value: string) {
-	return value
-		.split(/[\s-]+/)
-		.filter(Boolean)
-		.map(formatWord)
-		.join(' ');
-}
 
 const extensionPriority = ['jpg', 'jpeg', 'webp', 'png', 'gif'];
 
@@ -69,55 +47,6 @@ function toPhotoHref(folderSlug: string, file: string) {
 	return `/gallery/photo/${encodedPath}`;
 }
 
-function buildCaptionAndTags(filename: string, folderSlug: string) {
-	const baseName = filename.replace(/\.[^/.]+$/, '');
-	const parts = baseName.split('_');
-	let subject = '';
-	let event = '';
-	let year = '';
-
-	if (parts.length > 0) {
-		subject = formatPhrase(parts[0]);
-	}
-
-	if (parts.length > 1) {
-		const lastPart = parts[parts.length - 1];
-		if (/^\d{4}$/.test(lastPart)) {
-			year = lastPart;
-			if (parts.length > 2) {
-				event = formatPhrase(parts.slice(1, -1).join(' '));
-			}
-		} else {
-			event = formatPhrase(parts.slice(1).join(' '));
-		}
-	}
-
-	let caption = subject;
-	if (event) caption += ` at ${event}`;
-	if (year) caption += ` in ${year}`;
-	if (!caption) {
-		caption = subject || baseName.replace(/[-_]/g, ' ');
-	}
-
-	const overrides = tagsByFolder[folderSlug]?.[filename] ?? [];
-	let tags = [...overrides];
-
-	if (tags.length === 0) {
-		const tagMatch = baseName.match(/_([^_]+)$/);
-		if (tagMatch) {
-			tags = tagMatch[1].split('-');
-		}
-		if (folderSlug) {
-			tags.push(...folderSlug.split('/'));
-		}
-	}
-
-	return {
-		caption,
-		tags: [...new Set(tags)],
-	};
-}
-
 const groupedImageEntries = await Promise.all(
 	Object.entries(imageModules).map(async ([key, module]) => {
 		const metadata = module.default;
@@ -129,7 +58,7 @@ const groupedImageEntries = await Promise.all(
 
 		if (imageFolder !== folderPath) return null;
 
-		const { caption, tags } = buildCaptionAndTags(filename, imageFolder);
+		const { caption, tags } = buildCaptionAndTags(filename, imageFolder, tagsByFolder[imageFolder]);
 		const lightboxImage = await getImage({
 			src: metadata,
 			width: Math.min(metadata.width, 3000),

@@ -5,6 +5,7 @@ import MainLayout from '../../layouts/MainLayout.astro';
 import siteConfig from '../../../site.config.mts';
 import rawPeople from '../../data/people.json';
 import { images as homepageImages } from '../../data/homepage-images.js';
+import { buildCaptionAndTags, formatPhrase, type GalleryTagsFile } from '../../lib/galleryMetadata';
 
 interface Person {
 	slug: string;
@@ -44,29 +45,21 @@ const wikiportraitImageModules = import.meta.glob<{ default: ImageMetadata }>(
 	{ eager: true },
 );
 
+const tagModules = import.meta.glob<GalleryTagsFile>('../../gallery/photos/**/tags.json', {
+	import: 'default',
+	eager: true,
+});
+
+const tagsByFolder = Object.entries(tagModules).reduce<Record<string, GalleryTagsFile>>(
+	(acc, [key, value]) => {
+		const relativeFolder = key.replace('../../gallery/photos/', '').replace(/\/tags\.json$/, '');
+		acc[relativeFolder] = value;
+		return acc;
+	},
+	{},
+);
+
 const captionByFilename = new Map(homepageImages.map((image) => [image.filename, image.caption]));
-
-function formatWord(word: string) {
-	const normalized = word.toLowerCase();
-	const acronymMap: Record<string, string> = {
-		sxsw: 'SXSW',
-		tiff: 'TIFF',
-		nyff: 'NYFF',
-		ucb: 'UCB',
-	};
-
-	if (acronymMap[normalized]) return acronymMap[normalized];
-
-	return normalized.charAt(0).toUpperCase() + normalized.slice(1);
-}
-
-function formatPhrase(value: string) {
-	return value
-		.split(/[\s-]+/)
-		.filter(Boolean)
-		.map(formatWord)
-		.join(' ');
-}
 
 function getSubjectSlug(filename: string): string {
 	const baseName = filename.replace(/\.[^/.]+$/, '');
@@ -95,39 +88,6 @@ function matchesPerson(subjectSlug: string, photoSlug: string, person: Person): 
 		}
 		return false;
 	});
-}
-
-function buildCaption(filename: string, subjectName?: string) {
-	const baseName = filename.replace(/\.[^/.]+$/, '');
-	const parts = baseName.split('_');
-	let subject = subjectName ?? '';
-	let event = '';
-	let year = '';
-
-	if (!subject && parts.length > 0) {
-		subject = formatPhrase(parts[0]);
-	}
-
-	if (parts.length > 1) {
-		const lastPart = parts[parts.length - 1];
-		if (/^\d{4}$/.test(lastPart)) {
-			year = lastPart;
-			if (parts.length > 2) {
-				event = formatPhrase(parts.slice(1, -1).join(' '));
-			}
-		} else {
-			event = formatPhrase(parts.slice(1).join(' '));
-		}
-	}
-
-	let caption = subject;
-	if (event) caption += ` at ${event}`;
-	if (year) caption += ` in ${year}`;
-	if (!caption) {
-		caption = subject || baseName.replace(/[-_]/g, ' ');
-	}
-
-	return caption;
 }
 
 function toPhotoHref(folderSlug: string, file: string) {
@@ -176,7 +136,14 @@ function collectMatchingPhotos(
 			if (!matchesPerson(subjectSlug, photoSlug, personData)) return null;
 
 			const slug = photoSlug;
-			const caption = captionByFilename.get(filename) ?? buildCaption(filename, personData.name);
+			const galleryCaption =
+				source === 'gallery'
+					? buildCaptionAndTags(filename, folder, tagsByFolder[folder], personData.name).caption
+					: undefined;
+			const caption =
+				captionByFilename.get(filename) ??
+				galleryCaption ??
+				buildCaptionAndTags(filename, folder, undefined, personData.name).caption;
 			const galleryName =
 				source === 'highlights'
 					? 'Highlights'

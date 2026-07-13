@@ -1,7 +1,51 @@
 {
-  "vanessa-kirby_tiff_2024.jpg": [
-    "2024",
-    "vanessa kirby",
-    "tiff"
-  ]
+	"defaults": {
+		"tags": ["tiff", "Toronto International Film Festival", "portrait", "red carpet"]
+	},
+	"captions": {
+		"vanessa-kirby_tiff_2024.jpg": "Vanessa Kirby at the Toronto International Film Festival.",
+		"john-slattery_tiff_2025.jpg": "John Slattery at the Toronto Film Festival.",
+		"jason-bateman-jude-law_tiff_2025.jpg": "Jason Bateman and Jude Law at the Toronto Film Festival.",
+		"jude-law-ben-jackson_tiff_2025.jpg": "Jude Law and Ben Jackson at the Toronto Film Festival.",
+		"jason-bateman_tiff_2025.jpg": "Jason Bateman at the Toronto Film Festival.",
+		"jason-bateman-jude-law-ben-jackson_tiff_2025.jpg": "Jason Bateman, Jude Law, and Ben Jackson at the Toronto Film Festival.",
+		"jason-bateman-jude-law-09836_tiff_2025.jpg": "Jason Bateman and Jude Law at the Toronto Film Festival."
+	},
+	"overrides": {
+		"vanessa-kirby_tiff_2024.jpg": {
+			"title": "Vanessa Kirby",
+			"tags": ["2024"],
+			"people": ["Vanessa Kirby"]
+		},
+		"john-slattery_tiff_2025.jpg": {
+			"title": "John Slattery",
+			"tags": ["2025"],
+			"people": ["John Slattery"]
+		},
+		"jason-bateman-jude-law_tiff_2025.jpg": {
+			"title": "Jason Bateman and Jude Law",
+			"tags": ["2025"],
+			"people": ["Jason Bateman", "Jude Law"]
+		},
+		"jude-law-ben-jackson_tiff_2025.jpg": {
+			"title": "Jude Law and Ben Jackson",
+			"tags": ["2025"],
+			"people": ["Jude Law", "Ben Jackson"]
+		},
+		"jason-bateman_tiff_2025.jpg": {
+			"title": "Jason Bateman",
+			"tags": ["2025"],
+			"people": ["Jason Bateman"]
+		},
+		"jason-bateman-jude-law-ben-jackson_tiff_2025.jpg": {
+			"title": "Jason Bateman, Jude Law, and Ben Jackson",
+			"tags": ["2025"],
+			"people": ["Jason Bateman", "Jude Law", "Ben Jackson"]
+		},
+		"jason-bateman-jude-law-09836_tiff_2025.jpg": {
+			"title": "Jason Bateman and Jude Law",
+			"tags": ["2025"],
+			"people": ["Jason Bateman", "Jude Law"]
+		}
+	}
 }

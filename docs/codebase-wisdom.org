@@ -1,6 +1,24 @@
 #+TITLE: Codebase Wisdom
 #+DATE: 2025-10-03
 
+* 2026-07-13 - Portable Photo Metadata And Site Visibility Are Separate Layers
+
+** Trigger
+Six TIFF 2025 exports had verified embedded titles, captions, keywords, people, and event metadata, but none became visible on the portfolio merely by completing that metadata pass or by considering a Cloudinary upload.
+
+** Mechanism
+The current portfolio has distinct consumers:
+
+- Filesystem galleries discover local assets under ~src/gallery/photos/~ and build captions/tags from semantic filenames plus ~tags.json~.
+- Red-carpet person pages discover local gallery/highlight files through filename ~match~ patterns and explicit ~photoSlugs~ in ~src/data/people.json~.
+- The main Packery homepage reads ~src/data/homepage-images.js~ and serves its selected assets from Cloudinary ~highlights/~ IDs.
+- The before/after page imports local assets through ~src/data/beforeAfter.ts~.
+
+ExifTool metadata remains the portable source record and feeds the upload validator, but it does not replace those public routing/configuration layers. The portfolio validator also backfills a missing title from a caption and vice versa, so a passing validation result does not prove a human verified the identity or prose.
+
+** Actionable Insight
+Run Exwalker first as the human truth gate, then explicitly choose and wire the destination lane. Do not describe ~uploaded to Cloudinary~, ~metadata complete~, and ~visible on the site~ as the same state. Keep complete galleries local under ~src/gallery/photos/~; reserve Cloudinary for explicitly selected homepage/Packery assets unless the gallery architecture is deliberately migrated.
+
 * 2026-07-08 - Edge-to-Edge Packery Needs Gutter-Aware Fluid Columns
 
 ** Trigger

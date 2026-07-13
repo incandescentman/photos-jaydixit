@@ -57,8 +57,12 @@ For comprehensive documentation, see [[file:docs/CLAUDE.org][docs/CLAUDE.org]].
 Key documentation files:
 - [[file:docs/the-photos-approach.org][The Approach]] - Philosophy and project purpose
 - [[file:docs/design-architecture.org][Design Architecture]] - Technical architecture
-- [[file:docs/instructions.org][Instructions]] - How to use and maintain the site
+- [[file:instructions.org][Instructions]] - How to ingest, publish, and maintain photographs
 - [[file:docs/codebase-wisdom.org][Codebase Wisdom]] - Hard-won debugging insights
+
+* Photo Publishing
+
+The canonical ingest protocol lives in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/instructions.org][📄 /Users/jay/Dropbox/github/photos-jaydixit/instructions.org]]. New Lightroom exports are reviewed with [[file+emacs:/Users/jay/Dropbox/github/exwalker][📁 /Users/jay/Dropbox/github/exwalker/]] before site wiring. Complete galleries stay as local Astro assets; only Jay-selected main Packery highlights require Cloudinary uploads.
 
 * What's New (Early 2025)
 

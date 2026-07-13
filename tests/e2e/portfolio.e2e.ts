@@ -198,7 +198,7 @@ test('red-carpet index renders editorial person cards from generated data', asyn
 	await waitForInitialImages(page);
 
 	const cards = page.locator('.rc-card');
-	await expect(cards).toHaveCount(20);
+	await expect(cards).toHaveCount(22);
 	await expect(page.locator('.rc-name').first()).toHaveText('Ana de Armas');
 	await expect(page.locator('.rc-count').first()).toContainText(/photo/i);
 
@@ -210,6 +210,37 @@ test('red-carpet index renders editorial person cards from generated data', asyn
 				.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0),
 		)
 		.toBe(true);
+	expect(await getBrokenCompletedImages(page)).toEqual([]);
+});
+
+test('TIFF gallery renders the metadata-reviewed 2025 set with truthful captions', async ({
+	page,
+}) => {
+	await page.goto('/gallery/red-carpet/tiff/');
+	await waitForInitialImages(page);
+
+	const cards = page.locator('.masonry-item');
+	await expect(cards).toHaveCount(7);
+	await expect(
+		page.locator('.masonry-item', {
+			has: page.getByAltText('Jason Bateman at the Toronto Film Festival.'),
+		}),
+	).toHaveCount(1);
+	await expect(
+		page.getByAltText('Jason Bateman, Jude Law, and Ben Jackson at the Toronto Film Festival.'),
+	).toHaveCount(1);
+
+	for (const card of await cards.all()) {
+		await card.scrollIntoViewIfNeeded();
+		await expect
+			.poll(() =>
+				card
+					.locator('img')
+					.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0),
+			)
+			.toBe(true);
+	}
+
 	expect(await getBrokenCompletedImages(page)).toEqual([]);
 });
 
@@ -303,10 +334,12 @@ test('before-after page renders source captions and loads comparison images afte
 	await expect(page.getByRole('heading', { name: 'Before & After' })).toBeVisible();
 
 	const comparisonCards = page.locator('.ba-pair');
-	await expect(comparisonCards).toHaveCount(5);
+	await expect(comparisonCards).toHaveCount(6);
 	await expect(comparisonCards.first().locator('.ba-name')).toHaveText('Jeremy Strong');
-	await expect(page.locator('.ba-arrow')).toHaveCount(5);
-	await expect(page.locator('.ba-cap-src')).toHaveCount(10);
+	await expect(page.locator('.ba-name', { hasText: 'Jason Bateman' })).toBeVisible();
+	await expect(page.locator('.ba-arrow')).toHaveCount(6);
+	await expect(page.locator('.ba-cap-src')).toHaveCount(12);
+	await expect(page.locator('.ba-cap-src', { hasText: 'Jay Dixit, TIFF 2025' })).toBeVisible();
 	await expect(page.locator('.ba-cap-src', { hasText: 'Glenn Francis, 2019' })).toBeVisible();
 	await expect(
 		page.locator('.ba-cap-src', {

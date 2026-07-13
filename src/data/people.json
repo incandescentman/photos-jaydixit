@@ -11,6 +11,12 @@
 		"wikipedia": "https://en.wikipedia.org/wiki/Ana_de_Armas"
 	},
 	{
+		"slug": "ben-jackson",
+		"name": "Ben Jackson",
+		"match": ["ben-jackson"],
+		"photoSlugs": ["jude-law-ben-jackson_tiff_2025", "jason-bateman-jude-law-ben-jackson_tiff_2025"]
+	},
+	{
 		"slug": "conan-obrien",
 		"name": "Conan O'Brien",
 		"match": ["conan-obrien"],
@@ -62,6 +68,16 @@
 		"wikipedia": "https://en.wikipedia.org/wiki/Himesh_Patel"
 	},
 	{
+		"slug": "jason-bateman",
+		"name": "Jason Bateman",
+		"match": ["jason-bateman"],
+		"photoSlugs": [
+			"jason-bateman-jude-law_tiff_2025",
+			"jason-bateman-jude-law-ben-jackson_tiff_2025",
+			"jason-bateman-jude-law-09836_tiff_2025"
+		]
+	},
+	{
 		"slug": "jeremy-strong",
 		"name": "Jeremy Strong",
 		"match": ["jeremy-strong"],
@@ -75,6 +91,11 @@
 		"wikipedia": "https://en.wikipedia.org/wiki/John_Hopfield"
 	},
 	{
+		"slug": "john-slattery",
+		"name": "John Slattery",
+		"match": ["john-slattery"]
+	},
+	{
 		"slug": "judd-apatow",
 		"name": "Judd Apatow",
 		"match": ["judd-apatow"],
@@ -84,7 +105,13 @@
 		"slug": "jude-law",
 		"name": "Jude Law",
 		"match": ["jude-law"],
-		"photoSlugs": ["jude-law_tiff"],
+		"photoSlugs": [
+			"jude-law_tiff",
+			"jason-bateman-jude-law_tiff_2025",
+			"jude-law-ben-jackson_tiff_2025",
+			"jason-bateman-jude-law-ben-jackson_tiff_2025",
+			"jason-bateman-jude-law-09836_tiff_2025"
+		],
 		"wikipedia": "https://en.wikipedia.org/wiki/Jude_Law"
 	},
 	{
