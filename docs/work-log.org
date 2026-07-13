@@ -1,6 +1,21 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-13 - Integrate the Bateman highlights into the saved Packery order
+
+** Changed
+- Added all three approved Jason Bateman highlights to [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/saved-order.json][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/data/saved-order.json]] so the two landscape photographs no longer append together at the end and the saved sequence ends on portraits.
+- Preserved the planned first insertion position immediately after ~dave-franco_sundance_2025.jpg~ because its original anchor, the solo Kaia Gerber highlight, had already been removed. Used the two other planned anchors exactly and did not reorder any existing entry.
+- Updated [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/debug/packery-cold-load-layout-race.org][📄 /Users/jay/Dropbox/github/photos-jaydixit/docs/debug/packery-cold-load-layout-race.org]] with the Phase 3 result and the boundary between internal Packery gaps and an unavoidable incomplete final row.
+
+** Validation
+- ~pnpm build~ generated all 99 pages, ~pnpm exec vitest run~ passed all 21 tests, and ~pnpm lint~ passed.
+- Fresh browser contexts with no ~photoOrder~ local-storage override showed zero internal gaps and zero horizontal overflow at both target desktop widths. The 1728px layout used five columns and ended with two columns occupied; the 2048px layout used six columns and ended with three columns occupied.
+- No further landscape nudge was warranted. The residual whitespace is only the final incomplete row and cannot be removed by reordering the same tile inventory.
+
+** Handoff
+The Phase 3 saved-order closeout follows the lifecycle and highlight-selection commit ~e123323~. After reviewing the fresh-context results, Jay approved the complete batch for commit and push.
+
 * 2026-07-13 - Remove the solo Kaia Gerber homepage highlight
 
 ** Changed
@@ -12,7 +27,7 @@
 - The localhost homepage rendered 34 Packery items with no solo Kaia Gerber tile, while the separate Kaia Gerber and Cory Michael Smith photograph remained present.
 
 ** Handoff
-The solo Kaia Gerber portrait removal is committed locally but has not been pushed, so it remains visible on the public site until Jay explicitly requests deployment.
+The solo Kaia Gerber portrait removal is included in ~e123323~. Jay approved that commit for publication with the Packery lifecycle and ordering closeout on 2026-07-13.
 
 * 2026-07-13 - Fix the Packery cold-load layout race
 
@@ -29,7 +44,7 @@ The solo Kaia Gerber portrait removal is committed locally but has not been push
 - A settled 2048px visual check confirmed the giant transient blanks were gone. Two isolated one-column openings remain at the final edge because the two Jason Bateman and Jude Law landscapes each span two columns; that is a separate ordering question.
 
 ** Handoff
-The Packery lifecycle fix and documentation are committed locally. Packery, lazy loading, edge-to-edge sizing, PhotoSwipe, filtering, and the mobile fallback remain in place. Nothing has been pushed, so the public site still runs the old lifecycle until Jay explicitly requests deployment.
+The Packery lifecycle fix and documentation are included in ~e123323~. Packery, lazy loading, edge-to-edge sizing, PhotoSwipe, filtering, and the mobile fallback remain in place. Jay approved that commit for publication with the Phase 3 ordering closeout on 2026-07-13.
 
 * 2026-07-13 - Add Jay’s selected Jason Bateman photographs to Packery highlights
 

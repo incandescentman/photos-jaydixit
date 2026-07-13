@@ -1,6 +1,6 @@
 #+TITLE: Packery Cold-Load Layout Race Bug Report and Fix Plan
 #+DATE: 2026-07-13
-#+STATUS: Implemented and committed locally; not deployed
+#+STATUS: Implemented and verified; approved for publication 2026-07-13
 
 * Summary
 
@@ -107,6 +107,18 @@ After the lifecycle is deterministic, inspect any remaining whitespace separatel
 3. If Jay wants a tighter final edge, adjust [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/saved-order.json][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/data/saved-order.json]] and compare the result across all desktop breakpoints.
 4. Do not misclassify, crop, or resize a photograph merely to hide a layout-order problem.
 
+** Phase 3 result (2026-07-13)
+
+The three Jason Bateman highlights were inserted into the saved sequence so the two landscape tiles are separated by portraits and the sequence ends on portraits. The intended first anchor, the solo Kaia Gerber entry, had already been removed from the highlights, so ~jason-bateman-jude-law_tiff_2025.jpg~ was placed in that former slot immediately after ~dave-franco_sundance_2025.jpg~. The other two insertions used their planned anchors without reordering any existing entry.
+
+Fresh browser contexts with no ~photoOrder~ local-storage override confirmed:
+
+- At 1728px, Packery used five columns, had no internal gaps or horizontal overflow, and ended with two of five columns occupied in the final row.
+- At 2048px, Packery used six columns, had no internal gaps or horizontal overflow, and ended with three of six columns occupied in the final row.
+- Neither landscape needed a further one- or two-position nudge.
+
+The remaining whitespace is only a ragged incomplete final row. Reordering cannot eliminate it because the total tile area does not divide evenly across either desktop column count. It is not the former lifecycle race or an internal Packery notch, and it should not be hidden by resizing, recropping, or reclassifying a photograph.
+
 * Acceptance Criteria
 
 - A cold desktop visit displays a packed multi-column gallery without requiring a refresh.
@@ -137,7 +149,7 @@ Implemented locally on 2026-07-13 in [[file+emacs:/Users/jay/Dropbox/github/phot
 - ~pnpm build~ generated all 99 pages successfully.
 - A cold-cache Chromium check at 1728px began with only 2 of 37 page images complete but already had five Packery columns, a ~6,192px~ container, no horizontal overflow, and no console errors. After 35 images were complete, every Packery position and the container height remained unchanged.
 - A cold-cache Chromium check at 2048px began with only 2 of 37 page images complete but already had six Packery columns and a ~5,091px~ container. After 25 images were complete, every Packery position and the container height remained unchanged.
-- A settled 2048px visual check loaded all 37 page images and confirmed that the former giant cold-load blank regions were gone. The final edge still has two isolated one-column openings around the two new two-column Jason Bateman and Jude Law landscapes; those are legal span/order gaps and belong to Phase 3, not this lifecycle bug.
+- Fresh-context checks of the Phase 3 saved order found no internal openings at either 1728px or 2048px and no horizontal overflow. The only remaining whitespace is the mathematically unavoidable incomplete final row: two of five columns occupied at 1728px and three of six at 2048px.
 - Admin mode successfully dragged a tile, auto-saved all 35 canonical filenames to local storage, reloaded, and restored Packery's exact internal item order.
 - The real TIFF filesystem gallery initialized as a two-column Packery layout with seven photographs; searching for Jason Bateman reduced it to four, and clearing search restored all seven.
 - At 390px, the homepage initialized the existing flex fallback with no Packery instance, relative-positioned full-width items, and no horizontal overflow.
