@@ -16,6 +16,8 @@ Last Synced for AI Context: 2025-10-04
 The root **CLAUDE.md** file contains legacy documentation. This file (docs/CLAUDE.org) is the canonical documentation entry point. Both should be maintained during transition.
 
 * Recent Updates
+- 2026-07-13: Removed the solo TIFF Kaia Gerber portrait from the homepage highlights while retaining the separate Kaia Gerber and Cory Michael Smith Sundance photograph
+- 2026-07-13: Fixed the cold-load Packery layout race and recorded the implementation plus cold-cache verification in [[file:debug/packery-cold-load-layout-race.org][the Packery cold-load bug report]]; the change is committed locally but not deployed
 - 2026-07-13: Added Jay’s three selected Jason Bateman Packery highlights and documented the one-at-a-time Preview review, approved-subset Cloudinary upload, and current image-dimension protocol in [[file:../instructions.org][the upload instructions]]
 - 2026-07-13: Made Exwalker the canonical human metadata preflight and documented the separate filesystem-gallery, person-page, Packery-highlight, and before/after publication lanes in [[file:../instructions.org][the upload instructions]]
 - 2026-07-08: Promoted edge-to-edge Packery homepage sizing; current configuration lives in [[file:packery-edge-to-edge-configuration.org][packery-edge-to-edge-configuration.org]]
@@ -53,6 +55,7 @@ If you're new to this project, read these in order:
 ** Development Documentation
 - [[file:codebase-wisdom.org][codebase-wisdom.org]] - Hard-won debugging insights
 - [[file:work-log.org][work-log.org]] - Session-based work tracking
+- [[file:debug/packery-cold-load-layout-race.org][debug/packery-cold-load-layout-race.org]] - Open cold-load Packery race bug report and implementation plan
 - [[file:decisions/][decisions/]] - Architecture Decision Records (ADRs)
 
 ** Specialized Topics

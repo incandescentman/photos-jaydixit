@@ -1,0 +1,155 @@
+#+TITLE: Packery Cold-Load Layout Race Bug Report and Fix Plan
+#+DATE: 2026-07-13
+#+STATUS: Implemented and committed locally; not deployed
+
+* Summary
+
+On a cold visit to [[https://photos.jaydixit.com/][the public homepage]], the Packery gallery can initially form an extremely tall, mostly single-column layout with large blank regions. Scrolling causes more lazy images to load and triggers additional Packery work. Refreshing after those images are cached makes the gallery settle much faster and can appear to fix most of the problem.
+
+This is primarily a Packery initialization race, not an incorrect portrait/landscape classification. A separate, smaller source of whitespace can remain after the layout has fully settled when a two-column landscape tile cannot fit into a one-column opening. Saved ordering can improve that final edge shape, but it will not fix the cold-load race.
+
+* User-Visible Symptoms
+
+- A first visit can show large blank regions between or beside photographs.
+- New tiles near the end of the gallery can appear to have created the blanks even though their size classifications are correct.
+- Scrolling changes the layout as additional images load.
+- Refreshing the same page often makes the gallery look substantially better because the image cache changes the timing.
+- The page provides no indication that the gallery has not reached its final layout.
+
+* Affected Code and Surfaces
+
+- Shared Packery lifecycle: [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/scripts/packeryGallery.ts][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/scripts/packeryGallery.ts]]
+- Homepage consumer: [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro]]
+- Filesystem-gallery consumer: [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/gallery/%5B...folder%5D.astro][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/pages/gallery/[...folder].astro]]
+- Existing edge-to-edge contract: [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/packery-edge-to-edge-configuration.org][📄 /Users/jay/Dropbox/github/photos-jaydixit/docs/packery-edge-to-edge-configuration.org]]
+
+Because the initializer is shared, the fix must be checked on both the homepage and filesystem gallery routes even though the reported failure was on the homepage.
+
+* Reproduction
+
+** Manual
+
+1. Open a fresh browser context with an empty cache at [[https://photos.jaydixit.com/][https://photos.jaydixit.com/]].
+2. Use a desktop viewport around 2048 by 1152 pixels.
+3. Observe the gallery before scrolling or refreshing.
+4. Scroll progressively toward the bottom so native lazy loading requests the remaining photographs.
+5. Observe the gallery height and tile positions changing as photographs complete.
+6. Refresh after the photographs are cached.
+7. Compare the refreshed arrangement with the initial cold-load arrangement.
+
+** Automated diagnostic evidence collected 2026-07-13
+
+A headless Chromium run against the live homepage at 2048 by 1152 pixels produced the following results:
+
+- At cold ~DOMContentLoaded~, the masonry container measured ~20,899px~ tall. Only 2 of 35 masonry items had a complete first image, and the three new Jason Bateman items were positioned in a single vertical run at ~x = 0~ near the bottom.
+- After one second, 23 of 35 items had a complete first image, but the container still measured ~20,899px~ tall.
+- After progressive scrolling loaded all 35 items, the container collapsed to its settled ~5,600px~ height and the items moved into multiple columns.
+- On reload, all 35 items were already complete from cache and the container settled to ~5,600px~ quickly.
+- No browser console or page errors were reported.
+
+This establishes that the large transient blanks are coupled to image-completion timing. It does not establish that every small final-row opening is a loading bug.
+
+* Root Cause
+
+The current lifecycle combines several Packery operations whose timing depends on native lazy image loading:
+
+1. Packery is created with ~initLayout: false~.
+2. The saved DOM order is restored.
+3. No immediate full ~pckry.layout()~ is guaranteed after that restoration.
+4. An ~imagesLoaded~ progress callback calls ~pckry.shiftLayout()~ as individual images finish.
+5. The all-images callback, which lazy images can delay until the user scrolls near them, runs ~layout()~, ~shiftLayout()~, ~fit()~ on every tile, and another ~layout()~.
+
+This is fragile for three reasons:
+
+- ~initLayout: false~ is safe only if the application deliberately triggers the first layout after registering events or changing DOM order.
+- ~shiftLayout()~ preserves items' horizontal positions. It is useful after a positioned item changes, but it is not a substitute for the first full bin-packing pass.
+- ~fit()~ is intended to fit a selected item and shift other items around it. Applying it sequentially to every tile is unnecessary during initialization and adds more layout mutations.
+
+The page already gives each masonry item a responsive width and an explicit CSS ~aspect-ratio~ before its image pixels arrive. Packery therefore has enough geometry to perform the first layout immediately; it does not need to wait for every lazy image.
+
+Packery's official guidance is to initialize Packery and call its normal layout after each image loads: [[https://packery.metafizzy.co/layout#imagesloaded][Packery: imagesLoaded]]. Its method documentation distinguishes a full ~layout()~ from ~shiftLayout()~, which deliberately maintains horizontal positions: [[https://packery.metafizzy.co/methods][Packery: Methods]].
+
+* Implementation Plan
+
+** Phase 1: Simplify the initial lifecycle
+
+1. Keep ~initLayout: false~ so [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/scripts/packeryGallery.ts][the shared initializer]] can restore the saved DOM order before Packery positions anything.
+2. Immediately call ~pckry.reloadItems()~ and then ~pckry.layout()~ after ~restoreSavedOrder()~. Packery captures its internal item list during construction, before the DOM restoration, so the reload makes the first layout honor the restored order.
+3. Create one ~imagesLoaded~ instance for the container rather than separate scans for progress and completion.
+4. In the progress handler, preserve the existing reveal animation and request a normal ~pckry.layout()~. Coalesce multiple completions into at most one layout per animation frame to avoid redundant work and visible reshuffling.
+5. In the final ~always~ handler, cancel any pending animation-frame layout and run one last ~pckry.layout()~ as a safety pass for successfully loaded and broken images.
+6. Remove the initialization-time ~shiftLayout()~ calls and the loop that calls ~fit()~ on every item.
+7. Perform the first layout and register image lifecycle handlers before awaiting the optional Draggabilly import, so admin-only code cannot delay packing.
+8. Keep admin drag behavior, filter-related relayout behavior, PhotoSwipe initialization, resize handling, and the mobile fallback unchanged unless testing demonstrates a direct regression. In particular, deliberately leave the mobile fallback's two ~imagesLoaded~ scans alone: it does not initialize Packery, so this race does not apply there.
+
+** Phase 2: Verify the cold-load fix
+
+Use the real homepage and a real filesystem gallery; do not create hypothetical photo fixtures.
+
+1. Run the site locally and test a fresh browser context with cache disabled.
+2. Test at 800px, 1440px, 1728px, and 2048px widths without refreshing.
+3. At each width, capture geometry shortly after ~DOMContentLoaded~, during image completion, and after all requested images settle.
+4. Assert that the first desktop layout is already multi-column, the container does not begin at a single-column-scale height, tiles do not overlap, and there is no horizontal overflow.
+5. Compare cold-load and warm-refresh tile geometry. They should converge to the same arrangement without requiring scrolling to initialize Packery.
+6. Repeat under a throttled connection so the uncached state remains visible long enough to inspect.
+7. Confirm that a broken or failed image cannot prevent a usable gallery layout.
+8. Test [[http://localhost:4321/?admin=true][homepage admin mode]] for dragging, saving, and reloading the order.
+9. Test a real filesystem gallery route for initial packing plus search and tag filtering.
+10. Test 390px mobile width to confirm the flex fallback still bypasses Packery.
+11. Run ~pnpm exec vitest run~, ~pnpm lint~, and ~pnpm build~. This repository uses [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/pnpm-lock.yaml][📄 /Users/jay/Dropbox/github/photos-jaydixit/pnpm-lock.yaml]], and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/vercel.json][📄 /Users/jay/Dropbox/github/photos-jaydixit/vercel.json]] defines the production ~pnpm~ install and build contract.
+
+** Phase 3: Evaluate only the remaining settled gaps
+
+After the lifecycle is deterministic, inspect any remaining whitespace separately:
+
+1. Confirm the page has reached its final layout before judging gaps.
+2. Identify whether an opening is only one column wide while the next candidate tile spans two columns.
+3. If Jay wants a tighter final edge, adjust [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/saved-order.json][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/data/saved-order.json]] and compare the result across all desktop breakpoints.
+4. Do not misclassify, crop, or resize a photograph merely to hide a layout-order problem.
+
+* Acceptance Criteria
+
+- A cold desktop visit displays a packed multi-column gallery without requiring a refresh.
+- Scrolling is not required to trigger the first correct Packery layout.
+- Cold-load and cached-refresh layouts settle to the same geometry at the same viewport width.
+- Slow or failed image requests do not leave the gallery in a giant single-column arrangement.
+- Existing responsive column and gutter math remains intact.
+- Existing admin resequencing, filter relayout, PhotoSwipe, and mobile fallback behavior still works.
+- Any residual whitespace can be explained by legal tile-span constraints and addressed independently through ordering.
+
+* Implementation Result
+
+Implemented locally on 2026-07-13 in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/scripts/packeryGallery.ts][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/scripts/packeryGallery.ts]]:
+
+- Reload Packery's internal items after DOM-order restoration, then perform the deferred first full layout immediately.
+- Use one desktop ~imagesLoaded~ instance.
+- Coalesce progress-triggered full layouts into at most one ~requestAnimationFrame~ callback.
+- Cancel any pending frame and perform one final safety layout on the ~always~ event.
+- Remove initialization-time ~shiftLayout()~ calls and the loop that called ~fit()~ on every tile.
+- Register the image lifecycle before awaiting the admin-only Draggabilly import.
+- Save admin drag order from each tile's canonical ~data-filename~, rather than the extensionless Cloudinary URL basename, so reload can restore the exact sequence.
+- Leave the mobile fallback, responsive sizing, gutter math, PhotoSwipe, filtering, and public copy unchanged.
+
+* Verification Results
+
+- ~pnpm exec vitest run~ passed all 21 tests.
+- ~pnpm lint~ passed.
+- ~pnpm build~ generated all 99 pages successfully.
+- A cold-cache Chromium check at 1728px began with only 2 of 37 page images complete but already had five Packery columns, a ~6,192px~ container, no horizontal overflow, and no console errors. After 35 images were complete, every Packery position and the container height remained unchanged.
+- A cold-cache Chromium check at 2048px began with only 2 of 37 page images complete but already had six Packery columns and a ~5,091px~ container. After 25 images were complete, every Packery position and the container height remained unchanged.
+- A settled 2048px visual check loaded all 37 page images and confirmed that the former giant cold-load blank regions were gone. The final edge still has two isolated one-column openings around the two new two-column Jason Bateman and Jude Law landscapes; those are legal span/order gaps and belong to Phase 3, not this lifecycle bug.
+- Admin mode successfully dragged a tile, auto-saved all 35 canonical filenames to local storage, reloaded, and restored Packery's exact internal item order.
+- The real TIFF filesystem gallery initialized as a two-column Packery layout with seven photographs; searching for Jason Bateman reduced it to four, and clearing search restored all seven.
+- At 390px, the homepage initialized the existing flex fallback with no Packery instance, relative-positioned full-width items, and no horizontal overflow.
+
+* Non-Goals
+
+- Do not replace Packery. Its use is a deliberate project decision.
+- Do not remove native lazy loading or make all homepage photographs eager.
+- Do not change the approved photograph captions, crops, size classifications, or public-facing copy.
+- Do not resequence the homepage as part of the lifecycle fix.
+- Do not change the edge-to-edge column formulas or the 8px gutter contract.
+
+* Rollback
+
+The lifecycle change should remain confined to [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/scripts/packeryGallery.ts][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/scripts/packeryGallery.ts]]. If verification exposes a regression, revert that lifecycle block while retaining this report and the captured reproduction evidence for the next attempt.

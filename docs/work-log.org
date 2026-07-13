@@ -1,6 +1,36 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-13 - Remove the solo Kaia Gerber homepage highlight
+
+** Changed
+- Removed ~Kaia_Gerber_at_the_2024_Toronto_International_Film_Festival_03_(cropped).jpg~ from the homepage Packery configuration, saved order, and highlight metadata registry after Jay decided it was not a strong enough photograph for the highlights selection.
+- Kept the separate Kaia Gerber and Cory Michael Smith Sundance highlight, the Kaia Gerber person record, and the underlying Cloudinary asset unchanged.
+
+** Validation
+- ~pnpm lint~ passed and ~pnpm build~ generated all 99 pages.
+- The localhost homepage rendered 34 Packery items with no solo Kaia Gerber tile, while the separate Kaia Gerber and Cory Michael Smith photograph remained present.
+
+** Handoff
+The solo Kaia Gerber portrait removal is committed locally but has not been pushed, so it remains visible on the public site until Jay explicitly requests deployment.
+
+* 2026-07-13 - Fix the Packery cold-load layout race
+
+** Changed
+- Changed [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/scripts/packeryGallery.ts][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/scripts/packeryGallery.ts]] so desktop Packery reloads its internal item order and performs a full layout immediately after DOM-order restoration, before lazy images finish. Consolidated the desktop image lifecycle into one ~imagesLoaded~ instance, animation-frame-coalesced progress layouts, and one final safety layout; removed the initialization-time ~shiftLayout()~ and per-tile ~fit()~ sequence.
+- Kept the first layout ahead of the optional Draggabilly import. During admin verification, corrected drag auto-save to store canonical ~data-filename~ values instead of extensionless Cloudinary URL basenames, allowing the saved sequence to restore exactly after reload.
+- Added [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/debug/packery-cold-load-layout-race.org][📄 /Users/jay/Dropbox/github/photos-jaydixit/docs/debug/packery-cold-load-layout-race.org]] with the live reproduction evidence, reviewed plan, implementation result, verification matrix, acceptance criteria, non-goals, and rollback boundary.
+- Added the report to [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/CLAUDE.org][📄 /Users/jay/Dropbox/github/photos-jaydixit/docs/CLAUDE.org]] so future sessions can find the diagnosis and verified lifecycle contract before changing Packery behavior.
+
+** Validation
+- ~pnpm exec vitest run~ passed all 21 tests, ~pnpm lint~ passed, and ~pnpm build~ generated all 99 pages.
+- Cold-cache browser checks began with only 2 of 37 page images complete but already showed five Packery columns at 1728px and six at 2048px. Tile positions and container heights remained unchanged as dozens of images completed; neither viewport had horizontal overflow or browser errors.
+- The real TIFF filesystem gallery initialized and filtered correctly. The 390px mobile fallback remained full-width flex layout with no Packery instance. Admin mode dragged, auto-saved, reloaded, and restored the exact 35-item sequence.
+- A settled 2048px visual check confirmed the giant transient blanks were gone. Two isolated one-column openings remain at the final edge because the two Jason Bateman and Jude Law landscapes each span two columns; that is a separate ordering question.
+
+** Handoff
+The Packery lifecycle fix and documentation are committed locally. Packery, lazy loading, edge-to-edge sizing, PhotoSwipe, filtering, and the mobile fallback remain in place. Nothing has been pushed, so the public site still runs the old lifecycle until Jay explicitly requests deployment.
+
 * 2026-07-13 - Add Jay’s selected Jason Bateman photographs to Packery highlights
 
 ** Changed

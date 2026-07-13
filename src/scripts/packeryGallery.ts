@@ -786,97 +786,111 @@ async function setupPackeryLifecycle({
 	localStorageKey,
 	setDirty,
 }: PackeryLifecycleOptions) {
-	const allItems = container.querySelectorAll('.masonry-item');
-	let loadedCount = 0;
+	// Packery captured its internal item list before restoreSavedOrder() changed
+	// the DOM order. Reload that list, then perform the deferred first layout
+	// immediately; tile widths and aspect ratios already provide stable geometry.
+	pckry.reloadItems();
+	pckry.layout();
 
-	imagesLoaded(container).on('progress', function (_, image) {
+	const allItems = container.querySelectorAll<HTMLElement>('.masonry-item');
+	let loadedCount = 0;
+	let layoutFrame: number | null = null;
+
+	const scheduleLayout = () => {
+		if (layoutFrame !== null) return;
+		layoutFrame = window.requestAnimationFrame(() => {
+			layoutFrame = null;
+			pckry.layout();
+		});
+	};
+
+	const imgLoad = imagesLoaded(container);
+
+	imgLoad.on('progress', function (_, image) {
 		const item = image.img.closest<HTMLElement>('.masonry-item');
 		if (item && !item.classList.contains('animated-in')) {
 			setTimeout(() => item.classList.add('animated-in'), loadedCount * 40);
 			loadedCount += 1;
 		}
-		pckry.shiftLayout();
+		scheduleLayout();
 	});
 
-	const DraggabillyCtor = isAdminMode ? (await import('draggabilly')).default : undefined;
-
-	imagesLoaded(container, function () {
-		pckry.layout();
-		pckry.shiftLayout();
-
-		const items = pckry.getItemElements();
-		items.forEach((item) => {
-			pckry.fit(item);
-		});
-
+	imgLoad.on('always', function () {
+		if (layoutFrame !== null) {
+			window.cancelAnimationFrame(layoutFrame);
+			layoutFrame = null;
+		}
 		pckry.layout();
 
 		allItems.forEach((item) => {
 			if (!item.classList.contains('animated-in')) {
 				item.classList.add('animated-in');
 			}
+		});
+	});
 
-			if (isAdminMode && DraggabillyCtor) {
-				const draggie = new DraggabillyCtor(item as Element, {
-					handle: '.masonry-link',
-					containment: container,
+	// Register image lifecycle events before awaiting the optional admin bundle.
+	const DraggabillyCtor = isAdminMode ? (await import('draggabilly')).default : undefined;
+
+	if (isAdminMode && DraggabillyCtor) {
+		allItems.forEach((item) => {
+			const draggie = new DraggabillyCtor(item as Element, {
+				handle: '.masonry-link',
+				containment: container,
+			});
+
+			let dragging = false;
+
+			draggie.on('dragStart', () => {
+				dragging = true;
+				item.classList.add('is-dragging');
+				container.classList.add('is-sorting');
+				item.querySelectorAll('.masonry-link').forEach((link) => {
+					(link as HTMLElement).style.pointerEvents = 'none';
 				});
+			});
 
-				let dragging = false;
-
-				draggie.on('dragStart', () => {
-					dragging = true;
-					item.classList.add('is-dragging');
-					container.classList.add('is-sorting');
+			draggie.on('dragEnd', () => {
+				setTimeout(() => {
+					dragging = false;
 					item.querySelectorAll('.masonry-link').forEach((link) => {
-						(link as HTMLElement).style.pointerEvents = 'none';
+						(link as HTMLElement).style.pointerEvents = '';
 					});
-				});
+				}, 100);
 
-				draggie.on('dragEnd', () => {
-					setTimeout(() => {
-						dragging = false;
-						item.querySelectorAll('.masonry-link').forEach((link) => {
-							(link as HTMLElement).style.pointerEvents = '';
-						});
-					}, 100);
+				item.classList.remove('is-dragging');
+				container.classList.remove('is-sorting');
+			});
 
-					item.classList.remove('is-dragging');
-					container.classList.remove('is-sorting');
-				});
+			item.addEventListener(
+				'click',
+				(event) => {
+					if (dragging) {
+						event.preventDefault();
+						event.stopPropagation();
+					}
+				},
+				true,
+			);
 
-				item.addEventListener(
-					'click',
-					(event) => {
-						if (dragging) {
-							event.preventDefault();
-							event.stopPropagation();
-						}
-					},
-					true,
-				);
-
-				pckry.bindDraggabillyEvents(draggie);
-			}
+			pckry.bindDraggabillyEvents(draggie);
 		});
 
-		if (isAdminMode) {
-			pckry.on('dragItemPositioned', () => {
-				const items = pckry.getItemElements();
-				const orderFilenames = items
-					.map((item) => {
-						const img = item.querySelector('img');
-						if (!img) return '';
-						const src = img.getAttribute('src') || '';
-						return src.split('/').pop() || '';
-					})
-					.filter(Boolean);
-				localStorage.setItem(localStorageKey, JSON.stringify(orderFilenames));
-				showToast('Sequence auto-saved locally.', 'info');
-				setDirty(true);
-			});
-		}
-	});
+		pckry.on('dragItemPositioned', () => {
+			const items = pckry.getItemElements();
+			const orderFilenames = items
+				.map((item) => {
+					const img = item.querySelector('img');
+					if (!img) return '';
+					const src = img.getAttribute('src') || '';
+					return item.getAttribute('data-filename') || src.split('/').pop() || '';
+				})
+				.filter(Boolean);
+			localStorage.setItem(localStorageKey, JSON.stringify(orderFilenames));
+			showToast('Sequence auto-saved locally.', 'info');
+			setDirty(true);
+		});
+	}
 }
 
 type ResponsiveLayoutHandlerOptions = {

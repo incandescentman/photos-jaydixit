@@ -148,11 +148,6 @@ export const images = [
     caption: 'Ana de Armas and Sydney Sweeney at the 2024 Toronto International Film Festival'
   },
   {
-    filename: 'Kaia_Gerber_at_the_2024_Toronto_International_Film_Festival_03_(cropped).jpg',
-    size: 'portrait',
-    caption: 'Kaia Gerber at the 2024 Toronto International Film Festival'
-  },
-  {
     filename: 'Willem_Dafoe_at_the_2024_Toronto_International_Film_Festival_02.jpg',
     size: 'portrait',
     caption: 'Willem Dafoe at the 2024 Toronto International Film Festival'

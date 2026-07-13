@@ -1,6 +1,19 @@
 #+TITLE: Codebase Wisdom
 #+DATE: 2025-10-03
 
+* 2026-07-13 - Packery Needs a Full First Layout Before Progressive Image Events
+
+** Trigger
+On a cold homepage visit, Packery produced a roughly 20,899px-tall single-column arrangement with giant blank regions. Scrolling or refreshing appeared to fix it, making the newly appended photographs look responsible even though their portrait and landscape classifications were correct.
+
+** Mechanism
+The shared initializer used ~initLayout: false~ but did not trigger a full layout after restoring DOM order. Its first Packery operation was ~shiftLayout()~ from an ~imagesLoaded~ progress event. Because ~shiftLayout()~ preserves horizontal positions before Packery had assigned useful ones, items stayed at ~x = 0~ until the all-images callback finally ran ~layout()~. Native lazy loading deferred that callback until scrolling. The page already reserved stable tile geometry with responsive widths and CSS ~aspect-ratio~, so waiting for image pixels was unnecessary.
+
+Packery also captures its internal item list during construction. If the DOM is reordered afterward, call ~reloadItems()~ before the first ~layout()~ so Packery uses that restored order.
+
+** Actionable insight
+For Packery pages with reserved tile geometry, use this initialization sequence: restore DOM order, ~reloadItems()~, run one immediate full ~layout()~, then use one ~imagesLoaded~ instance to request animation-frame-coalesced full layouts as images finish and one final safety layout on ~always~. Do not use ~shiftLayout()~ as the first packing pass or call ~fit()~ across every tile during initialization. Diagnose refresh-sensitive blank regions as lifecycle timing before changing photograph classifications or ordering.
+
 * 2026-07-13 - The Legacy Image-Metadata Generator Does Not Cover Current Highlights
 
 ** Trigger
