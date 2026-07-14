@@ -35,6 +35,18 @@ export interface BeforeAfterComparison {
 // beforePos / afterPos hand-tune each cover-crop so faces stay in frame.
 export const comparisons: BeforeAfterComparison[] = [
 	{
+		name: 'Jason Bateman',
+		beforeImage: jasonBeforeImg,
+		afterImage: jasonAfterImg,
+		article: 'https://en.wikipedia.org/wiki/Jason_Bateman',
+		event: 'Toronto International Film Festival 2025',
+		beforeSource: 'Previous Wikipedia portrait',
+		afterSource: 'Jay Dixit, TIFF 2025',
+		beforePos: 'center 18%',
+		afterPos: 'center 10%',
+		sourceCredit: 'Jay Dixit',
+	},
+	{
 		name: 'Jeremy Strong',
 		beforeImage: jeremyBeforeImg,
 		afterImage: jeremyAfterImg,
@@ -51,18 +63,6 @@ export const comparisons: BeforeAfterComparison[] = [
 		sourceCredit: 'Jay Dixit',
 		license: 'CC BY-SA 4.0',
 		licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
-	},
-	{
-		name: 'Jason Bateman',
-		beforeImage: jasonBeforeImg,
-		afterImage: jasonAfterImg,
-		article: 'https://en.wikipedia.org/wiki/Jason_Bateman',
-		event: 'Toronto International Film Festival 2025',
-		beforeSource: 'Previous Wikipedia portrait',
-		afterSource: 'Jay Dixit, TIFF 2025',
-		beforePos: 'center 18%',
-		afterPos: 'center 10%',
-		sourceCredit: 'Jay Dixit',
 	},
 	{
 		name: 'Vanessa Kirby',

@@ -611,6 +611,13 @@ const criticalStyles = `
     display: block;
   }
 
+  .grid-sizer {
+    position: absolute;
+    visibility: hidden;
+    pointer-events: none;
+    aspect-ratio: 2 / 3;
+  }
+
   @media (min-width: 769px) and (max-width: 1099px) {
     .grid-sizer,
     .masonry-item.regular {
@@ -955,6 +962,10 @@ const criticalStyles = `
 	/* Packery requires a sizer for percentPosition math */
 	.grid-sizer {
 		width: 320px;
+		position: absolute;
+		visibility: hidden;
+		pointer-events: none;
+		aspect-ratio: 2 / 3;
 	}
 
 	/* Size variants */

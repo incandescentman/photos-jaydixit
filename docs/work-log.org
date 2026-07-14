@@ -1,6 +1,35 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-14 - Lead the Before & After page with Jason Bateman
+
+** Changed
+- Moved the existing Jason Bateman comparison to the first position in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/beforeAfter.ts][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/data/beforeAfter.ts]]. No comparison copy, imagery, crop positioning, or metadata changed.
+
+** Validation
+- Confirmed the rendered [[http://127.0.0.1:4323/before-after][localhost Before & After page]] now leads with Jason Bateman and keeps Jeremy Strong second.
+
+** Handoff
+This ordering change is included in the 2026-07-14 Packery and Before & After publication batch.
+
+* 2026-07-14 - Fix wide-screen Packery row-grid drift
+
+** Changed
+- Diagnosed the remaining live homepage holes in Jay's Chrome viewport at 4200 CSS pixels wide. The cold-load lifecycle fix was running, but Packery quantized only horizontal columns; responsive aspect-ratio heights plus the fixed 8px gutter made regular, wide, and wide-tall outer heights differ by a few pixels and prevented valid openings from being backfilled.
+- Updated [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/scripts/packeryGallery.ts][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/scripts/packeryGallery.ts]] to measure ~rowHeight~ from the responsive ~.grid-sizer~ as well as measuring ~columnWidth~ from it.
+- Updated both critical and settled CSS in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro]] so the hidden measurement sizer has the regular portrait aspect ratio, ~2 / 3~. The resulting packing geometry is responsive and does not assume eight columns is a permanent maximum.
+- Added [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/debug/packery-responsive-row-grid-drift.org][📄 /Users/jay/Dropbox/github/photos-jaydixit/docs/debug/packery-responsive-row-grid-drift.org]] and updated the Packery configuration and codebase-wisdom docs with the second failure mechanism and expanded verification contract.
+- Added the current portfolio stack to [[file+emacs:/Users/jay/Dropbox/github/github-directory-tech-stack.org][📄 /Users/jay/Dropbox/github/github-directory-tech-stack.org]] after confirming the project was absent from the shared audit. This is a separate repository-level documentation change and is not part of the photography repo diff.
+
+** Validation
+- ~pnpm lint~ passed, ~pnpm exec vitest run~ passed all 21 tests, and ~pnpm build~ generated all 99 pages before the documentation closeout.
+- Cold-load browser checks passed at both sides of every current desktop breakpoint from 769px through 2616px, then at 3440, 4200, 5120, and 7680px. Every run rendered all 34 items with zero internal holes, overlaps, or horizontal overflow after the initial transition settled.
+- Temporary local-only breakpoints forced nine columns at 6000px and ten columns at 7680px; both also passed with zero holes, overlaps, or overflow. The test rules were removed afterward, so production still uses the existing three-through-eight-column design.
+- The 390px mobile fallback remained a full-width flex stack with all 34 items and no horizontal overflow. The final localhost page also passed at the browser's restored default 3360px viewport.
+
+** Handoff
+The responsive row-grid fix is implemented and verified at [[http://127.0.0.1:4323/][http://127.0.0.1:4323/]] and is included in the 2026-07-14 Packery and Before & After publication batch.
+
 * 2026-07-13 - Integrate the Bateman highlights into the saved Packery order
 
 ** Changed

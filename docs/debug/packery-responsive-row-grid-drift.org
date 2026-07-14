@@ -1,0 +1,54 @@
+#+TITLE: Packery Responsive Row-Grid Drift Bug Report and Fix
+#+DATE: 2026-07-14
+#+STATUS: Implemented and verified; approved for publication 2026-07-14
+
+* Summary
+
+The homepage could still show large settled blank regions on very wide screens after the cold-load lifecycle race was fixed. The failure reproduced on Jay's live Chrome viewport at 4200 CSS pixels wide, where the production CSS selects eight columns. Refreshing could change when the problem became visible, but the remaining mechanism was responsive packing geometry rather than image-loading order.
+
+The horizontal grid was quantized through Packery's ~columnWidth~, while vertical placement used raw aspect-ratio-derived heights. An 8px fixed gutter made the outer heights of regular, wide, and wide-tall tiles differ by a few pixels as responsive columns widened. Packery therefore treated visually row-sized openings as slightly too short for later tiles and left large holes.
+
+The fix gives Packery a responsive ~rowHeight~ measured from the same hidden ~.grid-sizer~ used for column width. The sizer has the regular portrait aspect ratio of ~2 / 3~, so Packery's packing geometry becomes exact grid units: regular tiles are 1 by 1, wide tiles are 2 by 1, and wide-tall tiles are 2 by 2. The measurement follows the live CSS column width and is not tied to eight columns or any particular monitor size.
+
+* Evidence
+
+At the live 4200px viewport before the fix:
+
+- The gallery container was about 4181px wide and used eight columns.
+- A regular tile measured about 513.31 by 769.96px, for an outer row height of about 777.96px after the gutter.
+- A wide tile measured about 1034.62 by 766.38px, for an outer row height of about 774.38px.
+- A wide-tall tile measured about 1034.62 by 1545.54px, for an outer height of about 1553.54px, while two regular rows required about 1555.92px.
+- Those 2-4px differences were enough to prevent valid-looking openings from being reused.
+
+This is separate from the initialization race documented in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/debug/packery-cold-load-layout-race.org][📄 /Users/jay/Dropbox/github/photos-jaydixit/docs/debug/packery-cold-load-layout-race.org]]. That earlier fix ensures a full pack happens immediately. This fix ensures the full pack uses compatible vertical units at every responsive width.
+
+* Implementation
+
+- In [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/scripts/packeryGallery.ts][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/scripts/packeryGallery.ts]], configure Packery with both ~columnWidth: '.grid-sizer'~ and ~rowHeight: '.grid-sizer'~.
+- In both the critical and settled CSS in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro]], make ~.grid-sizer~ an invisible, absolutely positioned measurement element with ~aspect-ratio: 2 / 3~.
+- Keep ~.grid-sizer~ responsive through the existing gutter-aware width formulas. Do not hard-code a pixel row height.
+- Keep the mobile fallback unchanged; it hides the sizer and does not initialize Packery.
+
+Packery documents ~rowHeight~ as the option for aligning item positions to a vertical grid: [[https://packery.metafizzy.co/options#rowheight][Packery: rowHeight]].
+
+* Verification
+
+Local cold-load browser checks used the real 34-item homepage sequence and waited for the initial transition and stagger to settle.
+
+- Every current breakpoint boundary passed: 769, 1099, 1100, 1303, 1304, 1631, 1632, 1959, 1960, 2287, 2288, 2615, and 2616px.
+- Wider screens passed at 3440, 4200, 5120, and 7680px.
+- Every width had zero internal grid holes, zero overlaps, and zero horizontal overflow.
+- Temporary local-only CSS breakpoints forced nine columns at 6000px and ten columns at 7680px. Both passed with zero holes, overlaps, or overflow. Those temporary rules were removed after verification; the production CSS still intentionally caps at eight columns today.
+- The 390px mobile fallback rendered all 34 items as a full-width vertical flex stack with no horizontal overflow.
+- ~pnpm lint~, ~pnpm exec vitest run~, and ~pnpm build~ passed before the browser sweep; rerun them after the final documentation edits before commit.
+
+* Validation Rule
+
+Do not validate Packery only at a few familiar laptop widths or only at the current maximum column count. Check both sides of every column-count breakpoint, include a real high-resolution viewport, and test at least one synthetic future column count when changing the shared packing geometry. Wait for the 0.35-second Packery transition and the staggered reveal to settle before interpreting intermediate rectangles as overlaps or drift.
+
+* Non-Goals
+
+- Do not replace Packery.
+- Do not reorder photographs to mask incompatible geometry.
+- Do not change the current production column-count breakpoints as part of this fix.
+- Do not remove lazy loading, PhotoSwipe, admin drag behavior, or the mobile flex fallback.

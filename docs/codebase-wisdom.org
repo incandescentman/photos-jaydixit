@@ -1,6 +1,19 @@
 #+TITLE: Codebase Wisdom
 #+DATE: 2025-10-03
 
+* 2026-07-14 - Responsive Packery Needs Compatible Row Geometry, Not Just Column Geometry
+
+** Trigger
+After the cold-load lifecycle race was fixed and the saved order looked clean at five- and six-column test widths, the live homepage still developed large settled holes on a 4200px-wide eight-column viewport. Reordering the new landscape tiles had appeared to solve the narrower checks but did not generalize.
+
+** Mechanism
+Packery had a responsive ~columnWidth~ but no ~rowHeight~. CSS generated tile heights from aspect ratios while Packery added a fixed 8px gutter. As columns widened, the outer height of a regular 1-column portrait, a wide 2-column landscape, and a wide-tall 2-column portrait differed by a few pixels from exact 1-row and 2-row multiples. Packery correctly rejected openings that were mathematically too short even though they looked like empty grid cells, producing large holes at some widths.
+
+The hidden ~.grid-sizer~ can define both axes. Giving it ~aspect-ratio: 2 / 3~ and using it as Packery's ~rowHeight~ turns the packing model into responsive grid units: regular is 1 by 1, wide is 2 by 1, and wide-tall is 2 by 2. Because Packery remeasures the sizer during layout, this follows the current CSS width instead of hard-coding a monitor size or maximum column count.
+
+** Actionable insight
+When mixed-span Packery tiles are meant to form a modular grid, quantize both axes from the same responsive measurement element. Do not use saved-order changes to disguise geometry drift. Test cold loads on both sides of every responsive breakpoint, include ultrawide widths, and temporarily exercise a future 9- or 10-column rule before declaring the packing contract general. Wait for Packery's transition and reveal stagger to settle before measuring positions; mid-animation rectangles are not final geometry.
+
 * 2026-07-13 - Packery Needs a Full First Layout Before Progressive Image Events
 
 ** Trigger

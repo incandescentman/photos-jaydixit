@@ -8,6 +8,10 @@ On a cold visit to [[https://photos.jaydixit.com/][the public homepage]], the Pa
 
 This is primarily a Packery initialization race, not an incorrect portrait/landscape classification. A separate, smaller source of whitespace can remain after the layout has fully settled when a two-column landscape tile cannot fit into a one-column opening. Saved ordering can improve that final edge shape, but it will not fix the cold-load race.
 
+* 2026-07-14 Follow-up
+
+The lifecycle diagnosis and fix in this report remain correct, but the earlier 1728px and 2048px checks did not cover the full responsive range. A second independent bug appeared at Jay's 4200px-wide live Chrome viewport: Packery had responsive column geometry but unquantized vertical geometry, so aspect-ratio heights plus the fixed gutter drifted by a few pixels and created settled internal holes. That follow-up is fixed and documented in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/debug/packery-responsive-row-grid-drift.org][📄 /Users/jay/Dropbox/github/photos-jaydixit/docs/debug/packery-responsive-row-grid-drift.org]]. Do not treat saved-order validation at five and six columns as proof that the gallery is correct at wider breakpoints.
+
 * User-Visible Symptoms
 
 - A first visit can show large blank regions between or beside photographs.

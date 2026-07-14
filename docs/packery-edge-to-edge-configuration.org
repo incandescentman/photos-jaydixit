@@ -22,7 +22,8 @@ Desktop and tablet widths above 768px use Packery. The wrapper and Packery conta
 - ~.portfolio-wrap~ uses ~width: 100%~ and no horizontal padding.
 - ~.masonry-items~ uses ~width: 100%~, ~padding: 0~, ~margin: 0 auto~, and ~overflow-x: hidden~.
 - ~initPackeryGallery~ keeps the default ~mobileBreakpoint = 768~.
-- Packery uses ~columnWidth: '.grid-sizer'~, ~gutter: 8~, ~percentPosition: false~, ~resize: false~, and ~initLayout: false~.
+- Packery uses ~columnWidth: '.grid-sizer'~, ~rowHeight: '.grid-sizer'~, ~gutter: 8~, ~percentPosition: false~, ~resize: false~, and ~initLayout: false~.
+- ~.grid-sizer~ is an invisible, absolutely positioned measurement element with ~aspect-ratio: 2 / 3~. Its responsive width defines a regular column and its resulting height defines a regular row.
 
 Mobile widths at 768px and below use the flex fallback. Packery is not initialized; CSS forces natural document flow with:
 
@@ -55,12 +56,26 @@ Current breakpoints:
 - ~2288px-2615px~: 7 columns, regular ~calc(14.285714% - 6.857143px)~, wide ~calc(28.571429% - 5.714286px)~
 - ~2616px+~: 8 columns, regular ~calc(12.5% - 7px)~, wide ~calc(25% - 6px)~
 
+Eight columns is the current design cap, not an engineering assumption about the largest possible monitor or future layout. The row geometry must continue to work if a later design adds 9-, 10-, or higher-column breakpoints.
+
 These rules intentionally appear twice in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][src/pages/index.astro]]:
 
 - inside the ~criticalStyles~ string, so first paint has the same geometry Packery will read
 - inside the page-level ~<style is:inline>~ block, so the settled page keeps the same geometry
 
 Keep both copies synchronized.
+
+* Row Geometry
+
+Responsive column math alone is not sufficient. The fixed 8px gutter makes raw aspect-ratio-derived outer heights differ slightly as columns widen. Without a row grid, an opening that looks one portrait tall can be a few pixels too short for Packery to reuse.
+
+Packery therefore measures ~rowHeight~ from the same ~.grid-sizer~ it uses for ~columnWidth~. With the sizer's ~2 / 3~ aspect ratio, the intended packing spans are:
+
+- regular: 1 column by 1 row
+- wide: 2 columns by 1 row
+- wide-tall: 2 columns by 2 rows
+
+Do not replace this with a fixed pixel ~rowHeight~. The sizer must keep following the live responsive column width so the contract works across viewport sizes and future column counts. The full diagnosis and high-resolution verification are in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/debug/packery-responsive-row-grid-drift.org][📄 /Users/jay/Dropbox/github/photos-jaydixit/docs/debug/packery-responsive-row-grid-drift.org]].
 
 * Why Earlier Attempts Failed
 
@@ -79,6 +94,7 @@ One more detail matters for polish: Packery's staggered first layout can briefly
 - Do not remove ~overflow-x: hidden~ from ~.masonry-items~ unless you have verified there is no transient horizontal scroll during first layout.
 - Do not change the mobile breakpoint in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/scripts/packeryGallery.ts][src/scripts/packeryGallery.ts]] without changing the CSS fallback threshold in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][src/pages/index.astro]].
 - Do not remove the duplicated critical and settled CSS copies unless the homepage gets a single generated source for those rules.
+- Do not remove ~rowHeight~ or the sizer's ~2 / 3~ aspect ratio while mixed 1-by-1, 2-by-1, and 2-by-2 tiles share the Packery grid.
 - Do not leave experiment metadata on the homepage. Canonical must be ~/~, title must be ~Red Carpet Highlights~, and the homepage must not set ~noindex~.
 - Do not propose replacing Packery. Packery is the deliberate homepage and folder-page masonry engine.
 
@@ -98,7 +114,9 @@ Browser-check [[http://localhost:4324/][http://localhost:4324/]] at representati
 - 800px: 3-column desktop/tablet Packery, no left or right gap.
 - 1440px: 4-column Packery, no left or right gap.
 - 1728px: 5-column Packery, no left or right gap.
-- 1960px or wider if available: expanded column tiers still have no overflow or empty right band.
+- Both sides of every current breakpoint: 769/1099, 1100/1303, 1304/1631, 1632/1959, 1960/2287, 2288/2615, and 2616px.
+- Ultrawide checks at 3440, 4200, 5120, and 7680px: no internal holes, overlap, or overflow.
+- When changing shared packing geometry, temporarily exercise at least one future 9- or 10-column rule and remove the test rule afterward.
 
 Wait for Packery's staggered first layout to settle before measuring geometry. A fixed delay of about 2.5 seconds after all masonry items have received ~.animated-in~ was enough in the 2026-07-08 verification sweep.
 

@@ -88,6 +88,11 @@ export default function initPackeryGallery(options: PackeryGalleryOptions) {
 		const pckry: PackeryInstance = new Packery(containerEl, {
 			itemSelector: '.masonry-item',
 			columnWidth: '.grid-sizer',
+			// Quantize vertical placement to the same responsive unit as regular
+			// portrait tiles. Without a row grid, the fixed 8px gutter makes the
+			// aspect-ratio-derived heights drift by a few pixels as columns widen;
+			// Packery then sees earlier openings as just too short to backfill.
+			rowHeight: '.grid-sizer',
 			gutter: 8,
 			percentPosition: false,
 			transitionDuration: '0.35s',
