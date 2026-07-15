@@ -10,8 +10,6 @@ This document explains how to upload photos from the Jay Dixit Photography portf
 
 ** Bot Account Details
 - Wikimedia Username: =Jaydixit=
-- Bot Username: =Jaydixit@pyuploadwiki=
-- Bot Password: =rbfg4pl7lf7ba58gdhca6pvurai55fh2=
 - Bot Password Page: https://commons.wikimedia.org/wiki/Special:BotPasswords
 
 ** Configuration File Location
