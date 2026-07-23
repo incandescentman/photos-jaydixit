@@ -12,7 +12,9 @@
 - Rebuilt the Toronto finale as an accessible hybrid: the verified TIFF portraits accelerate at no more than roughly three frames per second, then assemble into one visible wall. Reduced-motion visitors see the completed wall immediately, and everyone gets a replay control.
 - Reused the shared, truthful city registry. Busan and Locarno use visibly labeled temporary selections from Jay's real portfolio; no borrowed Toronto subject is presented as festival coverage from those cities.
 - Added The Route to [[file:../src/pages/around-the-world/variants.astro][the comparison gallery]] as a full-width sixth card and to the compact cross-concept switcher.
+- Added [[file:around-the-world-concepts.org][a durable concept-lab guide]] covering all six routes, shared content, truthful placeholder rules, Natural Earth map provenance, sequential-navigation behavior, reduced-motion handling, validation, and editorial next steps; linked it from the canonical documentation map.
 - Expanded the Playwright contract to cover the new route, its six chapters, two temporary selections, 13 Toronto reel frames, six mapped destinations, replay control, mobile width, and broken-image protection.
+- Added regression assertions for the Route map's ~0 0 1000 386~ view box, high-detail Natural Earth outline, warm paper background, and six destination markers.
 
 ** Validation
 - ~pnpm run lint~ passed and the production build generated all 106 pages.
@@ -21,7 +23,7 @@
 - All 32 images on The Route loaded successfully during browser QA, with no broken image or page-width overflow.
 
 ** Handoff
-The Route is ready on ~codex/around-the-world~ and is included as concept 05 rather than replacing Jay's original ~/around-the-world/~ page.
+The complete six-treatment concept lab is committed and deployed from ~codex/around-the-world~ to a Vercel Preview environment. The Route remains concept 05, the original Editorial Journey remains at ~/around-the-world/~, and [[https://photos.jaydixit.com][photos.jaydixit.com]] has not been changed.
 
 * 2026-07-22 - Build four Around the World design variants
 

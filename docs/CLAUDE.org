@@ -8,7 +8,7 @@ LLM_CONTEXT:
 - Key Docs: All .org files in /docs
 - Always read before: Starting any major change or onboarding
 - Also includes: "For AI Assistants" section with navigation and key invariants
-Last Synced for AI Context: 2025-10-04
+Last Synced for AI Context: 2026-07-23
 #+END_COMMENT
 
 * Important Note
@@ -16,6 +16,7 @@ Last Synced for AI Context: 2025-10-04
 The root **CLAUDE.md** file contains legacy documentation. This file (docs/CLAUDE.org) is the canonical documentation entry point. Both should be maintained during transition.
 
 * Recent Updates
+- 2026-07-23: Added the six-treatment [[file:around-the-world-concepts.org][Around the World concept lab]], restored The Route's supplied Natural Earth map, and added exact next-destination controls to the scrolling concepts
 - 2026-07-14: Fixed the wide-screen Packery row-grid drift by measuring responsive ~rowHeight~ from the portrait-ratio sizer; verified every current breakpoint through 7680px plus temporary 9- and 10-column layouts in [[file:debug/packery-responsive-row-grid-drift.org][the responsive row-grid bug report]]
 - 2026-07-13: Integrated the three Jason Bateman highlights into the saved Packery sequence; fresh-context checks at 1728px and 2048px found no internal gaps or overflow, only the unavoidable incomplete final row
 - 2026-07-13: Removed the solo TIFF Kaia Gerber portrait from the homepage highlights while retaining the separate Kaia Gerber and Cory Michael Smith Sundance photograph
@@ -55,6 +56,7 @@ If you're new to this project, read these in order:
 - Root [[file:../instructions.org][instructions.org]] - Operational guide and workflows
 
 ** Development Documentation
+- [[file:around-the-world-concepts.org][around-the-world-concepts.org]] - Route inventory, shared content, map fidelity, navigation contracts, accessibility, and validation for the red-carpet travel concept lab
 - [[file:codebase-wisdom.org][codebase-wisdom.org]] - Hard-won debugging insights
 - [[file:work-log.org][work-log.org]] - Session-based work tracking
 - [[file:debug/packery-cold-load-layout-race.org][debug/packery-cold-load-layout-race.org]] - Implemented cold-load Packery race report, fix, and verified Phase 3 ordering result
@@ -181,6 +183,8 @@ Documentation structure:
 - **~astro.config.mts~** - Astro configuration
 - **~src/data/homepage-images.js~** - Homepage image configuration
 - **~src/data/people.json~** - Portraits manifest (person slugs, names, match patterns, bios, Wikipedia links)
+- **~src/data/worldTourVariants.ts~** - Shared Around the World concept registry
+- **~src/data/worldOutline.ts~** - Supplied Natural Earth land outline used by The Route
 - **~src/lib/cloudinary.ts~** - Cloudinary URL helpers
 - **~scripts/upload-to-cloudinary.js~** - Upload images to Cloudinary
 - **~vercel.json~** - Deployment configuration

@@ -1,0 +1,71 @@
+#+TITLE: Around the World Concept Lab
+#+DATE: 2026-07-23
+#+DESCRIPTION: Routes, shared data, interaction contracts, and maintenance notes for the red-carpet travel concepts
+
+* Purpose
+
+The Around the World concept lab presents Jay Dixit's red-carpet photography across six destinations: Busan, Locarno, Stockholm, Park City, Austin, and Toronto. It is a comparison environment, not yet a replacement for the original editorial journey.
+
+The comparison gallery lives at ~/around-the-world/variants/~. The production domain remains unchanged while the work is reviewed through Vercel Preview deployments from ~codex/around-the-world~.
+
+* Routes
+
+| Treatment | Route | Defining behavior |
+|-----------+-------+-------------------|
+| Editorial Journey | ~/around-the-world/~ | Original cinematic vertical narrative with Toronto sequence |
+| Full Bleed | ~/around-the-world/full-bleed/~ | Full-viewport chapters, persistent journey spine, and next-stop controls |
+| Passport | ~/around-the-world/passport/~ | Warm paper pages, entry stamps, and next-entry controls |
+| Departures | ~/around-the-world/departures/~ | Interactive split-flap destination board |
+| Contact Sheet | ~/around-the-world/contact-sheet/~ | Horizontal desktop filmstrip and stacked mobile sequence |
+| The Route | ~/around-the-world/the-route/~ | Distance-led editorial chapters, Toronto assembly, and route manifest |
+
+* Shared Content
+
+- [[file:../src/data/worldTourVariants.ts][worldTourVariants.ts]] is the shared registry for concept order, destination metadata, portraits, placeholders, and the Toronto archive.
+- [[file:../src/components/WorldTourVariantNav.astro][WorldTourVariantNav.astro]] provides the compact cross-concept switcher.
+- Busan and Locarno currently use clearly labeled temporary selections from Jay's real portfolio. They must not be described as photographs from those festivals until Jay supplies and approves the correct images.
+- Toronto currently contains 13 verified TIFF portraits. Copy and tests should describe the actual archive size rather than the originally imagined 30-photo sequence.
+
+* Map Fidelity
+
+The Route's closing map uses [[file:../src/data/worldOutline.ts][worldOutline.ts]], the Natural Earth 110m land outline supplied with the original Route prototype. Its coordinate system is ~0 0 1000 386~.
+
+Do not replace that outline with hand-drawn continent polygons. Visual changes should preserve the source geometry and be limited to styling, labeling, pins, arcs, spacing, and responsive presentation.
+
+The current treatment uses a warm paper background, muted land, a fine atlas grid, dark labels, coral route arcs, and a highlighted Brooklyn home marker. A Playwright regression check protects the view box, high-detail outline, light background, and six destination markers.
+
+* Sequential Navigation Contract
+
+- Full Bleed, Passport, Contact Sheet, The Route, and the original Editorial Journey provide optional controls that advance exactly one destination.
+- Vertical destinations land below the fixed site navigation using a single ~scroll-margin-top~ offset. Do not combine root ~scroll-padding-top~ with the destination margin; stacking both offsets places a chapter too low.
+- Contact Sheet advances horizontally on desktop and vertically after its mobile layout becomes a normal stacked sequence.
+- Departures intentionally remains destination-driven: visitors choose a row rather than follow a prescribed next-stop order.
+- Controls update the URL hash and preserve ordinary free scrolling.
+
+* Motion and Accessibility
+
+- Smooth navigation becomes immediate when ~prefers-reduced-motion: reduce~ is active.
+- Toronto rapid sequences are capped at a readable rate and resolve into a static contact sheet.
+- Reduced-motion visitors receive the completed Toronto grid without the rapid sequence.
+- Navigation controls carry descriptive accessible names; image alternatives and temporary-image labels remain truthful.
+
+* Validation
+
+For changes to this concept set, run:
+
+#+BEGIN_SRC sh
+pnpm run lint
+pnpm run test -- --run
+PUBLIC_CLOUDINARY_CLOUD_NAME=dszpm7yps PUBLIC_CLOUDINARY_TRANSFORM=gallery pnpm run build
+PLAYWRIGHT_BASE_URL=http://127.0.0.1:4328 pnpm exec playwright test tests/e2e/portfolio.e2e.ts --grep "concept lab" --project=chromium
+#+END_SRC
+
+The focused browser contract covers the six-route inventory, sequential-control counts and landing positions, the Departures interaction, Toronto assembly, mobile overflow, map fidelity, and broken images.
+
+* Editorial Next Steps
+
+1. Replace the labeled Busan and Locarno temporary selections with Jay's approved festival photographs.
+2. Decide which treatment—or hybrid—should become the public Around the World experience.
+3. Expand Toronto only when additional verified photographs and subject metadata are available.
+4. Promote the selected route to production deliberately; a successful preview deployment does not change [[https://photos.jaydixit.com][photos.jaydixit.com]].
+
