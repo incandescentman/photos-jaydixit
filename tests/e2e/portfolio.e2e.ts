@@ -175,7 +175,7 @@ test('around-the-world page renders every city and a scroll-controlled Toronto s
 
 	await expect(page.locator('[data-toronto-frame]')).toHaveCount(13);
 	await expect(page.locator('[data-toronto-frame].is-active')).toHaveCount(1);
-	await expect(page.locator('[data-missing-portrait]')).toHaveCount(2);
+	await expect(page.locator('[data-placeholder-frame]')).toHaveCount(2);
 
 	const sequence = page.locator('[data-toronto-sequence]');
 	await sequence.scrollIntoViewIfNeeded();
@@ -185,9 +185,10 @@ test('around-the-world page renders every city and a scroll-controlled Toronto s
 	expect(await getBrokenCompletedImages(page)).toEqual([]);
 });
 
-test('around-the-world concept lab exposes four distinct responsive variants', async ({ page }) => {
+test('around-the-world concept lab exposes five distinct responsive concepts', async ({ page }) => {
 	await page.goto('/around-the-world/variants/');
 	await waitForInitialImages(page);
+	await expect(page.locator('.concept-card[href="/around-the-world"]')).toHaveCount(1);
 
 	for (const path of [
 		'/around-the-world/full-bleed',
@@ -201,7 +202,7 @@ test('around-the-world concept lab exposes four distinct responsive variants', a
 	await page.goto('/around-the-world/full-bleed/');
 	await expect(page.locator('[data-bleed-chapter]')).toHaveCount(6);
 	await expect(page.locator('[data-reel-frame]')).toHaveCount(13);
-	await expect(page.locator('.bleed-pending')).toHaveCount(2);
+	await expect(page.locator('[data-placeholder-frame]')).toHaveCount(2);
 	await page.locator('[data-toronto-finale]').scrollIntoViewIfNeeded();
 	await expect
 		.poll(() => page.locator('[data-reel-caption]').textContent())

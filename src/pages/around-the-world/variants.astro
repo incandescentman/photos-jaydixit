@@ -7,22 +7,37 @@ import { routeVariants } from '../../data/worldTourVariants';
 
 <MainLayout
 	title="Around the World — Design Concepts"
-	description="Four visual directions for Jay Dixit's international red carpet photography page."
+	description="Five visual directions for Jay Dixit's international red carpet photography page."
 >
 	<main class="concepts">
 		<header>
 			<p>Design study · July 2026</p>
-			<h1>Four ways<br /><em>around the world.</em></h1>
+			<h1>Five ways<br /><em>around the world.</em></h1>
 			<div class="concept-intro">
 				<p>
-					The same six assignments, treated as four entirely different experiences. Open each
-					concept full-screen; the point is to feel the rhythm, not compare decoration.
+					My original editorial journey plus four radically different treatments of the same six
+					assignments. Open each concept full-screen; the point is to feel the rhythm, not compare
+					decoration.
 				</p>
-				<a href="/around-the-world">View the current hybrid →</a>
+				<a href="/around-the-world">Open my original concept →</a>
 			</div>
 		</header>
 
 		<section class="concept-grid" aria-label="Design concepts">
+			<a href="/around-the-world" class="concept-card concept-card--original">
+				<div class="concept-art" aria-hidden="true">
+					<img src={cldUrl('highlights/john-hopfield_nobel-physics_2024', 1200)} alt="" />
+				</div>
+				<div class="concept-copy">
+					<span>00 · Codex original</span>
+					<h2>Editorial Journey</h2>
+					<p>
+						Oversized city chapters, coordinate stamps, and a scroll-controlled Toronto press
+						line that resolves into a contact sheet.
+					</p>
+					<strong>Open original ↗</strong>
+				</div>
+			</a>
 			{
 				routeVariants.map((variant, index) => (
 					<a href={variant.path} class={`concept-card concept-card--${variant.id}`}>
@@ -137,6 +152,29 @@ import { routeVariants } from '../../data/worldTourVariants';
 		display: grid;
 		gap: 1.25rem;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.concept-card--original {
+		grid-column: 1 / -1;
+		grid-template-columns: minmax(0, 1.35fr) minmax(20rem, 0.65fr);
+		grid-template-rows: none;
+	}
+
+	.concept-card--original .concept-copy {
+		align-content: end;
+	}
+
+	.concept-card--original .concept-art::after {
+		position: absolute;
+		right: 1rem;
+		bottom: 1rem;
+		content: 'STOCKHOLM';
+		color: #fff;
+		font-family: var(--serif);
+		font-size: clamp(3.5rem, 8vw, 8rem);
+		font-weight: 300;
+		letter-spacing: -0.07em;
+		line-height: 0.72;
 	}
 
 	.concept-card {
@@ -306,6 +344,11 @@ import { routeVariants } from '../../data/worldTourVariants';
 
 		.concept-card {
 			min-height: 36rem;
+		}
+
+		.concept-card--original {
+			grid-template-columns: 1fr;
+			grid-template-rows: 1fr auto;
 		}
 	}
 </style>

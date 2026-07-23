@@ -9,6 +9,19 @@ const pageTitle = 'Red Carpets Around the World';
 const description =
 	'Jay Dixit photographs actors, filmmakers, and public figures at festivals and cultural events from Stockholm and Busan to Locarno, Sundance, SXSW, and Toronto.';
 
+const placeholderPortraits = {
+	busan: torontoPortraits[1],
+	locarno: torontoPortraits[3],
+} as const;
+
+const displayDestinations = worldTourDestinations.map((destination) => ({
+	...destination,
+	displayPortrait:
+		destination.portrait ??
+		placeholderPortraits[destination.id as keyof typeof placeholderPortraits],
+	isPlaceholder: !destination.portrait,
+}));
+
 const allDestinations = [
 	...worldTourDestinations,
 	{
@@ -88,13 +101,13 @@ const structuredData = {
 		</section>
 
 		{
-			worldTourDestinations.map((destination, index) => (
+			displayDestinations.map((destination, index) => (
 				<section
 					id={destination.id}
 					class:list={[
 						'city-chapter',
 						{ 'city-chapter--reverse': index % 2 === 1 },
-						{ 'city-chapter--awaiting': !destination.portrait },
+						{ 'city-chapter--placeholder': destination.isPlaceholder },
 					]}
 					style={`--city-accent: ${destination.accent}`}
 					data-world-city={destination.city}
@@ -115,23 +128,40 @@ const structuredData = {
 						<p class="city-line">{destination.line}</p>
 					</div>
 
-					{destination.portrait ? (
-						<figure class="city-portrait">
+					{destination.displayPortrait ? (
+						<figure
+							class="city-portrait"
+							data-placeholder-frame={destination.isPlaceholder ? 'true' : undefined}
+						>
 							<div class="city-portrait-frame">
 								<img
-									src={cldUrl(destination.portrait.publicId, 1200)}
-									srcset={cldSrcset(destination.portrait.publicId, [480, 768, 1024, 1200, 1600])}
+									src={cldUrl(destination.displayPortrait.publicId, 1200)}
+									srcset={cldSrcset(destination.displayPortrait.publicId, [480, 768, 1024, 1200, 1600])}
 									sizes={cldSizes('(max-width: 800px) 100vw, 58vw')}
-									alt={destination.portrait.alt}
+									alt={destination.displayPortrait.alt}
 									loading={index === 0 ? 'eager' : 'lazy'}
 									decoding="async"
 									fetchpriority={index === 0 ? 'high' : 'auto'}
-									style={`object-position: ${destination.portrait.position ?? '50% 24%'}`}
+									style={`object-position: ${destination.displayPortrait.position ?? '50% 24%'}`}
 								/>
+								{destination.isPlaceholder && (
+									<span class="city-temporary-label">
+										Temporary portfolio frame · final {destination.city} image pending
+									</span>
+								)}
 							</div>
 							<figcaption>
-								<span>Portrait by Jay Dixit</span>
-								<strong>{destination.portrait.subject}</strong>
+								{destination.isPlaceholder ? (
+									<>
+										<span>Layout preview only</span>
+										<strong>Final festival selection pending</strong>
+									</>
+								) : (
+									<>
+										<span>Portrait by Jay Dixit</span>
+										<strong>{destination.displayPortrait.subject}</strong>
+									</>
+								)}
 							</figcaption>
 						</figure>
 					) : (
@@ -653,6 +683,22 @@ const structuredData = {
 		height: 3.5rem;
 		content: '';
 		pointer-events: none;
+	}
+
+	.city-temporary-label {
+		position: absolute;
+		z-index: 3;
+		right: 1rem;
+		bottom: 1rem;
+		max-width: calc(100% - 2rem);
+		padding: 0.55rem 0.7rem;
+		background: rgba(10, 10, 10, 0.82);
+		color: rgba(255, 255, 255, 0.82);
+		font-size: 0.55rem;
+		letter-spacing: 0.14em;
+		line-height: 1.45;
+		text-align: right;
+		text-transform: uppercase;
 	}
 
 	.city-portrait-frame::before {

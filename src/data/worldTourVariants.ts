@@ -16,6 +16,7 @@ export type RouteStop = {
 	coordinates: string;
 	subject: string;
 	portrait?: WorldTourPortrait;
+	isPlaceholder: boolean;
 };
 
 const metadata: Record<
@@ -30,6 +31,10 @@ const metadata: Record<
 };
 
 const byId = new Map(worldTourDestinations.map((destination) => [destination.id, destination]));
+const placeholderPortraits: Record<string, WorldTourPortrait> = {
+	busan: torontoPortraits[1],
+	locarno: torontoPortraits[3],
+};
 
 export const routeStops: RouteStop[] = [
 	'busan',
@@ -51,7 +56,8 @@ export const routeStops: RouteStop[] = [
 		miles: metadata[id].miles,
 		coordinates: destination.coordinates,
 		subject: destination.portrait?.subject ?? '',
-		portrait: destination.portrait,
+		portrait: destination.portrait ?? placeholderPortraits[id],
+		isPlaceholder: !destination.portrait,
 	};
 });
 
@@ -67,6 +73,7 @@ routeStops.push({
 	coordinates: '43.6532° N · 79.3832° W',
 	subject: torontoPortraits[0].subject,
 	portrait: torontoPortraits[0],
+	isPlaceholder: false,
 });
 
 export const routeVariants = [

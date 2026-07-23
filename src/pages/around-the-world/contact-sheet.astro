@@ -52,6 +52,11 @@ import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
 											<span>Unexposed<br />portrait selection pending</span>
 										</div>
 									)}
+									{stop.isPlaceholder && (
+										<span class="temporary-frame" data-placeholder-frame>
+											Temporary portfolio frame · final {stop.city} image pending
+										</span>
+									)}
 								</div>
 
 								<div class="film-caption">
@@ -251,11 +256,28 @@ import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
 	}
 
 	.film-photo {
+		position: relative;
 		height: 61svh;
 		min-height: 0;
 		display: grid;
 		background: #100f0d;
 		place-items: center;
+	}
+
+	.temporary-frame {
+		position: absolute;
+		right: 0.8rem;
+		bottom: 0.8rem;
+		max-width: calc(100% - 1.6rem);
+		padding: 0.5rem 0.65rem;
+		background: rgba(16, 15, 13, 0.86);
+		color: #d9a74c;
+		font-family: monospace;
+		font-size: 0.55rem;
+		letter-spacing: 0.14em;
+		line-height: 1.5;
+		text-align: right;
+		text-transform: uppercase;
 	}
 
 	.film-photo img {
