@@ -104,7 +104,7 @@ Users should see content ASAP, not stare at blank screens. Photography portfolio
 *** Portraits (=src/pages/portraits/=)
 - Per-person pages at =/portraits/[person-slug]= (e.g., =/portraits/jeremy-strong=)
 - Index page at =/portraits/= listing all people alphabetically with sample photos
-- Legacy =/red-carpet/= index and person routes redirect permanently to =/portraits/=
+- Legacy =/red-carpet/= index and person routes receive HTTP 308 redirects to =/portraits/= through =vercel.json=; Astro redirect pages provide a local and static-host fallback
 - Driven by =src/data/people.json= manifest
 - Scans both =src/gallery/photos/= and =src/gallery/highlights/=
 - Match logic: subject slug (part before first =_=) checked against =match= patterns, including numbered variants (e.g., =jeremy-3= matches pattern =jeremy=)

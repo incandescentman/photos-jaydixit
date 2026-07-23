@@ -5,6 +5,18 @@
 	"devCommand": "pnpm run dev",
 	"installCommand": "pnpm install",
 	"regions": ["iad1"],
+	"redirects": [
+		{
+			"source": "/red-carpet",
+			"destination": "/portraits",
+			"permanent": true
+		},
+		{
+			"source": "/red-carpet/:path*",
+			"destination": "/portraits/:path*",
+			"permanent": true
+		}
+	],
 	"rewrites": [
 		{
 			"source": "/(.*)",

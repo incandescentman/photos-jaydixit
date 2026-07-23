@@ -26,7 +26,7 @@ The root **CLAUDE.md** file contains legacy documentation. This file (docs/CLAUD
 - 2026-07-08: Promoted edge-to-edge Packery homepage sizing; current configuration lives in [[file:packery-edge-to-edge-configuration.org][packery-edge-to-edge-configuration.org]]
 - 2026-07-04: Confirmed Vercel deployment contract: ~vercel.json~ runs ~pnpm build~ and serves Astro static output from ~dist~
 - 2026-04-01: Replaced the dead ~=t_gallery=~ Cloudinary transform fallback with explicit transforms and made blog post images auto-wire into PhotoSwipe
-- 2026-07-23: Made ~/portraits/~ the canonical searchable people directory, with permanent redirects from the former ~/red-carpet/~ index and person URLs
+- 2026-07-23: Made ~/portraits/~ the canonical searchable people directory, with Vercel HTTP 308 redirects and Astro fallbacks from the former ~/red-carpet/~ index and person URLs
 - 2026-03-30: Added Portraits feature - per-person pages with people.json manifest
 - 2026-01-06: Migrated homepage images to Cloudinary CDN (removed ~200MB from repo)
 - 2026-01-06: Simplified image handling - no build-time processing for homepage
@@ -300,7 +300,7 @@ Frequency: Very High
 4. For group shots and non-standard filenames, use =photoSlugs= for explicit file-to-person mapping. These appear on person pages but not the index.
 5. Build/dev to generate the page at =/portraits/ray-kurzweil=
 6. The person appears on the =/portraits/= index only if they have at least one solo photo (matched by =match= pattern, with no other person's slug in the filename). People with only group shots or =photoSlugs= have person pages but are excluded from the index.
-7. Legacy =/red-carpet/= URLs redirect permanently to =/portraits/= and should be treated as compatibility paths, not the primary public route.
+7. Legacy =/red-carpet/= URLs receive HTTP 308 redirects to =/portraits/= through =vercel.json=; the Astro redirect pages are local and static-host fallbacks. Treat the old URLs as compatibility paths, not the primary public route.
 8. Bio guidelines: omit bio for household names. Use achievement-first descriptors for less recognizable people (e.g., "Nobel Prize-winning physicist"). Avoid generic labels like "Actor".
 
 *** To modify gallery layout:

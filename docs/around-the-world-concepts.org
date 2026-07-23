@@ -44,7 +44,7 @@ Do not restore ~Bodoni Moda~ without explicit design approval. Its extreme contr
 
 The primary navigation labels ~/portraits/~ as *Portraits*. That route is a searchable person archive containing red-carpet subjects, Nobel figures, and other cultural or business portraits, so “Portraits” describes its full scope and distinguishes it from the assignment-led Around the World narrative.
 
-~/portraits/~ is the canonical archive route, including person pages such as ~/portraits/lisa-gilroy/~. The former ~/red-carpet/~ index and person URLs remain permanent redirects for link and search continuity.
+~/portraits/~ is the canonical archive route, including person pages such as ~/portraits/lisa-gilroy/~. The former ~/red-carpet/~ index and person URLs remain HTTP 308 redirects for link and search continuity. Vercel enforces those redirects before serving the Astro site; the Astro redirect pages remain as a local and static-host fallback.
 
 * Sequential Navigation Contract
 
