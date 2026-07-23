@@ -1,0 +1,1135 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import WorldTourVariantNav from '../../components/WorldTourVariantNav.astro';
+import { cldSrcset, cldUrl } from '../../lib/cloudinary';
+import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
+
+const maxMiles = Math.max(...routeStops.map((stop) => stop.miles));
+const wordSize = (city: string) => `${Math.min(17, 106 / Math.max(6, city.length)).toFixed(1)}vw`;
+const mapPoints: Record<string, { x: number; y: number; dx: number; dy: number; anchor?: string }> =
+	{
+		busan: { x: 858, y: 144, dx: 10, dy: -9 },
+		locarno: { x: 524, y: 111, dx: 9, dy: 15 },
+		stockholm: { x: 551, y: 73, dx: 8, dy: -8 },
+		'park-city': { x: 191, y: 128, dx: -9, dy: -9, anchor: 'end' },
+		austin: { x: 229, y: 158, dx: -9, dy: 16, anchor: 'end' },
+		toronto: { x: 280, y: 120, dx: 8, dy: -9 },
+	};
+const home = { x: 295, y: 128 };
+const routeArc = (id: string) => {
+	const point = mapPoints[id];
+	const midX = (home.x + point.x) / 2;
+	const midY = Math.min(home.y, point.y) - Math.abs(home.x - point.x) * 0.13 - 9;
+	return `M${home.x},${home.y} Q${midX},${midY} ${point.x},${point.y}`;
+};
+const routeClientData = {
+	portraits: torontoPortraits.map((portrait) => ({
+		subject: portrait.subject,
+		src: cldUrl(portrait.publicId, 1200),
+		thumb: cldUrl(portrait.publicId, 520),
+		position: portrait.position ?? '50% 20%',
+	})),
+};
+---
+
+<MainLayout
+	title="The Route — Red Carpets Around the World"
+	description="Six cities, one camera: Jay Dixit's international red carpet photography route, ordered by distance from Brooklyn."
+	image={cldUrl('highlights/vanessa-kirby_tiff_2024', 1600)}
+	imageAlt="Vanessa Kirby photographed by Jay Dixit at the Toronto International Film Festival"
+>
+	<link
+		rel="stylesheet"
+		href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,800;6..96,900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+	/>
+
+	<main class="route" data-route-page>
+		<header class="route-hero">
+			<div>
+				<p class="route-kicker">Red carpets around the world · Concept 05</p>
+				<h1>
+					The Route
+					<em>six cities, one camera</em>
+				</h1>
+				<p class="route-intro">
+					Every portrait begins on a rope line somewhere. Here are six of those places, ordered by
+					their distance from my apartment in Brooklyn—farthest first.
+				</p>
+				<div class="route-facts" aria-label="Route facts">
+					<span>2024–2026</span>
+					<span>6 cities · 4 countries</span>
+					<span>Sony a7 IV</span>
+				</div>
+			</div>
+			<a class="route-scroll-cue" href="#route-busan"><i></i>Begin the route</a>
+		</header>
+
+		<aside class="route-rail" aria-hidden="true">
+			<p><b data-route-number>01</b><span>/06</span></p>
+			<div><i data-route-progress></i></div>
+			<small data-route-distance>6,995 mi from Brooklyn</small>
+		</aside>
+
+		<div class="route-chapters">
+			{
+				routeStops.map((stop, index) => (
+					<section
+						class="route-chapter"
+						id={`route-${stop.id}`}
+						data-route-chapter
+						data-index={index}
+						data-distance={`${stop.miles.toLocaleString()} mi from Brooklyn`}
+						style={`--accent:${index % 2 === 0 ? '#ee776b' : '#d5ad64'};--word:${wordSize(stop.city)};`}
+					>
+						<p class="chapter-eyebrow">
+							<span>{stop.flag}</span>
+							{stop.country} · No. {stop.number}
+						</p>
+						<h2>{stop.city}</h2>
+
+						<figure class="route-frame">
+							<img
+								src={cldUrl(stop.portrait!.publicId, 1400)}
+								srcset={cldSrcset(stop.portrait!.publicId, [640, 900, 1400, 1900])}
+								sizes="(max-width: 760px) 88vw, 45vw"
+								alt={
+									stop.isPlaceholder
+										? `${stop.portrait!.subject}, a temporary portfolio selection`
+										: stop.portrait!.alt
+								}
+								style={`object-position:${stop.portrait!.position ?? '50% 20%'}`}
+								loading={index < 2 ? 'eager' : 'lazy'}
+								decoding="async"
+							/>
+							{stop.isPlaceholder && (
+								<figcaption data-placeholder-frame>
+									Temporary portfolio frame · final {stop.city} selection pending
+								</figcaption>
+							)}
+						</figure>
+
+						<div class="route-stamp">
+							<div>
+								<>
+									<span>Event</span>
+									<b>{stop.event}</b>
+								</>
+							</div>
+							<div>
+								<>
+									<span>Years</span>
+									<b>{stop.years}</b>
+								</>
+							</div>
+							<div>
+								<>
+									<span>Position</span>
+									<b>{stop.coordinates}</b>
+								</>
+							</div>
+							<div>
+								<>
+									<span>From Brooklyn</span>
+									<b class="route-accent">{stop.miles.toLocaleString()} mi</b>
+								</>
+							</div>
+							{!stop.isPlaceholder && (
+								<div>
+									<span>Pictured</span>
+									<b>{stop.subject}</b>
+								</div>
+							)}
+						</div>
+
+						{index < routeStops.length - 1 && (
+							<a class="chapter-next" href={`#route-${routeStops[index + 1].id}`}>
+								Next · {routeStops[index + 1].city}
+								<span aria-hidden="true">↓</span>
+							</a>
+						)}
+					</section>
+				))
+			}
+		</div>
+
+		<section class="route-finale" data-route-finale>
+			<header>
+				<p>Toronto · The archive</p>
+				<h2>One festival.<br /><em>Thirteen faces.</em></h2>
+				<span data-route-status aria-live="polite">Ready to assemble</span>
+			</header>
+
+			<div class="route-stage" data-route-stage>
+				<div class="route-reel" data-route-reel>
+					{
+						torontoPortraits.map((portrait, index) => (
+							<figure data-route-reel-frame class:list={{ 'is-active': index === 0 }}>
+								<img
+									src={cldUrl(portrait.publicId, 1200)}
+									srcset={cldSrcset(portrait.publicId, [640, 900, 1200])}
+									sizes="(max-width: 760px) 88vw, 62vw"
+									alt={portrait.alt}
+									style={`object-position:${portrait.position ?? '50% 20%'}`}
+									loading="lazy"
+									decoding="async"
+								/>
+								<figcaption>{portrait.subject}</figcaption>
+							</figure>
+						))
+					}
+				</div>
+				<div class="route-assembly" data-route-assembly aria-label="Toronto portrait contact sheet">
+					{
+						torontoPortraits.map((portrait) => (
+							<figure>
+								<img
+									src={cldUrl(portrait.publicId, 520)}
+									alt={portrait.alt}
+									style={`object-position:${portrait.position ?? '50% 20%'}`}
+									loading="lazy"
+									decoding="async"
+								/>
+								<figcaption>{portrait.subject}</figcaption>
+							</figure>
+						))
+					}
+				</div>
+			</div>
+			<button type="button" class="route-replay" data-route-replay>Replay the assembly ↻</button>
+		</section>
+
+		<section class="route-summary">
+			<header>
+				<p>Route manifest</p>
+				<h2>Farthest out.<br /><em>Then home.</em></h2>
+			</header>
+
+			<div class="route-map">
+				<svg
+					viewBox="0 0 1000 330"
+					role="img"
+					aria-label="Map showing six photography destinations connected to Brooklyn"
+				>
+					<g class="map-grid">
+						<path d="M0 55H1000M0 110H1000M0 165H1000M0 220H1000M0 275H1000"></path>
+						<path d="M125 0V330M250 0V330M375 0V330M500 0V330M625 0V330M750 0V330M875 0V330"></path>
+					</g>
+					<g class="map-land">
+						<path d="M87 68l77-34 93 18 62 48-18 38-48 13-20 50-55 13-28-38-50-16-33-45z"></path>
+						<path d="M259 205l42 19 28 63-20 36-40-16-25-58z"></path>
+						<path d="M431 58l76-30 104 11 42 28-19 28-57 6-39 36-42-9-35 23-39-35z"></path>
+						<path d="M511 151l73-24 57 33-8 88-49 53-48-13-25-58-34-30z"></path>
+						<path d="M650 65l120-25 114 25 68 59-42 50-105-7-52 34-55-44-66-24z"></path>
+						<path d="M824 230l69-22 55 33-15 49-78 12-45-34z"></path>
+					</g>
+					{routeStops.map((stop) => <path class="map-arc" d={routeArc(stop.id)} />)}
+					{
+						routeStops.map((stop) => {
+							const point = mapPoints[stop.id];
+							return (
+								<g data-route-map-stop>
+									<circle class="map-pin" cx={point.x} cy={point.y} r="4" />
+									<text
+										x={point.x + point.dx}
+										y={point.y + point.dy}
+										text-anchor={point.anchor ?? 'start'}
+									>
+										{stop.city.toUpperCase()}
+									</text>
+								</g>
+							);
+						})
+					}
+					<circle class="map-home" cx={home.x} cy={home.y} r="6"></circle>
+					<text class="map-home-label" x={home.x + 10} y={home.y + 18}>BROOKLYN · HOME</text>
+				</svg>
+			</div>
+
+			<div class="route-manifest">
+				{
+					routeStops.map((stop) => (
+						<div>
+							<span>{stop.number}</span>
+							<b>
+								{stop.flag} {stop.city}
+							</b>
+							<small>{stop.event}</small>
+							<em>{stop.miles.toLocaleString()} mi</em>
+							<i style={`width:${((stop.miles / maxMiles) * 100).toFixed(1)}%`} />
+						</div>
+					))
+				}
+			</div>
+			<p class="route-closing">
+				Photographs made for the public record, released so Wikipedia can use them.
+			</p>
+		</section>
+	</main>
+
+	<WorldTourVariantNav active="the-route" />
+	<script
+		type="application/json"
+		id="route-client-data"
+		set:html={JSON.stringify(routeClientData)}
+		is:inline
+	/>
+</MainLayout>
+
+<style>
+	:global(body) {
+		background: #0b0b0c;
+	}
+
+	.route {
+		--ink: #0b0b0c;
+		--paper: #faf6ef;
+		--coral: #ee776b;
+		--gold: #d5ad64;
+		--muted: #918b82;
+		--display: 'Bodoni Moda', Georgia, serif;
+		--mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+		background: var(--ink);
+		color: var(--paper);
+		overflow: clip;
+	}
+
+	.route :focus-visible {
+		outline: 2px solid var(--coral);
+		outline-offset: 4px;
+	}
+
+	.route-hero {
+		display: flex;
+		min-height: calc(100svh - var(--nav-clearance));
+		flex-direction: column;
+		justify-content: center;
+		padding: clamp(4rem, 11vh, 8rem) clamp(1.4rem, 7vw, 7rem) clamp(3rem, 8vh, 6rem)
+			max(clamp(4.8rem, 8vw, 8rem), 5.4rem);
+	}
+
+	.route-kicker,
+	.route-facts,
+	.route-scroll-cue,
+	.chapter-eyebrow,
+	.route-stamp,
+	.chapter-next,
+	.route-finale header > p,
+	.route-finale header > span,
+	.route-summary header > p,
+	.route-manifest,
+	.route-replay {
+		font-family: var(--mono);
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+	}
+
+	.route-kicker {
+		margin: 0 0 1.7rem;
+		color: var(--gold);
+		font-size: 0.68rem;
+	}
+
+	.route-hero h1 {
+		margin: 0;
+		font-family: var(--display);
+		font-size: clamp(4rem, 10.5vw, 10rem);
+		font-weight: 900;
+		letter-spacing: -0.055em;
+		line-height: 0.72;
+		text-transform: uppercase;
+	}
+
+	.route-hero h1 em {
+		display: block;
+		margin-top: 0.14em;
+		color: var(--coral);
+		font-size: 0.69em;
+		font-weight: 400;
+		letter-spacing: -0.045em;
+		text-transform: lowercase;
+	}
+
+	.route-intro {
+		max-width: 47ch;
+		margin: clamp(2rem, 5vh, 4rem) 0 0;
+		color: #cbc4bb;
+		font-family: var(--serif);
+		font-size: clamp(1.08rem, 1.7vw, 1.45rem);
+		line-height: 1.6;
+	}
+
+	.route-facts {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.8rem 2rem;
+		margin-top: 2.4rem;
+		color: var(--muted);
+		font-size: 0.67rem;
+	}
+
+	.route-scroll-cue {
+		display: flex;
+		gap: 0.8rem;
+		align-items: center;
+		width: max-content;
+		margin-top: auto;
+		padding-top: 2.5rem;
+		color: var(--muted);
+		font-size: 0.64rem;
+		text-decoration: none;
+	}
+
+	.route-scroll-cue i {
+		width: 3.3rem;
+		height: 1px;
+		background: var(--coral);
+		transform-origin: left;
+		animation: route-cue 2.4s ease-in-out infinite;
+	}
+
+	@keyframes route-cue {
+		0%,
+		100% {
+			transform: scaleX(0.35);
+		}
+		50% {
+			transform: scaleX(1);
+		}
+	}
+
+	.route-rail {
+		position: fixed;
+		z-index: 42;
+		top: calc(var(--nav-clearance) + 1rem);
+		bottom: 1.1rem;
+		left: 0;
+		display: flex;
+		width: 4.2rem;
+		flex-direction: column;
+		align-items: center;
+		color: var(--paper);
+		font-family: var(--mono);
+		font-size: 0.65rem;
+		letter-spacing: 0.12em;
+		mix-blend-mode: difference;
+		pointer-events: none;
+	}
+
+	.route-rail p {
+		margin: 0;
+	}
+
+	.route-rail p span {
+		opacity: 0.42;
+	}
+
+	.route-rail > div {
+		position: relative;
+		width: 1px;
+		flex: 1;
+		margin: 1rem 0;
+		background: rgba(255, 255, 255, 0.2);
+	}
+
+	.route-rail > div i {
+		position: absolute;
+		top: 0;
+		left: -1px;
+		width: 3px;
+		height: 0%;
+		background: var(--coral);
+		transition: height 500ms cubic-bezier(0.2, 0.7, 0.2, 1);
+	}
+
+	.route-rail small {
+		writing-mode: vertical-rl;
+		font-size: 0.61rem;
+		text-transform: uppercase;
+	}
+
+	.route-chapter {
+		--accent: var(--coral);
+		position: relative;
+		display: grid;
+		min-height: calc(100svh - var(--nav-clearance));
+		align-content: center;
+		overflow: hidden;
+		padding: clamp(5rem, 9vh, 7rem) clamp(1.5rem, 7vw, 7rem) clamp(7rem, 13vh, 9rem)
+			max(clamp(4.8rem, 8vw, 8rem), 5.4rem);
+		scroll-margin-top: var(--nav-clearance);
+	}
+
+	.route-chapter h2 {
+		grid-area: 1 / 1;
+		align-self: center;
+		margin: 0;
+		font-family: var(--display);
+		font-size: var(--word);
+		font-weight: 900;
+		letter-spacing: -0.065em;
+		line-height: 0.72;
+		opacity: 0;
+		text-transform: uppercase;
+		transform: translateY(2rem);
+		transition:
+			opacity 900ms ease,
+			transform 1.1s cubic-bezier(0.2, 0.75, 0.2, 1);
+		white-space: nowrap;
+	}
+
+	.route-chapter.is-in h2 {
+		opacity: 1;
+		transform: none;
+	}
+
+	.chapter-eyebrow {
+		position: absolute;
+		z-index: 3;
+		top: clamp(3rem, 7vh, 5rem);
+		left: max(clamp(4.8rem, 8vw, 8rem), 5.4rem);
+		margin: 0;
+		color: var(--paper);
+		font-size: 0.66rem;
+		opacity: 0;
+		transform: translateY(0.7rem);
+		transition: 700ms ease;
+	}
+
+	.chapter-eyebrow span {
+		margin-right: 0.65rem;
+		font-size: 1rem;
+	}
+
+	.route-chapter.is-in .chapter-eyebrow {
+		opacity: 0.75;
+		transform: none;
+	}
+
+	.route-frame {
+		position: relative;
+		z-index: 2;
+		grid-area: 1 / 1;
+		justify-self: end;
+		width: min(43vw, 31rem);
+		height: min(69svh, 45rem);
+		margin: 0;
+		box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.55);
+		opacity: 0;
+		transform: translateY(1.5rem) scale(0.985);
+		transition:
+			opacity 900ms ease,
+			transform 1.2s cubic-bezier(0.2, 0.75, 0.2, 1);
+	}
+
+	.route-chapter.is-in .route-frame {
+		opacity: 1;
+		transform: none;
+	}
+
+	.route-frame img {
+		width: 100%;
+		height: 100%;
+		background: #111;
+		object-fit: contain;
+	}
+
+	.route-frame figcaption {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		padding: 0.65rem 0.8rem;
+		background: rgba(11, 11, 12, 0.88);
+		color: #d8d1c7;
+		font-family: var(--mono);
+		font-size: 0.57rem;
+		letter-spacing: 0.08em;
+		text-align: center;
+		text-transform: uppercase;
+	}
+
+	.route-stamp {
+		position: absolute;
+		z-index: 3;
+		right: clamp(1.5rem, 7vw, 7rem);
+		bottom: clamp(4.3rem, 7vh, 6rem);
+		left: max(clamp(4.8rem, 8vw, 8rem), 5.4rem);
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem 2.1rem;
+		padding-top: 1.1rem;
+		border-top: 1px solid rgba(255, 255, 255, 0.23);
+		font-size: 0.58rem;
+	}
+
+	.route-stamp div {
+		display: grid;
+		gap: 0.4rem;
+	}
+
+	.route-stamp span {
+		color: var(--muted);
+	}
+
+	.route-stamp b {
+		color: var(--paper);
+		font-weight: 500;
+	}
+
+	.route-stamp .route-accent {
+		color: var(--accent);
+	}
+
+	.chapter-next {
+		position: absolute;
+		z-index: 4;
+		right: clamp(1.5rem, 7vw, 7rem);
+		bottom: 1.25rem;
+		display: flex;
+		gap: 0.75rem;
+		align-items: center;
+		color: #b5aea5;
+		font-size: 0.58rem;
+		text-decoration: none;
+	}
+
+	.chapter-next span {
+		color: var(--accent);
+		font-size: 1.1rem;
+	}
+
+	.route-finale {
+		padding: clamp(5rem, 10vw, 9rem) clamp(1.2rem, 6vw, 6rem) clamp(7rem, 12vw, 11rem)
+			max(clamp(4.8rem, 8vw, 8rem), 5.4rem);
+		background: var(--paper);
+		color: var(--ink);
+	}
+
+	.route-finale header,
+	.route-summary header {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		gap: 1.5rem;
+		align-items: end;
+		margin-bottom: clamp(2rem, 5vw, 4.5rem);
+	}
+
+	.route-finale header > p,
+	.route-summary header > p {
+		grid-column: 1 / -1;
+		margin: 0;
+		color: #8b4b44;
+		font-size: 0.66rem;
+	}
+
+	.route-finale h2,
+	.route-summary h2 {
+		margin: 0;
+		font-family: var(--display);
+		font-size: clamp(3.5rem, 8vw, 8rem);
+		font-weight: 900;
+		letter-spacing: -0.06em;
+		line-height: 0.78;
+		text-transform: uppercase;
+	}
+
+	.route-finale h2 em,
+	.route-summary h2 em {
+		color: #b54f45;
+		font-weight: 400;
+		text-transform: none;
+	}
+
+	.route-finale header > span {
+		color: #766e65;
+		font-size: 0.6rem;
+	}
+
+	.route-stage {
+		position: relative;
+		min-height: min(69vw, 47rem);
+		background: #111;
+		overflow: hidden;
+	}
+
+	.route-reel {
+		position: absolute;
+		inset: 0;
+	}
+
+	.route-reel figure {
+		position: absolute;
+		inset: 0;
+		margin: 0;
+		opacity: 0;
+		transition: opacity 140ms linear;
+	}
+
+	.route-reel figure.is-active {
+		opacity: 1;
+	}
+
+	.route-reel img {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+	}
+
+	.route-reel figcaption {
+		position: absolute;
+		right: 1.2rem;
+		bottom: 1rem;
+		padding: 0.4rem 0.55rem;
+		background: rgba(0, 0, 0, 0.72);
+		color: #fff;
+		font-family: var(--mono);
+		font-size: 0.6rem;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+	}
+
+	.route-assembly {
+		position: absolute;
+		inset: 0;
+		display: grid;
+		grid-template-columns: repeat(5, 1fr);
+		grid-template-rows: repeat(3, 1fr);
+		background: #0b0b0c;
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	.route-stage.is-assembled .route-reel {
+		opacity: 0;
+	}
+
+	.route-stage.is-assembled .route-assembly {
+		opacity: 1;
+	}
+
+	.route-assembly figure {
+		position: relative;
+		min-width: 0;
+		margin: 0;
+		opacity: 0;
+		transform: scale(0.82);
+		transition:
+			opacity 360ms ease,
+			transform 500ms cubic-bezier(0.2, 0.8, 0.2, 1);
+	}
+
+	.route-stage.is-assembled .route-assembly figure {
+		opacity: 1;
+		transform: none;
+	}
+
+	.route-stage.is-assembled .route-assembly figure:nth-child(2n) {
+		transition-delay: 80ms;
+	}
+	.route-stage.is-assembled .route-assembly figure:nth-child(3n) {
+		transition-delay: 150ms;
+	}
+	.route-stage.is-assembled .route-assembly figure:nth-child(5n) {
+		transition-delay: 220ms;
+	}
+
+	.route-assembly img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.route-assembly figcaption {
+		position: absolute;
+		inset: auto 0 0;
+		padding: 0.3rem;
+		background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+		color: white;
+		font-family: var(--mono);
+		font-size: 0.45rem;
+		letter-spacing: 0.05em;
+		text-align: center;
+		text-transform: uppercase;
+	}
+
+	.route-replay {
+		margin-top: 1rem;
+		border: 1px solid #9d958c;
+		padding: 0.7rem 0.9rem;
+		background: transparent;
+		color: #544d46;
+		cursor: pointer;
+		font-size: 0.59rem;
+	}
+
+	.route-summary {
+		padding: clamp(6rem, 11vw, 10rem) clamp(1.2rem, 6vw, 6rem) 9rem
+			max(clamp(4.8rem, 8vw, 8rem), 5.4rem);
+		background: #0d0d0e;
+		color: var(--paper);
+	}
+
+	.route-summary header {
+		grid-template-columns: 1fr;
+	}
+
+	.route-map {
+		border-block: 1px solid rgba(255, 255, 255, 0.16);
+		padding-block: 2rem;
+	}
+
+	.route-map svg {
+		display: block;
+		width: 100%;
+		height: auto;
+		overflow: visible;
+	}
+
+	.map-grid path {
+		fill: none;
+		stroke: rgba(255, 255, 255, 0.045);
+		stroke-width: 1;
+	}
+
+	.map-land path {
+		fill: #171719;
+		stroke: rgba(255, 255, 255, 0.12);
+		stroke-width: 1;
+	}
+
+	.map-arc {
+		fill: none;
+		stroke: rgba(238, 119, 107, 0.55);
+		stroke-dasharray: 3 4;
+		stroke-width: 1.2;
+	}
+
+	.map-pin {
+		fill: var(--gold);
+	}
+
+	.map-home {
+		fill: var(--coral);
+		stroke: var(--paper);
+		stroke-width: 2;
+	}
+
+	.route-map text {
+		fill: #c8c1b8;
+		font-family: var(--mono);
+		font-size: 10px;
+		letter-spacing: 0.08em;
+	}
+
+	.route-map .map-home-label {
+		fill: var(--coral);
+		font-weight: 600;
+	}
+
+	.route-manifest {
+		margin-top: 2.5rem;
+	}
+
+	.route-manifest > div {
+		position: relative;
+		display: grid;
+		grid-template-columns: 3rem minmax(8rem, 0.7fr) minmax(12rem, 1.7fr) auto;
+		gap: 1rem;
+		align-items: center;
+		padding: 1rem 0 1.2rem;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+		font-size: 0.64rem;
+	}
+
+	.route-manifest span,
+	.route-manifest small {
+		color: var(--muted);
+	}
+
+	.route-manifest b {
+		font-size: 0.74rem;
+		font-weight: 500;
+	}
+
+	.route-manifest em {
+		color: var(--coral);
+		font-style: normal;
+		text-align: right;
+	}
+
+	.route-manifest i {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		height: 2px;
+		background: var(--coral);
+	}
+
+	.route-closing {
+		max-width: 40rem;
+		margin: 4rem 0 0;
+		color: #b6afa6;
+		font-family: var(--display);
+		font-size: clamp(1.4rem, 3vw, 2.5rem);
+		line-height: 1.25;
+	}
+
+	@media (max-width: 760px) {
+		.route-rail {
+			width: 2.7rem;
+		}
+
+		.route-hero,
+		.route-chapter,
+		.route-finale,
+		.route-summary {
+			padding-left: 3.6rem;
+		}
+
+		.route-hero {
+			min-height: calc(100svh - var(--nav-clearance));
+		}
+
+		.route-hero h1 {
+			font-size: clamp(3.4rem, 17vw, 5.5rem);
+			line-height: 0.79;
+		}
+
+		.route-hero h1 em {
+			font-size: 0.58em;
+			line-height: 0.95;
+		}
+
+		.route-chapter {
+			display: flex;
+			min-height: 0;
+			flex-direction: column;
+			padding-top: 5rem;
+			padding-right: 1rem;
+			padding-bottom: 8rem;
+		}
+
+		.route-chapter h2 {
+			order: 1;
+			width: 100%;
+			font-size: clamp(4rem, 20vw, 6.5rem);
+			white-space: normal;
+		}
+
+		.chapter-eyebrow {
+			position: static;
+			order: 0;
+			margin-bottom: 1.4rem;
+		}
+
+		.route-frame {
+			order: 2;
+			width: 100%;
+			height: min(68svh, 39rem);
+			margin-top: 1.5rem;
+		}
+
+		.route-stamp {
+			position: static;
+			order: 3;
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 1rem;
+			margin-top: 1.5rem;
+		}
+
+		.route-stamp div:first-child {
+			grid-column: 1 / -1;
+		}
+
+		.route-stamp b {
+			line-height: 1.45;
+		}
+
+		.chapter-next {
+			right: 1rem;
+			bottom: 2.2rem;
+		}
+
+		.route-finale header,
+		.route-summary header {
+			display: block;
+		}
+
+		.route-finale h2,
+		.route-summary h2 {
+			margin-top: 1.2rem;
+			font-size: clamp(3.3rem, 15vw, 5rem);
+		}
+
+		.route-finale header > span {
+			display: block;
+			margin-top: 1.2rem;
+		}
+
+		.route-stage {
+			min-height: 31rem;
+		}
+
+		.route-assembly {
+			grid-template-columns: repeat(3, 1fr);
+			grid-template-rows: repeat(5, 1fr);
+		}
+
+		.route-map {
+			overflow-x: auto;
+		}
+
+		.route-map svg {
+			width: 54rem;
+			max-width: none;
+		}
+
+		.route-manifest > div {
+			grid-template-columns: 2.3rem 1fr auto;
+		}
+
+		.route-manifest small {
+			display: none;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.route-scroll-cue i {
+			animation: none;
+		}
+
+		.route-chapter h2,
+		.chapter-eyebrow,
+		.route-frame,
+		.route-assembly figure {
+			transition: none;
+		}
+	}
+</style>
+
+<script>
+	type RouteData = {
+		portraits: Array<{ subject: string; src: string; thumb: string; position: string }>;
+	};
+
+	const page = document.querySelector<HTMLElement>('[data-route-page]');
+	const chapters = Array.from(document.querySelectorAll<HTMLElement>('[data-route-chapter]'));
+	const railNumber = document.querySelector<HTMLElement>('[data-route-number]');
+	const railDistance = document.querySelector<HTMLElement>('[data-route-distance]');
+	const railProgress = document.querySelector<HTMLElement>('[data-route-progress]');
+	const finale = document.querySelector<HTMLElement>('[data-route-finale]');
+	const stage = document.querySelector<HTMLElement>('[data-route-stage]');
+	const status = document.querySelector<HTMLElement>('[data-route-status]');
+	const replay = document.querySelector<HTMLButtonElement>('[data-route-replay]');
+	const frames = Array.from(document.querySelectorAll<HTMLElement>('[data-route-reel-frame]'));
+	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+	const dataElement = document.querySelector<HTMLScriptElement>('#route-client-data');
+	const routeData: RouteData = dataElement
+		? JSON.parse(dataElement.textContent ?? '{}')
+		: { portraits: [] };
+
+	let currentFrame = 0;
+	let reelTimer = 0;
+	let hasPlayed = false;
+
+	const setChapter = (chapter: HTMLElement) => {
+		const index = Number(chapter.dataset.index ?? 0);
+		if (railNumber) railNumber.textContent = String(index + 1).padStart(2, '0');
+		if (railDistance) railDistance.textContent = chapter.dataset.distance ?? '';
+		if (railProgress) railProgress.style.height = `${((index + 1) / chapters.length) * 100}%`;
+	};
+
+	const chapterObserver = new IntersectionObserver(
+		(entries) => {
+			for (const entry of entries) {
+				if (!entry.isIntersecting) continue;
+				const chapter = entry.target as HTMLElement;
+				chapter.classList.add('is-in');
+				setChapter(chapter);
+			}
+		},
+		{ rootMargin: '-28% 0px -42% 0px', threshold: 0 },
+	);
+	chapters.forEach((chapter) => chapterObserver.observe(chapter));
+	chapters[0]?.classList.add('is-in');
+
+	const stopReel = () => {
+		window.clearTimeout(reelTimer);
+	};
+
+	const showFrame = (index: number) => {
+		frames[currentFrame]?.classList.remove('is-active');
+		currentFrame = index % frames.length;
+		frames[currentFrame]?.classList.add('is-active');
+		if (status)
+			status.textContent = `${String(currentFrame + 1).padStart(2, '0')} / ${frames.length} · ${routeData.portraits[currentFrame]?.subject ?? ''}`;
+	};
+
+	const assemble = () => {
+		stage?.classList.add('is-assembled');
+		if (status) status.textContent = `${frames.length} portraits · Toronto`;
+	};
+
+	const playReel = () => {
+		if (!stage || frames.length === 0) return;
+		stopReel();
+		stage.classList.remove('is-assembled');
+		currentFrame = 0;
+		showFrame(0);
+		if (reducedMotion.matches) {
+			assemble();
+			return;
+		}
+
+		const advance = () => {
+			const next = currentFrame + 1;
+			if (next >= frames.length) {
+				reelTimer = window.setTimeout(assemble, 520);
+				return;
+			}
+			showFrame(next);
+			const progress = next / (frames.length - 1);
+			const delay = Math.max(340, Math.round(820 - progress * 480));
+			reelTimer = window.setTimeout(advance, delay);
+		};
+		reelTimer = window.setTimeout(advance, 720);
+	};
+
+	const finaleObserver = new IntersectionObserver(
+		(entries) => {
+			if (!entries.some((entry) => entry.isIntersecting) || hasPlayed) return;
+			hasPlayed = true;
+			playReel();
+		},
+		{ threshold: 0.35 },
+	);
+	if (finale) finaleObserver.observe(finale);
+
+	replay?.addEventListener('click', () => {
+		hasPlayed = true;
+		playReel();
+	});
+
+	reducedMotion.addEventListener('change', () => {
+		if (reducedMotion.matches) {
+			stopReel();
+			assemble();
+		}
+	});
+
+	window.addEventListener('pagehide', stopReel, { once: true });
+
+	page?.querySelectorAll<HTMLAnchorElement>('a[href^="#route-"]').forEach((anchor) => {
+		anchor.addEventListener('click', (event) => {
+			const target = document.querySelector<HTMLElement>(anchor.hash);
+			if (!target) return;
+			event.preventDefault();
+			target.scrollIntoView({
+				behavior: reducedMotion.matches ? 'auto' : 'smooth',
+				block: 'start',
+			});
+			history.replaceState(null, '', anchor.hash);
+		});
+	});
+</script>

@@ -1,6 +1,25 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-23 - Add The Route as a sixth Around the World concept
+
+** Changed
+- Adapted the strongest pieces of the supplied ~/Users/jay/Downloads/route-page-1/~ prototype into [[file:../src/pages/around-the-world/the-route.astro][The Route]], a sixth, deliberately distinct concept under ~/around-the-world/the-route/~.
+- Preserved the prototype's giant Bodoni city typography, distance-from-Brooklyn credential rail, uncropped editorial portrait frames, route manifest, Toronto finale, and mapped return home. Tightened the mobile composition and added precise next-city links for optional chapter-by-chapter navigation.
+- Rebuilt the Toronto finale as an accessible hybrid: the verified TIFF portraits accelerate at no more than roughly three frames per second, then assemble into one visible wall. Reduced-motion visitors see the completed wall immediately, and everyone gets a replay control.
+- Reused the shared, truthful city registry. Busan and Locarno use visibly labeled temporary selections from Jay's real portfolio; no borrowed Toronto subject is presented as festival coverage from those cities.
+- Added The Route to [[file:../src/pages/around-the-world/variants.astro][the comparison gallery]] as a full-width sixth card and to the compact cross-concept switcher.
+- Expanded the Playwright contract to cover the new route, its six chapters, two temporary selections, 13 Toronto reel frames, six mapped destinations, replay control, mobile width, and broken-image protection.
+
+** Validation
+- ~pnpm run lint~ passed and the production build generated all 106 pages.
+- ~pnpm run test -- --run~ passed all 21 unit tests, and the focused concept Playwright suite passed the six-concept inventory, The Route's full-motion Toronto assembly, and its mobile overflow contract.
+- Desktop visual review passed for the hero, Busan chapter, Toronto assembly, route map, and the new gallery card. Mobile review passed at 390×844 for the hero, city chapter, gallery card, and horizontal-overflow boundary.
+- All 32 images on The Route loaded successfully during browser QA, with no broken image or page-width overflow.
+
+** Handoff
+The Route is ready on ~codex/around-the-world~ and is included as concept 05 rather than replacing Jay's original ~/around-the-world/~ page.
+
 * 2026-07-22 - Build four Around the World design variants
 
 ** Changed
@@ -23,7 +42,7 @@
 - The browser used for visual QA reported no console warnings or errors. Motion-sensitive behavior was also checked through the browser's reduced-motion setting.
 
 ** Handoff
-The four concepts are local previews on ~codex/around-the-world~ and do not alter the existing ~/around-the-world/~ page. They are not pushed or deployed. Jay can compare them at ~/around-the-world/variants/~ and select a winner or a hybrid direction before the production route changes.
+The concept set is now published on the preview branch and remains separate from the existing ~/around-the-world/~ page. Jay can compare every direction at ~/around-the-world/variants/~ before choosing a winner or hybrid.
 
 * 2026-07-22 - Add Red Carpets Around the World
 

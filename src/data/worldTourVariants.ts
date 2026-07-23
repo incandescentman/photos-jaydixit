@@ -1,8 +1,4 @@
-import {
-	torontoPortraits,
-	worldTourDestinations,
-	type WorldTourPortrait,
-} from './worldTour';
+import { torontoPortraits, worldTourDestinations, type WorldTourPortrait } from './worldTour';
 
 export type RouteStop = {
 	id: string;
@@ -19,10 +15,7 @@ export type RouteStop = {
 	isPlaceholder: boolean;
 };
 
-const metadata: Record<
-	string,
-	Pick<RouteStop, 'flag' | 'years' | 'miles'>
-> = {
+const metadata: Record<string, Pick<RouteStop, 'flag' | 'years' | 'miles'>> = {
 	busan: { flag: '🇰🇷', years: '2025', miles: 6995 },
 	locarno: { flag: '🇨🇭', years: '2024', miles: 3976 },
 	stockholm: { flag: '🇸🇪', years: '2024', miles: 3927 },
@@ -36,30 +29,26 @@ const placeholderPortraits: Record<string, WorldTourPortrait> = {
 	locarno: torontoPortraits[3],
 };
 
-export const routeStops: RouteStop[] = [
-	'busan',
-	'locarno',
-	'stockholm',
-	'park-city',
-	'austin',
-].map((id, index) => {
-	const destination = byId.get(id);
-	if (!destination) throw new Error(`Missing world-tour destination: ${id}`);
-	return {
-		id,
-		number: String(index + 1).padStart(2, '0'),
-		city: destination.city,
-		country: destination.country,
-		flag: metadata[id].flag,
-		event: destination.event,
-		years: metadata[id].years,
-		miles: metadata[id].miles,
-		coordinates: destination.coordinates,
-		subject: destination.portrait?.subject ?? '',
-		portrait: destination.portrait ?? placeholderPortraits[id],
-		isPlaceholder: !destination.portrait,
-	};
-});
+export const routeStops: RouteStop[] = ['busan', 'locarno', 'stockholm', 'park-city', 'austin'].map(
+	(id, index) => {
+		const destination = byId.get(id);
+		if (!destination) throw new Error(`Missing world-tour destination: ${id}`);
+		return {
+			id,
+			number: String(index + 1).padStart(2, '0'),
+			city: destination.city,
+			country: destination.country,
+			flag: metadata[id].flag,
+			event: destination.event,
+			years: metadata[id].years,
+			miles: metadata[id].miles,
+			coordinates: destination.coordinates,
+			subject: destination.portrait?.subject ?? '',
+			portrait: destination.portrait ?? placeholderPortraits[id],
+			isPlaceholder: !destination.portrait,
+		};
+	},
+);
 
 routeStops.push({
 	id: 'toronto',
@@ -112,6 +101,15 @@ export const routeVariants = [
 		line: 'A continuous editorial film strip that travels horizontally on desktop and stacks on mobile.',
 		path: '/around-the-world/contact-sheet',
 		tone: 'Photographic',
+	},
+	{
+		id: 'the-route',
+		number: '05',
+		name: 'The Route',
+		shortName: 'Route',
+		line: 'A typographic journey home with uncropped portraits, a credential rail, Toronto assembly, and a mapped route back to Brooklyn.',
+		path: '/around-the-world/the-route',
+		tone: 'Typographic',
 	},
 ] as const;
 

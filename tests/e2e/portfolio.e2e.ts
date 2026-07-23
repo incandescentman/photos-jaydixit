@@ -199,7 +199,7 @@ test('around-the-world page renders every city and a scroll-controlled Toronto s
 	expect(await getBrokenCompletedImages(page)).toEqual([]);
 });
 
-test('around-the-world concept lab exposes five distinct responsive concepts', async ({ page }) => {
+test('around-the-world concept lab exposes six distinct responsive concepts', async ({ page }) => {
 	await page.goto('/around-the-world/variants/');
 	await waitForInitialImages(page);
 	await expect(page.locator('.concept-card[href="/around-the-world"]')).toHaveCount(1);
@@ -209,6 +209,7 @@ test('around-the-world concept lab exposes five distinct responsive concepts', a
 		'/around-the-world/passport',
 		'/around-the-world/departures',
 		'/around-the-world/contact-sheet',
+		'/around-the-world/the-route',
 	]) {
 		await expect(page.locator(`.concept-card[href="${path}"]`)).toHaveCount(1);
 	}
@@ -238,6 +239,21 @@ test('around-the-world concept lab exposes five distinct responsive concepts', a
 	await expect(page.locator('.film-frame')).toHaveCount(6);
 	await expect(page.locator('.toronto-sheet figure')).toHaveCount(13);
 
+	await page.goto('/around-the-world/the-route/');
+	await expect(page.locator('[data-route-chapter]')).toHaveCount(6);
+	await expect(page.locator('[data-placeholder-frame]')).toHaveCount(2);
+	await expect(page.locator('[data-route-reel-frame]')).toHaveCount(13);
+	await expect(page.locator('[data-route-map-stop]')).toHaveCount(6);
+	await expect(page.locator('[data-route-replay]')).toBeVisible();
+	await page.emulateMedia({ reducedMotion: 'no-preference' });
+	await page.locator('[data-route-finale]').scrollIntoViewIfNeeded();
+	await expect
+		.poll(() => page.locator('[data-route-status]').textContent(), { timeout: 12_000 })
+		.toBe('13 portraits · Toronto');
+	await expect(page.locator('[data-route-stage]')).toHaveClass(/is-assembled/);
+
+	await page.setViewportSize({ width: 390, height: 844 });
+	await page.goto('/around-the-world/the-route/');
 	const widths = await page.evaluate(() => ({
 		body: document.body.scrollWidth,
 		viewport: window.innerWidth,

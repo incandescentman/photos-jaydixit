@@ -7,15 +7,15 @@ import { routeVariants } from '../../data/worldTourVariants';
 
 <MainLayout
 	title="Around the World — Design Concepts"
-	description="Five visual directions for Jay Dixit's international red carpet photography page."
+	description="Six visual directions for Jay Dixit's international red carpet photography page."
 >
 	<main class="concepts">
 		<header>
 			<p>Design study · July 2026</p>
-			<h1>Five ways<br /><em>around the world.</em></h1>
+			<h1>Six ways<br /><em>around the world.</em></h1>
 			<div class="concept-intro">
 				<p>
-					My original editorial journey plus four radically different treatments of the same six
+					My original editorial journey plus five radically different treatments of the same six
 					assignments. Open each concept full-screen; the point is to feel the rhythm, not compare
 					decoration.
 				</p>
@@ -32,8 +32,8 @@ import { routeVariants } from '../../data/worldTourVariants';
 					<span>00 · Codex original</span>
 					<h2>Editorial Journey</h2>
 					<p>
-						Oversized city chapters, coordinate stamps, and a scroll-controlled Toronto press
-						line that resolves into a contact sheet.
+						Oversized city chapters, coordinate stamps, and a scroll-controlled Toronto press line
+						that resolves into a contact sheet.
 					</p>
 					<strong>Open original ↗</strong>
 				</div>
@@ -48,14 +48,21 @@ import { routeVariants } from '../../data/worldTourVariants';
 							{index === 1 && (
 								<>
 									<img src={cldUrl('highlights/john-hopfield_nobel-physics_2024', 800)} alt="" />
-									<i>STOCKHOLM<br />ENTRY · 2024</i>
+									<i>
+										STOCKHOLM
+										<br />
+										ENTRY · 2024
+									</i>
 								</>
 							)}
 							{index === 2 && (
 								<div class="board-preview">
-									<span>BUSAN</span><b>LANDED</b>
-									<span>LOCARNO</span><b>LANDED</b>
-									<span>TORONTO</span><b>ARRIVED</b>
+									<span>BUSAN</span>
+									<b>LANDED</b>
+									<span>LOCARNO</span>
+									<b>LANDED</b>
+									<span>TORONTO</span>
+									<b>ARRIVED</b>
 								</div>
 							)}
 							{index === 3 && (
@@ -65,9 +72,21 @@ import { routeVariants } from '../../data/worldTourVariants';
 									<img src={cldUrl('highlights/john-hopfield_nobel-physics_2024', 600)} alt="" />
 								</div>
 							)}
+							{index === 4 && (
+								<>
+									<img src={cldUrl('highlights/vanessa-kirby_tiff_2024', 1000)} alt="" />
+									<div class="route-preview">
+										<b>THE ROUTE</b>
+										<i>six cities, one camera</i>
+										<span>01 / 06</span>
+									</div>
+								</>
+							)}
 						</div>
 						<div class="concept-copy">
-							<span>{variant.number} · {variant.tone}</span>
+							<span>
+								{variant.number} · {variant.tone}
+							</span>
 							<h2>{variant.name}</h2>
 							<p>{variant.line}</p>
 							<strong>Open concept ↗</strong>
@@ -89,8 +108,7 @@ import { routeVariants } from '../../data/worldTourVariants';
 		min-height: 100vh;
 		padding: calc(var(--nav-clearance) + clamp(3rem, 8vw, 8rem)) clamp(1rem, 5vw, 5rem) 8rem;
 		background:
-			radial-gradient(circle at 82% 18%, rgba(184, 133, 66, 0.15), transparent 28rem),
-			#0a0a0a;
+			radial-gradient(circle at 82% 18%, rgba(184, 133, 66, 0.15), transparent 28rem), #0a0a0a;
 		color: #eee8df;
 	}
 
@@ -310,6 +328,66 @@ import { routeVariants } from '../../data/worldTourVariants';
 		object-fit: cover;
 	}
 
+	.concept-card--the-route {
+		grid-column: 1 / -1;
+		grid-template-columns: minmax(0, 1.25fr) minmax(20rem, 0.75fr);
+		grid-template-rows: none;
+	}
+
+	.concept-card--the-route .concept-art {
+		background: #0b0b0c;
+	}
+
+	.concept-card--the-route .concept-art > img {
+		width: 38%;
+		margin-left: 57%;
+		object-fit: contain;
+		filter: none;
+	}
+
+	.route-preview {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		padding: 7%;
+		pointer-events: none;
+	}
+
+	.route-preview::before {
+		position: absolute;
+		top: 8%;
+		bottom: 8%;
+		left: 3%;
+		width: 1px;
+		content: '';
+		background: rgba(255, 255, 255, 0.28);
+	}
+
+	.route-preview b {
+		font-family: Georgia, var(--serif);
+		font-size: clamp(3.5rem, 9vw, 8rem);
+		letter-spacing: -0.075em;
+		line-height: 0.72;
+	}
+
+	.route-preview i {
+		color: #ef776b;
+		font-family: Georgia, var(--serif);
+		font-size: clamp(1.6rem, 4vw, 4rem);
+	}
+
+	.route-preview span {
+		position: absolute;
+		top: 10%;
+		left: 1.2%;
+		font-family: monospace;
+		font-size: 0.65rem;
+		letter-spacing: 0.12em;
+		transform: rotate(90deg);
+	}
+
 	.concept-copy {
 		padding: 1.7rem;
 		background: #111;
@@ -347,6 +425,11 @@ import { routeVariants } from '../../data/worldTourVariants';
 		}
 
 		.concept-card--original {
+			grid-template-columns: 1fr;
+			grid-template-rows: 1fr auto;
+		}
+
+		.concept-card--the-route {
 			grid-template-columns: 1fr;
 			grid-template-rows: 1fr auto;
 		}
