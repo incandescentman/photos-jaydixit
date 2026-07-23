@@ -30,7 +30,7 @@ import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
 				<div class="strip-track" data-strip-track>
 					{
 						routeStops.map((stop, index) => (
-							<article class="film-frame">
+							<article id={`film-${stop.id}`} class="film-frame" data-film-frame data-index={index}>
 								<div class="film-index">
 									<span>JD–{String(index + 1).padStart(2, '0')}</span>
 									<i>{stop.flag}</i>
@@ -49,7 +49,11 @@ import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
 										/>
 									) : (
 										<div class="film-empty" aria-label={`${stop.city} portrait pending`}>
-											<span>Unexposed<br />portrait selection pending</span>
+											<span>
+												Unexposed
+												<br />
+												portrait selection pending
+											</span>
 										</div>
 									)}
 									{stop.isPlaceholder && (
@@ -60,15 +64,57 @@ import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
 								</div>
 
 								<div class="film-caption">
-									<div><span>Frame</span><b>{stop.number} / 06</b></div>
+									<div>
+										<>
+											<span>Frame</span>
+											<b>{stop.number} / 06</b>
+										</>
+									</div>
 									<h2>{stop.city}</h2>
-									<p>{stop.event} · {stop.years}</p>
+									<p>
+										{stop.event} · {stop.years}
+									</p>
 									<dl>
-										<div><dt>Position</dt><dd>{stop.coordinates}</dd></div>
-										<div><dt>From Brooklyn</dt><dd>{stop.miles.toLocaleString()} mi</dd></div>
-										{stop.subject && <div><dt>Subject</dt><dd>{stop.subject}</dd></div>}
+										<div>
+											<>
+												<dt>Position</dt>
+												<dd>{stop.coordinates}</dd>
+											</>
+										</div>
+										<div>
+											<>
+												<dt>From Brooklyn</dt>
+												<dd>{stop.miles.toLocaleString()} mi</dd>
+											</>
+										</div>
+										{stop.subject && (
+											<div>
+												<dt>Subject</dt>
+												<dd>{stop.subject}</dd>
+											</div>
+										)}
 									</dl>
 								</div>
+
+								{index < routeStops.length - 1 && (
+									<a
+										class="film-next"
+										href={`#film-${routeStops[index + 1].id}`}
+										data-film-next={index + 1}
+										aria-label={`Advance from ${stop.city} to ${routeStops[index + 1].city}`}
+									>
+										<span>
+											<small>Next frame</small>
+											{routeStops[index + 1].city}
+										</span>
+										<i class="film-next-desktop" aria-hidden="true">
+											→
+										</i>
+										<i class="film-next-mobile" aria-hidden="true">
+											↓
+										</i>
+									</a>
+								)}
 							</article>
 						))
 					}
@@ -111,6 +157,9 @@ import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
 	const scrollSection = document.querySelector<HTMLElement>('[data-strip-scroll]');
 	const track = document.querySelector<HTMLElement>('[data-strip-track]');
 	const progressBar = document.querySelector<HTMLElement>('[data-strip-progress]');
+	const filmFrames = [...document.querySelectorAll<HTMLElement>('[data-film-frame]')];
+	const mobileLayout = matchMedia('(max-width: 760px)');
+	const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 	let ticking = false;
 
 	const updateStrip = () => {
@@ -133,6 +182,30 @@ import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
 	addEventListener('scroll', requestUpdate, { passive: true });
 	addEventListener('resize', requestUpdate);
 	requestUpdate();
+
+	document.querySelectorAll<HTMLAnchorElement>('[data-film-next]').forEach((link) => {
+		link.addEventListener('click', (event) => {
+			const targetIndex = Number(link.dataset.filmNext);
+			const target = filmFrames[targetIndex];
+			if (!target || !scrollSection || !track) return;
+			event.preventDefault();
+
+			if (mobileLayout.matches) {
+				target.scrollIntoView({
+					behavior: reducedMotion.matches ? 'auto' : 'smooth',
+					block: 'start',
+				});
+			} else {
+				const travel = Math.max(1, scrollSection.offsetHeight - innerHeight);
+				const maxShift = Math.max(1, track.scrollWidth - innerWidth);
+				const targetShift = Math.min(maxShift, target.offsetLeft);
+				const top = scrollSection.offsetTop + (targetShift / maxShift) * travel;
+				scrollTo({ top, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+			}
+
+			history.replaceState(null, '', link.hash);
+		});
+	});
 </script>
 
 <style>
@@ -154,9 +227,7 @@ import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		background:
-			linear-gradient(115deg, rgba(219, 109, 58, 0.1), transparent 36%),
-			var(--negative);
+		background: linear-gradient(115deg, rgba(219, 109, 58, 0.1), transparent 36%), var(--negative);
 	}
 
 	.contact-hero > p,
@@ -235,6 +306,7 @@ import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
 			radial-gradient(circle, #ddcfb8 0 2px, transparent 2.5px) top / 30px 18px repeat-x,
 			radial-gradient(circle, #ddcfb8 0 2px, transparent 2.5px) bottom / 30px 18px repeat-x,
 			#211d18;
+		scroll-margin-top: var(--nav-clearance);
 	}
 
 	.film-index {
@@ -292,7 +364,11 @@ import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
 		height: calc(100% - 2rem);
 		display: grid;
 		border: 1px dashed rgba(238, 231, 218, 0.25);
-		background: repeating-linear-gradient(135deg, transparent 0 18px, rgba(255, 255, 255, 0.025) 18px 36px);
+		background: repeating-linear-gradient(
+			135deg,
+			transparent 0 18px,
+			rgba(255, 255, 255, 0.025) 18px 36px
+		);
 		place-items: center;
 	}
 
@@ -352,6 +428,56 @@ import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
 	.film-caption dd {
 		margin: 0.2rem 0 0;
 		font-size: 0.7rem;
+	}
+
+	.film-next {
+		position: absolute;
+		right: 1.5rem;
+		bottom: 1.15rem;
+		display: flex;
+		gap: 0.75rem;
+		align-items: center;
+		padding: 0.52rem 0.62rem 0.52rem 0.72rem;
+		border: 1px solid rgba(238, 231, 218, 0.28);
+		background: rgba(14, 13, 11, 0.78);
+		color: var(--cream);
+		font-family: monospace;
+		font-size: 0.61rem;
+		letter-spacing: 0.12em;
+		text-decoration: none;
+		text-transform: uppercase;
+		transition:
+			border-color 180ms ease,
+			color 180ms ease,
+			transform 180ms ease;
+	}
+
+	.film-next span {
+		display: grid;
+		gap: 0.15rem;
+	}
+
+	.film-next small {
+		color: #9f917e;
+		font-size: 0.48rem;
+		letter-spacing: 0.17em;
+	}
+
+	.film-next i {
+		color: var(--orange);
+		font-size: 1rem;
+		font-style: normal;
+	}
+
+	.film-next-mobile {
+		display: none;
+	}
+
+	.film-next:hover,
+	.film-next:focus-visible {
+		border-color: rgba(238, 231, 218, 0.62);
+		color: #fff;
+		transform: translateX(2px);
 	}
 
 	.strip-progress {
@@ -467,6 +593,7 @@ import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
 			grid-template-columns: 1fr;
 			margin: 0;
 			padding: 3.5rem 1.5rem;
+			padding-bottom: 6.2rem;
 		}
 
 		.film-photo {
@@ -475,6 +602,19 @@ import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
 
 		.strip-progress {
 			display: none;
+		}
+
+		.film-next {
+			right: 1rem;
+			bottom: 1rem;
+		}
+
+		.film-next-desktop {
+			display: none;
+		}
+
+		.film-next-mobile {
+			display: inline;
 		}
 
 		.contact-finale > header {
@@ -489,6 +629,10 @@ import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
 	@media (prefers-reduced-motion: reduce) {
 		.strip-track {
 			will-change: auto;
+		}
+
+		.film-next {
+			transition: none;
 		}
 	}
 </style>

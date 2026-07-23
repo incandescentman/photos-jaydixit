@@ -218,6 +218,17 @@ test('around-the-world concept lab exposes six distinct responsive concepts', as
 	await expect(page.locator('[data-bleed-chapter]')).toHaveCount(6);
 	await expect(page.locator('[data-reel-frame]')).toHaveCount(13);
 	await expect(page.locator('[data-placeholder-frame]')).toHaveCount(2);
+	await expect(page.locator('[data-bleed-next]')).toHaveCount(5);
+	await page.locator('[data-bleed-next="locarno"]').click();
+	await expect(page).toHaveURL(/#locarno$/);
+	await expect
+		.poll(() =>
+			page.locator('#locarno').evaluate((section) => {
+				const margin = Number.parseFloat(getComputedStyle(section).scrollMarginTop);
+				return Math.round(Math.abs(section.getBoundingClientRect().top - margin));
+			}),
+		)
+		.toBeLessThanOrEqual(2);
 	await page.locator('[data-toronto-finale]').scrollIntoViewIfNeeded();
 	await expect
 		.poll(() => page.locator('[data-reel-caption]').textContent())
@@ -226,6 +237,17 @@ test('around-the-world concept lab exposes six distinct responsive concepts', as
 	await page.goto('/around-the-world/passport/');
 	await expect(page.locator('.passport-page')).toHaveCount(6);
 	await expect(page.locator('.passport-stamp')).toHaveCount(6);
+	await expect(page.locator('[data-passport-next]')).toHaveCount(5);
+	await page.locator('[data-passport-next="locarno"]').click();
+	await expect(page).toHaveURL(/#passport-locarno$/);
+	await expect
+		.poll(() =>
+			page.locator('#passport-locarno').evaluate((section) => {
+				const margin = Number.parseFloat(getComputedStyle(section).scrollMarginTop);
+				return Math.round(Math.abs(section.getBoundingClientRect().top - margin));
+			}),
+		)
+		.toBeLessThanOrEqual(2);
 
 	await page.goto('/around-the-world/departures/');
 	const stockholm = page.getByRole('button', {
@@ -238,12 +260,42 @@ test('around-the-world concept lab exposes six distinct responsive concepts', as
 	await page.goto('/around-the-world/contact-sheet/');
 	await expect(page.locator('.film-frame')).toHaveCount(6);
 	await expect(page.locator('.toronto-sheet figure')).toHaveCount(13);
+	await expect(page.locator('[data-film-next]')).toHaveCount(5);
+	await page.locator('[data-film-next="1"]').click();
+	await expect(page).toHaveURL(/#film-locarno$/);
+	await expect
+		.poll(() =>
+			page
+				.locator('#film-locarno')
+				.evaluate((frame) => Math.round(Math.abs(frame.getBoundingClientRect().left))),
+		)
+		.toBeLessThanOrEqual(2);
+
+	await page.setViewportSize({ width: 390, height: 844 });
+	await page.goto('/around-the-world/contact-sheet/');
+	await page.locator('[data-film-next="1"]').click();
+	await expect
+		.poll(() =>
+			page.locator('#film-locarno').evaluate((frame) => {
+				const margin = Number.parseFloat(getComputedStyle(frame).scrollMarginTop);
+				return Math.round(Math.abs(frame.getBoundingClientRect().top - margin));
+			}),
+		)
+		.toBeLessThanOrEqual(2);
 
 	await page.goto('/around-the-world/the-route/');
 	await expect(page.locator('[data-route-chapter]')).toHaveCount(6);
 	await expect(page.locator('[data-placeholder-frame]')).toHaveCount(2);
 	await expect(page.locator('[data-route-reel-frame]')).toHaveCount(13);
 	await expect(page.locator('[data-route-map-stop]')).toHaveCount(6);
+	await expect(page.locator('#route-map svg')).toHaveAttribute('viewBox', '0 0 1000 386');
+	await expect(page.locator('#route-map .map-land')).toHaveCount(1);
+	const worldOutline = await page.locator('#route-map .map-land').getAttribute('d');
+	expect(worldOutline?.length).toBeGreaterThan(15_000);
+	const routeMapBackground = await page
+		.locator('#route-map')
+		.evaluate((section) => getComputedStyle(section).backgroundColor);
+	expect(routeMapBackground).toBe('rgb(238, 230, 216)');
 	await expect(page.locator('[data-route-replay]')).toBeVisible();
 	await page.emulateMedia({ reducedMotion: 'no-preference' });
 	await page.locator('[data-route-finale]').scrollIntoViewIfNeeded();
@@ -252,7 +304,6 @@ test('around-the-world concept lab exposes six distinct responsive concepts', as
 		.toBe('13 portraits · Toronto');
 	await expect(page.locator('[data-route-stage]')).toHaveClass(/is-assembled/);
 
-	await page.setViewportSize({ width: 390, height: 844 });
 	await page.goto('/around-the-world/the-route/');
 	const widths = await page.evaluate(() => ({
 		body: document.body.scrollWidth,

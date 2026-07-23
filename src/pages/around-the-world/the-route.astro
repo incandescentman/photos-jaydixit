@@ -2,6 +2,7 @@
 import MainLayout from '../../layouts/MainLayout.astro';
 import WorldTourVariantNav from '../../components/WorldTourVariantNav.astro';
 import { cldSrcset, cldUrl } from '../../lib/cloudinary';
+import { WORLD_PATH, WORLD_VIEWBOX } from '../../data/worldOutline';
 import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
 
 const maxMiles = Math.max(...routeStops.map((stop) => stop.miles));
@@ -198,7 +199,7 @@ const routeClientData = {
 			<button type="button" class="route-replay" data-route-replay>Replay the assembly ↻</button>
 		</section>
 
-		<section class="route-summary">
+		<section class="route-summary" id="route-map">
 			<header>
 				<p>Route manifest</p>
 				<h2>Farthest out.<br /><em>Then home.</em></h2>
@@ -206,22 +207,15 @@ const routeClientData = {
 
 			<div class="route-map">
 				<svg
-					viewBox="0 0 1000 330"
+					viewBox={WORLD_VIEWBOX}
 					role="img"
 					aria-label="Map showing six photography destinations connected to Brooklyn"
 				>
 					<g class="map-grid">
-						<path d="M0 55H1000M0 110H1000M0 165H1000M0 220H1000M0 275H1000"></path>
-						<path d="M125 0V330M250 0V330M375 0V330M500 0V330M625 0V330M750 0V330M875 0V330"></path>
+						<path d="M0 55H1000M0 110H1000M0 165H1000M0 220H1000M0 275H1000M0 330H1000"></path>
+						<path d="M125 0V386M250 0V386M375 0V386M500 0V386M625 0V386M750 0V386M875 0V386"></path>
 					</g>
-					<g class="map-land">
-						<path d="M87 68l77-34 93 18 62 48-18 38-48 13-20 50-55 13-28-38-50-16-33-45z"></path>
-						<path d="M259 205l42 19 28 63-20 36-40-16-25-58z"></path>
-						<path d="M431 58l76-30 104 11 42 28-19 28-57 6-39 36-42-9-35 23-39-35z"></path>
-						<path d="M511 151l73-24 57 33-8 88-49 53-48-13-25-58-34-30z"></path>
-						<path d="M650 65l120-25 114 25 68 59-42 50-105-7-52 34-55-44-66-24z"></path>
-						<path d="M824 230l69-22 55 33-15 49-78 12-45-34z"></path>
-					</g>
+					<path class="map-land" d={WORLD_PATH}></path>
 					{routeStops.map((stop) => <path class="map-arc" d={routeArc(stop.id)} />)}
 					{
 						routeStops.map((stop) => {
@@ -765,8 +759,11 @@ const routeClientData = {
 	.route-summary {
 		padding: clamp(6rem, 11vw, 10rem) clamp(1.2rem, 6vw, 6rem) 9rem
 			max(clamp(4.8rem, 8vw, 8rem), 5.4rem);
-		background: #0d0d0e;
-		color: var(--paper);
+		background:
+			linear-gradient(rgba(52, 43, 33, 0.035) 1px, transparent 1px) 0 0 / 2.5rem 2.5rem,
+			linear-gradient(90deg, rgba(52, 43, 33, 0.035) 1px, transparent 1px) 0 0 / 2.5rem 2.5rem,
+			#eee6d8;
+		color: var(--ink);
 	}
 
 	.route-summary header {
@@ -774,7 +771,7 @@ const routeClientData = {
 	}
 
 	.route-map {
-		border-block: 1px solid rgba(255, 255, 255, 0.16);
+		border-block: 1px solid rgba(52, 43, 33, 0.2);
 		padding-block: 2rem;
 	}
 
@@ -787,35 +784,36 @@ const routeClientData = {
 
 	.map-grid path {
 		fill: none;
-		stroke: rgba(255, 255, 255, 0.045);
+		stroke: rgba(52, 43, 33, 0.07);
 		stroke-width: 1;
 	}
 
-	.map-land path {
-		fill: #171719;
-		stroke: rgba(255, 255, 255, 0.12);
+	.map-land {
+		fill: #ded3c1;
+		stroke: rgba(52, 43, 33, 0.28);
 		stroke-width: 1;
+		vector-effect: non-scaling-stroke;
 	}
 
 	.map-arc {
 		fill: none;
-		stroke: rgba(238, 119, 107, 0.55);
+		stroke: rgba(181, 79, 69, 0.72);
 		stroke-dasharray: 3 4;
-		stroke-width: 1.2;
+		stroke-width: 1.35;
 	}
 
 	.map-pin {
-		fill: var(--gold);
+		fill: #8a6335;
 	}
 
 	.map-home {
 		fill: var(--coral);
-		stroke: var(--paper);
+		stroke: var(--ink);
 		stroke-width: 2;
 	}
 
 	.route-map text {
-		fill: #c8c1b8;
+		fill: #403930;
 		font-family: var(--mono);
 		font-size: 10px;
 		letter-spacing: 0.08em;
@@ -837,13 +835,13 @@ const routeClientData = {
 		gap: 1rem;
 		align-items: center;
 		padding: 1rem 0 1.2rem;
-		border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+		border-bottom: 1px solid rgba(52, 43, 33, 0.18);
 		font-size: 0.64rem;
 	}
 
 	.route-manifest span,
 	.route-manifest small {
-		color: var(--muted);
+		color: #746b60;
 	}
 
 	.route-manifest b {
@@ -868,7 +866,7 @@ const routeClientData = {
 	.route-closing {
 		max-width: 40rem;
 		margin: 4rem 0 0;
-		color: #b6afa6;
+		color: #514940;
 		font-family: var(--display);
 		font-size: clamp(1.4rem, 3vw, 2.5rem);
 		line-height: 1.25;

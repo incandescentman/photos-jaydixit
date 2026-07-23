@@ -70,17 +70,51 @@ import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
 					)}
 
 					<div class="bleed-title">
-						<p>{stop.flag} {stop.country}</p>
+						<p>
+							{stop.flag} {stop.country}
+						</p>
 						<h2>{stop.city}</h2>
 					</div>
 
 					<div class="bleed-meta">
-						<p><span>Event</span>{stop.event}</p>
-						<p><span>Season</span>{stop.years}</p>
-						<p><span>Position</span>{stop.coordinates}</p>
-						<p><span>From Brooklyn</span>{stop.miles.toLocaleString()} miles</p>
-						{stop.subject && <p><span>Pictured</span>{stop.subject}</p>}
+						<p>
+							<span>Event</span>
+							{stop.event}
+						</p>
+						<p>
+							<span>Season</span>
+							{stop.years}
+						</p>
+						<p>
+							<span>Position</span>
+							{stop.coordinates}
+						</p>
+						<p>
+							<span>From Brooklyn</span>
+							{stop.miles.toLocaleString()} miles
+						</p>
+						{stop.subject && (
+							<p>
+								<span>Pictured</span>
+								{stop.subject}
+							</p>
+						)}
 					</div>
+
+					{index < routeStops.length - 1 && (
+						<a
+							class="bleed-next"
+							href={`#${routeStops[index + 1].id}`}
+							data-bleed-next={routeStops[index + 1].id}
+							aria-label={`Continue from ${stop.city} to ${routeStops[index + 1].city}`}
+						>
+							<span>
+								<small>Next stop</small>
+								{routeStops[index + 1].city}
+							</span>
+							<i aria-hidden="true">↓</i>
+						</a>
+					)}
 				</section>
 			))
 		}
@@ -148,6 +182,7 @@ import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
 	const dots = [...document.querySelectorAll<HTMLElement>('.route-spine i')];
 	const routeCount = document.querySelector<HTMLElement>('[data-route-count]');
 	const routeCity = document.querySelector<HTMLElement>('[data-route-city]');
+	const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
 	const chapterObserver = new IntersectionObserver(
 		(entries) => {
@@ -165,13 +200,26 @@ import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
 	);
 	chapters.forEach((chapter) => chapterObserver.observe(chapter));
 
+	document.querySelectorAll<HTMLAnchorElement>('[data-bleed-next]').forEach((link) => {
+		link.addEventListener('click', (event) => {
+			const target = document.querySelector<HTMLElement>(link.hash);
+			if (!target) return;
+			event.preventDefault();
+			target.scrollIntoView({
+				behavior: reducedMotion.matches ? 'auto' : 'smooth',
+				block: 'start',
+			});
+			history.replaceState(null, '', link.hash);
+		});
+	});
+
 	const finale = document.querySelector<HTMLElement>('[data-toronto-finale]');
 	const reelFrames = [...document.querySelectorAll<HTMLElement>('[data-reel-frame]')];
 	const reelCaption = document.querySelector<HTMLElement>('[data-reel-caption]');
 	const reel = document.querySelector<HTMLElement>('[data-finale-reel]');
 	const grid = document.querySelector<HTMLElement>('[data-finale-grid]');
 	const replay = document.querySelector<HTMLButtonElement>('[data-replay]');
-	const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const reduced = reducedMotion.matches;
 	let timer = 0;
 	let hasPlayed = false;
 
@@ -332,6 +380,7 @@ import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
 		background: #0c0c0c;
 		isolation: isolate;
 		place-items: center;
+		scroll-margin-top: var(--nav-clearance);
 	}
 
 	.bleed-backdrop {
@@ -441,6 +490,53 @@ import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
 		color: rgba(255, 255, 255, 0.48);
 		font-size: 0.58rem;
 		letter-spacing: 0.16em;
+	}
+
+	.bleed-next {
+		position: absolute;
+		z-index: 5;
+		right: 4vw;
+		bottom: 6.9rem;
+		display: flex;
+		gap: 0.8rem;
+		align-items: center;
+		padding: 0.58rem 0.68rem 0.58rem 0.8rem;
+		border: 1px solid rgba(255, 255, 255, 0.26);
+		background: rgba(7, 7, 7, 0.48);
+		backdrop-filter: blur(10px);
+		color: var(--cream);
+		font-size: 0.65rem;
+		letter-spacing: 0.12em;
+		text-decoration: none;
+		text-transform: uppercase;
+		transition:
+			border-color 180ms ease,
+			background 180ms ease,
+			transform 180ms ease;
+	}
+
+	.bleed-next span {
+		display: grid;
+		gap: 0.2rem;
+	}
+
+	.bleed-next small {
+		color: rgba(255, 255, 255, 0.5);
+		font-size: 0.5rem;
+		letter-spacing: 0.18em;
+	}
+
+	.bleed-next i {
+		color: var(--gold);
+		font-size: 1.05rem;
+		font-style: normal;
+	}
+
+	.bleed-next:hover,
+	.bleed-next:focus-visible {
+		border-color: rgba(255, 255, 255, 0.58);
+		background: rgba(7, 7, 7, 0.72);
+		transform: translateY(2px);
 	}
 
 	.temporary-frame {
@@ -639,6 +735,11 @@ import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
 		.bleed-meta p:nth-child(3),
 		.bleed-meta p:nth-child(4) {
 			display: none;
+		}
+
+		.bleed-next {
+			right: 1rem;
+			bottom: 6.2rem;
 		}
 
 		.finale-heading {

@@ -15,8 +15,9 @@ const tilts = [-7, 5, -4, 7, -5, 3];
 	<main class="passport">
 		<svg class="ink-defs" aria-hidden="true">
 			<filter id="rough-ink">
-				<feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" result="noise" />
-				<feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" />
+				<feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" result="noise"
+				></feTurbulence>
+				<feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5"></feDisplacementMap>
 			</filter>
 		</svg>
 
@@ -25,8 +26,8 @@ const tilts = [-7, 5, -4, 7, -5, 3];
 			<h1>Passport</h1>
 			<div>
 				<p>
-					Six cities, four countries, one camera. A warmer, tactile route—each assignment gets
-					one print, one entry stamp, and a page of its own.
+					Six cities, four countries, one camera. A warmer, tactile route—each assignment gets one
+					print, one entry stamp, and a page of its own.
 				</p>
 				<span>Issued in Brooklyn · Valid worldwide</span>
 			</div>
@@ -39,7 +40,12 @@ const tilts = [-7, 5, -4, 7, -5, 3];
 					const tilt = tilts[index % tilts.length];
 					const arcId = `stamp-arc-${index}`;
 					return (
-						<article class="passport-page">
+						<article
+							id={`passport-${stop.id}`}
+							class="passport-page"
+							data-passport-page
+							data-city={stop.city}
+						>
 							<div class="passport-photo">
 								{stop.portrait ? (
 									<img
@@ -53,7 +59,11 @@ const tilts = [-7, 5, -4, 7, -5, 3];
 									/>
 								) : (
 									<div class="passport-empty" aria-label={`${stop.city} portrait pending`}>
-										<span>Photograph<br />to be selected</span>
+										<span>
+											Photograph
+											<br />
+											to be selected
+										</span>
 									</div>
 								)}
 								{stop.isPlaceholder && (
@@ -88,21 +98,60 @@ const tilts = [-7, 5, -4, 7, -5, 3];
 										<text x="120" y="136" text-anchor="middle" class="stamp-year">
 											{stop.years.replace('–', '/')}
 										</text>
-										<text x="120" y="176" text-anchor="middle" class="stamp-entry">ENTRY</text>
+										<text x="120" y="176" text-anchor="middle" class="stamp-entry">
+											ENTRY
+										</text>
 									</g>
 								</svg>
 
-								<p class="passport-number">{stop.flag} Visa no. {stop.number}</p>
+								<p class="passport-number">
+									{stop.flag} Visa no. {stop.number}
+								</p>
 								<h2>{stop.city}</h2>
 								<p class="passport-event">{stop.event}</p>
 
 								<dl>
-									<div><dt>Country</dt><dd>{stop.country}</dd></div>
-									<div><dt>Coordinates</dt><dd>{stop.coordinates}</dd></div>
-									<div><dt>Distance from Brooklyn</dt><dd>{stop.miles.toLocaleString()} miles</dd></div>
-									{stop.subject && <div><dt>Pictured</dt><dd>{stop.subject}</dd></div>}
+									<div>
+										<>
+											<dt>Country</dt>
+											<dd>{stop.country}</dd>
+										</>
+									</div>
+									<div>
+										<>
+											<dt>Coordinates</dt>
+											<dd>{stop.coordinates}</dd>
+										</>
+									</div>
+									<div>
+										<>
+											<dt>Distance from Brooklyn</dt>
+											<dd>{stop.miles.toLocaleString()} miles</dd>
+										</>
+									</div>
+									{stop.subject && (
+										<div>
+											<dt>Pictured</dt>
+											<dd>{stop.subject}</dd>
+										</div>
+									)}
 								</dl>
 							</div>
+
+							{index < routeStops.length - 1 && (
+								<a
+									class="passport-next"
+									href={`#passport-${routeStops[index + 1].id}`}
+									data-passport-next={routeStops[index + 1].id}
+									aria-label={`Turn from ${stop.city} to the ${routeStops[index + 1].city} passport page`}
+								>
+									<span>
+										<small>Next entry</small>
+										{routeStops[index + 1].city}
+									</span>
+									<i aria-hidden="true">↓</i>
+								</a>
+							)}
 						</article>
 					);
 				})
@@ -116,6 +165,23 @@ const tilts = [-7, 5, -4, 7, -5, 3];
 	</main>
 	<WorldTourVariantNav active="passport" />
 </MainLayout>
+
+<script>
+	const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+
+	document.querySelectorAll<HTMLAnchorElement>('[data-passport-next]').forEach((link) => {
+		link.addEventListener('click', (event) => {
+			const target = document.querySelector<HTMLElement>(link.hash);
+			if (!target) return;
+			event.preventDefault();
+			target.scrollIntoView({
+				behavior: reducedMotion.matches ? 'auto' : 'smooth',
+				block: 'start',
+			});
+			history.replaceState(null, '', link.hash);
+		});
+	});
+</script>
 
 <style>
 	:global(body) {
@@ -206,12 +272,12 @@ const tilts = [-7, 5, -4, 7, -5, 3];
 		margin-bottom: clamp(1.5rem, 4vw, 3.5rem);
 		border: 1px solid rgba(38, 31, 24, 0.16);
 		background:
-			radial-gradient(circle at 12% 18%, rgba(140, 101, 54, 0.05), transparent 18rem),
-			var(--page);
+			radial-gradient(circle at 12% 18%, rgba(140, 101, 54, 0.05), transparent 18rem), var(--page);
 		box-shadow:
 			0 1px 0 rgba(255, 255, 255, 0.6) inset,
 			0 18px 60px rgba(77, 56, 32, 0.08);
 		padding: clamp(1.4rem, 5vw, 5rem);
+		scroll-margin-top: var(--nav-clearance);
 	}
 
 	.passport-page:nth-child(even) {
@@ -375,6 +441,58 @@ const tilts = [-7, 5, -4, 7, -5, 3];
 		font-size: 0.72rem;
 	}
 
+	.passport-next {
+		position: absolute;
+		right: 1.2rem;
+		bottom: 1.2rem;
+		display: flex;
+		gap: 0.75rem;
+		align-items: center;
+		padding: 0.55rem 0.65rem 0.55rem 0.75rem;
+		border: 1px dashed rgba(38, 31, 24, 0.34);
+		background: rgba(250, 245, 234, 0.84);
+		color: var(--ink);
+		font-family: var(--mono);
+		font-size: 0.62rem;
+		letter-spacing: 0.12em;
+		text-decoration: none;
+		text-transform: uppercase;
+		transform: rotate(-1.2deg);
+		transition:
+			background 180ms ease,
+			border-color 180ms ease,
+			transform 180ms ease;
+	}
+
+	.passport-next span {
+		display: grid;
+		gap: 0.16rem;
+	}
+
+	.passport-next small {
+		color: var(--faded);
+		font-size: 0.48rem;
+		letter-spacing: 0.17em;
+	}
+
+	.passport-next i {
+		display: grid;
+		width: 1.6rem;
+		aspect-ratio: 1;
+		border: 1px solid currentColor;
+		border-radius: 50%;
+		font-size: 0.9rem;
+		font-style: normal;
+		place-items: center;
+	}
+
+	.passport-next:hover,
+	.passport-next:focus-visible {
+		border-color: rgba(38, 31, 24, 0.7);
+		background: var(--page);
+		transform: rotate(0) translateY(2px);
+	}
+
 	.passport-footer {
 		max-width: 88rem;
 		margin: 2rem auto 0;
@@ -415,6 +533,21 @@ const tilts = [-7, 5, -4, 7, -5, 3];
 
 		.passport-entry {
 			max-width: none;
+		}
+
+		.passport-page {
+			padding-bottom: 6.5rem;
+		}
+
+		.passport-next {
+			right: 1rem;
+			bottom: 1rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.passport-next {
+			transition: none;
 		}
 	}
 </style>

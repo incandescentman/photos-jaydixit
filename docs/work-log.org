@@ -4,6 +4,9 @@
 * 2026-07-23 - Add The Route as a sixth Around the World concept
 
 ** Changed
+- Added concept-specific sequential navigation to the remaining scrolling treatments. Full Bleed now has a cinematic “Next stop” control on its first five chapters; Passport uses a tactile “Next entry” stamp; Contact Sheet uses a horizontal “Next frame” control on desktop and a downward version in its stacked mobile layout.
+- Each control lands on the precise next chapter or frame, offsets vertical destinations beneath the fixed site navigation, uses smooth movement by default, and switches to immediate movement for visitors who prefer reduced motion. The Route retains its existing next-city controls; Departures remains intentionally destination-driven.
+- Recast The Route's closing map and manifest as a warm, light atlas page with paper grid lines, legible dark labels, coral route arcs, and muted land. The map now uses the supplied prototype's accurate Natural Earth 110m outline rather than an invented approximation, so the route ends with geographic fidelity and visual release instead of another black panel.
 - Adapted the strongest pieces of the supplied ~/Users/jay/Downloads/route-page-1/~ prototype into [[file:../src/pages/around-the-world/the-route.astro][The Route]], a sixth, deliberately distinct concept under ~/around-the-world/the-route/~.
 - Preserved the prototype's giant Bodoni city typography, distance-from-Brooklyn credential rail, uncropped editorial portrait frames, route manifest, Toronto finale, and mapped return home. Tightened the mobile composition and added precise next-city links for optional chapter-by-chapter navigation.
 - Rebuilt the Toronto finale as an accessible hybrid: the verified TIFF portraits accelerate at no more than roughly three frames per second, then assemble into one visible wall. Reduced-motion visitors see the completed wall immediately, and everyone gets a replay control.
@@ -13,7 +16,7 @@
 
 ** Validation
 - ~pnpm run lint~ passed and the production build generated all 106 pages.
-- ~pnpm run test -- --run~ passed all 21 unit tests, and the focused concept Playwright suite passed the six-concept inventory, The Route's full-motion Toronto assembly, and its mobile overflow contract.
+- ~pnpm run test -- --run~ passed all 21 unit tests, and the focused concept Playwright suite passed the six-concept inventory, all sequential-navigation counts and landing positions, The Route's full-motion Toronto assembly, and the mobile overflow contract.
 - Desktop visual review passed for the hero, Busan chapter, Toronto assembly, route map, and the new gallery card. Mobile review passed at 390×844 for the hero, city chapter, gallery card, and horizontal-overflow boundary.
 - All 32 images on The Route loaded successfully during browser QA, with no broken image or page-width overflow.
 
