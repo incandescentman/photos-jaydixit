@@ -24,7 +24,7 @@ const routes = [
 	},
 	{
 		name: 'around the world',
-		path: '/around-the-world/',
+		path: '/red-carpets/',
 		title: /Red Carpets Around the World — Jay Dixit/,
 		heading: 'Red carpets around the world.',
 		minImages: 20,
@@ -133,9 +133,9 @@ test('site nav renders redesigned desktop and mobile states', async ({ page }) =
 		'href',
 		'/portraits',
 	);
-	await expect(nav.getByRole('link', { name: 'Around the World' })).toHaveAttribute(
+	await expect(nav.getByRole('link', { name: 'Red Carpets Around the World' })).toHaveAttribute(
 		'href',
-		'/around-the-world',
+		'/red-carpets',
 	);
 	await expect(nav.getByRole('link', { name: 'Why WikiPortraits' })).toHaveAttribute(
 		'href',
@@ -147,8 +147,18 @@ test('site nav renders redesigned desktop and mobile states', async ({ page }) =
 	await expect(externalLink).toHaveAttribute('rel', /noopener/);
 	await expect(nav.locator('.site-nav-social a')).toHaveCount(3);
 
+	await page.setViewportSize({ width: 1200, height: 820 });
+	await page.goto('/red-carpets/');
+	await waitForInitialImages(page);
+	const desktopNavWidths = await page.locator('.site-nav-inner').evaluate((element) => ({
+		client: element.clientWidth,
+		scroll: element.scrollWidth,
+	}));
+	expect(desktopNavWidths.scroll).toBeLessThanOrEqual(desktopNavWidths.client);
+
 	await page.setViewportSize({ width: 390, height: 820 });
 	await page.goto('/before-after/');
+	await waitForInitialImages(page);
 
 	const toggle = page.getByRole('button', { name: 'Menu' });
 	await expect(toggle).toBeVisible();
@@ -163,10 +173,10 @@ test('site nav renders redesigned desktop and mobile states', async ({ page }) =
 	await expect(mobileMenu.locator('.site-nav-mobile-social a')).toHaveCount(3);
 });
 
-test('around-the-world page renders every city and a scroll-controlled Toronto sequence', async ({
+test('red-carpets page renders every city and a scroll-controlled Toronto sequence', async ({
 	page,
 }) => {
-	await page.goto('/around-the-world/');
+	await page.goto('/red-carpets/');
 	await waitForInitialImages(page);
 
 	for (const city of ['Stockholm', 'Busan', 'Locarno', 'Park City', 'Austin', 'Toronto']) {
@@ -199,22 +209,27 @@ test('around-the-world page renders every city and a scroll-controlled Toronto s
 	expect(await getBrokenCompletedImages(page)).toEqual([]);
 });
 
-test('around-the-world concept lab exposes six distinct responsive concepts', async ({ page }) => {
-	await page.goto('/around-the-world/variants/');
+test('retired around-the-world URL is not preserved', async ({ request }) => {
+	const response = await request.get('/around-the-world/', { maxRedirects: 0 });
+	expect(response.status()).toBe(404);
+});
+
+test('red-carpets concept lab exposes six distinct responsive concepts', async ({ page }) => {
+	await page.goto('/red-carpets/variants/');
 	await waitForInitialImages(page);
-	await expect(page.locator('.concept-card[href="/around-the-world"]')).toHaveCount(1);
+	await expect(page.locator('.concept-card[href="/red-carpets"]')).toHaveCount(1);
 
 	for (const path of [
-		'/around-the-world/full-bleed',
-		'/around-the-world/passport',
-		'/around-the-world/departures',
-		'/around-the-world/contact-sheet',
-		'/around-the-world/the-route',
+		'/red-carpets/full-bleed',
+		'/red-carpets/passport',
+		'/red-carpets/departures',
+		'/red-carpets/contact-sheet',
+		'/red-carpets/the-route',
 	]) {
 		await expect(page.locator(`.concept-card[href="${path}"]`)).toHaveCount(1);
 	}
 
-	await page.goto('/around-the-world/full-bleed/');
+	await page.goto('/red-carpets/full-bleed/');
 	await expect(page.locator('[data-bleed-chapter]')).toHaveCount(6);
 	await expect(page.locator('[data-reel-frame]')).toHaveCount(13);
 	await expect(page.locator('[data-placeholder-frame]')).toHaveCount(2);
@@ -234,7 +249,7 @@ test('around-the-world concept lab exposes six distinct responsive concepts', as
 		.poll(() => page.locator('[data-reel-caption]').textContent())
 		.not.toBe('Vanessa Kirby');
 
-	await page.goto('/around-the-world/passport/');
+	await page.goto('/red-carpets/passport/');
 	await expect(page.locator('.passport-page')).toHaveCount(6);
 	await expect(page.locator('.passport-stamp')).toHaveCount(6);
 	await expect(page.locator('[data-passport-next]')).toHaveCount(5);
@@ -249,7 +264,7 @@ test('around-the-world concept lab exposes six distinct responsive concepts', as
 		)
 		.toBeLessThanOrEqual(2);
 
-	await page.goto('/around-the-world/departures/');
+	await page.goto('/red-carpets/departures/');
 	const stockholm = page.getByRole('button', {
 		name: 'Stockholm, Nobel Prize Ceremony. Open portrait.',
 	});
@@ -257,7 +272,7 @@ test('around-the-world concept lab exposes six distinct responsive concepts', as
 	await expect(stockholm).toHaveAttribute('aria-expanded', 'true');
 	await expect(page.locator('#departure-stockholm')).toBeVisible();
 
-	await page.goto('/around-the-world/contact-sheet/');
+	await page.goto('/red-carpets/contact-sheet/');
 	await expect(page.locator('.film-frame')).toHaveCount(6);
 	await expect(page.locator('.toronto-sheet figure')).toHaveCount(13);
 	await expect(page.locator('[data-film-next]')).toHaveCount(5);
@@ -272,7 +287,7 @@ test('around-the-world concept lab exposes six distinct responsive concepts', as
 		.toBeLessThanOrEqual(2);
 
 	await page.setViewportSize({ width: 390, height: 844 });
-	await page.goto('/around-the-world/contact-sheet/');
+	await page.goto('/red-carpets/contact-sheet/');
 	await page.locator('[data-film-next="1"]').click();
 	await expect
 		.poll(() =>
@@ -283,7 +298,7 @@ test('around-the-world concept lab exposes six distinct responsive concepts', as
 		)
 		.toBeLessThanOrEqual(2);
 
-	await page.goto('/around-the-world/the-route/');
+	await page.goto('/red-carpets/the-route/');
 	await expect(page.locator('[data-route-chapter]')).toHaveCount(6);
 	await expect(page.locator('[data-placeholder-frame]')).toHaveCount(2);
 	await expect(page.locator('[data-route-reel-frame]')).toHaveCount(13);
@@ -304,7 +319,7 @@ test('around-the-world concept lab exposes six distinct responsive concepts', as
 		.toBe('13 portraits · Toronto');
 	await expect(page.locator('[data-route-stage]')).toHaveClass(/is-assembled/);
 
-	await page.goto('/around-the-world/the-route/');
+	await page.goto('/red-carpets/the-route/');
 	const widths = await page.evaluate(() => ({
 		body: document.body.scrollWidth,
 		viewport: window.innerWidth,

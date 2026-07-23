@@ -5,7 +5,7 @@ import SocialIcon from './SocialIcon.astro';
 const menuItems = [
 	{ name: 'Why I Shoot', link: `/about` },
 	{ name: 'Portraits', link: `/portraits` },
-	{ name: 'Around the World', link: `/around-the-world` },
+	{ name: 'Red Carpets Around the World', link: `/red-carpets` },
 	{ name: 'Before & After', link: `/before-after` },
 	{ name: 'Why WikiPortraits', link: `/blog/wikiportraits-story`, active: 'exact' },
 	{ name: 'Contact', link: `/contact` },
@@ -494,6 +494,29 @@ function isActive(item: MenuItem) {
 	}
 
 	@media (min-width: 1200px) and (max-width: 1319px) {
+		.site-nav-inner {
+			padding: 0 1rem;
+			gap: 0.7rem;
+		}
+
+		.site-nav-logo {
+			width: 76px;
+			height: 76px;
+		}
+
+		.site-nav-wordmark {
+			font-size: 1.85rem;
+		}
+
+		.site-nav-menu {
+			gap: 0.55rem;
+		}
+
+		.site-nav-link {
+			font-size: 0.68rem;
+			letter-spacing: 0.035em;
+		}
+
 		.site-nav-social {
 			display: none;
 		}

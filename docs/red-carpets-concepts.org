@@ -1,23 +1,23 @@
-#+TITLE: Around the World Concept Lab
+#+TITLE: Red Carpets Concept Lab
 #+DATE: 2026-07-23
 #+DESCRIPTION: Routes, shared data, interaction contracts, and maintenance notes for the red-carpet travel concepts
 
 * Purpose
 
-The Around the World concept lab presents Jay Dixit's red-carpet photography across six destinations: Busan, Locarno, Stockholm, Park City, Austin, and Toronto. It is a comparison environment, not yet a replacement for the original editorial journey.
+The Red Carpets concept lab presents Jay Dixit's red-carpet photography across six destinations: Busan, Locarno, Stockholm, Park City, Austin, and Toronto. It is a comparison environment, not yet a replacement for the original editorial journey.
 
-The comparison gallery lives at ~/around-the-world/variants/~. The production domain remains unchanged while the work is reviewed through Vercel Preview deployments from ~codex/around-the-world~.
+The comparison gallery lives at ~/red-carpets/variants/~. The production domain remains unchanged while the work is reviewed through Vercel Preview deployments from ~codex/around-the-world~.
 
 * Routes
 
 | Treatment | Route | Defining behavior |
 |-----------+-------+-------------------|
-| Editorial Journey | ~/around-the-world/~ | Original cinematic vertical narrative with Toronto sequence |
-| Full Bleed | ~/around-the-world/full-bleed/~ | Full-viewport chapters, persistent journey spine, and next-stop controls |
-| Passport | ~/around-the-world/passport/~ | Warm paper pages, entry stamps, and next-entry controls |
-| Departures | ~/around-the-world/departures/~ | Interactive split-flap destination board |
-| Contact Sheet | ~/around-the-world/contact-sheet/~ | Horizontal desktop filmstrip and stacked mobile sequence |
-| The Route | ~/around-the-world/the-route/~ | Distance-led editorial chapters, Toronto assembly, and route manifest |
+| Editorial Journey | ~/red-carpets/~ | Original cinematic vertical narrative with Toronto sequence |
+| Full Bleed | ~/red-carpets/full-bleed/~ | Full-viewport chapters, persistent journey spine, and next-stop controls |
+| Passport | ~/red-carpets/passport/~ | Warm paper pages, entry stamps, and next-entry controls |
+| Departures | ~/red-carpets/departures/~ | Interactive split-flap destination board |
+| Contact Sheet | ~/red-carpets/contact-sheet/~ | Horizontal desktop filmstrip and stacked mobile sequence |
+| The Route | ~/red-carpets/the-route/~ | Distance-led editorial chapters, Toronto assembly, and route manifest |
 
 * Shared Content
 
@@ -42,7 +42,9 @@ Do not restore ~Bodoni Moda~ without explicit design approval. Its extreme contr
 
 * Navigation Vocabulary
 
-The primary navigation labels ~/portraits/~ as *Portraits*. That route is a searchable person archive containing red-carpet subjects, Nobel figures, and other cultural or business portraits, so “Portraits” describes its full scope and distinguishes it from the assignment-led Around the World narrative.
+The primary navigation uses *Red Carpets Around the World* for the canonical ~/red-carpets/~ route. Keep the full label: it makes the assignment-led travel feature explicit. The retired ~/around-the-world/~ route is intentionally not preserved or redirected.
+
+The primary navigation labels ~/portraits/~ as *Portraits*. That route is a searchable person archive containing red-carpet subjects, Nobel figures, and other cultural or business portraits, so “Portraits” describes its full scope and distinguishes it from the assignment-led Red Carpets narrative.
 
 ~/portraits/~ is the canonical archive route, including person pages such as ~/portraits/lisa-gilroy/~. The former ~/red-carpet/~ index and person URLs remain HTTP 308 redirects for link and search continuity. Vercel enforces those redirects before serving the Astro site; the Astro redirect pages remain as a local and static-host fallback.
 
@@ -77,6 +79,6 @@ The focused browser contract covers the six-route inventory, sequential-control 
 * Editorial Next Steps
 
 1. Replace the labeled Busan and Locarno temporary selections with Jay's approved festival photographs.
-2. Decide which treatment—or hybrid—should become the public Around the World experience.
+2. Decide which treatment—or hybrid—should become the public Red Carpets experience.
 3. Expand Toronto only when additional verified photographs and subject metadata are available.
 4. Promote the selected route to production deliberately; a successful preview deployment does not change [[https://photos.jaydixit.com][photos.jaydixit.com]].

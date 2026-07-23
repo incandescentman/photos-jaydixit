@@ -72,7 +72,7 @@ export const routeVariants = [
 		name: 'Full Bleed',
 		shortName: 'Bleed',
 		line: 'Six cinematic scroll chapters with a persistent route spine and a Toronto finale.',
-		path: '/around-the-world/full-bleed',
+		path: '/red-carpets/full-bleed',
 		tone: 'Cinematic',
 	},
 	{
@@ -81,7 +81,7 @@ export const routeVariants = [
 		name: 'Passport',
 		shortName: 'Passport',
 		line: 'Warm paper, imperfect entry stamps, and one carefully placed print per city.',
-		path: '/around-the-world/passport',
+		path: '/red-carpets/passport',
 		tone: 'Handmade',
 	},
 	{
@@ -90,7 +90,7 @@ export const routeVariants = [
 		name: 'Departures',
 		shortName: 'Board',
 		line: 'A split-flap arrivals board that opens each destination into a portrait gate.',
-		path: '/around-the-world/departures',
+		path: '/red-carpets/departures',
 		tone: 'Interactive',
 	},
 	{
@@ -99,7 +99,7 @@ export const routeVariants = [
 		name: 'Contact Sheet',
 		shortName: 'Filmstrip',
 		line: 'A continuous editorial film strip that travels horizontally on desktop and stacks on mobile.',
-		path: '/around-the-world/contact-sheet',
+		path: '/red-carpets/contact-sheet',
 		tone: 'Photographic',
 	},
 	{
@@ -108,7 +108,7 @@ export const routeVariants = [
 		name: 'The Route',
 		shortName: 'Route',
 		line: 'A typographic journey home with uncropped portraits, a credential rail, Toronto assembly, and a mapped route back to Brooklyn.',
-		path: '/around-the-world/the-route',
+		path: '/red-carpets/the-route',
 		tone: 'Typographic',
 	},
 ] as const;

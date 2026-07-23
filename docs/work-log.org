@@ -1,42 +1,45 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
-* 2026-07-23 - Add The Route as a sixth Around the World concept
+* 2026-07-23 - Add The Route as a sixth Red Carpets concept
 
 ** Changed
+- Renamed the primary-navigation label to Jay's approved wording, “Red Carpets Around the World,” and moved the entire feature plus all five variant routes from ~/around-the-world/~ to ~/red-carpets/~. Per Jay's direction, the retired URLs are not preserved and do not redirect.
+- Tightened the logo, wordmark, link spacing, and tracking between 1200px and 1319px so the full navigation label fits cleanly at the narrowest desktop breakpoint; the mobile menu keeps the complete wording.
 - Added concept-specific sequential navigation to the remaining scrolling treatments. Full Bleed now has a cinematic “Next stop” control on its first five chapters; Passport uses a tactile “Next entry” stamp; Contact Sheet uses a horizontal “Next frame” control on desktop and a downward version in its stacked mobile layout.
 - Each control lands on the precise next chapter or frame, offsets vertical destinations beneath the fixed site navigation, uses smooth movement by default, and switches to immediate movement for visitors who prefer reduced motion. The Route retains its existing next-city controls; Departures remains intentionally destination-driven.
 - Recast The Route's closing map and manifest as a warm, light atlas page with paper grid lines, legible dark labels, coral route arcs, and muted land. The map now uses the supplied prototype's accurate Natural Earth 110m outline rather than an invented approximation, so the route ends with geographic fidelity and visual release instead of another black panel.
 - Replaced the rejected ~Bodoni Moda~ display face on The Route with the site's existing ~Newsreader~ family at its real 500 weight. The hero, oversized city names, finale, manifest heading, and closing statement now feel calmer and consistent with the rest of the portfolio; ~IBM Plex Mono~ remains for compact metadata.
 - Renamed the primary-navigation label and canonical searchable person archive from “Red Carpet” at ~/red-carpet/~ to “Portraits” at ~/portraits/~. The index heading, page titles, person descriptions, canonical URLs, breadcrumbs, structured data, internal links, and Playwright coverage now use portrait language and ~/portraits/~. Vercel now issues real HTTP 308 redirects for the old index and person URLs, while the Astro redirects remain as local and static-host fallbacks.
-- Adapted the strongest pieces of the supplied ~/Users/jay/Downloads/route-page-1/~ prototype into [[file:../src/pages/around-the-world/the-route.astro][The Route]], a sixth, deliberately distinct concept under ~/around-the-world/the-route/~.
+- Adapted the strongest pieces of the supplied ~/Users/jay/Downloads/route-page-1/~ prototype into [[file:../src/pages/red-carpets/the-route.astro][The Route]], a sixth, deliberately distinct concept under ~/red-carpets/the-route/~.
 - Preserved the prototype's giant editorial city typography, distance-from-Brooklyn credential rail, uncropped editorial portrait frames, route manifest, Toronto finale, and mapped return home. Tightened the mobile composition and added precise next-city links for optional chapter-by-chapter navigation.
 - Rebuilt the Toronto finale as an accessible hybrid: the verified TIFF portraits accelerate at no more than roughly three frames per second, then assemble into one visible wall. Reduced-motion visitors see the completed wall immediately, and everyone gets a replay control.
 - Reused the shared, truthful city registry. Busan and Locarno use visibly labeled temporary selections from Jay's real portfolio; no borrowed Toronto subject is presented as festival coverage from those cities.
-- Added The Route to [[file:../src/pages/around-the-world/variants.astro][the comparison gallery]] as a full-width sixth card and to the compact cross-concept switcher.
-- Added [[file:around-the-world-concepts.org][a durable concept-lab guide]] covering all six routes, shared content, truthful placeholder rules, Natural Earth map provenance, sequential-navigation behavior, reduced-motion handling, validation, and editorial next steps; linked it from the canonical documentation map.
+- Added The Route to [[file:../src/pages/red-carpets/variants.astro][the comparison gallery]] as a full-width sixth card and to the compact cross-concept switcher.
+- Added [[file:red-carpets-concepts.org][a durable concept-lab guide]] covering all six routes, shared content, truthful placeholder rules, Natural Earth map provenance, sequential-navigation behavior, reduced-motion handling, validation, and editorial next steps; linked it from the canonical documentation map.
 - Expanded the Playwright contract to cover the new route, its six chapters, two temporary selections, 13 Toronto reel frames, six mapped destinations, replay control, mobile width, and broken-image protection.
 - Added regression assertions for the Route map's ~0 0 1000 386~ view box, high-detail Natural Earth outline, warm paper background, and six destination markers.
 
 ** Validation
 - ~pnpm run lint~ passed and the production build generated all 106 pages.
 - ~pnpm run test -- --run~ passed all 21 unit tests, and the focused concept Playwright suite passed the six-concept inventory, all sequential-navigation counts and landing positions, The Route's full-motion Toronto assembly, and the mobile overflow contract.
+- Focused navigation and route-migration checks passed at the 1200px desktop boundary and 390px mobile width, across all six ~/red-carpets/~ treatments, and confirmed that ~/around-the-world/~ returns 404 rather than redirecting.
 - Desktop visual review passed for the hero, Busan chapter, Toronto assembly, route map, and the new gallery card. Mobile review passed at 390×844 for the hero, city chapter, gallery card, and horizontal-overflow boundary.
 - All 32 images on The Route loaded successfully during browser QA, with no broken image or page-width overflow.
 
 ** Handoff
-The complete six-treatment concept lab is committed and deployed from ~codex/around-the-world~ to a Vercel Preview environment. The Route remains concept 05, the original Editorial Journey remains at ~/around-the-world/~, and [[https://photos.jaydixit.com][photos.jaydixit.com]] has not been changed.
+The complete six-treatment concept lab is committed and deployed from ~codex/around-the-world~ to a Vercel Preview environment. The Route remains concept 05, the original Editorial Journey now lives at ~/red-carpets/~, and [[https://photos.jaydixit.com][photos.jaydixit.com]] has not been changed.
 
 * 2026-07-22 - Build four Around the World design variants
 
 ** Changed
 - Filled the Busan and Locarno selection slots in the original page and all four additional concepts with temporary photographs from Jay's real TIFF portfolio so every layout can be judged as a complete visual composition. Each borrowed frame is visibly labeled as a temporary portfolio image, and the destination metadata deliberately omits a pictured subject so the Toronto photographs are not presented as Busan or Locarno festival coverage.
 - Promoted the original cinematic/editorial Around the World page to a clearly labeled fifth card in the concept gallery, so it can be compared directly rather than discovered through a small secondary link.
-- Added [[file:../src/pages/around-the-world/variants.astro][an Around the World concept gallery]] that compares four genuinely different treatments rather than cosmetic reskins: Full Bleed, Passport, Departures, and Contact Sheet.
-- Added [[file:../src/pages/around-the-world/full-bleed.astro][Full Bleed]], with six full-viewport chapters, an always-visible journey spine, enormous city typography, intact portrait framing over atmospheric full-bleed backdrops, and a Toronto sequence that accelerates before resolving into all 13 verified TIFF portraits.
-- Added [[file:../src/pages/around-the-world/passport.astro][Passport]], with aged-paper pages, photographic prints, deliberately imperfect rotating entry stamps, and travel-document metadata.
-- Added [[file:../src/pages/around-the-world/departures.astro][Departures]], with animated per-character split-flap rows and accessible, expandable portrait gates for each festival.
-- Added [[file:../src/pages/around-the-world/contact-sheet.astro][Contact Sheet]], with a vertical-scroll-driven desktop film strip, a normal vertical mobile treatment, and a final Toronto contact sheet that holds all 13 verified frames at once.
+- Added [[file:../src/pages/red-carpets/variants.astro][an Around the World concept gallery]] that compares four genuinely different treatments rather than cosmetic reskins: Full Bleed, Passport, Departures, and Contact Sheet.
+- Added [[file:../src/pages/red-carpets/full-bleed.astro][Full Bleed]], with six full-viewport chapters, an always-visible journey spine, enormous city typography, intact portrait framing over atmospheric full-bleed backdrops, and a Toronto sequence that accelerates before resolving into all 13 verified TIFF portraits.
+- Added [[file:../src/pages/red-carpets/passport.astro][Passport]], with aged-paper pages, photographic prints, deliberately imperfect rotating entry stamps, and travel-document metadata.
+- Added [[file:../src/pages/red-carpets/departures.astro][Departures]], with animated per-character split-flap rows and accessible, expandable portrait gates for each festival.
+- Added [[file:../src/pages/red-carpets/contact-sheet.astro][Contact Sheet]], with a vertical-scroll-driven desktop film strip, a normal vertical mobile treatment, and a final Toronto contact sheet that holds all 13 verified frames at once.
 - Added [[file:../src/components/WorldTourVariantNav.astro][a compact concept switcher]] shared by all four previews and [[file:../src/data/worldTourVariants.ts][a shared route data model]] ordered by great-circle distance from Brooklyn.
 - Audited the Claude prototype handoff in ~/Users/jay/Downloads/route-page/~. Reused its strongest interaction and information-design ideas, but deliberately did not import its Locarno image because that repository file is not a verified Jay Dixit Locarno celebrity portrait.
 - Added a Playwright contract for the concept hub, all four routes, the six-city and 13-frame inventories, the departure-board interaction, truthful temporary-image count, broken-image protection, and horizontal-overflow protection.
@@ -55,7 +58,7 @@ The concept set is now published on the preview branch and remains separate from
 
 ** Changed
 - Added a discreet “Next stop” control to every city chapter in the original Editorial Journey. Each control smoothly aligns the following city immediately below the fixed navigation, preserves ordinary free scrolling, and automatically respects reduced-motion preferences.
-- Added [[file:../src/pages/around-the-world.astro][the Around the World page]] as a cinematic, editorial travel feature with an oversized title sequence, numbered city chapters, coordinate stamps, a scroll-controlled Toronto portrait sequence, a contact sheet, and a closing assignment call to action.
+- Added [[file:../src/pages/red-carpets.astro][the Around the World page]] as a cinematic, editorial travel feature with an oversized title sequence, numbered city chapters, coordinate stamps, a scroll-controlled Toronto portrait sequence, a contact sheet, and a closing assignment call to action.
 - Added [[file:../src/data/worldTour.ts][a dedicated content registry]] for the six locations and the available portraits. Stockholm, Park City, and Austin use verified Cloudinary photographs; Toronto uses all 13 verified TIFF portraits currently available in the media library.
 - Added deliberate art-directed holding panels for Busan and Locarno instead of presenting unrelated repository stock images as Jay's festival photography.
 - Added the new page to the primary navigation and tightened desktop menu spacing from 1200px through 1399px so the additional link does not crowd or wrap the header.
