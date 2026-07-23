@@ -1,0 +1,400 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import WorldTourVariantNav from '../../components/WorldTourVariantNav.astro';
+import { cldSizes, cldSrcset, cldUrl } from '../../lib/cloudinary';
+import { routeStops } from '../../data/worldTourVariants';
+
+const inks = ['#a33d34', '#294b70', '#2e654b'];
+const tilts = [-7, 5, -4, 7, -5, 3];
+---
+
+<MainLayout
+	title="Around the World — Passport"
+	description="Jay Dixit's international red carpet assignments presented as a handmade photographic passport."
+>
+	<main class="passport">
+		<svg class="ink-defs" aria-hidden="true">
+			<filter id="rough-ink">
+				<feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" result="noise" />
+				<feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" />
+			</filter>
+		</svg>
+
+		<header class="passport-hero">
+			<p>Concept 02 · Travel document</p>
+			<h1>Passport</h1>
+			<div>
+				<p>
+					Six cities, four countries, one camera. A warmer, tactile route—each assignment gets
+					one print, one entry stamp, and a page of its own.
+				</p>
+				<span>Issued in Brooklyn · Valid worldwide</span>
+			</div>
+		</header>
+
+		<section class="passport-book" aria-label="Passport pages">
+			{
+				routeStops.map((stop, index) => {
+					const ink = inks[index % inks.length];
+					const tilt = tilts[index % tilts.length];
+					const arcId = `stamp-arc-${index}`;
+					return (
+						<article class="passport-page">
+							<div class="passport-photo">
+								{stop.portrait ? (
+									<img
+										src={cldUrl(stop.portrait.publicId, 1200)}
+										srcset={cldSrcset(stop.portrait.publicId, [560, 820, 1200, 1600])}
+										sizes={cldSizes('(max-width: 820px) 84vw, 42vw')}
+										alt={stop.portrait.alt}
+										loading={index < 2 ? 'eager' : 'lazy'}
+										decoding="async"
+										style={`object-position:${stop.portrait.position ?? '50% 24%'}`}
+									/>
+								) : (
+									<div class="passport-empty" aria-label={`${stop.city} portrait pending`}>
+										<span>Photograph<br />to be selected</span>
+									</div>
+								)}
+								<small>Frame {stop.number} · JD</small>
+							</div>
+
+							<div class="passport-entry">
+								<svg
+									class="passport-stamp"
+									viewBox="0 0 240 240"
+									style={`--stamp-ink:${ink};--stamp-tilt:${tilt}deg`}
+									role="img"
+									aria-label={`${stop.city} entry stamp, ${stop.years}`}
+								>
+									<defs>
+										<path id={arcId} d="M120,120 m-88,0 a88,88 0 1,1 176,0" fill="none" />
+									</defs>
+									<g filter="url(#rough-ink)">
+										<circle cx="120" cy="120" r="106" />
+										<circle cx="120" cy="120" r="96" class="thin" />
+										<text>
+											<textPath href={`#${arcId}`} startOffset="50%" text-anchor="middle">
+												{stop.city.toUpperCase()} · {stop.country.toUpperCase()}
+											</textPath>
+										</text>
+										<line x1="48" y1="105" x2="192" y2="105" />
+										<line x1="48" y1="151" x2="192" y2="151" />
+										<text x="120" y="136" text-anchor="middle" class="stamp-year">
+											{stop.years.replace('–', '/')}
+										</text>
+										<text x="120" y="176" text-anchor="middle" class="stamp-entry">ENTRY</text>
+									</g>
+								</svg>
+
+								<p class="passport-number">{stop.flag} Visa no. {stop.number}</p>
+								<h2>{stop.city}</h2>
+								<p class="passport-event">{stop.event}</p>
+
+								<dl>
+									<div><dt>Country</dt><dd>{stop.country}</dd></div>
+									<div><dt>Coordinates</dt><dd>{stop.coordinates}</dd></div>
+									<div><dt>Distance from Brooklyn</dt><dd>{stop.miles.toLocaleString()} miles</dd></div>
+									{stop.subject && <div><dt>Pictured</dt><dd>{stop.subject}</dd></div>}
+								</dl>
+							</div>
+						</article>
+					);
+				})
+			}
+		</section>
+
+		<footer class="passport-footer">
+			<span>Endorsement: portraits made for the public record</span>
+			<a href="/around-the-world/variants">Compare all concepts →</a>
+		</footer>
+	</main>
+	<WorldTourVariantNav active="passport" />
+</MainLayout>
+
+<style>
+	:global(body) {
+		background: #e9dfcc;
+	}
+
+	.passport {
+		--paper: #eee5d3;
+		--page: #faf5ea;
+		--ink: #261f18;
+		--faded: #857969;
+		--mono: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+		min-height: 100vh;
+		padding: calc(var(--nav-clearance) + clamp(3rem, 7vw, 7rem)) clamp(1rem, 5vw, 5rem) 8rem;
+		background:
+			linear-gradient(90deg, rgba(77, 56, 32, 0.03) 1px, transparent 1px) 0 0 / 26px 26px,
+			var(--paper);
+		color: var(--ink);
+	}
+
+	.ink-defs {
+		position: absolute;
+		width: 0;
+		height: 0;
+	}
+
+	.passport-hero {
+		max-width: 78rem;
+		margin: 0 auto clamp(3rem, 7vw, 6rem);
+	}
+
+	.passport-hero > p {
+		margin: 0;
+		color: var(--faded);
+		font-family: var(--mono);
+		font-size: 0.64rem;
+		letter-spacing: 0.27em;
+		text-transform: uppercase;
+	}
+
+	.passport-hero h1 {
+		margin: 1rem 0;
+		font-family: var(--serif);
+		font-size: clamp(5rem, 13vw, 12rem);
+		font-weight: 500;
+		letter-spacing: -0.065em;
+		line-height: 0.78;
+	}
+
+	.passport-hero > div {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 2rem;
+		align-items: end;
+		justify-content: space-between;
+		border-top: 1px solid rgba(38, 31, 24, 0.22);
+		padding-top: 1rem;
+	}
+
+	.passport-hero > div p {
+		max-width: 42rem;
+		margin: 0;
+		font-family: var(--serif);
+		font-size: clamp(1.15rem, 2vw, 1.55rem);
+		line-height: 1.45;
+	}
+
+	.passport-hero > div span {
+		color: var(--faded);
+		font-family: var(--mono);
+		font-size: 0.62rem;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+
+	.passport-book {
+		max-width: 88rem;
+		margin: 0 auto;
+	}
+
+	.passport-page {
+		position: relative;
+		min-height: 76svh;
+		display: grid;
+		gap: clamp(2rem, 6vw, 7rem);
+		grid-template-columns: minmax(0, 1.08fr) minmax(18rem, 0.92fr);
+		align-items: center;
+		margin-bottom: clamp(1.5rem, 4vw, 3.5rem);
+		border: 1px solid rgba(38, 31, 24, 0.16);
+		background:
+			radial-gradient(circle at 12% 18%, rgba(140, 101, 54, 0.05), transparent 18rem),
+			var(--page);
+		box-shadow:
+			0 1px 0 rgba(255, 255, 255, 0.6) inset,
+			0 18px 60px rgba(77, 56, 32, 0.08);
+		padding: clamp(1.4rem, 5vw, 5rem);
+	}
+
+	.passport-page:nth-child(even) {
+		grid-template-columns: minmax(18rem, 0.92fr) minmax(0, 1.08fr);
+	}
+
+	.passport-page:nth-child(even) .passport-photo {
+		order: 2;
+	}
+
+	.passport-photo {
+		position: relative;
+		justify-self: center;
+	}
+
+	.passport-photo > img,
+	.passport-empty {
+		width: min(42vw, 35rem);
+		height: min(64svh, 45rem);
+		display: block;
+		border: clamp(0.45rem, 0.8vw, 0.8rem) solid #fffdfa;
+		background: #ddd2c0;
+		box-shadow:
+			0 1.5rem 3.5rem rgba(53, 41, 28, 0.2),
+			0 0 0 1px rgba(53, 41, 28, 0.08);
+		object-fit: contain;
+	}
+
+	.passport-photo small {
+		position: absolute;
+		right: 1rem;
+		bottom: 0.9rem;
+		padding: 0.3rem 0.45rem;
+		background: rgba(255, 253, 250, 0.85);
+		color: var(--faded);
+		font-family: var(--mono);
+		font-size: 0.55rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+	}
+
+	.passport-empty {
+		display: grid;
+		background:
+			repeating-linear-gradient(135deg, transparent 0 18px, rgba(38, 31, 24, 0.04) 18px 36px),
+			#e6dccb;
+		place-items: center;
+	}
+
+	.passport-empty span {
+		color: var(--faded);
+		font-family: var(--mono);
+		font-size: 0.62rem;
+		letter-spacing: 0.2em;
+		line-height: 1.6;
+		text-align: center;
+		text-transform: uppercase;
+	}
+
+	.passport-entry {
+		max-width: 32rem;
+	}
+
+	.passport-stamp {
+		width: clamp(9rem, 16vw, 13rem);
+		height: auto;
+		margin-bottom: 1.2rem;
+		opacity: 0.82;
+		mix-blend-mode: multiply;
+		transform: rotate(var(--stamp-tilt));
+	}
+
+	.passport-stamp circle,
+	.passport-stamp line {
+		fill: none;
+		stroke: var(--stamp-ink);
+		stroke-width: 4;
+	}
+
+	.passport-stamp circle.thin,
+	.passport-stamp line {
+		stroke-width: 1.5;
+	}
+
+	.passport-stamp text {
+		fill: var(--stamp-ink);
+		font-family: var(--mono);
+		font-size: 18px;
+		font-weight: 600;
+		letter-spacing: 0.16em;
+	}
+
+	.passport-stamp .stamp-year {
+		font-size: 21px;
+		letter-spacing: 0.03em;
+	}
+
+	.passport-stamp .stamp-entry {
+		font-size: 12px;
+		letter-spacing: 0.35em;
+	}
+
+	.passport-number {
+		margin: 0;
+		color: var(--faded);
+		font-family: var(--mono);
+		font-size: 0.62rem;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+	}
+
+	.passport-entry h2 {
+		margin: 0.5rem 0 0;
+		font-family: var(--serif);
+		font-size: clamp(3.3rem, 7vw, 7rem);
+		font-weight: 500;
+		letter-spacing: -0.055em;
+		line-height: 0.84;
+	}
+
+	.passport-event {
+		margin: 0.8rem 0 1.8rem;
+		font-family: var(--serif);
+		font-size: clamp(1.1rem, 2vw, 1.5rem);
+		font-style: italic;
+	}
+
+	.passport-entry dl {
+		display: grid;
+		gap: 0.9rem;
+		margin: 0;
+		border-top: 1px solid rgba(38, 31, 24, 0.18);
+		padding-top: 1rem;
+		font-family: var(--mono);
+	}
+
+	.passport-entry dt {
+		color: var(--faded);
+		font-size: 0.54rem;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+	}
+
+	.passport-entry dd {
+		margin: 0.2rem 0 0;
+		font-size: 0.72rem;
+	}
+
+	.passport-footer {
+		max-width: 88rem;
+		margin: 2rem auto 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+		justify-content: space-between;
+		border-top: 1px solid rgba(38, 31, 24, 0.22);
+		padding-top: 1rem;
+		color: var(--faded);
+		font-family: var(--mono);
+		font-size: 0.6rem;
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+	}
+
+	.passport-footer a {
+		color: var(--ink);
+	}
+
+	@media (max-width: 820px) {
+		.passport-page,
+		.passport-page:nth-child(even) {
+			min-height: auto;
+			grid-template-columns: 1fr;
+			padding-block: 2.5rem;
+		}
+
+		.passport-page:nth-child(even) .passport-photo {
+			order: 0;
+		}
+
+		.passport-photo > img,
+		.passport-empty {
+			width: min(78vw, 32rem);
+			height: min(54svh, 38rem);
+		}
+
+		.passport-entry {
+			max-width: none;
+		}
+	}
+</style>

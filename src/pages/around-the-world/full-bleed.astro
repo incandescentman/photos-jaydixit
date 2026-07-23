@@ -1,0 +1,652 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import WorldTourVariantNav from '../../components/WorldTourVariantNav.astro';
+import { cldSizes, cldSrcset, cldUrl } from '../../lib/cloudinary';
+import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
+---
+
+<MainLayout
+	title="Around the World — Full Bleed"
+	description="A full-screen cinematic route through six cities and Jay Dixit's international red carpet assignments."
+	image={cldUrl('highlights/steven-yeun_sundance_2025', 1600)}
+	imageAlt="Steven Yeun photographed by Jay Dixit at Sundance"
+>
+	<main class="bleed" data-bleed-page>
+		<header class="bleed-hero">
+			<p>Concept 01 · Full-bleed chapters</p>
+			<h1>Six cities.<br /><em>One camera.</em></h1>
+			<div>
+				<span>Farthest from Brooklyn first</span>
+				<a href="#busan">Enter the route ↓</a>
+			</div>
+		</header>
+
+		<aside class="route-spine" aria-label="Journey progress">
+			<p><b data-route-count>01</b> / 06</p>
+			<div>
+				{routeStops.map((stop, index) => <i class:list={{ 'is-active': index === 0 }} />)}
+			</div>
+			<span data-route-city>Busan</span>
+		</aside>
+
+		{
+			routeStops.map((stop, index) => (
+				<section
+					id={stop.id}
+					class:list={['bleed-chapter', { 'is-pending': !stop.portrait }]}
+					data-bleed-chapter
+					data-index={index}
+					data-city={stop.city}
+				>
+					{stop.portrait ? (
+						<>
+							<img
+								class="bleed-backdrop"
+								src={cldUrl(stop.portrait.publicId, 1800)}
+								alt=""
+								loading={index < 2 ? 'eager' : 'lazy'}
+							/>
+							<figure>
+								<img
+									src={cldUrl(stop.portrait.publicId, 1400)}
+									srcset={cldSrcset(stop.portrait.publicId, [640, 900, 1400, 1900])}
+									sizes={cldSizes('(max-width: 760px) 92vw, 58vw')}
+									alt={stop.portrait.alt}
+									loading={index < 2 ? 'eager' : 'lazy'}
+									decoding="async"
+									style={`object-position:${stop.portrait.position ?? '50% 24%'}`}
+								/>
+							</figure>
+						</>
+					) : (
+						<div class="bleed-pending" aria-label={`${stop.city} image selection pending`}>
+							<span>Selected portrait pending</span>
+						</div>
+					)}
+
+					<div class="bleed-title">
+						<p>{stop.flag} {stop.country}</p>
+						<h2>{stop.city}</h2>
+					</div>
+
+					<div class="bleed-meta">
+						<p><span>Event</span>{stop.event}</p>
+						<p><span>Season</span>{stop.years}</p>
+						<p><span>Position</span>{stop.coordinates}</p>
+						<p><span>From Brooklyn</span>{stop.miles.toLocaleString()} miles</p>
+						{stop.subject && <p><span>Pictured</span>{stop.subject}</p>}
+					</div>
+				</section>
+			))
+		}
+
+		<section class="bleed-finale" data-toronto-finale>
+			<div class="finale-heading">
+				<p>Toronto · The volume</p>
+				<h2>Thirteen faces.<br /><em>One festival.</em></h2>
+				<p>
+					The reel accelerates, then resolves into the complete contact sheet. Motion-sensitive
+					visitors see the finished wall immediately.
+				</p>
+			</div>
+
+			<div class="finale-stage" aria-live="polite">
+				<div class="finale-reel" data-finale-reel>
+					{
+						torontoPortraits.map((portrait, index) => (
+							<figure
+								class:list={{ 'is-active': index === 0 }}
+								data-reel-frame
+								data-subject={portrait.subject}
+							>
+								<img
+									src={cldUrl(portrait.publicId, 1200)}
+									alt={portrait.alt}
+									loading="lazy"
+									decoding="async"
+									style={`object-position:${portrait.position ?? '50% 24%'}`}
+								/>
+							</figure>
+						))
+					}
+					<p data-reel-caption>{torontoPortraits[0].subject}</p>
+				</div>
+
+				<div class="finale-grid" data-finale-grid hidden>
+					{
+						torontoPortraits.map((portrait, index) => (
+							<figure style={`--delay:${index * 45}ms`}>
+								<img
+									src={cldUrl(portrait.publicId, 520)}
+									alt={portrait.alt}
+									loading="lazy"
+									decoding="async"
+									style={`object-position:${portrait.position ?? '50% 24%'}`}
+								/>
+							</figure>
+						))
+					}
+				</div>
+			</div>
+
+			<div class="finale-controls">
+				<span>{torontoPortraits.length} frames · TIFF 2024–2025</span>
+				<button type="button" data-replay>Replay sequence</button>
+			</div>
+		</section>
+	</main>
+	<WorldTourVariantNav active="full-bleed" />
+</MainLayout>
+
+<script>
+	const chapters = [...document.querySelectorAll<HTMLElement>('[data-bleed-chapter]')];
+	const dots = [...document.querySelectorAll<HTMLElement>('.route-spine i')];
+	const routeCount = document.querySelector<HTMLElement>('[data-route-count]');
+	const routeCity = document.querySelector<HTMLElement>('[data-route-city]');
+
+	const chapterObserver = new IntersectionObserver(
+		(entries) => {
+			for (const entry of entries) {
+				if (!entry.isIntersecting) continue;
+				const chapter = entry.target as HTMLElement;
+				const index = Number(chapter.dataset.index);
+				chapter.classList.add('is-visible');
+				if (routeCount) routeCount.textContent = String(index + 1).padStart(2, '0');
+				if (routeCity) routeCity.textContent = chapter.dataset.city ?? '';
+				dots.forEach((dot, dotIndex) => dot.classList.toggle('is-active', dotIndex === index));
+			}
+		},
+		{ threshold: 0.55 },
+	);
+	chapters.forEach((chapter) => chapterObserver.observe(chapter));
+
+	const finale = document.querySelector<HTMLElement>('[data-toronto-finale]');
+	const reelFrames = [...document.querySelectorAll<HTMLElement>('[data-reel-frame]')];
+	const reelCaption = document.querySelector<HTMLElement>('[data-reel-caption]');
+	const reel = document.querySelector<HTMLElement>('[data-finale-reel]');
+	const grid = document.querySelector<HTMLElement>('[data-finale-grid]');
+	const replay = document.querySelector<HTMLButtonElement>('[data-replay]');
+	const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+	let timer = 0;
+	let hasPlayed = false;
+
+	const showGrid = () => {
+		reel?.setAttribute('hidden', '');
+		if (grid) grid.hidden = false;
+		requestAnimationFrame(() => grid?.classList.add('is-assembled'));
+	};
+
+	const play = () => {
+		window.clearTimeout(timer);
+		if (reduced) return showGrid();
+		grid?.classList.remove('is-assembled');
+		if (grid) grid.hidden = true;
+		reel?.removeAttribute('hidden');
+		let index = 0;
+		const step = () => {
+			reelFrames.forEach((frame, frameIndex) =>
+				frame.classList.toggle('is-active', frameIndex === index),
+			);
+			if (reelCaption) reelCaption.textContent = reelFrames[index].dataset.subject ?? '';
+			const progress = index / Math.max(1, reelFrames.length - 1);
+			const delay = 900 - progress * 570;
+			index += 1;
+			timer = window.setTimeout(index < reelFrames.length ? step : showGrid, delay);
+		};
+		step();
+	};
+
+	replay?.addEventListener('click', play);
+	if (finale) {
+		new IntersectionObserver(
+			(entries) => {
+				if (entries.some((entry) => entry.isIntersecting) && !hasPlayed) {
+					hasPlayed = true;
+					play();
+				}
+			},
+			{ threshold: 0.35 },
+		).observe(finale);
+	}
+	if (reduced) showGrid();
+</script>
+
+<style>
+	:global(body) {
+		background: #080808;
+	}
+
+	.bleed {
+		--cream: #f1ece3;
+		--gold: #c8a45f;
+		background: #080808;
+		color: var(--cream);
+	}
+
+	.bleed-hero {
+		min-height: 100svh;
+		padding: calc(var(--nav-clearance) + clamp(3rem, 8vw, 8rem)) clamp(1.25rem, 6vw, 6rem) 4rem;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		background:
+			linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px) 0 0 / 7vw 7vw,
+			radial-gradient(circle at 80% 25%, rgba(200, 164, 95, 0.15), transparent 28rem),
+			#080808;
+	}
+
+	.bleed-hero > p,
+	.finale-heading > p:first-child {
+		color: var(--gold);
+		font-size: 0.68rem;
+		font-weight: 600;
+		letter-spacing: 0.3em;
+		text-transform: uppercase;
+	}
+
+	.bleed-hero h1 {
+		margin: 1.5rem 0;
+		font-family: var(--serif);
+		font-size: clamp(5rem, 13vw, 13rem);
+		font-weight: 300;
+		letter-spacing: -0.075em;
+		line-height: 0.74;
+	}
+
+	.bleed-hero h1 em,
+	.finale-heading h2 em {
+		color: #d9cbb6;
+	}
+
+	.bleed-hero > div {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1.5rem;
+		justify-content: space-between;
+		margin-top: 3rem;
+		border-top: 1px solid rgba(255, 255, 255, 0.18);
+		padding-top: 1rem;
+		color: #918b84;
+		font-size: 0.68rem;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+	}
+
+	.bleed-hero a {
+		color: var(--cream);
+		text-decoration: none;
+	}
+
+	.route-spine {
+		position: fixed;
+		z-index: 30;
+		top: 50%;
+		left: clamp(0.55rem, 1.5vw, 1.5rem);
+		display: grid;
+		gap: 0.65rem;
+		justify-items: center;
+		color: #fff;
+		font-size: 0.6rem;
+		letter-spacing: 0.12em;
+		mix-blend-mode: difference;
+		text-transform: uppercase;
+		transform: translateY(-50%);
+	}
+
+	.route-spine p {
+		margin: 0;
+		writing-mode: vertical-rl;
+	}
+
+	.route-spine div {
+		display: grid;
+		gap: 0.45rem;
+	}
+
+	.route-spine i {
+		width: 4px;
+		height: 4px;
+		border: 1px solid #fff;
+		border-radius: 50%;
+	}
+
+	.route-spine i.is-active {
+		background: #fff;
+		transform: scale(1.8);
+	}
+
+	.route-spine > span {
+		writing-mode: vertical-rl;
+	}
+
+	.bleed-chapter {
+		position: relative;
+		min-height: 100svh;
+		display: grid;
+		overflow: hidden;
+		background: #0c0c0c;
+		isolation: isolate;
+		place-items: center;
+	}
+
+	.bleed-backdrop {
+		position: absolute;
+		inset: -4%;
+		z-index: -2;
+		width: 108%;
+		height: 108%;
+		object-fit: cover;
+		filter: blur(22px) brightness(0.32) saturate(0.7);
+		transform: scale(1.04);
+	}
+
+	.bleed-chapter::after {
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		background: linear-gradient(90deg, rgba(0, 0, 0, 0.68), transparent 45%, rgba(0, 0, 0, 0.35));
+		content: '';
+	}
+
+	.bleed-chapter figure {
+		width: min(58vw, 52rem);
+		height: min(76svh, 58rem);
+		margin: 0;
+		opacity: 0;
+		transform: translateY(2rem) scale(0.985);
+		transition:
+			opacity 900ms ease,
+			transform 1100ms cubic-bezier(0.2, 0.8, 0.2, 1);
+	}
+
+	.bleed-chapter.is-visible figure {
+		opacity: 1;
+		transform: none;
+	}
+
+	.bleed-chapter figure img {
+		width: 100%;
+		height: 100%;
+		display: block;
+		object-fit: contain;
+	}
+
+	.bleed-title {
+		position: absolute;
+		z-index: 3;
+		right: 4vw;
+		left: 6vw;
+		top: 50%;
+		transform: translateY(-50%);
+		pointer-events: none;
+	}
+
+	.bleed-title p {
+		margin: 0 0 1rem;
+		font-size: 0.68rem;
+		font-weight: 600;
+		letter-spacing: 0.28em;
+		text-transform: uppercase;
+	}
+
+	.bleed-title h2 {
+		margin: 0;
+		font-family: var(--serif);
+		font-size: clamp(5.5rem, 16vw, 17rem);
+		font-weight: 300;
+		letter-spacing: -0.08em;
+		line-height: 0.72;
+		text-shadow: 0 3px 30px rgba(0, 0, 0, 0.48);
+		opacity: 0;
+		transform: translateX(-2rem);
+		transition:
+			opacity 850ms ease 120ms,
+			transform 1000ms ease 120ms;
+		white-space: nowrap;
+	}
+
+	.bleed-chapter.is-visible .bleed-title h2 {
+		opacity: 1;
+		transform: none;
+	}
+
+	.bleed-meta {
+		position: absolute;
+		z-index: 4;
+		right: 4vw;
+		bottom: 2rem;
+		left: 6vw;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.8rem clamp(1.5rem, 4vw, 4rem);
+		border-top: 1px solid rgba(255, 255, 255, 0.38);
+		padding-top: 0.8rem;
+		font-size: 0.66rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.bleed-meta p {
+		display: grid;
+		gap: 0.25rem;
+		margin: 0;
+	}
+
+	.bleed-meta span {
+		color: rgba(255, 255, 255, 0.48);
+		font-size: 0.58rem;
+		letter-spacing: 0.16em;
+	}
+
+	.bleed-pending {
+		width: min(56vw, 48rem);
+		height: 72svh;
+		display: grid;
+		border: 1px solid rgba(255, 255, 255, 0.22);
+		background:
+			repeating-linear-gradient(135deg, transparent 0 22px, rgba(255, 255, 255, 0.035) 22px 44px),
+			radial-gradient(circle, rgba(200, 164, 95, 0.15), transparent 55%);
+		place-items: center;
+	}
+
+	.bleed-pending span {
+		padding: 0.8rem 1rem;
+		border: 1px dashed rgba(255, 255, 255, 0.35);
+		font-size: 0.65rem;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+	}
+
+	.bleed-finale {
+		min-height: 100svh;
+		padding: clamp(5rem, 9vw, 9rem) clamp(1.25rem, 6vw, 6rem) 8rem;
+		background: #070707;
+	}
+
+	.finale-heading {
+		display: grid;
+		gap: 1.5rem;
+		grid-template-columns: 1.4fr 0.6fr;
+		align-items: end;
+		margin-bottom: 2rem;
+	}
+
+	.finale-heading > p:first-child {
+		grid-column: 1 / -1;
+		margin: 0;
+	}
+
+	.finale-heading h2 {
+		margin: 0;
+		font-family: var(--serif);
+		font-size: clamp(4rem, 9vw, 9rem);
+		font-weight: 300;
+		letter-spacing: -0.065em;
+		line-height: 0.82;
+	}
+
+	.finale-heading > p:last-child {
+		margin: 0;
+		color: #9e978f;
+		font-family: var(--serif);
+		font-size: 1.2rem;
+		line-height: 1.45;
+	}
+
+	.finale-stage {
+		position: relative;
+		min-height: 72svh;
+		border: 1px solid rgba(255, 255, 255, 0.16);
+		background: #101010;
+		overflow: hidden;
+	}
+
+	.finale-reel {
+		position: absolute;
+		inset: 0;
+	}
+
+	.finale-reel figure {
+		position: absolute;
+		inset: 1rem;
+		margin: 0;
+		opacity: 0;
+	}
+
+	.finale-reel figure.is-active {
+		opacity: 1;
+	}
+
+	.finale-reel img {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+	}
+
+	.finale-reel p {
+		position: absolute;
+		z-index: 2;
+		bottom: 1.5rem;
+		left: 1.5rem;
+		margin: 0;
+		padding: 0.55rem 0.75rem;
+		background: rgba(0, 0, 0, 0.72);
+		font-size: 0.68rem;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+
+	.finale-grid {
+		position: absolute;
+		inset: 0;
+		display: grid;
+		gap: 3px;
+		grid-template-columns: repeat(5, 1fr);
+		padding: 3px;
+	}
+
+	.finale-grid figure {
+		min-height: 0;
+		margin: 0;
+		opacity: 0;
+		overflow: hidden;
+		transform: scale(0.8);
+		transition:
+			opacity 240ms ease var(--delay),
+			transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1) var(--delay);
+	}
+
+	.finale-grid.is-assembled figure {
+		opacity: 1;
+		transform: none;
+	}
+
+	.finale-grid img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center 25%;
+	}
+
+	.finale-controls {
+		display: flex;
+		gap: 1rem;
+		align-items: center;
+		justify-content: space-between;
+		margin-top: 1rem;
+		color: #8f8982;
+		font-size: 0.64rem;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+
+	.finale-controls button {
+		padding: 0.7rem 1rem;
+		border: 1px solid rgba(255, 255, 255, 0.28);
+		background: transparent;
+		color: #fff;
+		font: inherit;
+		letter-spacing: inherit;
+		text-transform: inherit;
+		cursor: pointer;
+	}
+
+	@media (max-width: 720px) {
+		.bleed-title {
+			top: 24%;
+			right: 1rem;
+			left: 2.8rem;
+		}
+
+		.bleed-title h2 {
+			font-size: clamp(4.5rem, 21vw, 8rem);
+			white-space: normal;
+		}
+
+		.bleed-chapter figure,
+		.bleed-pending {
+			width: calc(100vw - 4.5rem);
+			height: 62svh;
+			margin-top: 12svh;
+		}
+
+		.bleed-meta {
+			right: 1rem;
+			left: 2.8rem;
+			gap: 0.6rem 1.2rem;
+		}
+
+		.bleed-meta p:nth-child(3),
+		.bleed-meta p:nth-child(4) {
+			display: none;
+		}
+
+		.finale-heading {
+			grid-template-columns: 1fr;
+		}
+
+		.finale-grid {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.bleed *,
+		.bleed *::before,
+		.bleed *::after {
+			animation: none !important;
+			transition: none !important;
+		}
+
+		.bleed-chapter figure,
+		.bleed-title h2 {
+			opacity: 1;
+			transform: none;
+		}
+
+		.finale-grid figure {
+			opacity: 1;
+			transform: none;
+		}
+	}
+</style>

@@ -1,0 +1,413 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import WorldTourVariantNav from '../../components/WorldTourVariantNav.astro';
+import { cldSizes, cldSrcset, cldUrl } from '../../lib/cloudinary';
+import { routeStops } from '../../data/worldTourVariants';
+
+const pad = (value: string, length: number) =>
+	value.toUpperCase().slice(0, length).padEnd(length, ' ');
+
+const festivalCode = (event: string, miles: number) => {
+	const letters =
+		event === 'SXSW'
+			? 'SXW'
+			: event
+					.split(/\s+/)
+					.filter((word) => /^[A-Z]/.test(word))
+					.map((word) => word[0])
+					.join('')
+					.slice(0, 3);
+	return `${letters}${String(miles).padStart(4, '0')}`;
+};
+
+const rows = routeStops.map((stop, index) => ({
+	stop,
+	index,
+	city: pad(stop.city, 11),
+	code: pad(festivalCode(stop.event, stop.miles), 7),
+	season: pad(stop.years.replace('–', '/'), 9),
+	miles: pad(stop.miles.toLocaleString(), 6),
+	status: pad(index === routeStops.length - 1 ? 'ARRIVED' : 'LANDED', 8),
+}));
+---
+
+<MainLayout
+	title="Around the World — Departures"
+	description="Jay Dixit's international red carpet assignments presented as an animated split-flap departures board."
+>
+	<main class="departures">
+		<header>
+			<p>Concept 03 · Split-flap board</p>
+			<h1>Departures</h1>
+			<div>
+				<span>JDX · Brooklyn terminal</span>
+				<span>Select a destination to open the frame</span>
+			</div>
+		</header>
+
+		<section class="board" aria-label="Festival destinations">
+			<div class="board-labels" aria-hidden="true">
+				<span>Destination</span><span>Flight</span><span>Season</span><span>Miles</span><span>Status</span>
+			</div>
+
+			<ul>
+				{
+					rows.map(({ stop, index, city, code, season, miles, status }) => (
+						<li>
+							<button
+								type="button"
+								class="board-trigger"
+								aria-label={`${stop.city}, ${stop.event}. Open portrait.`}
+								aria-expanded="false"
+								aria-controls={`departure-${stop.id}`}
+							>
+								<span class="board-cell board-city" data-board-text={city} />
+								<span class="board-cell" data-board-text={code} />
+								<span class="board-cell board-season" data-board-text={season} />
+								<span class="board-cell board-number" data-board-text={miles} />
+								<span class="board-cell board-status" data-board-text={status} />
+							</button>
+
+							<div class="board-panel" id={`departure-${stop.id}`} hidden>
+								<div class="board-photo">
+									{stop.portrait ? (
+										<img
+											src={cldUrl(stop.portrait.publicId, 1200)}
+											srcset={cldSrcset(stop.portrait.publicId, [560, 820, 1200, 1600])}
+											sizes={cldSizes('(max-width: 820px) 88vw, 38vw')}
+											alt={stop.portrait.alt}
+											loading="lazy"
+											decoding="async"
+											style={`object-position:${stop.portrait.position ?? '50% 24%'}`}
+										/>
+									) : (
+										<div class="board-empty"><span>Frame pending<br />Awaiting selection</span></div>
+									)}
+								</div>
+
+								<div class="board-gate">
+									<p>Gate {String.fromCharCode(65 + index)}{index + 1}</p>
+									<h2>{stop.city}</h2>
+									<dl>
+										<div><dt>Festival</dt><dd>{stop.event}</dd></div>
+										<div><dt>Country</dt><dd>{stop.flag} {stop.country}</dd></div>
+										<div><dt>Position</dt><dd>{stop.coordinates}</dd></div>
+										{stop.subject && <div><dt>Pictured</dt><dd>{stop.subject}</dd></div>}
+									</dl>
+								</div>
+							</div>
+						</li>
+					))
+				}
+			</ul>
+		</section>
+
+		<footer>
+			<span>Ordered by distance from Brooklyn · farthest first</span>
+			<a href="/around-the-world/variants">Compare all concepts →</a>
+		</footer>
+	</main>
+	<WorldTourVariantNav active="departures" />
+</MainLayout>
+
+<script>
+	const glyphs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/,. ';
+	const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	document.querySelectorAll<HTMLElement>('[data-board-text]').forEach((cell) => {
+		const target = cell.dataset.boardText ?? '';
+		[...target].forEach((character, index) => {
+			const slat = document.createElement('i');
+			if (character === ' ') slat.className = 'is-blank';
+			slat.textContent = reduced || character === ' ' ? character : glyphs[0];
+			cell.append(slat);
+			if (reduced || character === ' ') return;
+
+			let tick = 0;
+			const settleAt = Math.round(2 + index * 1.25 + Math.random() * 6);
+			const timer = window.setInterval(() => {
+				tick += 1;
+				if (tick >= settleAt) {
+					slat.textContent = character;
+					window.clearInterval(timer);
+				} else {
+					slat.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+				}
+			}, 44);
+		});
+	});
+
+	const triggers = [...document.querySelectorAll<HTMLButtonElement>('.board-trigger')];
+	triggers.forEach((trigger) => {
+		trigger.addEventListener('click', () => {
+			const wasOpen = trigger.getAttribute('aria-expanded') === 'true';
+			triggers.forEach((other) => {
+				other.setAttribute('aria-expanded', 'false');
+				const panel = document.getElementById(other.getAttribute('aria-controls') ?? '');
+				if (panel) panel.hidden = true;
+			});
+			if (wasOpen) return;
+			trigger.setAttribute('aria-expanded', 'true');
+			const panel = document.getElementById(trigger.getAttribute('aria-controls') ?? '');
+			if (panel) panel.hidden = false;
+		});
+	});
+</script>
+
+<style>
+	:global(body) {
+		background: #0a0c0f;
+	}
+
+	.departures {
+		--board: #0b0d10;
+		--slat: #191d22;
+		--slat-hover: #20252b;
+		--cream: #f0ece3;
+		--amber: #e2ad55;
+		--dim: #717985;
+		--mono: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+		min-height: 100vh;
+		padding: calc(var(--nav-clearance) + clamp(2.5rem, 6vw, 6rem)) clamp(0.8rem, 4vw, 4rem) 8rem;
+		background:
+			radial-gradient(circle at 70% 0%, rgba(226, 173, 85, 0.08), transparent 28rem),
+			var(--board);
+		color: var(--cream);
+		font-family: var(--mono);
+	}
+
+	header,
+	.board,
+	footer {
+		max-width: 94rem;
+		margin-inline: auto;
+	}
+
+	header {
+		margin-bottom: clamp(2rem, 5vw, 4rem);
+	}
+
+	header > p {
+		margin: 0 0 1rem;
+		color: var(--dim);
+		font-size: 0.64rem;
+		letter-spacing: 0.3em;
+		text-transform: uppercase;
+	}
+
+	header h1 {
+		margin: 0;
+		font-size: clamp(3.5rem, 9vw, 9rem);
+		font-weight: 600;
+		letter-spacing: 0.025em;
+		line-height: 0.85;
+		text-transform: uppercase;
+	}
+
+	header > div,
+	footer {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+		justify-content: space-between;
+		margin-top: 1.6rem;
+		color: var(--dim);
+		font-size: 0.58rem;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+	}
+
+	.board {
+		border: 1px solid rgba(240, 236, 227, 0.13);
+		background: linear-gradient(#101318, #0b0d10);
+		box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.25);
+		overflow: hidden;
+	}
+
+	.board-labels,
+	.board-trigger {
+		display: grid;
+		gap: clamp(0.45rem, 1.7vw, 1.8rem);
+		grid-template-columns: 2.2fr 1.15fr 1.15fr 0.85fr 1.15fr;
+		align-items: center;
+		padding-inline: clamp(0.7rem, 2.2vw, 2.2rem);
+	}
+
+	.board-labels {
+		padding-block: 0.9rem;
+		border-bottom: 1px solid rgba(240, 236, 227, 0.12);
+		color: var(--dim);
+		font-size: 0.54rem;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+	}
+
+	.board ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.board li + li {
+		border-top: 1px solid rgba(240, 236, 227, 0.08);
+	}
+
+	.board-trigger {
+		width: 100%;
+		padding-block: clamp(0.8rem, 1.6vw, 1.25rem);
+		border: 0;
+		background: transparent;
+		color: inherit;
+		cursor: pointer;
+		font: inherit;
+		text-align: left;
+		transition: background 160ms ease;
+	}
+
+	.board-trigger:hover,
+	.board-trigger[aria-expanded='true'] {
+		background: var(--slat-hover);
+	}
+
+	.board-cell {
+		display: flex;
+		gap: 2px;
+		white-space: pre;
+	}
+
+	.board-cell :global(i) {
+		width: 1.02em;
+		display: inline-grid;
+		padding-block: 0.34rem;
+		border-radius: 2px;
+		background: var(--slat);
+		box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.65);
+		font-size: clamp(0.75rem, 1.4vw, 1.2rem);
+		font-style: normal;
+		font-weight: 500;
+		place-items: center;
+	}
+
+	.board-city :global(i) {
+		font-size: clamp(0.9rem, 1.8vw, 1.6rem);
+		font-weight: 600;
+	}
+
+	.board-cell :global(i.is-blank) {
+		background: transparent;
+		box-shadow: none;
+	}
+
+	.board-number :global(i),
+	.board-status :global(i) {
+		color: var(--amber);
+	}
+
+	.board-panel {
+		display: grid;
+		gap: clamp(1.5rem, 4vw, 4rem);
+		grid-template-columns: minmax(16rem, 0.8fr) minmax(0, 1.2fr);
+		align-items: center;
+		padding: clamp(1.2rem, 4vw, 4rem);
+		background: #080a0c;
+	}
+
+	.board-photo {
+		display: flex;
+		justify-content: center;
+	}
+
+	.board-photo img,
+	.board-empty {
+		width: min(34vw, 29rem);
+		height: min(58svh, 38rem);
+		display: block;
+		border: 6px solid rgba(240, 236, 227, 0.09);
+		background: #111419;
+		object-fit: contain;
+	}
+
+	.board-empty {
+		display: grid;
+		border-style: dashed;
+		color: var(--dim);
+		font-size: 0.6rem;
+		letter-spacing: 0.18em;
+		line-height: 1.7;
+		place-items: center;
+		text-align: center;
+		text-transform: uppercase;
+	}
+
+	.board-gate > p {
+		margin: 0;
+		color: var(--amber);
+		font-size: 0.62rem;
+		letter-spacing: 0.24em;
+		text-transform: uppercase;
+	}
+
+	.board-gate h2 {
+		margin: 0.7rem 0 2rem;
+		font-size: clamp(3rem, 7vw, 7rem);
+		font-weight: 500;
+		letter-spacing: -0.05em;
+		line-height: 0.8;
+		text-transform: uppercase;
+	}
+
+	.board-gate dl {
+		display: grid;
+		gap: 1rem;
+		margin: 0;
+		border-top: 1px solid rgba(240, 236, 227, 0.14);
+		padding-top: 1rem;
+	}
+
+	.board-gate dt {
+		color: var(--dim);
+		font-size: 0.54rem;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+	}
+
+	.board-gate dd {
+		margin: 0.25rem 0 0;
+		font-size: 0.75rem;
+	}
+
+	footer a {
+		color: var(--cream);
+	}
+
+	@media (max-width: 800px) {
+		.board-labels {
+			display: none;
+		}
+
+		.board-trigger {
+			gap: 0.3rem 0.8rem;
+			grid-template-columns: 1fr auto;
+		}
+
+		.board-season {
+			display: none;
+		}
+
+		.board-panel {
+			grid-template-columns: 1fr;
+		}
+
+		.board-photo img,
+		.board-empty {
+			width: min(78vw, 30rem);
+			height: min(48svh, 34rem);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.board-trigger {
+			transition: none;
+		}
+	}
+</style>

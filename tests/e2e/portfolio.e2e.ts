@@ -185,6 +185,52 @@ test('around-the-world page renders every city and a scroll-controlled Toronto s
 	expect(await getBrokenCompletedImages(page)).toEqual([]);
 });
 
+test('around-the-world concept lab exposes four distinct responsive variants', async ({ page }) => {
+	await page.goto('/around-the-world/variants/');
+	await waitForInitialImages(page);
+
+	for (const path of [
+		'/around-the-world/full-bleed',
+		'/around-the-world/passport',
+		'/around-the-world/departures',
+		'/around-the-world/contact-sheet',
+	]) {
+		await expect(page.locator(`.concept-card[href="${path}"]`)).toHaveCount(1);
+	}
+
+	await page.goto('/around-the-world/full-bleed/');
+	await expect(page.locator('[data-bleed-chapter]')).toHaveCount(6);
+	await expect(page.locator('[data-reel-frame]')).toHaveCount(13);
+	await expect(page.locator('.bleed-pending')).toHaveCount(2);
+	await page.locator('[data-toronto-finale]').scrollIntoViewIfNeeded();
+	await expect
+		.poll(() => page.locator('[data-reel-caption]').textContent())
+		.not.toBe('Vanessa Kirby');
+
+	await page.goto('/around-the-world/passport/');
+	await expect(page.locator('.passport-page')).toHaveCount(6);
+	await expect(page.locator('.passport-stamp')).toHaveCount(6);
+
+	await page.goto('/around-the-world/departures/');
+	const stockholm = page.getByRole('button', {
+		name: 'Stockholm, Nobel Prize Ceremony. Open portrait.',
+	});
+	await stockholm.click();
+	await expect(stockholm).toHaveAttribute('aria-expanded', 'true');
+	await expect(page.locator('#departure-stockholm')).toBeVisible();
+
+	await page.goto('/around-the-world/contact-sheet/');
+	await expect(page.locator('.film-frame')).toHaveCount(6);
+	await expect(page.locator('.toronto-sheet figure')).toHaveCount(13);
+
+	const widths = await page.evaluate(() => ({
+		body: document.body.scrollWidth,
+		viewport: window.innerWidth,
+	}));
+	expect(widths.body).toBeLessThanOrEqual(widths.viewport);
+	expect(await getBrokenCompletedImages(page)).toEqual([]);
+});
+
 for (const route of ['/', '/gallery/red-carpet/sundance/']) {
 	test(`PhotoSwipe opens on first click and Escape closes on ${route}`, async ({ page }) => {
 		await page.goto(route);
