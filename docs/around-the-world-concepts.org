@@ -34,6 +34,12 @@ Do not replace that outline with hand-drawn continent polygons. Visual changes s
 
 The current treatment uses a warm paper background, muted land, a fine atlas grid, dark labels, coral route arcs, and a highlighted Brooklyn home marker. A Playwright regression check protects the view box, high-detail outline, light background, and six destination markers.
 
+* Typography
+
+The Route uses the site's existing ~Newsreader~ family for its hero, city names, finale, route-manifest heading, and closing statement. Display text uses the family's real 500 weight rather than a synthesized ultra-bold weight. Small labels and route metadata use ~IBM Plex Mono~.
+
+Do not restore ~Bodoni Moda~ without explicit design approval. Its extreme contrast and fashion-magazine proportions were rejected for this page.
+
 * Sequential Navigation Contract
 
 - Full Bleed, Passport, Contact Sheet, The Route, and the original Editorial Journey provide optional controls that advance exactly one destination.
@@ -68,4 +74,3 @@ The focused browser contract covers the six-route inventory, sequential-control 
 2. Decide which treatment—or hybrid—should become the public Around the World experience.
 3. Expand Toronto only when additional verified photographs and subject metadata are available.
 4. Promote the selected route to production deliberately; a successful preview deployment does not change [[https://photos.jaydixit.com][photos.jaydixit.com]].
-
