@@ -6,6 +6,7 @@
 ** Changed
 - Renamed the primary-navigation label to Jay's approved wording, “Red Carpets Around the World,” and moved the entire feature plus all five variant routes from ~/around-the-world/~ to ~/red-carpets/~. Per Jay's direction, the retired URLs are not preserved and do not redirect.
 - Tightened the logo, wordmark, link spacing, and tracking between 1200px and 1319px so the full navigation label fits cleanly at the narrowest desktop breakpoint; the mobile menu keeps the complete wording.
+- Increased the optical gap between Full Bleed's country labels and oversized city names, correcting the visible “South Korea”/“Busan” collision without reducing the cinematic title scale.
 - Added concept-specific sequential navigation to the remaining scrolling treatments. Full Bleed now has a cinematic “Next stop” control on its first five chapters; Passport uses a tactile “Next entry” stamp; Contact Sheet uses a horizontal “Next frame” control on desktop and a downward version in its stacked mobile layout.
 - Each control lands on the precise next chapter or frame, offsets vertical destinations beneath the fixed site navigation, uses smooth movement by default, and switches to immediate movement for visitors who prefer reduced motion. The Route retains its existing next-city controls; Departures remains intentionally destination-driven.
 - Recast The Route's closing map and manifest as a warm, light atlas page with paper grid lines, legible dark labels, coral route arcs, and muted land. The map now uses the supplied prototype's accurate Natural Earth 110m outline rather than an invented approximation, so the route ends with geographic fidelity and visual release instead of another black panel.
@@ -24,6 +25,7 @@
 - ~pnpm run lint~ passed and the production build generated all 106 pages.
 - ~pnpm run test -- --run~ passed all 21 unit tests, and the focused concept Playwright suite passed the six-concept inventory, all sequential-navigation counts and landing positions, The Route's full-motion Toronto assembly, and the mobile overflow contract.
 - Focused navigation and route-migration checks passed at the 1200px desktop boundary and 390px mobile width, across all six ~/red-carpets/~ treatments, and confirmed that ~/around-the-world/~ returns 404 rather than redirecting.
+- Browser review and Playwright geometry checks confirmed a 40px country-to-city line-box gap for Full Bleed at both 1280×720 and 390×844, with no horizontal mobile overflow.
 - Desktop visual review passed for the hero, Busan chapter, Toronto assembly, route map, and the new gallery card. Mobile review passed at 390×844 for the hero, city chapter, gallery card, and horizontal-overflow boundary.
 - All 32 images on The Route loaded successfully during browser QA, with no broken image or page-width overflow.
 

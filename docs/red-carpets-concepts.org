@@ -40,6 +40,8 @@ The Route uses the site's existing ~Newsreader~ family for its hero, city names,
 
 Do not restore ~Bodoni Moda~ without explicit design approval. Its extreme contrast and fashion-magazine proportions were rejected for this page.
 
+Full Bleed preserves an explicit optical gap between each country label and its oversized city name. The display font's glyphs extend above their nominal line boxes, so a small ordinary margin can look overlapped even when the measured boxes do not intersect. Keep at least a 32px measured gap at desktop and mobile sizes.
+
 * Navigation Vocabulary
 
 The primary navigation uses *Red Carpets Around the World* for the canonical ~/red-carpets/~ route. Keep the full label: it makes the assignment-led travel feature explicit. The retired ~/around-the-world/~ route is intentionally not preserved or redirected.

@@ -234,6 +234,12 @@ test('red-carpets concept lab exposes six distinct responsive concepts', async (
 	await expect(page.locator('[data-reel-frame]')).toHaveCount(13);
 	await expect(page.locator('[data-placeholder-frame]')).toHaveCount(2);
 	await expect(page.locator('[data-bleed-next]')).toHaveCount(5);
+	const desktopBusanTitleGap = await page.locator('#busan .bleed-title').evaluate((title) => {
+		const country = title.querySelector('p')?.getBoundingClientRect();
+		const city = title.querySelector('h2')?.getBoundingClientRect();
+		return country && city ? Math.round(city.top - country.bottom) : 0;
+	});
+	expect(desktopBusanTitleGap).toBeGreaterThanOrEqual(32);
 	await page.locator('[data-bleed-next="locarno"]').click();
 	await expect(page).toHaveURL(/#locarno$/);
 	await expect
@@ -287,6 +293,13 @@ test('red-carpets concept lab exposes six distinct responsive concepts', async (
 		.toBeLessThanOrEqual(2);
 
 	await page.setViewportSize({ width: 390, height: 844 });
+	await page.goto('/red-carpets/full-bleed/#busan');
+	const mobileBusanTitleGap = await page.locator('#busan .bleed-title').evaluate((title) => {
+		const country = title.querySelector('p')?.getBoundingClientRect();
+		const city = title.querySelector('h2')?.getBoundingClientRect();
+		return country && city ? Math.round(city.top - country.bottom) : 0;
+	});
+	expect(mobileBusanTitleGap).toBeGreaterThanOrEqual(32);
 	await page.goto('/red-carpets/contact-sheet/');
 	await page.locator('[data-film-next="1"]').click();
 	await expect
