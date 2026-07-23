@@ -16,10 +16,10 @@ const routes = [
 		minImages: 4,
 	},
 	{
-		name: 'red-carpet index',
-		path: '/red-carpet/',
-		title: /Red Carpet Photos — Jay Dixit/,
-		heading: 'Red Carpet Photos',
+		name: 'portrait index',
+		path: '/portraits/',
+		title: /Portraits — Jay Dixit/,
+		heading: 'Portraits',
 		minImages: 20,
 	},
 	{
@@ -129,9 +129,9 @@ test('site nav renders redesigned desktop and mobile states', async ({ page }) =
 		'aria-current',
 		'page',
 	);
-	await expect(nav.getByRole('link', { name: 'Red Carpet' })).toHaveAttribute(
+	await expect(nav.getByRole('link', { name: 'Portraits', exact: true })).toHaveAttribute(
 		'href',
-		'/red-carpet',
+		'/portraits',
 	);
 	await expect(nav.getByRole('link', { name: 'Around the World' })).toHaveAttribute(
 		'href',
@@ -354,8 +354,8 @@ test('Nobel related essay thumbnail uses the live Vanessa Kirby asset', async ({
 		.toContain('/highlights/vanessa-kirby_tiff_2024');
 });
 
-test('red-carpet index renders editorial person cards from generated data', async ({ page }) => {
-	await page.goto('/red-carpet/');
+test('portrait index renders editorial person cards from generated data', async ({ page }) => {
+	await page.goto('/portraits/');
 	await waitForInitialImages(page);
 
 	const cards = page.locator('.rc-card');
@@ -405,8 +405,8 @@ test('TIFF gallery renders the metadata-reviewed 2025 set with truthful captions
 	expect(await getBrokenCompletedImages(page)).toEqual([]);
 });
 
-test('red-carpet person pages render confirmed Wikimedia provenance only', async ({ page }) => {
-	await page.goto('/red-carpet/lisa-gilroy/');
+test('portrait person pages render confirmed Wikimedia provenance only', async ({ page }) => {
+	await page.goto('/portraits/lisa-gilroy/');
 	await waitForInitialImages(page);
 
 	await expect(page.getByText('Currently the lead photo on Wikipedia')).toBeVisible();
@@ -420,12 +420,22 @@ test('red-carpet person pages render confirmed Wikimedia provenance only', async
 		'https://commons.wikimedia.org/wiki/File:Lisa_Gilroy_at_SXSW_in_2025.jpg',
 	);
 
-	await page.goto('/red-carpet/nicholas-braun/');
+	await page.goto('/portraits/nicholas-braun/');
 	await waitForInitialImages(page);
 
 	await expect(page.getByText('Currently the lead photo on Wikipedia')).toHaveCount(0);
 	await expect(page.getByText('Photo by Jay Dixit')).toHaveCount(0);
 	await expect(page.getByRole('link', { name: 'View on Wikimedia Commons' })).toHaveCount(0);
+});
+
+test('legacy red-carpet URLs redirect to canonical portraits URLs', async ({ page }) => {
+	await page.goto('/red-carpet/');
+	await expect(page).toHaveURL(/\/portraits\/?$/);
+	await expect(page.getByRole('heading', { name: 'Portraits' })).toBeVisible();
+
+	await page.goto('/red-carpet/lisa-gilroy/');
+	await expect(page).toHaveURL(/\/portraits\/lisa-gilroy\/?$/);
+	await expect(page.getByRole('heading', { name: 'Lisa Gilroy' })).toBeVisible();
 });
 
 test('blog index renders editorial post list with live thumbnails', async ({ page }) => {

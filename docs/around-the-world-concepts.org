@@ -40,6 +40,12 @@ The Route uses the site's existing ~Newsreader~ family for its hero, city names,
 
 Do not restore ~Bodoni Moda~ without explicit design approval. Its extreme contrast and fashion-magazine proportions were rejected for this page.
 
+* Navigation Vocabulary
+
+The primary navigation labels ~/portraits/~ as *Portraits*. That route is a searchable person archive containing red-carpet subjects, Nobel figures, and other cultural or business portraits, so “Portraits” describes its full scope and distinguishes it from the assignment-led Around the World narrative.
+
+~/portraits/~ is the canonical archive route, including person pages such as ~/portraits/lisa-gilroy/~. The former ~/red-carpet/~ index and person URLs remain permanent redirects for link and search continuity.
+
 * Sequential Navigation Contract
 
 - Full Bleed, Passport, Contact Sheet, The Route, and the original Editorial Journey provide optional controls that advance exactly one destination.

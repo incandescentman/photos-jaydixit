@@ -101,10 +101,10 @@ Users should see content ASAP, not stare at blank screens. Photography portfolio
 - Tag extraction and filtering
 - Support for nested folders (e.g., =/gallery/red-carpet/tiff=)
 
-*** Red Carpet Photos (=src/pages/red-carpet/=)
-- Per-person pages at =/red-carpet/[person-slug]= (e.g., =/red-carpet/jeremy-strong=)
-- Index page at =/red-carpet/= listing all people alphabetically with sample photos
-- Legacy =/portraits/= routes exist only as redirects to =/red-carpet/=
+*** Portraits (=src/pages/portraits/=)
+- Per-person pages at =/portraits/[person-slug]= (e.g., =/portraits/jeremy-strong=)
+- Index page at =/portraits/= listing all people alphabetically with sample photos
+- Legacy =/red-carpet/= index and person routes redirect permanently to =/portraits/=
 - Driven by =src/data/people.json= manifest
 - Scans both =src/gallery/photos/= and =src/gallery/highlights/=
 - Match logic: subject slug (part before first =_=) checked against =match= patterns, including numbered variants (e.g., =jeremy-3= matches pattern =jeremy=)
@@ -191,7 +191,7 @@ Users should see content ASAP, not stare at blank screens. Photography portfolio
 - [X] Add EXIF data extraction (camera, lens, settings)
 - [X] Create dedicated photo detail pages
 - [X] Add social share buttons per photo
-- [X] Add per-person red carpet pages (=/red-carpet/[slug]=)
+- [X] Add per-person portrait pages (=/portraits/[slug]=)
 - [ ] Implement server-side image optimization (if needed)
 - [ ] Migrate portrait images to Cloudinary CDN
 
