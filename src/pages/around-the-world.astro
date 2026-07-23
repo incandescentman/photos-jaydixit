@@ -22,6 +22,11 @@ const displayDestinations = worldTourDestinations.map((destination) => ({
 	isPlaceholder: !destination.portrait,
 }));
 
+const chapterDestinations = displayDestinations.map((destination, index) => ({
+	...destination,
+	nextDestination: displayDestinations[index + 1] ?? { id: 'toronto', city: 'Toronto' },
+}));
+
 const allDestinations = [
 	...worldTourDestinations,
 	{
@@ -101,7 +106,7 @@ const structuredData = {
 		</section>
 
 		{
-			displayDestinations.map((destination, index) => (
+			chapterDestinations.map((destination, index) => (
 				<section
 					id={destination.id}
 					class:list={[
@@ -180,6 +185,19 @@ const structuredData = {
 							<small>Final image selection pending</small>
 						</div>
 					)}
+
+					<a
+						class="city-next"
+						href={`#${destination.nextDestination.id}`}
+						data-next-stop={destination.nextDestination.id}
+						aria-label={`Continue from ${destination.city} to ${destination.nextDestination.city}`}
+					>
+						<span>
+							<small>Next stop</small>
+							<strong>{destination.nextDestination.city}</strong>
+						</span>
+						<i aria-hidden="true">↓</i>
+					</a>
 				</section>
 			))
 		}
@@ -341,7 +359,7 @@ const structuredData = {
 <style>
 	:global(html) {
 		scroll-behavior: smooth;
-		scroll-padding-top: 8rem;
+		scroll-padding-top: var(--nav-clearance);
 	}
 
 	:global(body) {
@@ -541,6 +559,7 @@ const structuredData = {
 		align-items: center;
 		overflow: hidden;
 		background: #0c0c0c;
+		padding-bottom: clamp(8rem, 12vw, 11rem);
 	}
 
 	.city-chapter--reverse {
@@ -585,6 +604,64 @@ const structuredData = {
 		-webkit-text-stroke: 1px color-mix(in srgb, var(--city-accent) 58%, transparent);
 		white-space: nowrap;
 		pointer-events: none;
+	}
+
+	.city-next {
+		position: absolute;
+		z-index: 4;
+		top: calc(100svh - var(--nav-clearance) - 4.5rem);
+		right: clamp(1.25rem, 6vw, 6rem);
+		display: inline-flex;
+		gap: 1rem;
+		align-items: center;
+		padding: 0.5rem 0;
+		color: #e9e2d8;
+		text-decoration: none;
+	}
+
+	.city-next span {
+		display: grid;
+		gap: 0.12rem;
+		text-align: right;
+	}
+
+	.city-next small {
+		color: color-mix(in srgb, var(--city-accent) 82%, #fff);
+		font-size: 0.53rem;
+		font-weight: 600;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+	}
+
+	.city-next strong {
+		font-family: var(--serif);
+		font-size: 1.15rem;
+		font-weight: 300;
+		letter-spacing: 0;
+	}
+
+	.city-next i {
+		width: 2.75rem;
+		height: 2.75rem;
+		display: grid;
+		border: 1px solid color-mix(in srgb, var(--city-accent) 64%, transparent);
+		border-radius: 50%;
+		color: var(--city-accent);
+		font-family: var(--serif);
+		font-size: 1.2rem;
+		font-style: normal;
+		place-items: center;
+		transition:
+			background 180ms ease,
+			color 180ms ease,
+			transform 180ms ease;
+	}
+
+	.city-next:hover i,
+	.city-next:focus-visible i {
+		background: var(--city-accent);
+		color: #111;
+		transform: translateY(0.25rem);
 	}
 
 	.city-copy,
@@ -1230,7 +1307,7 @@ const structuredData = {
 
 	@media (max-width: 600px) {
 		:global(html) {
-			scroll-padding-top: 7rem;
+			scroll-padding-top: var(--nav-clearance);
 		}
 
 		.world-hero {
@@ -1267,6 +1344,11 @@ const structuredData = {
 		.city-chapter {
 			padding-right: 1rem;
 			padding-left: 1rem;
+		}
+
+		.city-next {
+			top: calc(100svh - var(--nav-clearance) - 4.25rem);
+			right: 1rem;
 		}
 
 		.city-copy h2,
@@ -1355,6 +1437,7 @@ const structuredData = {
 
 		.city-portrait img,
 		.world-route a,
+		.city-next i,
 		.world-finale a span {
 			transition: none;
 		}

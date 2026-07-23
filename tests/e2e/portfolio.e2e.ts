@@ -176,6 +176,20 @@ test('around-the-world page renders every city and a scroll-controlled Toronto s
 	await expect(page.locator('[data-toronto-frame]')).toHaveCount(13);
 	await expect(page.locator('[data-toronto-frame].is-active')).toHaveCount(1);
 	await expect(page.locator('[data-placeholder-frame]')).toHaveCount(2);
+	await expect(page.locator('[data-next-stop]')).toHaveCount(5);
+
+	await page.locator('[data-next-stop="busan"]').click();
+	await expect(page).toHaveURL(/#busan$/);
+	await expect
+		.poll(() =>
+			page.locator('#busan').evaluate((section) => Math.round(section.getBoundingClientRect().top)),
+		)
+		.toBeGreaterThan(120);
+	await expect
+		.poll(() =>
+			page.locator('#busan').evaluate((section) => Math.round(section.getBoundingClientRect().top)),
+		)
+		.toBeLessThan(190);
 
 	const sequence = page.locator('[data-toronto-sequence]');
 	await sequence.scrollIntoViewIfNeeded();

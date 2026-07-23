@@ -28,6 +28,7 @@ The four concepts are local previews on ~codex/around-the-world~ and do not alte
 * 2026-07-22 - Add Red Carpets Around the World
 
 ** Changed
+- Added a discreet “Next stop” control to every city chapter in the original Editorial Journey. Each control smoothly aligns the following city immediately below the fixed navigation, preserves ordinary free scrolling, and automatically respects reduced-motion preferences.
 - Added [[file:../src/pages/around-the-world.astro][the Around the World page]] as a cinematic, editorial travel feature with an oversized title sequence, numbered city chapters, coordinate stamps, a scroll-controlled Toronto portrait sequence, a contact sheet, and a closing assignment call to action.
 - Added [[file:../src/data/worldTour.ts][a dedicated content registry]] for the six locations and the available portraits. Stockholm, Park City, and Austin use verified Cloudinary photographs; Toronto uses all 13 verified TIFF portraits currently available in the media library.
 - Added deliberate art-directed holding panels for Busan and Locarno instead of presenting unrelated repository stock images as Jay's festival photography.
