@@ -23,6 +23,13 @@ const routes = [
 		minImages: 20,
 	},
 	{
+		name: 'around the world',
+		path: '/around-the-world/',
+		title: /Red Carpets Around the World — Jay Dixit/,
+		heading: 'Red carpets around the world.',
+		minImages: 20,
+	},
+	{
 		name: 'Sundance gallery',
 		path: '/gallery/red-carpet/sundance/',
 		title: /Red Carpet → Sundance Gallery — Jay Dixit/,
@@ -126,6 +133,10 @@ test('site nav renders redesigned desktop and mobile states', async ({ page }) =
 		'href',
 		'/red-carpet',
 	);
+	await expect(nav.getByRole('link', { name: 'Around the World' })).toHaveAttribute(
+		'href',
+		'/around-the-world',
+	);
 	await expect(nav.getByRole('link', { name: 'Why WikiPortraits' })).toHaveAttribute(
 		'href',
 		'/blog/wikiportraits-story',
@@ -150,6 +161,28 @@ test('site nav renders redesigned desktop and mobile states', async ({ page }) =
 		'page',
 	);
 	await expect(mobileMenu.locator('.site-nav-mobile-social a')).toHaveCount(3);
+});
+
+test('around-the-world page renders every city and a scroll-controlled Toronto sequence', async ({
+	page,
+}) => {
+	await page.goto('/around-the-world/');
+	await waitForInitialImages(page);
+
+	for (const city of ['Stockholm', 'Busan', 'Locarno', 'Park City', 'Austin', 'Toronto']) {
+		await expect(page.locator(`[data-world-city="${city}"]`)).toHaveCount(1);
+	}
+
+	await expect(page.locator('[data-toronto-frame]')).toHaveCount(13);
+	await expect(page.locator('[data-toronto-frame].is-active')).toHaveCount(1);
+	await expect(page.locator('[data-missing-portrait]')).toHaveCount(2);
+
+	const sequence = page.locator('[data-toronto-sequence]');
+	await sequence.scrollIntoViewIfNeeded();
+	await page.evaluate(() => window.scrollBy(0, window.innerHeight * 2));
+	await expect.poll(() => page.locator('[data-toronto-count]').textContent()).not.toBe('01 / 13');
+
+	expect(await getBrokenCompletedImages(page)).toEqual([]);
 });
 
 for (const route of ['/', '/gallery/red-carpet/sundance/']) {

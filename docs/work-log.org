@@ -1,6 +1,25 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-22 - Add Red Carpets Around the World
+
+** Changed
+- Added [[file:../src/pages/around-the-world.astro][the Around the World page]] as a cinematic, editorial travel feature with an oversized title sequence, numbered city chapters, coordinate stamps, a scroll-controlled Toronto portrait sequence, a contact sheet, and a closing assignment call to action.
+- Added [[file:../src/data/worldTour.ts][a dedicated content registry]] for the six locations and the available portraits. Stockholm, Park City, and Austin use verified Cloudinary photographs; Toronto uses all 13 verified TIFF portraits currently available in the media library.
+- Added deliberate art-directed holding panels for Busan and Locarno instead of presenting unrelated repository stock images as Jay's festival photography.
+- Added the new page to the primary navigation and tightened desktop menu spacing from 1200px through 1399px so the additional link does not crowd or wrap the header.
+- Added smoke, navigation, city-presence, missing-portrait, Toronto-frame, scroll-progress, and broken-image checks to [[file:../tests/e2e/portfolio.e2e.ts][the Playwright portfolio suite]].
+- Added ~pnpm-workspace.yaml~ with explicit ~esbuild~ and ~sharp~ build approval so pnpm 11 can reproduce the existing Astro and image-processing toolchain non-interactively.
+
+** Validation
+- ~pnpm run lint~ passed, ~pnpm run test -- --run~ passed all 21 tests, and the production build generated all 100 pages.
+- The two targeted Around the World Playwright checks passed in Chromium, including confirmation that the Toronto frame counter advances during the full-motion scroll sequence.
+- Desktop and 390px mobile visual checks passed with no horizontal overflow or broken images. The reduced-motion browser path shows one complete Toronto portrait with its caption rather than running the rapid sequence.
+- The complete Playwright suite passed 21 of 23 checks. The two remaining failures are unrelated stale expectations already contradicted by the current site: the About test still expects removed ~.ed-ai-card~ elements, and the Before & After test expects Jeremy Strong first even though the current page and work log intentionally lead with Jason Bateman.
+
+** Handoff
+The implementation is complete on ~codex/around-the-world~ but is not pushed or deployed. Replace the clearly marked Busan and Locarno holding panels with Jay's chosen portraits, and add the remaining Toronto selections if the desired rapid sequence should grow from the 13 verified library images to roughly 30.
+
 * 2026-07-14 - Lead the Before & After page with Jason Bateman
 
 ** Changed

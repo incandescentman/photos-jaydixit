@@ -1,0 +1,1333 @@
+---
+export const prerender = true;
+
+import MainLayout from '../layouts/MainLayout.astro';
+import { cldSizes, cldSrcset, cldUrl } from '../lib/cloudinary';
+import { torontoPortraits, worldTourDestinations } from '../data/worldTour';
+
+const pageTitle = 'Red Carpets Around the World';
+const description =
+	'Jay Dixit photographs actors, filmmakers, and public figures at festivals and cultural events from Stockholm and Busan to Locarno, Sundance, SXSW, and Toronto.';
+
+const allDestinations = [
+	...worldTourDestinations,
+	{
+		id: 'toronto',
+		number: '06',
+		city: 'Toronto',
+		country: 'Canada',
+		event: 'Toronto International Film Festival',
+		coordinates: '43.6532° N · 79.3832° W',
+	},
+];
+
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'ItemList',
+	name: pageTitle,
+	description,
+	itemListElement: allDestinations.map((destination, index) => ({
+		'@type': 'ListItem',
+		position: index + 1,
+		name: `${destination.city} — ${destination.event}`,
+	})),
+};
+---
+
+<MainLayout
+	title={pageTitle}
+	{description}
+	image={cldUrl('highlights/john-hopfield_nobel-physics_2024', 1600)}
+	imageAlt="John Hopfield photographed by Jay Dixit during Nobel Prize week in Stockholm"
+	keywords={[
+		'red carpet photography',
+		'film festival photographer',
+		'Nobel Prize photographer',
+		'TIFF photographer',
+		'Sundance photographer',
+		'SXSW photographer',
+	]}
+	{structuredData}
+>
+	<div class="world-tour">
+		<section class="world-hero" aria-labelledby="world-title">
+			<div class="world-hero-grid" aria-hidden="true"></div>
+			<div class="world-hero-copy">
+				<p class="world-kicker">On assignment · 6 cities · 3 continents</p>
+				<h1 id="world-title">
+					<span>Red carpets</span>
+					<span class="world-title-italic">around the world.</span>
+				</h1>
+				<p class="world-intro">
+					From Nobel week in Stockholm to the cinema capitals of Busan, Locarno, Park City, Austin,
+					and Toronto—portraits made in the few charged seconds when the world is watching.
+				</p>
+			</div>
+
+			<nav class="world-route" aria-label="Jump to a city">
+				{
+					allDestinations.map((destination) => (
+						<a href={`#${destination.id}`}>
+							<span>{destination.number}</span>
+							<strong>{destination.city}</strong>
+						</a>
+					))
+				}
+			</nav>
+
+			<a class="world-scroll" href="#stockholm">
+				<span>Begin the journey</span>
+				<i aria-hidden="true"></i>
+			</a>
+		</section>
+
+		<section class="world-manifesto" aria-label="Introduction">
+			<p>
+				One camera. One press line. <em>Six very different worlds.</em>
+			</p>
+		</section>
+
+		{
+			worldTourDestinations.map((destination, index) => (
+				<section
+					id={destination.id}
+					class:list={[
+						'city-chapter',
+						{ 'city-chapter--reverse': index % 2 === 1 },
+						{ 'city-chapter--awaiting': !destination.portrait },
+					]}
+					style={`--city-accent: ${destination.accent}`}
+					data-world-city={destination.city}
+				>
+					<div class="city-ghost" aria-hidden="true">
+						{destination.city}
+					</div>
+
+					<div class="city-copy">
+						<div class="city-stamp" aria-hidden="true">
+							<span>{destination.number}</span>
+							<i />
+							<small>{destination.coordinates}</small>
+						</div>
+						<p class="city-country">{destination.country}</p>
+						<h2>{destination.city}</h2>
+						<p class="city-event">{destination.event}</p>
+						<p class="city-line">{destination.line}</p>
+					</div>
+
+					{destination.portrait ? (
+						<figure class="city-portrait">
+							<div class="city-portrait-frame">
+								<img
+									src={cldUrl(destination.portrait.publicId, 1200)}
+									srcset={cldSrcset(destination.portrait.publicId, [480, 768, 1024, 1200, 1600])}
+									sizes={cldSizes('(max-width: 800px) 100vw, 58vw')}
+									alt={destination.portrait.alt}
+									loading={index === 0 ? 'eager' : 'lazy'}
+									decoding="async"
+									fetchpriority={index === 0 ? 'high' : 'auto'}
+									style={`object-position: ${destination.portrait.position ?? '50% 24%'}`}
+								/>
+							</div>
+							<figcaption>
+								<span>Portrait by Jay Dixit</span>
+								<strong>{destination.portrait.subject}</strong>
+							</figcaption>
+						</figure>
+					) : (
+						<div
+							class="city-portrait city-portrait--reserved"
+							data-missing-portrait="true"
+							aria-label={`${destination.city} portrait selection pending`}
+						>
+							<div class="reserved-rings" aria-hidden="true">
+								<i />
+								<i />
+								<i />
+							</div>
+							<p>Portrait reserved</p>
+							<strong>{destination.city}</strong>
+							<small>Final image selection pending</small>
+						</div>
+					)}
+				</section>
+			))
+		}
+
+		<section id="toronto" class="toronto-intro" data-world-city="Toronto">
+			<div class="toronto-intro-copy">
+				<div class="city-stamp city-stamp--toronto" aria-hidden="true">
+					<span>06</span>
+					<i></i>
+					<small>43.6532° N · 79.3832° W</small>
+				</div>
+				<p class="city-country">Canada</p>
+				<h2>Toronto</h2>
+				<p class="city-event">Toronto International Film Festival</p>
+				<p class="toronto-lede">
+					One city became an archive. Keep scrolling—you control the speed of the press line.
+				</p>
+			</div>
+		</section>
+
+		<section
+			class="toronto-scroll"
+			data-toronto-sequence
+			style={`--sequence-height: ${(torontoPortraits.length + 1) * 42}svh; --sequence-height-mobile: ${(torontoPortraits.length + 1) * 34}svh`}
+			aria-label="Toronto portrait sequence"
+		>
+			<div class="toronto-sticky">
+				<div class="toronto-stage">
+					{
+						torontoPortraits.map((portrait, index) => (
+							<figure
+								class:list={['toronto-frame', { 'is-active': index === 0 }]}
+								data-toronto-frame
+								data-subject={portrait.subject}
+								aria-hidden={index === 0 ? 'false' : 'true'}
+							>
+								<img
+									src={cldUrl(portrait.publicId, 1024)}
+									srcset={cldSrcset(portrait.publicId, [480, 768, 1024, 1400])}
+									sizes={cldSizes('(max-width: 800px) 100vw, 68vw')}
+									alt={portrait.alt}
+									loading="lazy"
+									decoding="async"
+									style={`object-position: ${portrait.position ?? '50% 24%'}`}
+								/>
+							</figure>
+						))
+					}
+					<div class="toronto-vignette" aria-hidden="true"></div>
+					<div class="toronto-corner toronto-corner--tl" aria-hidden="true"></div>
+					<div class="toronto-corner toronto-corner--br" aria-hidden="true"></div>
+				</div>
+
+				<div class="toronto-caption" aria-live="polite">
+					<div>
+						<span data-toronto-count>01 / {String(torontoPortraits.length).padStart(2, '0')}</span>
+						<strong data-toronto-name>{torontoPortraits[0].subject}</strong>
+					</div>
+					<p>Toronto · TIFF</p>
+				</div>
+
+				<div class="toronto-meter" aria-hidden="true">
+					<i data-toronto-meter></i>
+				</div>
+			</div>
+		</section>
+
+		<section class="toronto-contact" aria-labelledby="toronto-contact-title">
+			<div class="contact-heading">
+				<p>After the flash</p>
+				<h2 id="toronto-contact-title">The Toronto contact sheet.</h2>
+				<span>{torontoPortraits.length} selected frames · TIFF 2024–2025</span>
+			</div>
+
+			<div class="contact-grid">
+				{
+					torontoPortraits.map((portrait, index) => (
+						<figure>
+							<div>
+								<img
+									src={cldUrl(portrait.publicId, 600)}
+									srcset={cldSrcset(portrait.publicId, [320, 480, 600, 768])}
+									sizes={cldSizes('(max-width: 600px) 50vw, (max-width: 1000px) 33vw, 20vw')}
+									alt={portrait.alt}
+									loading="lazy"
+									decoding="async"
+									style={`object-position: ${portrait.position ?? '50% 24%'}`}
+								/>
+								<span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+							</div>
+							<figcaption>{portrait.subject}</figcaption>
+						</figure>
+					))
+				}
+			</div>
+		</section>
+
+		<section class="world-finale">
+			<p>Stockholm · Busan · Locarno · Park City · Austin · Toronto</p>
+			<h2>The red carpet is global.<br /><em>The portrait is personal.</em></h2>
+			<a href="/contact">Bring me to your next festival <span aria-hidden="true">→</span></a>
+		</section>
+	</div>
+</MainLayout>
+
+<script>
+	const sequence = document.querySelector<HTMLElement>('[data-toronto-sequence]');
+	const frames = Array.from(document.querySelectorAll<HTMLElement>('[data-toronto-frame]'));
+	const name = document.querySelector<HTMLElement>('[data-toronto-name]');
+	const count = document.querySelector<HTMLElement>('[data-toronto-count]');
+	const meter = document.querySelector<HTMLElement>('[data-toronto-meter]');
+	const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	let activeFrame = 0;
+	let ticking = false;
+
+	const setFrame = (nextFrame: number, progress: number) => {
+		if (!frames.length) return;
+		const boundedFrame = Math.max(0, Math.min(frames.length - 1, nextFrame));
+
+		if (boundedFrame !== activeFrame) {
+			frames[activeFrame]?.classList.remove('is-active');
+			frames[activeFrame]?.setAttribute('aria-hidden', 'true');
+			frames[boundedFrame]?.classList.add('is-active');
+			frames[boundedFrame]?.setAttribute('aria-hidden', 'false');
+			activeFrame = boundedFrame;
+		}
+
+		const subject = frames[activeFrame]?.dataset.subject;
+		if (name && subject) name.textContent = subject;
+		if (count) {
+			count.textContent = `${String(activeFrame + 1).padStart(2, '0')} / ${String(frames.length).padStart(2, '0')}`;
+		}
+		if (meter) meter.style.transform = `scaleX(${Math.max(0, Math.min(1, progress))})`;
+	};
+
+	const updateSequence = () => {
+		ticking = false;
+		if (!sequence || prefersReducedMotion) return;
+
+		const rect = sequence.getBoundingClientRect();
+		const travel = Math.max(1, rect.height - window.innerHeight);
+		const progress = Math.max(0, Math.min(0.9999, -rect.top / travel));
+		setFrame(Math.floor(progress * frames.length), progress);
+	};
+
+	const requestSequenceUpdate = () => {
+		if (ticking) return;
+		ticking = true;
+		window.requestAnimationFrame(updateSequence);
+	};
+
+	if (sequence && frames.length && !prefersReducedMotion) {
+		window.addEventListener('scroll', requestSequenceUpdate, { passive: true });
+		window.addEventListener('resize', requestSequenceUpdate);
+		requestSequenceUpdate();
+	}
+</script>
+
+<style>
+	:global(html) {
+		scroll-behavior: smooth;
+		scroll-padding-top: 8rem;
+	}
+
+	:global(body) {
+		background: #080808;
+	}
+
+	.world-tour {
+		--world-black: #080808;
+		--world-ink: #f4efe6;
+		--world-muted: #a59e94;
+		--world-gold: #c6a15b;
+		overflow: clip;
+		background: var(--world-black);
+		color: var(--world-ink);
+		font-family: var(--sans);
+	}
+
+	.world-hero {
+		position: relative;
+		min-height: 100svh;
+		padding: calc(var(--nav-clearance) + clamp(2.5rem, 7vw, 7rem)) clamp(1.25rem, 5vw, 5rem) 3rem;
+		display: grid;
+		grid-template-columns: minmax(0, 1.4fr) minmax(16rem, 0.6fr);
+		grid-template-rows: 1fr auto;
+		gap: 3rem;
+		align-items: end;
+		background:
+			radial-gradient(circle at 80% 22%, rgba(198, 161, 91, 0.15), transparent 25rem),
+			linear-gradient(125deg, #111 0%, #070707 62%, #14110d 100%);
+		isolation: isolate;
+	}
+
+	.world-hero::before {
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");
+		content: '';
+		opacity: 0.15;
+		pointer-events: none;
+	}
+
+	.world-hero-grid {
+		position: absolute;
+		inset: var(--nav-clearance) 0 0;
+		z-index: -1;
+		background-image:
+			linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+			linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+		background-size: 8vw 8vw;
+		mask-image: linear-gradient(to bottom, transparent, black 18%, transparent 92%);
+	}
+
+	.world-kicker,
+	.city-country,
+	.contact-heading > p {
+		margin: 0 0 1.5rem;
+		color: var(--world-gold);
+		font-size: 0.72rem;
+		font-weight: 600;
+		letter-spacing: 0.3em;
+		text-transform: uppercase;
+	}
+
+	.world-hero h1 {
+		max-width: 75rem;
+		margin: 0;
+		font-family: var(--serif);
+		font-size: clamp(4.7rem, 10.2vw, 10.5rem);
+		font-weight: 300;
+		letter-spacing: -0.065em;
+		line-height: 0.78;
+	}
+
+	.world-hero h1 span {
+		display: block;
+	}
+
+	.world-title-italic {
+		margin-left: clamp(0rem, 6vw, 7rem);
+		color: #ddd2bf;
+		font-style: italic;
+	}
+
+	.world-intro {
+		max-width: 43rem;
+		margin: clamp(2rem, 4vw, 4rem) 0 0;
+		color: #c8c1b7;
+		font-family: var(--serif);
+		font-size: clamp(1.2rem, 1.6vw, 1.6rem);
+		font-weight: 300;
+		line-height: 1.5;
+	}
+
+	.world-route {
+		align-self: end;
+		border-top: 1px solid rgba(255, 255, 255, 0.16);
+	}
+
+	.world-route a {
+		display: grid;
+		grid-template-columns: 2.5rem 1fr;
+		gap: 0.75rem;
+		align-items: baseline;
+		padding: 0.78rem 0;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+		color: #bfb8ae;
+		text-decoration: none;
+		transition:
+			color 180ms ease,
+			padding-left 180ms ease;
+	}
+
+	.world-route a:hover,
+	.world-route a:focus-visible {
+		padding-left: 0.45rem;
+		color: #fff;
+	}
+
+	.world-route span {
+		color: var(--world-gold);
+		font-size: 0.68rem;
+		letter-spacing: 0.18em;
+	}
+
+	.world-route strong {
+		font-family: var(--serif);
+		font-size: clamp(1.15rem, 1.5vw, 1.45rem);
+		font-weight: 300;
+	}
+
+	.world-scroll {
+		display: inline-flex;
+		grid-column: 1 / -1;
+		gap: 1rem;
+		align-items: center;
+		justify-self: start;
+		color: #d6d0c7;
+		font-size: 0.68rem;
+		font-weight: 600;
+		letter-spacing: 0.24em;
+		text-decoration: none;
+		text-transform: uppercase;
+	}
+
+	.world-scroll i {
+		position: relative;
+		width: 4.5rem;
+		height: 1px;
+		background: rgba(255, 255, 255, 0.35);
+	}
+
+	.world-scroll i::after {
+		position: absolute;
+		top: -2px;
+		right: 0;
+		width: 5px;
+		height: 5px;
+		border-radius: 50%;
+		background: var(--world-gold);
+		content: '';
+	}
+
+	.world-manifesto {
+		display: grid;
+		min-height: 72svh;
+		padding: clamp(5rem, 12vw, 12rem) clamp(1.5rem, 8vw, 8rem);
+		place-items: center;
+		background: #f0ebe1;
+		color: #171513;
+		text-align: center;
+	}
+
+	.world-manifesto p {
+		max-width: 66rem;
+		margin: 0;
+		font-family: var(--serif);
+		font-size: clamp(3rem, 7vw, 7.5rem);
+		font-weight: 300;
+		letter-spacing: -0.055em;
+		line-height: 0.98;
+	}
+
+	.world-manifesto em {
+		color: #8d713f;
+		font-weight: 300;
+	}
+
+	.city-chapter {
+		--city-accent: var(--world-gold);
+		position: relative;
+		min-height: 100svh;
+		padding: clamp(6rem, 10vw, 10rem) clamp(1.25rem, 6vw, 6rem);
+		display: grid;
+		grid-template-columns: minmax(18rem, 0.78fr) minmax(0, 1.22fr);
+		gap: clamp(3rem, 7vw, 8rem);
+		align-items: center;
+		overflow: hidden;
+		background: #0c0c0c;
+	}
+
+	.city-chapter--reverse {
+		grid-template-columns: minmax(0, 1.22fr) minmax(18rem, 0.78fr);
+		background: #11100f;
+	}
+
+	.city-chapter--reverse .city-copy {
+		grid-column: 2;
+	}
+
+	.city-chapter--reverse .city-portrait {
+		grid-row: 1;
+		grid-column: 1;
+	}
+
+	.city-chapter::before {
+		position: absolute;
+		inset: 0;
+		background:
+			radial-gradient(
+				circle at 22% 70%,
+				color-mix(in srgb, var(--city-accent) 18%, transparent),
+				transparent 27rem
+			),
+			linear-gradient(110deg, transparent 15%, rgba(255, 255, 255, 0.025), transparent 64%);
+		content: '';
+		pointer-events: none;
+	}
+
+	.city-ghost {
+		position: absolute;
+		right: -0.03em;
+		bottom: -0.18em;
+		color: transparent;
+		font-family: var(--serif);
+		font-size: clamp(8rem, 21vw, 23rem);
+		font-weight: 300;
+		letter-spacing: -0.075em;
+		line-height: 0.75;
+		opacity: 0.18;
+		-webkit-text-stroke: 1px color-mix(in srgb, var(--city-accent) 58%, transparent);
+		white-space: nowrap;
+		pointer-events: none;
+	}
+
+	.city-copy,
+	.city-portrait {
+		position: relative;
+		z-index: 1;
+	}
+
+	.city-stamp {
+		width: 8.8rem;
+		height: 8.8rem;
+		margin-bottom: clamp(2.5rem, 6vw, 5.5rem);
+		display: grid;
+		padding: 1rem;
+		border: 1px solid color-mix(in srgb, var(--city-accent) 72%, transparent);
+		border-radius: 50%;
+		place-items: center;
+		color: var(--city-accent);
+		text-align: center;
+		transform: rotate(-7deg);
+	}
+
+	.city-stamp span {
+		font-family: var(--serif);
+		font-size: 2.1rem;
+		font-weight: 300;
+		line-height: 1;
+	}
+
+	.city-stamp i {
+		width: 2.2rem;
+		height: 1px;
+		background: currentColor;
+	}
+
+	.city-stamp small {
+		font-size: 0.48rem;
+		font-style: normal;
+		letter-spacing: 0.12em;
+		line-height: 1.4;
+		text-transform: uppercase;
+	}
+
+	.city-country {
+		margin-bottom: 0.85rem;
+		color: var(--city-accent);
+	}
+
+	.city-copy h2,
+	.toronto-intro h2 {
+		margin: 0;
+		font-family: var(--serif);
+		font-size: clamp(5rem, 11vw, 11.5rem);
+		font-weight: 300;
+		letter-spacing: -0.075em;
+		line-height: 0.78;
+	}
+
+	.city-event {
+		margin: 2rem 0 0;
+		color: #f3eee5;
+		font-size: 0.76rem;
+		font-weight: 600;
+		letter-spacing: 0.24em;
+		line-height: 1.5;
+		text-transform: uppercase;
+	}
+
+	.city-line {
+		max-width: 30rem;
+		margin: 2rem 0 0;
+		color: #a9a199;
+		font-family: var(--serif);
+		font-size: clamp(1.25rem, 2vw, 1.8rem);
+		font-weight: 300;
+		line-height: 1.45;
+	}
+
+	.city-portrait {
+		margin: 0;
+	}
+
+	.city-portrait-frame {
+		position: relative;
+		aspect-ratio: 4 / 5;
+		overflow: hidden;
+		background: #171717;
+		box-shadow: 0 4rem 8rem -4rem color-mix(in srgb, var(--city-accent) 35%, transparent);
+	}
+
+	.city-portrait-frame::before,
+	.city-portrait-frame::after {
+		position: absolute;
+		z-index: 2;
+		width: 3.5rem;
+		height: 3.5rem;
+		content: '';
+		pointer-events: none;
+	}
+
+	.city-portrait-frame::before {
+		top: 1rem;
+		left: 1rem;
+		border-top: 1px solid rgba(255, 255, 255, 0.8);
+		border-left: 1px solid rgba(255, 255, 255, 0.8);
+	}
+
+	.city-portrait-frame::after {
+		right: 1rem;
+		bottom: 1rem;
+		border-right: 1px solid rgba(255, 255, 255, 0.8);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+	}
+
+	.city-portrait img {
+		width: 100%;
+		height: 100%;
+		display: block;
+		object-fit: cover;
+		filter: saturate(0.94) contrast(1.03);
+		transition:
+			transform 900ms cubic-bezier(0.2, 0.7, 0, 1),
+			filter 500ms ease;
+	}
+
+	.city-portrait:hover img {
+		filter: saturate(1.05) contrast(1.02);
+		transform: scale(1.018);
+	}
+
+	.city-portrait figcaption {
+		display: flex;
+		gap: 1rem;
+		align-items: baseline;
+		justify-content: space-between;
+		margin-top: 1rem;
+		color: #8f8880;
+		font-size: 0.63rem;
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+	}
+
+	.city-portrait figcaption strong {
+		color: #e9e2d8;
+		font-family: var(--serif);
+		font-size: 1.2rem;
+		font-weight: 300;
+		letter-spacing: 0;
+		text-transform: none;
+	}
+
+	.city-portrait--reserved {
+		position: relative;
+		aspect-ratio: 4 / 5;
+		display: grid;
+		overflow: hidden;
+		border: 1px solid color-mix(in srgb, var(--city-accent) 35%, #272727);
+		background:
+			linear-gradient(
+				135deg,
+				transparent 49.8%,
+				color-mix(in srgb, var(--city-accent) 24%, transparent) 50%,
+				transparent 50.2%
+			),
+			radial-gradient(
+				circle at 50% 50%,
+				color-mix(in srgb, var(--city-accent) 14%, transparent),
+				transparent 42%
+			),
+			#111;
+		place-content: center;
+		text-align: center;
+	}
+
+	.reserved-rings {
+		position: absolute;
+		inset: 0;
+		display: grid;
+		place-items: center;
+	}
+
+	.reserved-rings i {
+		position: absolute;
+		width: 42%;
+		aspect-ratio: 1;
+		border: 1px solid color-mix(in srgb, var(--city-accent) 35%, transparent);
+		border-radius: 50%;
+	}
+
+	.reserved-rings i:nth-child(2) {
+		width: 62%;
+	}
+
+	.reserved-rings i:nth-child(3) {
+		width: 82%;
+	}
+
+	.city-portrait--reserved p,
+	.city-portrait--reserved strong,
+	.city-portrait--reserved small {
+		position: relative;
+		z-index: 1;
+		margin: 0;
+	}
+
+	.city-portrait--reserved p,
+	.city-portrait--reserved small {
+		color: var(--city-accent);
+		font-size: 0.62rem;
+		font-weight: 600;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+	}
+
+	.city-portrait--reserved strong {
+		margin: 0.7rem 0;
+		font-family: var(--serif);
+		font-size: clamp(3.5rem, 7vw, 7rem);
+		font-weight: 300;
+		letter-spacing: -0.06em;
+	}
+
+	.city-portrait--reserved small {
+		color: #77716a;
+		letter-spacing: 0.14em;
+	}
+
+	.toronto-intro {
+		min-height: 100svh;
+		padding: clamp(7rem, 12vw, 12rem) clamp(1.25rem, 8vw, 8rem);
+		display: grid;
+		align-items: center;
+		background:
+			radial-gradient(circle at 78% 28%, rgba(202, 48, 55, 0.16), transparent 28rem), #090909;
+	}
+
+	.toronto-intro-copy {
+		max-width: 90rem;
+	}
+
+	.city-stamp--toronto {
+		--city-accent: #cf4c51;
+	}
+
+	.toronto-intro .city-country {
+		color: #cf4c51;
+	}
+
+	.toronto-intro h2 {
+		font-size: clamp(7rem, 18vw, 19rem);
+	}
+
+	.toronto-lede {
+		max-width: 48rem;
+		margin: clamp(2.5rem, 5vw, 5rem) 0 0 auto;
+		color: #c9c0b7;
+		font-family: var(--serif);
+		font-size: clamp(1.5rem, 3vw, 2.6rem);
+		font-weight: 300;
+		line-height: 1.35;
+	}
+
+	.toronto-scroll {
+		position: relative;
+		height: var(--sequence-height);
+		background: #050505;
+	}
+
+	.toronto-sticky {
+		position: sticky;
+		top: 0;
+		height: 100svh;
+		padding: clamp(1rem, 3vw, 2.5rem);
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-rows: minmax(0, 1fr) auto;
+		overflow: hidden;
+		background: #050505;
+	}
+
+	.toronto-stage {
+		position: relative;
+		width: min(74vw, 72rem);
+		height: 100%;
+		min-height: 0;
+		margin: 0 auto;
+		overflow: hidden;
+		background: #111;
+	}
+
+	.toronto-frame {
+		position: absolute;
+		inset: 0;
+		margin: 0;
+		opacity: 0;
+	}
+
+	.toronto-frame.is-active {
+		z-index: 1;
+		opacity: 1;
+	}
+
+	.toronto-frame img {
+		width: 100%;
+		height: 100%;
+		display: block;
+		object-fit: cover;
+	}
+
+	.toronto-vignette {
+		position: absolute;
+		inset: 0;
+		z-index: 2;
+		background:
+			linear-gradient(to top, rgba(0, 0, 0, 0.42), transparent 34%),
+			linear-gradient(
+				90deg,
+				rgba(0, 0, 0, 0.16),
+				transparent 18%,
+				transparent 82%,
+				rgba(0, 0, 0, 0.16)
+			);
+		pointer-events: none;
+	}
+
+	.toronto-corner {
+		position: absolute;
+		z-index: 3;
+		width: 4rem;
+		height: 4rem;
+		pointer-events: none;
+	}
+
+	.toronto-corner--tl {
+		top: 1.25rem;
+		left: 1.25rem;
+		border-top: 1px solid rgba(255, 255, 255, 0.72);
+		border-left: 1px solid rgba(255, 255, 255, 0.72);
+	}
+
+	.toronto-corner--br {
+		right: 1.25rem;
+		bottom: 1.25rem;
+		border-right: 1px solid rgba(255, 255, 255, 0.72);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.72);
+	}
+
+	.toronto-caption {
+		width: min(74vw, 72rem);
+		margin: 0.9rem auto 0;
+		display: flex;
+		align-items: end;
+		justify-content: space-between;
+	}
+
+	.toronto-caption div {
+		display: grid;
+		grid-template-columns: auto auto;
+		gap: 1.25rem;
+		align-items: baseline;
+	}
+
+	.toronto-caption span,
+	.toronto-caption p {
+		color: #8a837b;
+		font-size: 0.6rem;
+		font-weight: 600;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+	}
+
+	.toronto-caption strong {
+		font-family: var(--serif);
+		font-size: clamp(1.35rem, 2.4vw, 2.2rem);
+		font-weight: 300;
+	}
+
+	.toronto-caption p {
+		margin: 0 0 0.25rem;
+		color: #c94c52;
+	}
+
+	.toronto-meter {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		height: 2px;
+		background: rgba(255, 255, 255, 0.12);
+	}
+
+	.toronto-meter i {
+		display: block;
+		width: 100%;
+		height: 100%;
+		background: #c94c52;
+		transform: scaleX(0);
+		transform-origin: left center;
+	}
+
+	.toronto-contact {
+		padding: clamp(6rem, 11vw, 11rem) clamp(1rem, 4vw, 4rem);
+		background: #efe9de;
+		color: #171513;
+	}
+
+	.contact-heading {
+		max-width: 74rem;
+		margin: 0 auto clamp(4rem, 8vw, 8rem);
+		display: grid;
+		grid-template-columns: 1fr auto;
+		gap: 1rem 3rem;
+		align-items: end;
+	}
+
+	.contact-heading > p {
+		grid-column: 1 / -1;
+		color: #9a7738;
+	}
+
+	.contact-heading h2 {
+		max-width: 54rem;
+		margin: 0;
+		font-family: var(--serif);
+		font-size: clamp(3.6rem, 7vw, 7.5rem);
+		font-weight: 300;
+		letter-spacing: -0.06em;
+		line-height: 0.92;
+	}
+
+	.contact-heading > span {
+		color: #746d63;
+		font-size: 0.64rem;
+		font-weight: 600;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+
+	.contact-grid {
+		display: grid;
+		grid-template-columns: repeat(5, minmax(0, 1fr));
+		gap: clamp(0.75rem, 1.5vw, 1.5rem);
+	}
+
+	.contact-grid figure {
+		margin: 0;
+	}
+
+	.contact-grid figure:nth-child(3n + 2) {
+		margin-top: clamp(1.5rem, 5vw, 5rem);
+	}
+
+	.contact-grid figure:nth-child(4n) {
+		margin-top: clamp(0.75rem, 2.4vw, 2.5rem);
+	}
+
+	.contact-grid figure > div {
+		position: relative;
+		aspect-ratio: 4 / 5;
+		overflow: hidden;
+		background: #d8d0c4;
+	}
+
+	.contact-grid img {
+		width: 100%;
+		height: 100%;
+		display: block;
+		object-fit: cover;
+		filter: saturate(0.88);
+		transition:
+			filter 240ms ease,
+			transform 500ms ease;
+	}
+
+	.contact-grid figure:hover img {
+		filter: saturate(1.08);
+		transform: scale(1.02);
+	}
+
+	.contact-grid figure > div span {
+		position: absolute;
+		right: 0.55rem;
+		bottom: 0.45rem;
+		padding: 0.25rem 0.35rem;
+		background: rgba(9, 9, 9, 0.78);
+		color: white;
+		font-size: 0.55rem;
+		letter-spacing: 0.12em;
+	}
+
+	.contact-grid figcaption {
+		padding: 0.65rem 0 0;
+		color: #48423b;
+		font-family: var(--serif);
+		font-size: clamp(0.92rem, 1.25vw, 1.2rem);
+		line-height: 1.15;
+	}
+
+	.world-finale {
+		min-height: 86svh;
+		padding: clamp(6rem, 12vw, 12rem) clamp(1.5rem, 8vw, 8rem);
+		display: grid;
+		align-content: center;
+		justify-items: start;
+		background:
+			radial-gradient(circle at 80% 60%, rgba(198, 161, 91, 0.13), transparent 30rem), #090909;
+	}
+
+	.world-finale > p {
+		margin: 0 0 3rem;
+		color: var(--world-gold);
+		font-size: 0.66rem;
+		font-weight: 600;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+	}
+
+	.world-finale h2 {
+		max-width: 78rem;
+		margin: 0;
+		color: #f1ece4;
+		font-family: var(--serif);
+		font-size: clamp(3.8rem, 8vw, 8.7rem);
+		font-weight: 300;
+		letter-spacing: -0.06em;
+		line-height: 0.92;
+	}
+
+	.world-finale h2 em {
+		color: #c3ab82;
+		font-weight: 300;
+	}
+
+	.world-finale a {
+		display: inline-flex;
+		gap: 1.2rem;
+		align-items: center;
+		margin-top: clamp(3rem, 6vw, 6rem);
+		padding-bottom: 0.6rem;
+		border-bottom: 1px solid var(--world-gold);
+		color: #f1ece4;
+		font-size: 0.7rem;
+		font-weight: 600;
+		letter-spacing: 0.2em;
+		text-decoration: none;
+		text-transform: uppercase;
+	}
+
+	.world-finale a span {
+		color: var(--world-gold);
+		font-family: var(--serif);
+		font-size: 1.6rem;
+		transition: transform 180ms ease;
+	}
+
+	.world-finale a:hover span {
+		transform: translateX(0.35rem);
+	}
+
+	@media (max-width: 900px) {
+		.world-hero {
+			grid-template-columns: 1fr;
+			grid-template-rows: auto auto auto;
+			align-items: start;
+		}
+
+		.world-route {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.world-route a:nth-child(odd) {
+			padding-right: 1rem;
+			border-right: 1px solid rgba(255, 255, 255, 0.16);
+		}
+
+		.world-route a:nth-child(even) {
+			padding-left: 1rem;
+		}
+
+		.world-scroll {
+			grid-column: 1;
+		}
+
+		.city-chapter,
+		.city-chapter--reverse {
+			grid-template-columns: 1fr;
+			gap: 4rem;
+		}
+
+		.city-chapter--reverse .city-copy,
+		.city-chapter--reverse .city-portrait {
+			grid-row: auto;
+			grid-column: 1;
+		}
+
+		.city-chapter--reverse .city-copy {
+			order: 0;
+		}
+
+		.city-chapter--reverse .city-portrait {
+			order: 1;
+		}
+
+		.city-copy {
+			max-width: 42rem;
+		}
+
+		.city-stamp {
+			margin-bottom: 3rem;
+		}
+
+		.city-portrait {
+			width: min(100%, 44rem);
+			justify-self: center;
+		}
+
+		.toronto-stage,
+		.toronto-caption {
+			width: min(92vw, 52rem);
+		}
+
+		.contact-grid {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+	}
+
+	@media (max-width: 600px) {
+		:global(html) {
+			scroll-padding-top: 7rem;
+		}
+
+		.world-hero {
+			padding-right: 1rem;
+			padding-left: 1rem;
+		}
+
+		.world-hero h1 {
+			font-size: clamp(4.3rem, 22vw, 7rem);
+			line-height: 0.83;
+		}
+
+		.world-title-italic {
+			margin-left: 0;
+		}
+
+		.world-route {
+			grid-template-columns: 1fr;
+		}
+
+		.world-route a:nth-child(odd) {
+			padding-right: 0;
+			border-right: 0;
+		}
+
+		.world-route a:nth-child(even) {
+			padding-left: 0;
+		}
+
+		.world-manifesto {
+			min-height: 58svh;
+		}
+
+		.city-chapter {
+			padding-right: 1rem;
+			padding-left: 1rem;
+		}
+
+		.city-copy h2,
+		.toronto-intro h2 {
+			font-size: clamp(4.8rem, 23vw, 7.5rem);
+		}
+
+		.city-stamp {
+			width: 7.2rem;
+			height: 7.2rem;
+		}
+
+		.city-event {
+			font-size: 0.66rem;
+		}
+
+		.city-portrait figcaption {
+			align-items: flex-start;
+			flex-direction: column;
+		}
+
+		.toronto-intro {
+			padding-right: 1rem;
+			padding-left: 1rem;
+		}
+
+		.toronto-scroll {
+			height: var(--sequence-height-mobile);
+		}
+
+		.toronto-sticky {
+			padding: 0.75rem;
+		}
+
+		.toronto-stage {
+			width: 100%;
+		}
+
+		.toronto-caption {
+			width: 100%;
+			align-items: flex-start;
+			flex-direction: column;
+			gap: 0.4rem;
+		}
+
+		.toronto-caption div {
+			grid-template-columns: 1fr;
+			gap: 0.15rem;
+		}
+
+		.toronto-caption p {
+			display: none;
+		}
+
+		.contact-heading {
+			grid-template-columns: 1fr;
+		}
+
+		.contact-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.contact-grid figure:nth-child(3n + 2),
+		.contact-grid figure:nth-child(4n) {
+			margin-top: 0;
+		}
+
+		.contact-grid figure:nth-child(even) {
+			margin-top: 1.5rem;
+		}
+
+		.world-finale {
+			padding-right: 1.25rem;
+			padding-left: 1.25rem;
+		}
+
+		.world-finale > p {
+			line-height: 1.8;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		:global(html) {
+			scroll-behavior: auto;
+		}
+
+		.city-portrait img,
+		.world-route a,
+		.world-finale a span {
+			transition: none;
+		}
+
+		.toronto-scroll {
+			height: auto;
+		}
+
+		.toronto-sticky {
+			position: relative;
+			height: 82svh;
+		}
+
+		.toronto-frame:not(:first-child) {
+			display: none;
+		}
+
+		.toronto-meter {
+			display: none;
+		}
+	}
+</style>
