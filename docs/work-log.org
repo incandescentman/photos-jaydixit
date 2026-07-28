@@ -1,6 +1,31 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-27 - Add four cinematic homepage experience variants
+
+** Direction
+- Jay asked for four separate, reversible visual directions whose first job is to make visitors think the photographs are amazing: Kinetic Editorial, Spatial Portrait Gallery, Living Contact Sheet, and Red Carpet Sequence.
+- Kept the existing homepage wording intact in each concept. The live homepage and its deliberate Packery implementation were not changed.
+
+** Changed
+- Added [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/experiments/kinetic-editorial.astro][📄 Kinetic Editorial]] with oversized editorial typography, a GSAP-assembled portrait stage and photo wall, subtle Three.js atmosphere, native scrolling, keyboard focus, and reduced-motion behavior.
+- Added [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/experiments/spatial-gallery.astro][📄 Spatial Portrait Gallery]] with a shallow Three.js portrait field, pointer and scroll depth, a functional HTML portrait archive, capped rendering resolution, renderer cleanup, and static fallbacks for mobile, reduced motion, data saver, or missing WebGL.
+- Added [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/experiments/living-contact-sheet.astro][📄 Living Contact Sheet]] with an ivory photographic worktable, overlapping prints, GSAP choreography, keyboard-accessible large-image dialog, and a natural-scroll contact sheet.
+- Added [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/experiments/red-carpet-sequence.astro][📄 Red Carpet Sequence]] with five full-scale portrait arrivals, native sticky scrolling, GSAP scrubbed framing and caption motion, restrained flash transitions, and a final Before & After path.
+- Added route-specific scripts at [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/scripts/experiments/kineticEditorial.ts][📄 kineticEditorial.ts]] and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/scripts/experiments/spatialGallery.ts][📄 spatialGallery.ts]].
+- Updated [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/experiments/index.astro][📄 the experiment chooser]] so the current homepage, all four new concepts, and both earlier experiments can be compared from one page.
+- Added ~gsap~ and ~three~ as route-bundled dependencies. The Three.js concepts load their heavier WebGL code only on their own experiment routes.
+
+** Validation
+- Prettier and focused ESLint passed for the chooser, all four new pages, and both new scripts.
+- ~pnpm run test -- --run~ passed all 21 Vitest tests.
+- ~pnpm run build~ generated 103 pages, including all four new experiment routes. Vite reports the expected warning that the dynamically loaded Three.js chunk is larger than 500 kB.
+- Kinetic Editorial, Spatial Portrait Gallery, and Living Contact Sheet passed rendered desktop checks. Kinetic Editorial and Living Contact Sheet also passed mobile checks; Kinetic Editorial's reduced-motion mode disabled its Three.js canvas, and Spatial Portrait Gallery retains its static fallback for mobile, reduced motion, data saver, or missing WebGL.
+- Red Carpet Sequence passed combined-server checks at 1440 × 1000 and 390 × 844 with natural scrolling, working reduced-motion flow, loaded imagery, and no horizontal overflow. The chooser passed desktop and mobile checks with all four new links visible and no console errors.
+
+** Handoff
+The variants are local and uncommitted. Compare them from [[http://127.0.0.1:4335/experiments/][http://127.0.0.1:4335/experiments/]]. Nothing was pushed or deployed.
+
 * 2026-07-14 - Lead the Before & After page with Jason Bateman
 
 ** Changed

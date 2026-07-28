@@ -1,0 +1,669 @@
+---
+export const prerender = true;
+
+import { images } from '../../data/homepage-images.js';
+import siteConfig from '../../../site.config.mts';
+import '../../styles/global.css';
+
+const CLOUD = 'dszpm7yps';
+const imageUrl = (image, width = 1800) => {
+	const publicId =
+		image.cloudinaryPublicId ?? `highlights/${image.filename.replace(/\.[^.]+$/, '')}`;
+	return `https://res.cloudinary.com/${CLOUD}/image/upload/f_auto,q_auto,w_${width}/${publicId}`;
+};
+
+const requested = [
+	'vanessa-kirby_tiff_2024.jpg',
+	'Ana_de_Armas_at_the_2024_Toronto_International_Film_Festival_02_(cropped2).jpg',
+	'john-hopfield_nobel-physics_2024.jpg',
+	'Sydney_Sweeney_at_the_2024_Toronto_International_Film_Festival_(cropped_2).jpg',
+	'jude-law_tiff.jpg',
+];
+
+const selected = requested
+	.map((filename) => images.find((image) => image.filename === filename))
+	.filter(Boolean);
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Red Carpet Sequence — {siteConfig.owner}</title>
+		<meta name="description" content="An experimental cinematic homepage for Jay Dixit Photos." />
+		<meta name="robots" content="noindex, nofollow" />
+		<link rel="icon" href="/favicon.ico" />
+		<link rel="preconnect" href="https://res.cloudinary.com" />
+	</head>
+	<body>
+		<header class="sequence-nav">
+			<a class="wordmark" href="/">Jay Dixit Photos</a>
+			<nav aria-label="Experiment navigation">
+				<a href="/red-carpet">Red Carpet</a>
+				<a href="/before-after">Before &amp; After</a>
+				<a href="/experiments">All experiments</a>
+			</nav>
+		</header>
+
+		<main>
+			<section class="sequence-hero" aria-labelledby="sequence-title">
+				<div class="hero-rule" aria-hidden="true"></div>
+				<p class="kicker">An arrival in five portraits</p>
+				<h1 id="sequence-title">Jay Dixit — Red Carpet Photography for Wikipedia</h1>
+				<p class="lede">
+					I photograph actors, directors, and public figures at film festivals and premieres, then
+					release the portraits under a free license so their Wikipedia articles can finally have
+					great photos.
+				</p>
+				<a class="hero-cta" href="#arrivals">
+					<span>Enter the sequence</span>
+					<span aria-hidden="true">↓</span>
+				</a>
+				<p class="hero-index" aria-hidden="true">JD / 001—005 / 2024—2025</p>
+			</section>
+
+			<section id="arrivals" class="arrivals" aria-label="Selected red carpet photographs">
+				{
+					selected.map((photo, index) => (
+						<article class="premiere" data-premiere>
+							<div class="flash" aria-hidden="true" />
+							<div class="premiere-stage">
+								<p class="sequence-number" aria-hidden="true">
+									{String(index + 1).padStart(2, '0')}
+								</p>
+								<figure class:list={['portrait-frame', index % 2 ? 'frame-right' : 'frame-left']}>
+									<div class="image-shell">
+										<img
+											src={imageUrl(photo, 1800)}
+											srcset={`${imageUrl(photo, 900)} 900w, ${imageUrl(photo, 1400)} 1400w, ${imageUrl(photo, 2200)} 2200w`}
+											sizes="(max-width: 800px) 92vw, 68vw"
+											alt={photo.caption}
+											loading={index < 1 ? 'eager' : 'lazy'}
+											fetchpriority={index < 1 ? 'high' : undefined}
+											decoding="async"
+										/>
+									</div>
+									<figcaption>
+										<span class="caption-label">Arrival {String(index + 1).padStart(2, '0')}</span>
+										<strong>{photo.caption}</strong>
+									</figcaption>
+								</figure>
+								<p class="side-note" aria-hidden="true">
+									Photographed by Jay Dixit
+								</p>
+							</div>
+						</article>
+					))
+				}
+			</section>
+
+			<section class="finale" aria-labelledby="finale-title">
+				<p class="kicker">The public portrait</p>
+				<h2 id="finale-title">See the Before &amp; After.</h2>
+				<div class="finale-grid" aria-hidden="true">
+					{
+						selected
+							.slice(0, 4)
+							.map((photo) => (
+								<img src={imageUrl(photo, 760)} alt="" loading="lazy" decoding="async" />
+							))
+					}
+				</div>
+				<div class="finale-actions">
+					<a class="primary-action" href="/before-after">See the Before &amp; After →</a>
+					<a href="/red-carpet">Explore Red Carpet</a>
+				</div>
+				<a class="experiment-return" href="/experiments">← Compare every homepage experiment</a>
+			</section>
+		</main>
+
+		<script>
+			import { gsap } from 'gsap';
+			import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+			gsap.registerPlugin(ScrollTrigger);
+
+			const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+			const smallScreen = window.matchMedia('(max-width: 700px)');
+
+			if (!reducedMotion.matches) {
+				const context = gsap.context(() => {
+					gsap
+						.timeline()
+						.from('.sequence-nav', { y: -24, opacity: 0, duration: 0.7, ease: 'power3.out' })
+						.from('.kicker', { y: 18, opacity: 0, duration: 0.5 }, '-=0.3')
+						.from('#sequence-title', {
+							yPercent: 18,
+							opacity: 0,
+							duration: 1.2,
+							ease: 'power4.out',
+						})
+						.from(
+							'.lede, .hero-cta, .hero-index',
+							{
+								y: 20,
+								opacity: 0,
+								duration: 0.7,
+								stagger: 0.09,
+							},
+							'-=0.65',
+						);
+
+					document.querySelectorAll<HTMLElement>('[data-premiere]').forEach((premiere) => {
+						const frame = premiere.querySelector('.portrait-frame');
+						const image = premiere.querySelector('img');
+						const caption = premiere.querySelector('figcaption');
+						const flash = premiere.querySelector('.flash');
+						const number = premiere.querySelector('.sequence-number');
+
+						const timeline = gsap.timeline({
+							scrollTrigger: {
+								trigger: premiere,
+								start: 'top 78%',
+								end: 'bottom 22%',
+								scrub: smallScreen.matches ? 0.2 : 0.65,
+							},
+						});
+
+						timeline
+							.fromTo(
+								frame,
+								{ yPercent: 15, rotate: premiere.matches(':nth-child(even)') ? 1.6 : -1.6 },
+								{ yPercent: -8, rotate: 0, ease: 'none' },
+								0,
+							)
+							.fromTo(image, { scale: 1.14 }, { scale: 1.01, ease: 'none' }, 0)
+							.fromTo(caption, { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.28 }, 0.12)
+							.fromTo(
+								number,
+								{ xPercent: -20, opacity: 0 },
+								{ xPercent: 0, opacity: 0.12, duration: 0.3 },
+								0.06,
+							)
+							.fromTo(
+								flash,
+								{ opacity: 0 },
+								{ opacity: 0.78, duration: 0.025, yoyo: true, repeat: 1 },
+								0.02,
+							);
+					});
+
+					gsap.from('.finale-grid img', {
+						scrollTrigger: {
+							trigger: '.finale-grid',
+							start: 'top 82%',
+							once: true,
+						},
+						y: 60,
+						opacity: 0,
+						rotate: (index) => (index % 2 ? 1.4 : -1.4),
+						duration: 0.9,
+						stagger: 0.08,
+						ease: 'power3.out',
+					});
+				});
+
+				window.addEventListener('pagehide', () => context.revert(), { once: true });
+			}
+		</script>
+	</body>
+</html>
+
+<style>
+	:global(*) {
+		box-sizing: border-box;
+	}
+
+	:global(html) {
+		scroll-behavior: smooth;
+		background: #f2eee5;
+	}
+
+	:global(body) {
+		--ink: #16120f;
+		--paper: #f2eee5;
+		--red: #991f27;
+		--rule: rgb(22 18 15 / 22%);
+		margin: 0;
+		min-width: 320px;
+		overflow-x: clip;
+		background:
+			linear-gradient(90deg, transparent 49.95%, rgb(22 18 15 / 5%) 50%, transparent 50.05%),
+			var(--paper);
+		color: var(--ink);
+		font-family: 'Karla', system-ui, sans-serif;
+	}
+
+	.sequence-nav {
+		position: absolute;
+		z-index: 20;
+		top: 0;
+		left: 0;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+		padding: 1.5rem clamp(1.25rem, 4vw, 4.5rem);
+		border-bottom: 1px solid var(--rule);
+	}
+
+	.sequence-nav a {
+		color: inherit;
+		font-size: 0.7rem;
+		font-weight: 700;
+		letter-spacing: 0.13em;
+		text-decoration: none;
+		text-transform: uppercase;
+	}
+
+	.sequence-nav nav {
+		display: flex;
+		gap: clamp(1rem, 3vw, 2.8rem);
+	}
+
+	.sequence-nav a:hover,
+	.sequence-nav a:focus-visible {
+		color: var(--red);
+		outline-offset: 0.35rem;
+	}
+
+	.wordmark {
+		font-family: 'Cormorant Garamond', Georgia, serif;
+		font-size: 1rem !important;
+		letter-spacing: 0.02em !important;
+		text-transform: none !important;
+	}
+
+	.sequence-hero {
+		position: relative;
+		display: grid;
+		place-content: center;
+		min-height: 100svh;
+		padding: 8rem clamp(1.25rem, 8vw, 9rem) 4rem;
+		overflow: hidden;
+	}
+
+	.hero-rule {
+		position: absolute;
+		top: 14%;
+		right: clamp(1.25rem, 4vw, 4.5rem);
+		bottom: 13%;
+		width: 1px;
+		background: var(--rule);
+	}
+
+	.kicker,
+	.caption-label,
+	.hero-index,
+	.sequence-number,
+	.side-note {
+		font-size: 0.68rem;
+		font-weight: 700;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+
+	.kicker {
+		margin: 0 0 1.25rem;
+		color: var(--red);
+	}
+
+	h1 {
+		max-width: 14ch;
+		margin: 0;
+		font-family: 'Cormorant Garamond', Georgia, serif;
+		font-size: clamp(4.5rem, 11.5vw, 11rem);
+		font-weight: 500;
+		letter-spacing: -0.065em;
+		line-height: 0.76;
+	}
+
+	.lede {
+		max-width: 45rem;
+		margin: 2rem 0 0 auto;
+		font-size: clamp(1rem, 1.7vw, 1.3rem);
+		line-height: 1.55;
+	}
+
+	.hero-cta {
+		display: flex;
+		justify-content: space-between;
+		width: min(100%, 45rem);
+		margin: 2rem 0 0 auto;
+		padding: 1rem 0;
+		border-top: 1px solid var(--ink);
+		border-bottom: 1px solid var(--ink);
+		color: inherit;
+		font-size: 0.76rem;
+		font-weight: 700;
+		letter-spacing: 0.13em;
+		text-decoration: none;
+		text-transform: uppercase;
+	}
+
+	.hero-cta:hover,
+	.hero-cta:focus-visible {
+		color: var(--red);
+		outline-offset: 0.3rem;
+	}
+
+	.hero-index {
+		position: absolute;
+		bottom: 1.5rem;
+		left: clamp(1.25rem, 4vw, 4.5rem);
+		margin: 0;
+		color: rgb(22 18 15 / 55%);
+		writing-mode: vertical-rl;
+	}
+
+	.arrivals {
+		border-top: 1px solid var(--rule);
+	}
+
+	.premiere {
+		position: relative;
+		min-height: 125svh;
+		padding: 10svh clamp(1rem, 4vw, 4rem);
+		overflow: clip;
+	}
+
+	.premiere-stage {
+		position: sticky;
+		top: 5svh;
+		display: grid;
+		place-items: center;
+		height: 90svh;
+	}
+
+	.flash {
+		position: absolute;
+		z-index: 10;
+		inset: 0;
+		pointer-events: none;
+		background: white;
+		opacity: 0;
+	}
+
+	.portrait-frame {
+		position: relative;
+		z-index: 2;
+		width: min(68vw, 980px);
+		margin: 0;
+	}
+
+	.frame-left {
+		margin-right: auto;
+		margin-left: 7vw;
+	}
+
+	.frame-right {
+		margin-right: 7vw;
+		margin-left: auto;
+	}
+
+	.image-shell {
+		overflow: hidden;
+		background: #ded8cc;
+		box-shadow: 0 2rem 7rem rgb(54 31 25 / 15%);
+	}
+
+	.portrait-frame img {
+		display: block;
+		width: 100%;
+		height: min(76svh, 980px);
+		object-fit: cover;
+		object-position: 50% 30%;
+		will-change: transform;
+	}
+
+	figcaption {
+		position: absolute;
+		right: clamp(-2rem, -2vw, -0.5rem);
+		bottom: clamp(1rem, 4vw, 4rem);
+		display: grid;
+		gap: 0.5rem;
+		width: min(25rem, 46vw);
+		padding: 1rem 1.2rem 1.2rem;
+		background: rgb(242 238 229 / 92%);
+		border-top: 1px solid var(--ink);
+		backdrop-filter: blur(12px);
+	}
+
+	.frame-right figcaption {
+		right: auto;
+		left: clamp(-2rem, -2vw, -0.5rem);
+	}
+
+	.caption-label {
+		color: var(--red);
+	}
+
+	figcaption strong {
+		font-family: 'Cormorant Garamond', Georgia, serif;
+		font-size: clamp(1.4rem, 3vw, 2.8rem);
+		font-weight: 500;
+		line-height: 0.98;
+	}
+
+	.sequence-number {
+		position: absolute;
+		z-index: 0;
+		top: 50%;
+		right: 1vw;
+		margin: 0;
+		color: var(--red);
+		font-family: 'Cormorant Garamond', Georgia, serif;
+		font-size: clamp(10rem, 31vw, 34rem);
+		font-weight: 500;
+		letter-spacing: -0.08em;
+		line-height: 0.6;
+		opacity: 0.12;
+		transform: translateY(-50%);
+	}
+
+	.premiere:nth-child(even) .sequence-number {
+		right: auto;
+		left: 0;
+	}
+
+	.side-note {
+		position: absolute;
+		right: 1.25rem;
+		bottom: 2rem;
+		margin: 0;
+		color: rgb(22 18 15 / 48%);
+		writing-mode: vertical-rl;
+	}
+
+	.finale {
+		position: relative;
+		padding: clamp(6rem, 13vw, 13rem) clamp(1.25rem, 7vw, 8rem) 3rem;
+		border-top: 1px solid var(--rule);
+		background: radial-gradient(circle at 10% 20%, rgb(153 31 39 / 8%), transparent 30rem), #fbf8f1;
+	}
+
+	.finale h2 {
+		max-width: 10ch;
+		margin: 0 0 clamp(3rem, 8vw, 7rem);
+		font-family: 'Cormorant Garamond', Georgia, serif;
+		font-size: clamp(4rem, 10vw, 10rem);
+		font-weight: 500;
+		letter-spacing: -0.06em;
+		line-height: 0.82;
+	}
+
+	.finale-grid {
+		display: grid;
+		grid-template-columns: repeat(12, 1fr);
+		gap: clamp(0.45rem, 1vw, 1rem);
+		align-items: end;
+	}
+
+	.finale-grid img {
+		display: block;
+		width: 100%;
+		height: clamp(16rem, 35vw, 42rem);
+		object-fit: cover;
+		box-shadow: 0 1rem 4rem rgb(54 31 25 / 12%);
+	}
+
+	.finale-grid img:nth-child(1) {
+		grid-column: 1 / span 3;
+	}
+
+	.finale-grid img:nth-child(2) {
+		grid-column: 4 / span 4;
+		height: clamp(20rem, 44vw, 52rem);
+	}
+
+	.finale-grid img:nth-child(3) {
+		grid-column: 8 / span 2;
+	}
+
+	.finale-grid img:nth-child(4) {
+		grid-column: 10 / span 3;
+		height: clamp(19rem, 39vw, 48rem);
+	}
+
+	.finale-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem 2rem;
+		align-items: center;
+		margin: clamp(3rem, 7vw, 6rem) 0;
+	}
+
+	.finale-actions a,
+	.experiment-return {
+		color: inherit;
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-decoration: none;
+		text-transform: uppercase;
+	}
+
+	.primary-action {
+		padding: 1rem 1.35rem;
+		background: var(--red);
+		color: white !important;
+	}
+
+	.finale-actions a:hover,
+	.finale-actions a:focus-visible,
+	.experiment-return:hover,
+	.experiment-return:focus-visible {
+		text-decoration: underline;
+		text-underline-offset: 0.35rem;
+	}
+
+	.experiment-return {
+		display: inline-block;
+		margin-top: 3rem;
+		color: rgb(22 18 15 / 58%);
+	}
+
+	@media (max-width: 700px) {
+		.sequence-nav nav a:not(:last-child) {
+			display: none;
+		}
+
+		.sequence-hero {
+			display: block;
+			min-height: auto;
+			padding-top: 9rem;
+			padding-bottom: 7rem;
+		}
+
+		h1 {
+			font-size: clamp(4rem, 20vw, 7rem);
+			line-height: 0.8;
+		}
+
+		.lede {
+			margin-top: 2rem;
+		}
+
+		.hero-index,
+		.side-note {
+			display: none;
+		}
+
+		.premiere {
+			min-height: 105svh;
+			padding: 8svh 1rem;
+		}
+
+		.premiere-stage {
+			top: 7svh;
+			height: 86svh;
+		}
+
+		.portrait-frame,
+		.frame-left,
+		.frame-right {
+			width: 92vw;
+			margin: 0;
+		}
+
+		.portrait-frame img {
+			height: 72svh;
+		}
+
+		figcaption,
+		.frame-right figcaption {
+			right: 0.7rem;
+			bottom: 0.7rem;
+			left: 0.7rem;
+			width: auto;
+		}
+
+		.sequence-number {
+			top: 9%;
+			right: auto;
+			left: 0;
+			font-size: 56vw;
+		}
+
+		.finale-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		.finale-grid img,
+		.finale-grid img:nth-child(n) {
+			grid-column: auto;
+			height: 52vw;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		:global(html) {
+			scroll-behavior: auto;
+		}
+
+		:global(*),
+		:global(*::before),
+		:global(*::after) {
+			scroll-behavior: auto !important;
+			animation-duration: 0.01ms !important;
+			animation-iteration-count: 1 !important;
+			transition-duration: 0.01ms !important;
+		}
+
+		.premiere {
+			min-height: auto;
+			padding-block: 3rem;
+		}
+
+		.premiere-stage {
+			position: relative;
+			top: auto;
+			height: auto;
+		}
+
+		figcaption {
+			opacity: 1 !important;
+			transform: none !important;
+		}
+	}
+</style>
