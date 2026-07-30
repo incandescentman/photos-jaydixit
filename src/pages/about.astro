@@ -1,6 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import MainLayout from '../layouts/MainLayout.astro';
-import RecognitionSection from '../components/RecognitionSection.astro';
+import quotePhoto from '../assets/images/about/jay-dixit_2024-10-04_telos_ryan-jina-jess_wong-kar-wai_05420.jpg';
 ---
 
 <MainLayout>
@@ -76,56 +77,50 @@ import RecognitionSection from '../components/RecognitionSection.astro';
 					</p>
 				</div>
 
-				<div class="ed-actions">
-					<a href="/before-after" class="ed-btn ed-btn--solid">View My Work</a>
-					<a href="/contact" class="ed-btn ed-btn--ghost">Get In Touch</a>
-				</div>
+				<nav class="ed-link-list" aria-label="More about Jay">
+					<a class="ed-link" href="https://jaydixit.com" target="_blank" rel="noopener noreferrer">
+						<span>Visit jaydixit.com</span>
+						<svg viewBox="0 0 36 14" aria-hidden="true">
+							<path d="M1 7h32M27 1l6 6-6 6"></path>
+						</svg>
+					</a>
+					<a
+						class="ed-link"
+						href="https://socraticai.co/"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						<span>Socratic AI</span>
+						<svg viewBox="0 0 36 14" aria-hidden="true">
+							<path d="M1 7h32M27 1l6 6-6 6"></path>
+						</svg>
+					</a>
+					<a class="ed-link" href="/contact">
+						<span>Get in Touch</span>
+						<svg class="ed-link-envelope" viewBox="0 0 26 20" aria-hidden="true">
+							<rect x="1" y="1" width="24" height="18" rx="1.5"></rect>
+							<path d="m2 3 11 8 11-8"></path>
+						</svg>
+					</a>
+				</nav>
 			</div>
 		</section>
-
-		<!-- Photography -->
-		<section id="photography" class="ed-section ed-section--tight">
-			<div class="ed-shell ed-shell--wide">
-				<header class="ed-block-head">
-					<p class="ed-kicker eyebrow">Photography</p>
-					<h2 class="ed-h2">Where I Shoot</h2>
-					<p class="ed-block-intro">
-						Red carpet photography for Wikipedia, shot at film festivals, Nobel ceremonies, and
-						cultural events around the world.
-					</p>
-				</header>
-
-				<div class="ed-cards">
-					<a href="/gallery" class="ed-card">
-						<h3 class="ed-card-title">Wikipedia Press</h3>
-						<p class="ed-card-desc">Contributing high-quality portraits to improve Wikipedia.</p>
-					</a>
-					<a href="/gallery/events/nobel" class="ed-card">
-						<h3 class="ed-card-title">Nobel Prizes</h3>
-						<p class="ed-card-desc">Documenting laureates in Stockholm and Oslo.</p>
-					</a>
-					<a href="/gallery/red-carpet" class="ed-card">
-						<h3 class="ed-card-title">Film Festivals</h3>
-						<p class="ed-card-desc">Red carpet coverage at Sundance, SXSW, and TIFF.</p>
-					</a>
-					<a href="/blog/wikiportraits-story" class="ed-card">
-						<h3 class="ed-card-title">WikiPortraits</h3>
-						<p class="ed-card-desc">
-							Contributing portraits that improve Wikipedia&rsquo;s celebrity articles.
-						</p>
-					</a>
-				</div>
-			</div>
-		</section>
-
-		<RecognitionSection />
 
 		<!-- Philosophy quote -->
 		<section class="ed-section ed-quote-section">
-			<div class="ed-shell ed-shell--narrow">
+			<div class="ed-shell ed-shell--quote">
 				<div class="ed-quote">
+					<figure class="ed-quote-photo">
+						<Image
+							src={quotePhoto}
+							alt="A woman smiling in red light"
+							widths={[500, 900, 1200]}
+							sizes="(max-width: 900px) 100vw, 46vw"
+							loading="lazy"
+						/>
+					</figure>
 					<div class="ed-quote-rule" aria-hidden="true"></div>
-					<div>
+					<div class="ed-quote-copy">
 						<blockquote class="ed-quote-text">
 							&ldquo;The feeling I&rsquo;m chasing is that moment when I show someone a photo I just
 							took and they say, &lsquo;Oh my God, I love this picture of me, you really captured
@@ -178,12 +173,13 @@ import RecognitionSection from '../components/RecognitionSection.astro';
 		max-width: 60rem;
 	}
 
-	.ed-shell--wide {
-		max-width: 74rem;
-	}
-
 	.ed-shell--narrow {
 		max-width: 46rem;
+	}
+
+	.ed-shell--quote {
+		max-width: none;
+		padding-inline: clamp(1.5rem, 4vw, 5rem);
 	}
 
 	.ed-center {
@@ -220,10 +216,6 @@ import RecognitionSection from '../components/RecognitionSection.astro';
 		padding: 5.5rem 0;
 	}
 
-	.ed-section--tight {
-		padding-top: 4rem;
-	}
-
 	/* Lead */
 	.ed-lead {
 		display: grid;
@@ -256,6 +248,56 @@ import RecognitionSection from '../components/RecognitionSection.astro';
 		font-size: 1.5rem;
 		line-height: 1.5;
 		color: #3a352e;
+	}
+
+	/* Editorial links */
+	.ed-link-list {
+		display: grid;
+		width: min(100%, 32rem);
+		margin-top: 3rem;
+		border-top: 1px solid var(--ink);
+	}
+
+	.ed-link {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1.5rem;
+		min-height: 59px;
+		padding: 0 2px;
+		border-bottom: 1px solid var(--hairline);
+		color: var(--ink);
+		font-family: var(--serif);
+		font-size: clamp(1.0625rem, 1.15vw, 1.3125rem);
+		font-weight: 400;
+		letter-spacing: -0.012em;
+		text-decoration: none;
+		transition: padding 220ms ease;
+	}
+
+	.ed-link svg {
+		width: 34px;
+		flex: none;
+		overflow: visible;
+		fill: none;
+		stroke: var(--accent);
+		stroke-width: 1.3;
+		transition: transform 240ms ease;
+	}
+
+	.ed-link .ed-link-envelope {
+		width: 26px;
+		margin-right: 4px;
+	}
+
+	.ed-link:hover,
+	.ed-link:focus-visible {
+		padding-left: 8px;
+	}
+
+	.ed-link:hover svg,
+	.ed-link:focus-visible svg {
+		transform: translateX(5px);
 	}
 
 	/* Buttons */
@@ -308,75 +350,6 @@ import RecognitionSection from '../components/RecognitionSection.astro';
 		border-color: var(--ink);
 	}
 
-	/* Block headers */
-	.ed-block-head {
-		max-width: 40rem;
-		margin: 0 auto 3.25rem;
-		text-align: center;
-	}
-
-	.ed-h2 {
-		margin: 0;
-		font-family: var(--serif);
-		font-weight: 400;
-		font-size: clamp(2rem, 4vw, 3rem);
-		line-height: 1.08;
-		letter-spacing: -0.015em;
-		color: #161310;
-	}
-
-	.ed-block-intro {
-		margin: 1.25rem auto 0;
-		font-family: var(--sans);
-		font-size: 1.05rem;
-		line-height: 1.6;
-		color: #5c554c;
-	}
-
-	.ed-block-head .ed-block-intro {
-		max-width: 36rem;
-	}
-
-	/* Category cards */
-	.ed-cards {
-		display: grid;
-		grid-template-columns: repeat(4, 1fr);
-		gap: 1.25rem;
-	}
-
-	.ed-card {
-		display: block;
-		padding: 1.75rem;
-		border: 1px solid var(--hairline);
-		background: #fff;
-		text-decoration: none;
-		transition:
-			border-color 0.25s ease,
-			transform 0.25s ease;
-	}
-
-	.ed-card:hover {
-		border-color: var(--ink);
-		transform: translateY(-3px);
-	}
-
-	.ed-card-title {
-		margin: 0 0 0.6rem;
-		font-family: var(--serif);
-		font-weight: 400;
-		font-size: 1.3rem;
-		line-height: 1.1;
-		color: #161310;
-	}
-
-	.ed-card-desc {
-		margin: 0;
-		font-family: var(--sans);
-		font-size: 0.88rem;
-		line-height: 1.5;
-		color: #6e675c;
-	}
-
 	/* Philosophy quote */
 	.ed-quote-section {
 		background: var(--paper-deep);
@@ -386,17 +359,29 @@ import RecognitionSection from '../components/RecognitionSection.astro';
 	}
 
 	.ed-quote {
-		display: flex;
-		gap: 3rem;
-		align-items: flex-start;
+		display: grid;
+		grid-template-columns: minmax(0, 1.12fr) 1px minmax(0, 0.88fr);
+		gap: clamp(2.5rem, 3vw, 4.5rem);
+		align-items: center;
+	}
+
+	.ed-quote-photo {
+		margin: 0;
+		overflow: hidden;
+		background: #a93225;
+		box-shadow: 0 24px 60px rgb(63 34 20 / 16%);
+	}
+
+	.ed-quote-photo :global(img) {
+		display: block;
+		width: 100%;
+		height: auto;
 	}
 
 	.ed-quote-rule {
-		flex-shrink: 0;
 		width: 1px;
-		height: 16rem;
+		height: min(22rem, 76%);
 		background: #cfc6b3;
-		margin-top: 0.5rem;
 	}
 
 	.ed-quote-text {
@@ -404,7 +389,7 @@ import RecognitionSection from '../components/RecognitionSection.astro';
 		font-family: var(--serif);
 		font-weight: 300;
 		font-style: italic;
-		font-size: clamp(1.75rem, 3.6vw, 2.9rem);
+		font-size: clamp(2.1rem, 4vw, 4.5rem);
 		line-height: 1.25;
 		letter-spacing: -0.015em;
 		color: #1c1813;
@@ -461,14 +446,24 @@ import RecognitionSection from '../components/RecognitionSection.astro';
 
 	/* Responsive */
 	@media (max-width: 900px) {
-		.ed-cards {
-			grid-template-columns: repeat(2, 1fr);
+		.ed-quote {
+			grid-template-columns: 1fr;
+			gap: 3rem;
+		}
+
+		.ed-quote-photo,
+		.ed-quote-copy {
+			width: min(100%, 46rem);
+			margin-inline: auto;
+		}
+
+		.ed-quote-rule {
+			display: none;
 		}
 	}
 
 	@media (max-width: 767px) {
 		.ed-shell,
-		.ed-shell--wide,
 		.ed-shell--narrow,
 		.ed-shell--media {
 			padding: 0 1.5rem;
@@ -483,15 +478,7 @@ import RecognitionSection from '../components/RecognitionSection.astro';
 		}
 
 		.ed-quote {
-			gap: 1.5rem;
-		}
-
-		.ed-quote-rule {
-			display: none;
-		}
-
-		.ed-cards {
-			grid-template-columns: 1fr;
+			gap: 2.5rem;
 		}
 	}
 </style>
