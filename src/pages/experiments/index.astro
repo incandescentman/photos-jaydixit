@@ -18,6 +18,7 @@ const options = [
 		description: 'A typographic magazine opening that assembles into a living wall of portraits.',
 		href: '/experiments/kinetic-editorial/',
 		status: 'New experiment',
+		reaction: '“The other ones I really like.”',
 	},
 	{
 		number: '02',
@@ -26,6 +27,7 @@ const options = [
 			'A shallow three-dimensional field of portraits with scroll depth and pointer parallax.',
 		href: '/experiments/spatial-gallery/',
 		status: 'New experiment',
+		reaction: '“No. Small photos, nothing special.”',
 	},
 	{
 		number: '03',
@@ -34,6 +36,7 @@ const options = [
 			'An ivory photographic worktable with tactile frames, captions, and editorial motion.',
 		href: '/experiments/living-contact-sheet/',
 		status: 'New experiment',
+		reaction: '“The other ones I really like.”',
 	},
 	{
 		number: '04',
@@ -41,6 +44,8 @@ const options = [
 		description: 'A cinematic procession of full-scale portraits shaped by scrolling and flash.',
 		href: '/experiments/red-carpet-sequence/',
 		status: 'New experiment',
+		reaction:
+			'Original: “No. Too boring, nothing really happening.” Revised: “The arrow looks weird. I don’t know, it’s not working the way it is.” “The size of the images in the before and after is too big. Like when I first open the page, I see just only part of his head.” “The new arrow you added looks bizarre.”',
 	},
 	{
 		number: '05',
@@ -95,6 +100,12 @@ const options = [
 									<span class="status">{option.status}</span>
 									<strong>{option.title}</strong>
 									<span class="description">{option.description}</span>
+									{option.reaction && (
+										<span class="reaction">
+											<span class="reaction-label">Your reaction</span>
+											<span>{option.reaction}</span>
+										</span>
+									)}
 								</span>
 								<span class="arrow" aria-hidden="true">
 									↗
@@ -246,6 +257,33 @@ const options = [
 		line-height: 1.45;
 	}
 
+	.reaction {
+		display: grid;
+		grid-template-columns: auto minmax(0, 1fr);
+		gap: 0.75rem;
+		align-items: baseline;
+		max-width: 44rem;
+		margin-top: 0.35rem;
+		padding-top: 0.8rem;
+		border-top: 1px solid rgb(27 27 25 / 15%);
+		color: #3f3b36;
+		font-family: 'Cormorant Garamond', Georgia, serif;
+		font-size: 1.1rem;
+		font-style: italic;
+		line-height: 1.35;
+	}
+
+	.reaction-label {
+		color: #9d332d;
+		font-family: 'Karla', system-ui, sans-serif;
+		font-size: 0.62rem;
+		font-style: normal;
+		font-weight: 700;
+		letter-spacing: 0.13em;
+		text-transform: uppercase;
+		white-space: nowrap;
+	}
+
 	.arrow {
 		font-size: 1.5rem;
 	}
@@ -273,6 +311,11 @@ const options = [
 
 		.description {
 			max-width: 18rem;
+		}
+
+		.reaction {
+			grid-template-columns: 1fr;
+			gap: 0.4rem;
 		}
 	}
 </style>

@@ -27,7 +27,15 @@ const imageData = (index: number) => {
 	};
 };
 
-const heroPhotos = [2, 0, 9, 22, 8, 3].map(imageData);
+const heroPrintLayout = [
+	{ photo: imageData(2), x: 50, y: 4, width: 29, rotation: -2.6, z: 5 },
+	{ photo: imageData(9), x: 68, y: 12, width: 27, rotation: 3.1, z: 3 },
+	{ photo: imageData(22), x: 77, y: 43, width: 18, rotation: -3.7, z: 6 },
+	{ photo: imageData(31), x: 56, y: 48, width: 22, rotation: 2.2, z: 7 },
+	{ photo: imageData(25), x: 43, y: 38, width: 18, rotation: -4.4, z: 2 },
+	{ photo: imageData(11), x: 31, y: 57, width: 18, rotation: 3.5, z: 4 },
+	{ photo: imageData(0), x: 74, y: 70, width: 19, rotation: 1.7, z: 2 },
+];
 const wallPhotos = [2, 0, 9, 22, 8, 3, 18, 10, 24, 19, 5, 25, 32, 11, 31, 17, 33].map(imageData);
 const wallLayouts = [
 	'wall-feature',
@@ -119,30 +127,37 @@ const description =
 						</div>
 					</div>
 
-					<div class="hero-stage" aria-label="Selected portrait photographs" data-hero-stage>
+					<div class="hero-stage" aria-label="Selected portrait prints" data-hero-stage>
+						<div class="darkroom-line darkroom-line-one" aria-hidden="true"></div>
+						<div class="darkroom-line darkroom-line-two" aria-hidden="true"></div>
 						{
-							heroPhotos.map((photo, index) => (
-								<figure
-									class={`hero-photo hero-photo-${index + 1}`}
+							heroPrintLayout.map(({ photo, x, y, width, rotation, z }, index) => (
+								<a
+									class="hero-print"
 									data-hero-photo
 									data-depth={(index + 1) * 0.12}
+									data-tilt
+									href="/gallery"
+									style={`--print-x:${x}%;--print-y:${y}%;--print-width:${width}%;--print-rotation:${rotation}deg;--print-z:${z}`}
+									aria-label={`${photo.caption} — view galleries`}
 								>
+									<span class="clothespin" aria-hidden="true" />
 									<img
 										src={photo.src}
 										srcset={photo.srcset}
-										sizes="(max-width: 720px) 48vw, (max-width: 1100px) 28vw, 19vw"
+										sizes="(max-width: 820px) 47vw, 29vw"
 										alt={photo.caption}
-										width={photo.size === 'landscape' ? 1200 : 800}
-										height={photo.size === 'landscape' ? 800 : 1200}
+										width={index === 1 ? 1200 : 800}
+										height={index === 1 ? 800 : 1200}
 										loading={index < 3 ? 'eager' : 'lazy'}
 										fetchpriority={index === 0 ? 'high' : undefined}
 										decoding="async"
 									/>
-									<figcaption>
-										<span>{String(index + 1).padStart(2, '0')}</span>
+									<span class="print-caption">
 										<strong>{photo.caption}</strong>
-									</figcaption>
-								</figure>
+										<small>View galleries</small>
+									</span>
+								</a>
 							))
 						}
 					</div>
@@ -250,6 +265,7 @@ const description =
 
 	html {
 		scroll-behavior: smooth;
+		overflow-x: clip;
 		background: var(--paper);
 	}
 
@@ -456,21 +472,19 @@ const description =
 	}
 
 	.hero-grid {
-		display: grid;
-		grid-template-columns: minmax(520px, 0.98fr) minmax(520px, 1.02fr);
-		align-items: center;
-		gap: clamp(30px, 4vw, 80px);
-		width: min(100%, 1780px);
+		display: block;
+		width: 100%;
 		min-height: max(820px, 100svh);
-		margin: 0 auto;
-		padding: 124px clamp(20px, 5vw, 94px) 90px;
+		margin: 0;
+		padding: 124px clamp(20px, 2.6vw, 52px) 90px;
 	}
 
 	.hero-copy {
 		position: relative;
-		z-index: 5;
+		z-index: 10;
 		align-self: center;
-		max-width: 800px;
+		width: min(34vw, 700px);
+		max-width: none;
 	}
 
 	.eyebrow {
@@ -494,7 +508,7 @@ const description =
 	h1 {
 		margin: 0;
 		font-family: var(--serif);
-		font-size: clamp(65px, 6.7vw, 126px);
+		font-size: clamp(62px, 5.65vw, 116px);
 		font-weight: 300;
 		letter-spacing: -0.069em;
 		line-height: 0.76;
@@ -503,7 +517,8 @@ const description =
 	.title-line {
 		display: block;
 		overflow: hidden;
-		padding: 0.07em 0.08em 0.07em 0;
+		margin-top: -0.09em;
+		padding: 0.16em 0.08em 0.07em 0;
 	}
 
 	.title-line > span {
@@ -525,7 +540,7 @@ const description =
 	.hero-lede {
 		max-width: 570px;
 		margin: clamp(28px, 4vh, 50px) 0 0;
-		padding-left: clamp(38px, 7vw, 112px);
+		padding-left: clamp(24px, 4vw, 76px);
 		font-family: var(--serif);
 		font-size: clamp(19px, 1.45vw, 26px);
 		font-weight: 300;
@@ -537,7 +552,7 @@ const description =
 		align-items: center;
 		gap: 32px;
 		margin: 34px 0 0;
-		padding-left: clamp(38px, 7vw, 112px);
+		padding-left: clamp(24px, 4vw, 76px);
 	}
 
 	.primary-link {
@@ -576,127 +591,174 @@ const description =
 	}
 
 	.hero-stage {
-		position: relative;
-		z-index: 2;
-		height: min(72vh, 750px);
-		min-height: 570px;
+		position: absolute;
+		z-index: 4;
+		inset: 0;
+		height: 100%;
+		min-height: 0;
 		perspective: 1200px;
+		pointer-events: none;
 	}
 
-	.hero-photo {
+	.darkroom-line {
 		position: absolute;
-		margin: 0;
-		box-shadow: 0 24px 80px rgba(53, 39, 25, 0.17);
-		background: #d8d0c4;
+		z-index: 1;
+		right: 2%;
+		left: 28%;
+		height: 1px;
+		background: rgb(37 29 23 / 30%);
+		box-shadow: 0 1px rgb(255 255 255 / 32%);
+		transform-origin: center;
+	}
+
+	.darkroom-line-one {
+		top: 11%;
+		transform: rotate(-0.7deg);
+	}
+
+	.darkroom-line-two {
+		top: 52%;
+		transform: rotate(0.6deg);
+	}
+
+	.hero-print {
+		position: absolute;
+		z-index: var(--print-z);
+		top: var(--print-y);
+		left: var(--print-x);
+		display: block;
+		width: var(--print-width);
+		padding: clamp(7px, 0.7vw, 12px);
+		padding-bottom: clamp(42px, 4vw, 65px);
+		background: #fffdf7;
+		box-shadow:
+			0 28px 60px rgb(53 42 27 / 16%),
+			0 3px 9px rgb(53 42 27 / 13%);
+		color: var(--ink);
+		text-decoration: none;
+		transform: rotate(var(--print-rotation));
+		transform-origin: 50% 55%;
 		will-change: transform;
+		pointer-events: auto;
 	}
 
-	.hero-photo::before {
+	.hero-print::after {
 		position: absolute;
-		z-index: 2;
-		inset: 8px;
-		border: 1px solid rgba(255, 255, 255, 0.42);
+		inset: 5px;
+		border: 1px solid rgb(35 32 27 / 8%);
 		content: '';
 		pointer-events: none;
 	}
 
-	.hero-photo img {
+	.hero-print img {
 		display: block;
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		filter: saturate(0.92) contrast(1.02);
+		aspect-ratio: 2 / 3;
+		background: #d8d2c7;
+		transition:
+			filter 450ms ease,
+			transform 800ms cubic-bezier(0.2, 0.75, 0.2, 1);
 	}
 
-	.hero-photo figcaption {
+	.hero-print:nth-of-type(2) img {
+		aspect-ratio: 3 / 2;
+	}
+
+	.hero-print:hover img,
+	.hero-print:focus-visible img {
+		filter: saturate(1.05) contrast(1.02);
+		transform: scale(1.025);
+	}
+
+	.print-caption {
 		position: absolute;
-		z-index: 3;
-		right: 0;
-		bottom: 0;
-		left: 0;
+		right: 11px;
+		bottom: 11px;
+		left: 11px;
 		display: flex;
 		align-items: flex-end;
-		gap: 10px;
-		padding: 34px 12px 11px;
-		background: linear-gradient(transparent, rgba(18, 16, 13, 0.78));
-		color: white;
-		opacity: 0;
-		transform: translateY(8px);
-		transition:
-			opacity 240ms ease,
-			transform 240ms ease;
+		justify-content: space-between;
+		gap: 12px;
 	}
 
-	.hero-photo:hover figcaption {
-		opacity: 1;
-		transform: translateY(0);
+	.print-caption strong {
+		max-width: 75%;
+		overflow: hidden;
+		font-family: var(--serif);
+		font-size: clamp(10px, 0.78vw, 13px);
+		font-weight: 400;
+		line-height: 1.15;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
-	.hero-photo figcaption span {
-		color: var(--accent-soft);
-		font-size: 9px;
+	.print-caption small {
+		color: var(--accent);
+		font-size: 6px;
 		font-weight: 600;
-		letter-spacing: 0.15em;
+		letter-spacing: 0.12em;
+		opacity: 0;
+		text-transform: uppercase;
+		transform: translateX(-8px);
+		transition:
+			opacity 250ms ease,
+			transform 250ms ease;
 	}
 
-	.hero-photo figcaption strong {
-		font-size: 10px;
-		font-weight: 500;
-		line-height: 1.25;
+	.hero-print:hover .print-caption small,
+	.hero-print:focus-visible .print-caption small {
+		opacity: 1;
+		transform: translateX(0);
 	}
 
-	.hero-photo-1 {
-		z-index: 6;
-		top: 7%;
-		left: 15%;
-		width: 44%;
-		height: 74%;
-		transform: rotate(-1.5deg);
-	}
-
-	.hero-photo-2 {
+	.clothespin {
+		position: absolute;
 		z-index: 4;
-		top: -1%;
-		right: 2%;
-		width: 32%;
-		height: 50%;
-		transform: rotate(3deg);
+		top: -18px;
+		left: 17px;
+		width: 14px;
+		height: 36px;
+		border-radius: 5px 5px 3px 3px;
+		background:
+			linear-gradient(
+				90deg,
+				rgb(92 57 27 / 22%) 0 12%,
+				transparent 12% 82%,
+				rgb(255 244 207 / 22%) 82%
+			),
+			linear-gradient(#d5a76c, #ac7139);
+		box-shadow:
+			0 2px 3px rgb(37 25 15 / 24%),
+			inset 0 0 0 1px rgb(89 53 25 / 18%);
+		transform: rotate(-7deg);
+		transform-origin: 50% 70%;
 	}
 
-	.hero-photo-3 {
-		z-index: 5;
-		right: -4%;
-		bottom: 2%;
-		width: 45%;
-		height: 38%;
-		transform: rotate(-2deg);
+	.clothespin::before {
+		position: absolute;
+		top: 13px;
+		left: 3px;
+		width: 6px;
+		height: 6px;
+		border: 1px solid rgb(79 52 31 / 72%);
+		border-radius: 50%;
+		background: rgb(221 191 145 / 72%);
+		box-shadow: 0 0 0 1px rgb(255 247 217 / 28%);
+		content: '';
 	}
 
-	.hero-photo-4 {
-		z-index: 3;
-		bottom: -4%;
-		left: 8%;
-		width: 29%;
-		height: 48%;
-		transform: rotate(3.4deg);
-	}
-
-	.hero-photo-5 {
-		z-index: 2;
-		top: 2%;
-		left: -6%;
-		width: 27%;
-		height: 43%;
-		transform: rotate(-5deg);
-	}
-
-	.hero-photo-6 {
-		z-index: 1;
-		right: 13%;
-		bottom: -9%;
-		width: 24%;
-		height: 38%;
-		transform: rotate(5deg);
+	.clothespin::after {
+		position: absolute;
+		bottom: 2px;
+		left: 6px;
+		width: 1px;
+		height: 14px;
+		background: rgb(85 52 26 / 42%);
+		content: '';
+		transform: rotate(13deg);
+		transform-origin: top;
 	}
 
 	.hero-footer {
@@ -1047,12 +1109,15 @@ const description =
 		}
 
 		.hero-grid {
-			grid-template-columns: minmax(430px, 0.9fr) minmax(430px, 1.1fr);
 			padding-inline: 38px;
 		}
 
+		.hero-copy {
+			width: min(40vw, 620px);
+		}
+
 		.hero-stage {
-			height: 620px;
+			height: 100%;
 		}
 
 		.editorial-bridge {
@@ -1094,12 +1159,12 @@ const description =
 		}
 
 		.hero-grid {
-			grid-template-columns: 1fr;
 			min-height: auto;
 			padding: 118px 20px 82px;
 		}
 
 		.hero-copy {
+			width: 100%;
 			max-width: 700px;
 		}
 
@@ -1117,10 +1182,56 @@ const description =
 		}
 
 		.hero-stage {
+			position: relative;
+			inset: auto;
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 18px 12px;
 			width: min(100%, 650px);
-			height: min(126vw, 690px);
-			min-height: 500px;
+			height: auto;
+			min-height: 0;
 			margin: 40px auto 0;
+			padding: 20px 0;
+		}
+
+		.darkroom-line {
+			display: none;
+		}
+
+		.hero-print {
+			position: relative;
+			z-index: auto;
+			top: auto;
+			left: auto;
+			width: auto;
+			padding: 6px;
+			padding-bottom: 42px;
+			transform: rotate(var(--print-rotation));
+		}
+
+		.hero-print:nth-of-type(2) {
+			grid-column: span 2;
+		}
+
+		.hero-print:nth-of-type(2) img {
+			aspect-ratio: 3 / 2;
+		}
+
+		.hero-print:nth-of-type(4) {
+			margin-top: -40px;
+		}
+
+		.hero-print:nth-of-type(6) {
+			margin-top: -30px;
+		}
+
+		.print-caption strong {
+			max-width: 100%;
+			font-size: 10px;
+		}
+
+		.print-caption small {
+			display: none;
 		}
 
 		.hero-footer {

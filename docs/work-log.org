@@ -1,6 +1,90 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-30 - Give Kinetic Editorial a darkroom print hero
+
+** Direction
+- Keep the Kinetic Editorial page's typography, copy, navigation, and animation system, but replace its original floating hero-photo collage with the physical-print composition from Living Contact Sheet.
+- Shift the hero heading and supporting text left to make room for the larger print composition.
+- Replace the red number tabs on the prints with small wooden clothespins so the photographs read as prints hanging to dry on a darkroom wall.
+
+** Changed
+- Replaced the six original hero figures in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/experiments/kinetic-editorial.astro][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/pages/experiments/kinetic-editorial.astro]] with the seven-photo layout and print selections used by the Living Contact Sheet hero.
+- Reframed each photograph as a bordered paper print with a caption strip, tactile shadow, overlapping stack order, and a small CSS-drawn wooden clothespin gripping its upper-left edge. Added two restrained darkroom lines behind the composition.
+- Shifted and slightly narrowed the Kinetic hero copy while giving the print stage the full hero canvas. The original headline wording and supporting prose were not changed.
+- Extended the animated headline masks upward without moving or shrinking the type, so the Newsreader letterforms are no longer clipped across their tops.
+- Updated [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/scripts/experiments/kineticEditorial.ts][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/scripts/experiments/kineticEditorial.ts]] so all seven prints retain the Kinetic entrance choreography, pointer tilt, and scroll-depth movement.
+- On compact screens the prints become the same two-column working-print arrangement rather than shrinking the desktop overlap into unreadable thumbnails.
+
+** Validation
+- Verified the live desktop route at [[http://127.0.0.1:4335/experiments/kinetic-editorial/][http://127.0.0.1:4335/experiments/kinetic-editorial/]] with seven loaded prints, seven visible clothespins, no browser errors, and no page-level horizontal overflow.
+- Verified the compact ~390 x 844~ layout with all seven prints and clipped decorative transform overflow.
+- Prettier and ESLint passed. All 21 Vitest tests passed. The production build generated all 103 pages; Vite retained the existing large-chunk warning.
+- Nothing was committed, pushed, or deployed.
+
+* 2026-07-30 - Complete the revised Before & After experiment
+
+** Direction
+- Keep the revised route large, splashy, graphical, and photography-led. Do not constrain the comparison to the old page's ~68rem~ maximum width.
+- Use the revised editorial treatment as the foundation while restoring the explanatory clarity and complete six-person series from the existing Before & After page.
+
+** Changed
+- Updated [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/experiments/red-carpet-sequence.astro][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/pages/experiments/red-carpet-sequence.astro]] to render all six canonical comparisons in this sequence: Jason Bateman, Vanessa Kirby, Jeremy Strong, John Hopfield, Conan O'Brien, and Sydney Sweeney. The experiment-specific ordering leaves the shared data and existing page unchanged.
+- Reused the existing WikiPortraits explanation verbatim and placed it beside the oversized title so the project is clear without sacrificing the editorial first screen.
+- Changed the external link label from “Wikipedia” to “View on Wikipedia.”
+- Matched the comparison numbers, event lines, and Wikipedia links to the typography and colors used on the canonical Before & After page: Newsreader for the softened gold indexes, and Instrument Sans for the muted event metadata and gold links.
+- Reduced the complete desktop comparison pair to 90% of its available width and centered it; mobile pairs remain full width.
+- Replaced the rejected line-drawn transition with [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/experiments/red-carpet-direction-arrow.png][📄 /Users/jay/Dropbox/github/photos-jaydixit/public/experiments/red-carpet-direction-arrow.png]], a Codex-built-in generated red-carpet floor-marker arrow with a transparent background. The source prompt and generation metadata live beside the generated source image under the current Codex thread's ~generated_images~ folder.
+- Applied the existing Before & After gold, ~#96773f~, to the experiment's kicker, sequence numbers, and text-link hover states while keeping crimson for the red-carpet emblem and primary action.
+- Updated [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/experiments/index.astro][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/pages/experiments/index.astro]] so Jay's first impressions and subsequent Red Carpet Sequence feedback remain visible on the experiment chooser.
+
+** Validation
+- The live route at [[http://127.0.0.1:4335/experiments/red-carpet-sequence/][http://127.0.0.1:4335/experiments/red-carpet-sequence/]] renders six numbered comparisons in the requested order. All 12 portrait images loaded successfully in the browser.
+- Prettier and ESLint passed. All 21 Vitest tests passed. The production build generated all 103 pages; Vite retained the existing large-chunk warning.
+- Nothing was committed, pushed, or deployed.
+
+* 2026-07-28 - Add branded HTML email signature
+
+** Changed
+- Added [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/business-card/jay-dixit-red-carpet-photography-email-signature.html][📄 /Users/jay/Dropbox/github/photos-jaydixit/docs/business-card/jay-dixit-red-carpet-photography-email-signature.html]] as a standalone, copyable rich-text email signature.
+- Reused the business card’s approved wording and the already-public [[https://photos.jaydixit.com/apple-touch-icon.png][red-carpet seal PNG]]. The signature uses an email-client-safe presentation table and inline styling, with no external font or local image dependency.
+- Replaced the old signature’s Cannes photograph with the 72px red-carpet seal while retaining its useful destinations: portfolio, Wikimedia profile, and Commons Gallery.
+- Replaced the old mixed emoji labels with one consistent row of text links so the signature renders more predictably across email clients.
+- Linked the WikiPortraits credential to the official [[https://www.wikiportraits.org/][WikiPortraits website]].
+
+** Validation
+- Prettier passed. The revised HTML rendered at 347 × 101 CSS pixels, displayed the 180 × 180 production seal at 72 × 72 pixels, exposed the working WikiPortraits, portfolio, Wikimedia profile, Commons Gallery, and email links, and reported no browser errors.
+
+* 2026-07-28 - Make Red Carpet Sequence show a coherent Before & After
+
+** Problem
+- The Red Carpet Sequence finale said “See the Before & After” but rendered four ordinary portfolio photographs. No “before” photographs or comparison interaction were present on the page; the only actual Before & After experience was behind a link.
+- The first repair incorrectly overlaid each pair behind a reveal slider. These are separate photographs from different settings and years, not aligned versions of one underlying image, so a merged-image slider was visually incoherent.
+
+** Changed
+- Replaced the false payoff in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/experiments/red-carpet-sequence.astro][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/pages/experiments/red-carpet-sequence.astro]] with three real comparison pairs from the canonical [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/beforeAfter.ts][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/data/beforeAfter.ts]] data: Jason Bateman, Jeremy Strong, and Vanessa Kirby.
+- Removed the rejected opening manifesto and five-photo arrival sequence. The route now opens directly on the Before & After experience.
+- Presented each pair as two complete, distinct photographs in a large side-by-side diptych, with a labeled, line-drawn Before → After transition showing that the first photograph was replaced by the second. A subtle moving dash gives the arrow direction without splicing the unrelated images together. On narrow screens the two photographs stack at full width and the arrow points downward instead of shrinking the images into small thumbnails.
+- Extracted the business card’s existing inline red-carpet SVG geometry into the reusable transparent website asset [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/brand/red-carpet-seal.svg][📄 /Users/jay/Dropbox/github/photos-jaydixit/public/brand/red-carpet-seal.svg]]. Tested it only as a small editorial seal beside the route’s text wordmark, with a restrained hover/focus response, so the photographs remain the dominant visual.
+- Kept the link to the full Before & After page, now labeled “See every Before & After.”
+- Listed all four visual variants and their current review status in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/CLAUDE.org::*Experimental Visual Variants][📄 Experimental Visual Variants]]. Added the pending decision to [[file+emacs:/Users/jay/Dropbox/roam/velocity/goals/current-focus.org][📄 /Users/jay/Dropbox/roam/velocity/goals/current-focus.org]] under Active Priorities.
+
+** Validation
+- Prettier, focused ESLint, and ~pnpm run build~ passed. The build generated all 103 pages; Vite retained the expected warning about the experiment-only Three.js chunk.
+- Verified the live route at [[http://127.0.0.1:4335/experiments/red-carpet-sequence/][http://127.0.0.1:4335/experiments/red-carpet-sequence/]]. The removed hero and arrival sequence are absent, the page begins with the Before & After heading, all six comparison images load, and the refined arrow points right between desktop pairs and downward between full-width compact stacks. The browser reported no console errors.
+
+* 2026-07-28 - Record first impressions of cinematic variants
+
+** Jay's response
+- *Spatial Portrait Gallery*: Rejected. Jay's first impression was: “No. Small photos, nothing special.”
+- *Red Carpet Sequence*: Rejected. Jay's first impression was: “No. Too boring, nothing really happening.”
+- *Kinetic Editorial* and *Living Contact Sheet*: Jay said, “The other ones I really like.”
+
+** Direction
+- Do not advance Spatial Portrait Gallery or Red Carpet Sequence unless Jay explicitly asks to revisit them.
+- Treat Kinetic Editorial and Living Contact Sheet as the promising directions for the next comparison or a possible hybrid.
+- The reusable cross-project lesson is recorded in [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/vibecoding/preferences/UI-PREFERENCES.org][📄 /Users/jay/Library/CloudStorage/Dropbox/github/vibecoding/preferences/UI-PREFERENCES.org]].
+
 * 2026-07-27 - Add four cinematic homepage experience variants
 
 ** Direction

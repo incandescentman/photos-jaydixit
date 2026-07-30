@@ -239,10 +239,10 @@ export function initKineticEditorial() {
 				.from(
 					'[data-hero-photo]',
 					{
-						x: (index) => [-260, 220, 300, -230, -300, 260][index] ?? 0,
-						y: (index) => [-80, -190, 190, 210, -160, 230][index] ?? 0,
-						rotation: (index) => [-18, 16, -14, 18, -22, 21][index] ?? 0,
-						scale: 0.76,
+						x: (index) => (index % 2 ? 180 : -150),
+						y: (index) => (index < 3 ? -120 : 150),
+						rotation: (index) => (index % 2 ? 13 : -15),
+						scale: 0.82,
 						autoAlpha: 0,
 						duration: 1.35,
 						stagger: 0.07,
