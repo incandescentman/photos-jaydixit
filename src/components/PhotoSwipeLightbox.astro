@@ -148,6 +148,32 @@ const serializedOptions = JSON.stringify(options);
 				});
 			});
 
+			lightbox.on('afterInit', () => {
+				const pswp = lightbox.pswp;
+				let closeQueued = false;
+
+				const closeAfterOpening = () => {
+					pswp.off('openingAnimationEnd', closeAfterOpening);
+					pswp.close();
+				};
+
+				const queueEarlyEscape = (event: KeyboardEvent) => {
+					if (event.key !== 'Escape' || !pswp.opener.isOpening) return;
+
+					event.preventDefault();
+					if (closeQueued) return;
+
+					closeQueued = true;
+					pswp.on('openingAnimationEnd', closeAfterOpening);
+				};
+
+				document.addEventListener('keydown', queueEarlyEscape, true);
+				pswp.on('destroy', () => {
+					document.removeEventListener('keydown', queueEarlyEscape, true);
+					pswp.off('openingAnimationEnd', closeAfterOpening);
+				});
+			});
+
 			lightbox.init();
 			configNode.dataset.pswpBound = 'true';
 		});

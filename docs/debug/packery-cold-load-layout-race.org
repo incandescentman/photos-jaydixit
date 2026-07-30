@@ -23,7 +23,7 @@ The lifecycle diagnosis and fix in this report remain correct, but the earlier 1
 * Affected Code and Surfaces
 
 - Shared Packery lifecycle: [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/scripts/packeryGallery.ts][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/scripts/packeryGallery.ts]]
-- Homepage consumer: [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro]]
+- Photo Wall consumer: [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/photo-wall.astro][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/pages/photo-wall.astro]]
 - Filesystem-gallery consumer: [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/gallery/%5B...folder%5D.astro][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/pages/gallery/[...folder].astro]]
 - Existing edge-to-edge contract: [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/packery-edge-to-edge-configuration.org][📄 /Users/jay/Dropbox/github/photos-jaydixit/docs/packery-edge-to-edge-configuration.org]]
 

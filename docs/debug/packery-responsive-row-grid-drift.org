@@ -25,7 +25,7 @@ This is separate from the initialization race documented in [[file+emacs:/Users/
 * Implementation
 
 - In [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/scripts/packeryGallery.ts][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/scripts/packeryGallery.ts]], configure Packery with both ~columnWidth: '.grid-sizer'~ and ~rowHeight: '.grid-sizer'~.
-- In both the critical and settled CSS in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro]], make ~.grid-sizer~ an invisible, absolutely positioned measurement element with ~aspect-ratio: 2 / 3~.
+- In both the critical and settled CSS in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/photo-wall.astro][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/pages/photo-wall.astro]], make ~.grid-sizer~ an invisible, absolutely positioned measurement element with ~aspect-ratio: 2 / 3~.
 - Keep ~.grid-sizer~ responsive through the existing gutter-aware width formulas. Do not hard-code a pixel row height.
 - Keep the mobile fallback unchanged; it hides the sizer and does not initialize Packery.
 

@@ -59,7 +59,7 @@ Run Exwalker first as the human truth gate, then explicitly choose and wire the 
 * 2026-07-08 - Edge-to-Edge Packery Needs Gutter-Aware Fluid Columns
 
 ** Trigger
-The homepage Packery masonry looked good, but on wider viewports it left a persistent empty band on the right. Earlier attempts to center the whole stage made the grid more balanced but did not actually fill both viewport edges.
+The Photo Wall Packery masonry looked good, but on wider viewports it left a persistent empty band on the right. Earlier attempts to center the whole stage made the grid more balanced but did not actually fill both viewport edges.
 
 ** Mechanism
 Packery was laying out a full-width container, but the masonry items still used historical fixed widths: 320px regular columns and 648px wide columns with an 8px gutter. Centering, padding, or using ~fitWidth~ can only move that fixed grid; it cannot make the columns consume arbitrary viewport widths.
@@ -70,7 +70,7 @@ The fix is to let CSS define fluid item widths that already include gutter math 
 - wide width: ~200% / N - 8px * (N - 2) / N~
 
 ** Fix
-Keep [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][src/pages/index.astro]] edge-to-edge at the wrapper and item levels:
+Keep [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/photo-wall.astro][src/pages/photo-wall.astro]] edge-to-edge at the wrapper and item levels:
 
 - ~.portfolio-wrap~ and ~.masonry-items~ stay 100% wide with no horizontal padding.
 - Desktop/tablet breakpoints use gutter-aware ~calc()~ widths for ~.grid-sizer~, ~.masonry-item.regular~, ~.masonry-item.wide~, and ~.masonry-item.wide_tall~.
@@ -113,19 +113,19 @@ Add ~playwright-report/**~ and ~test-results/**~ to the top-level ~ignores~ bloc
 ** Rule of Thumb
 When adding a generator-backed test tool, update both =.gitignore= and tool-specific ignore lists. Generated directories should not be lint or typecheck inputs.
 
-* 2026-06-24 - PhotoSwipe Keyboard Tests Need To Wait For The Open Transition To Settle
+* 2026-07-30 - PhotoSwipe Does Not Bind Escape Until The Opening Animation Ends
 
 ** Trigger
-The new Playwright e2e test could click a homepage or gallery photo and see ~PhotoSwipe~ visibly open, but an immediate synthetic ~Escape~ keypress did not close the lightbox in bundled Chromium. The same interaction worked in a slower manual-style browser probe.
+The promoted Kinetic homepage lightbox was visibly open and carried ~pswp--open~, but pressing Escape during its longer thumbnail-to-center transition did nothing. Repeated browser probes showed that Escape began working only several seconds later.
 
 ** Mechanism
-~PhotoSwipe~ can be visible and carrying ~=pswp--open=~ before it is fully settled for keyboard interaction. Playwright is fast enough to send ~Escape~ during that opening window, so the key event can be ignored even though the UI looks open in the failure screenshot.
+PhotoSwipe 5.4.4 deliberately waits for ~openingAnimationEnd~ before it dispatches ~bindEvents~; its keyboard module registers the document ~keydown~ listener only in response to that event. The root can therefore be visible and marked ~pswp--open~ while Escape is not yet bound. Calling ~pswp.close()~ during the opening transition does not solve this because PhotoSwipe's opener intentionally ignores close requests while ~isOpening~ is true.
 
 ** Fix
-For keyboard-close tests, wait for the root lightbox to be visible, wait for the ~=pswp--open=~ class, then allow a short settle interval before pressing ~Escape~.
+The shared [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/PhotoSwipeLightbox.astro][📄 PhotoSwipe component]] listens for Escape during the opening window and queues one close for ~openingAnimationEnd~. Once the opening completes, PhotoSwipe's normal keyboard listener takes over. This preserves the full opening and closing motion while honoring an early dismissal request.
 
 ** Rule of Thumb
-When testing animated overlays, assert the stable open state before keyboard shortcuts. If a screenshot shows the overlay open but the shortcut failed, check timing before assuming the app option is missing.
+Do not infer keyboard readiness from visibility or the ~pswp--open~ class. For a PhotoSwipe interaction that must accept immediate dismissal, queue Escape across the opening transition instead of lengthening tests with an arbitrary sleep or forcing an abrupt destroy.
 
 * 2026-04-27 - Cropped PhotoSwipe Thumbnails Need Explicit Metadata, And Capped Lightbox Images Must Advertise Their Real Max Size
 
@@ -142,7 +142,7 @@ Using the original dimensions with a capped lightbox still preserves aspect rati
 
 ** Fix
 - Add ~=data-cropped="true"= anywhere the clickable preview is visibly cropped:
-  - ~src/pages/index.astro~
+  - ~src/pages/photo-wall.astro~
   - ~src/pages/gallery/[...folder].astro~
   - ~src/components/PhotoGrid.astro~
   - ~src/pages/before-after.astro~
@@ -234,7 +234,7 @@ Allow homepage entries to carry an explicit ~=cloudinaryPublicId=~ override and 
 
 - Keep canonical local filenames meaningful in ~/src/gallery/highlights/~
 - In ~/src/data/homepage-images.js~, set ~=cloudinaryPublicId=~ when the Cloudinary asset still lives under an older name
-- In ~/src/pages/index.astro~, prefer ~=cloudinaryPublicId=~ over the derived ~=highlights/{basename}=~ pattern
+- In ~/src/pages/photo-wall.astro~, prefer ~=cloudinaryPublicId=~ over the derived ~=highlights/{basename}=~ pattern
 
 ** Rule of Thumb
 Treat Cloudinary public IDs as external identifiers, not as guaranteed mirrors of local filenames. If a local rename happens after upload, either rename the Cloudinary asset too or add an explicit override in homepage data.
@@ -343,7 +343,7 @@ When debugging layout issues:
 4. *Test with CSS disabled* - Does JS alone fix it? If no, it's a CSS issue
 
 ** The Fix
-Added CSS media query in `src/pages/index.astro`:
+Added CSS media query in `src/pages/photo-wall.astro`:
 
 ```css
 @media (max-width: 768px) {
@@ -377,7 +377,7 @@ JavaScript should *enhance* CSS layouts, not fight them. If you're destroying DO
 
 * 2025-10-05 - Masonry Gutters & Edge Balance
 - Packery is happiest when column math stays at the canonical 320px + 8px gutter; pushing columns wider without recalculating heights produces the infamous cropped foreheads.
-- To get a near edge-to-edge feel without touching Packery internals, wrap the gallery in a ~clamp~-based horizontal padding (see ~.portfolio-wrap~ in ~src/pages/index.astro~). Tuning the clamp keeps large monitors almost full-bleed while still guarding tablets from edge collisions.
+- To get a near edge-to-edge feel without touching Packery internals, wrap the gallery in a ~clamp~-based horizontal padding (see ~.portfolio-wrap~ in ~src/pages/photo-wall.astro~). Tuning the clamp keeps large monitors almost full-bleed while still guarding tablets from edge collisions.
 - If you *must* widen columns, collect the real aspect ratios (e.g., ahead-of-time via ~sharp~) and set explicit heights before Packery runs, otherwise the forced ~object-fit: cover~ spills important framing.
 - Quick test: after tweaking gutters, run ~npm run build~ and flick through the homepage with devtools device toolbar to ensure stacked pairs still align and no gaps appear.
 

@@ -1,10 +1,29 @@
 import { expect, test, type Page } from '@playwright/test';
 
-const routes = [
+type SmokeRoute = {
+	name: string;
+	path: string;
+	title: RegExp;
+	heading?: string | RegExp;
+	minImages: number;
+	minLightboxLinks?: number;
+	lightboxSelector?: string;
+};
+
+const routes: SmokeRoute[] = [
 	{
 		name: 'homepage',
 		path: '/',
-		title: /Red Carpet Highlights — Jay Dixit/,
+		title: /Red Carpet Photography for Wikipedia — Jay Dixit/,
+		heading: 'Jay Dixit: Red Carpet Photography for Wikipedia',
+		minImages: 20,
+		minLightboxLinks: 7,
+		lightboxSelector: 'a[data-pswp-item]',
+	},
+	{
+		name: 'legacy photo wall',
+		path: '/photo-wall/',
+		title: /Photo Wall — Jay Dixit/,
 		minImages: 20,
 		minLightboxLinks: 20,
 	},
@@ -101,7 +120,8 @@ test.describe('portfolio smoke checks', () => {
 			expect(await page.locator('img').count()).toBeGreaterThanOrEqual(route.minImages);
 
 			if (route.minLightboxLinks) {
-				expect(await page.locator('.portfolio-lightbox').count()).toBeGreaterThanOrEqual(
+				const lightboxSelector = route.lightboxSelector ?? '.portfolio-lightbox';
+				expect(await page.locator(lightboxSelector).count()).toBeGreaterThanOrEqual(
 					route.minLightboxLinks,
 				);
 			}
@@ -137,15 +157,15 @@ test('site nav renders redesigned desktop and mobile states', async ({ page }) =
 	await expect(nav.locator('.site-nav-social a')).toHaveCount(3);
 
 	await page.setViewportSize({ width: 390, height: 820 });
-	await page.goto('/before-after/');
+	await page.goto('/about/');
 
-	const toggle = page.getByRole('button', { name: 'Menu' });
+	const toggle = page.locator('nav.site-nav').getByRole('button', { name: 'Menu' });
 	await expect(toggle).toBeVisible();
 	await toggle.click();
 
 	const mobileMenu = page.locator('#site-nav-mobile-menu');
 	await expect(mobileMenu).toBeVisible();
-	await expect(mobileMenu.getByRole('link', { name: 'Before & After' })).toHaveAttribute(
+	await expect(mobileMenu.getByRole('link', { name: 'Why I Shoot' })).toHaveAttribute(
 		'aria-current',
 		'page',
 	);
@@ -157,7 +177,8 @@ for (const route of ['/', '/gallery/red-carpet/sundance/']) {
 		await page.goto(route);
 		await waitForInitialImages(page);
 
-		const firstLightboxLink = page.locator('.portfolio-lightbox').first();
+		const lightboxSelector = route === '/' ? 'a[data-pswp-item]' : '.portfolio-lightbox';
+		const firstLightboxLink = page.locator(lightboxSelector).first();
 		await expect(firstLightboxLink).toBeVisible();
 		await firstLightboxLink.click();
 
@@ -171,6 +192,23 @@ for (const route of ['/', '/gallery/red-carpet/sundance/']) {
 		await expect(lightbox).toBeHidden();
 	});
 }
+
+test('photo wall is noindexed and internal promoted experiment URLs are absent', async ({
+	page,
+	request,
+}) => {
+	await page.goto('/photo-wall/');
+	await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, nofollow');
+	await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+		'href',
+		'https://photos.jaydixit.com/photo-wall/',
+	);
+
+	for (const path of ['/experiments/kinetic-editorial/', '/experiments/red-carpet-sequence/']) {
+		const response = await request.get(path, { maxRedirects: 0 });
+		expect(response.status()).toBe(404);
+	}
+});
 
 test('Nobel related essay thumbnail uses the live Vanessa Kirby asset', async ({ page }) => {
 	await page.goto('/blog/nobel-portrait-session/');
@@ -310,17 +348,20 @@ test('contact page preserves Formspree form and editorial fields', async ({ page
 	await expect(form.getByRole('button', { name: 'Send Message' })).toBeVisible();
 });
 
-test('about page renders editorial sections without breaking the recognition block', async ({
-	page,
-}) => {
+test('about page renders the approved editorial links and philosophy section', async ({ page }) => {
 	await page.goto('/about/');
 	await waitForInitialImages(page);
 
 	await expect(page.getByRole('heading', { name: 'Why I Take Photos' })).toBeVisible();
-	await expect(page.locator('.ed-card')).toHaveCount(4);
-	await expect(page.locator('.ed-ai-card')).toHaveCount(2);
-	await expect(page.getByText('Socratic AI')).toBeVisible();
-	await expect(page.getByRole('heading', { name: 'OpenAI' })).toBeVisible();
+	await expect(page.locator('.ed-link-list .ed-link')).toHaveCount(3);
+	await expect(page.getByRole('link', { name: 'Visit jaydixit.com' })).toBeVisible();
+	await expect(page.getByRole('link', { name: 'Socratic AI' })).toBeVisible();
+	await expect(
+		page.locator('.ed-link-list').getByRole('link', { name: 'Get in Touch', exact: true }),
+	).toBeVisible();
+	await expect(page.locator('.ed-quote-photo img')).toBeVisible();
+	await expect(page.locator('.ed-card')).toHaveCount(0);
+	await expect(page.locator('.ed-ai-card')).toHaveCount(0);
 	expect(await getBrokenCompletedImages(page)).toEqual([]);
 });
 
@@ -332,6 +373,12 @@ test('before-after page renders source captions and loads comparison images afte
 
 	await expect(page).toHaveTitle(/Before & After/);
 	await expect(page.getByRole('heading', { name: 'Before & After' })).toBeVisible();
+	await expect(
+		page.locator('.sequence-nav').getByRole('link', { name: 'About Me' }),
+	).toHaveAttribute('href', '/about');
+	await expect(
+		page.locator('.sequence-nav').getByRole('link', { name: 'Red Carpets Around the World' }),
+	).toHaveAttribute('href', '/#red-carpets-around-the-world');
 
 	const comparisonCards = page.locator('.comparison-card');
 	await expect(comparisonCards).toHaveCount(6);

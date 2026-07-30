@@ -1,6 +1,43 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-30 - Align Before & After with the new homepage
+
+** Direction
+- Give the Before & After introduction more visual weight and move it away from the far-right edge.
+- Match the page's primary navigation to the approved Kinetic homepage navigation.
+
+** Changed
+- Moved the existing Wikipedia explanation beneath the oversized Before & After title in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/before-after.astro][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/pages/before-after.astro]], preserving Jay's exact wording while widening its measure from ~34rem~ to ~58rem~ and increasing the responsive serif size.
+- Replaced the page's outdated Red Carpet / Galleries / About / Contact navigation with the Kinetic homepage set: Red Carpet, Before & After, About Me, Why WikiPortraits, Red Carpets Around the World, Contact, and jaydixit.com. The festival link returns to the named homepage section.
+- Matched the approved Jay Dixit / Photos brand treatment and kept Contact available as the compact-screen navigation action.
+
+** Validation
+- Verified at ~1600 x 1000~, ~1280 x 900~, and ~390 x 844~. The desktop explanation begins at the same horizontal position as the title, the complete navigation fits at desktop and laptop sizes, compact screens retain Contact, all three sizes have zero horizontal overflow, and the page reports no browser console errors.
+- Prettier and focused ESLint passed for the revised page.
+
+* 2026-07-30 - Promote Kinetic Editorial to the canonical homepage
+
+** Direction
+- Replace the canonical ~/~ landing page with the approved Kinetic Editorial experience.
+- Preserve the former Packery homepage only as an intentionally unlinked reference route at ~/photo-wall/~.
+- Treat internal experiment URLs as disposable: remove promoted experiment routes instead of preserving or redirecting them.
+
+** Changed
+- Moved Kinetic Editorial from ~src/pages/experiments/kinetic-editorial.astro~ to [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro]], making the approved cinematic design the canonical homepage source.
+- Routed the promoted homepage through the chromeless [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/layouts/MainLayout.astro][📄 main layout]] so it inherits canonical metadata, social metadata, analytics, the complete favicon set, and shared site foundations without adding the standard navigation or footer.
+- Removed the experiment-only ~noindex~ metadata, “Current photography homepage,” and “All experiments” footer links. Replaced the experiment footer with a minimal public copyright footer.
+- Moved the former Packery homepage to [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/photo-wall.astro][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/pages/photo-wall.astro]]. Its canonical URL is ~/photo-wall/~, it is marked ~noindex, nofollow~, and no public page links to it.
+- Removed both promoted internal routes, ~/experiments/kinetic-editorial/~ and ~/experiments/red-carpet-sequence/~, without redirects.
+- Updated the noindexed experiment chooser so Kinetic Editorial appears only as the canonical homepage rather than as a duplicate experiment.
+- Updated the shared PhotoSwipe integration so an Escape keypress during the longer Kinetic opening transition is queued until ~openingAnimationEnd~, then closes with the normal smooth transition instead of being ignored.
+- Updated the route smoke tests, Packery path references, architecture documentation, legacy handoff, and canonical [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/CLAUDE.org::*Experiment URL Lifecycle][📄 experiment URL lifecycle rule]].
+
+** Validation
+- Verified the canonical homepage, noindexed Photo Wall, revised Before & After page, shared navigation, About page, and both PhotoSwipe surfaces in the production-browser suite: all 23 Playwright tests passed.
+- Verified that ~/experiments/kinetic-editorial/~ and ~/experiments/red-carpet-sequence/~ return direct ~404~ responses without redirects, and that ~/photo-wall/~ is absent from the generated sitemap.
+- Full ESLint passed, all 21 Vitest tests passed, and the production build generated 102 pages. Vite retained the existing large-chunk warning.
+
 * 2026-07-30 - Promote the cinematic Before & After page
 
 ** Direction

@@ -59,7 +59,7 @@ The JavaScript fixes (resize handler, destroying Packery, !important in JS) were
 *** What Was Actually Happening
 
 1. *Hardcoded CSS rules persisted*:
-   - src/pages/index.astro defined `.masonry-item { position: absolute; aspect-ratio: var(--aspect-ratio, 2/3); }`
+   - src/pages/photo-wall.astro defined `.masonry-item { position: absolute; aspect-ratio: var(--aspect-ratio, 2/3); }`
    - These rules applied at all viewport sizes
    - No media query override existed for mobile
 
@@ -75,7 +75,7 @@ The JavaScript fixes (resize handler, destroying Packery, !important in JS) were
 
 *** The Successful Solution
 
-*Added CSS media query with !important flags* in src/pages/index.astro:
+*Added CSS media query with !important flags* in src/pages/photo-wall.astro:
 
 ```css
 @media (max-width: 768px) {

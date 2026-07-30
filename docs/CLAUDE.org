@@ -16,7 +16,8 @@ Last Synced for AI Context: 2025-10-04
 The root **CLAUDE.md** file contains legacy documentation. This file (docs/CLAUDE.org) is the canonical documentation entry point. Both should be maintained during transition.
 
 * Recent Updates
-- 2026-07-30: Promoted the revised cinematic Before & After experiment to the canonical ~/before-after/~ route; the former experiment URL now redirects to it, and both the canonical page and Kinetic Editorial use the enlarged red-carpet seal, wordmark, and navigation treatment
+- 2026-07-30: Promoted Kinetic Editorial to the canonical ~/~ homepage, moved the former Packery homepage to the noindexed and intentionally unlinked ~/photo-wall/~ route, and removed the internal Kinetic experiment route rather than preserving it
+- 2026-07-30: Promoted the revised cinematic Before & After experiment to the canonical ~/before-after/~ route; its internal experiment URL was removed, and both the canonical page and Kinetic Editorial use the enlarged red-carpet seal, wordmark, and navigation treatment
 - 2026-07-28: Added four reversible visual experiment routes and a chooser without changing the live homepage; current routes, first impressions, and review status are recorded under [[*Experimental Visual Variants][Experimental Visual Variants]]
 - 2026-07-14: Fixed the wide-screen Packery row-grid drift by measuring responsive ~rowHeight~ from the portrait-ratio sizer; verified every current breakpoint through 7680px plus temporary 9- and 10-column layouts in [[file:debug/packery-responsive-row-grid-drift.org][the responsive row-grid bug report]]
 - 2026-07-13: Integrated the three Jason Bateman highlights into the saved Packery sequence; fresh-context checks at 1728px and 2048px found no internal gaps or overflow, only the unavoidable incomplete final row
@@ -41,13 +42,19 @@ The root **CLAUDE.md** file contains legacy documentation. This file (docs/CLAUD
 
 * Experimental Visual Variants
 
-These are reversible comparison routes. The live homepage at ~/~ remains unchanged. Review all variants from [[http://127.0.0.1:4335/experiments/][the local experiment chooser]].
+These are reversible comparison routes. Review the remaining variants from [[http://127.0.0.1:4335/experiments/][the local experiment chooser]].
 
-- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/experiments/kinetic-editorial.astro][📄 Kinetic Editorial]] at [[http://127.0.0.1:4335/experiments/kinetic-editorial/][~/experiments/kinetic-editorial/~]] — Jay’s first impression was positive.
+** Experiment URL Lifecycle
+
+Internal experiment URLs are disposable review surfaces. When an experiment is promoted to a canonical public route, move the implementation to that public route and remove the internal experiment route entirely. Do not preserve an internal experiment URL with a redirect unless Jay explicitly asks for that specific redirect.
+
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][📄 Kinetic Editorial]] at [[http://127.0.0.1:4335/][~/~]] — promoted to the canonical homepage on 2026-07-30. Its internal experiment route was removed.
 - [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/experiments/spatial-gallery.astro][📄 Spatial Portrait Gallery]] at [[http://127.0.0.1:4335/experiments/spatial-gallery/][~/experiments/spatial-gallery/~]] — rejected: “No. Small photos, nothing special.”
 - [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/experiments/living-contact-sheet.astro][📄 Living Contact Sheet]] at [[http://127.0.0.1:4335/experiments/living-contact-sheet/][~/experiments/living-contact-sheet/~]] — Jay’s first impression was positive.
-- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/before-after.astro][📄 Cinematic Before & After]] at [[http://127.0.0.1:4335/before-after/][~/before-after/~]] — promoted to the canonical page on 2026-07-30 after the revised large-format portrait-pair direction was selected. The former ~/experiments/red-carpet-sequence/~ URL redirects here.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/before-after.astro][📄 Cinematic Before & After]] at [[http://127.0.0.1:4335/before-after/][~/before-after/~]] — promoted to the canonical page on 2026-07-30 after the revised large-format portrait-pair direction was selected. Its internal experiment route was removed.
 - [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/experiments/index.astro][📄 Experiment Chooser]] is the comparison index.
+
+The former Packery homepage is preserved for reference in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/photo-wall.astro][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/pages/photo-wall.astro]] at ~/photo-wall/~. It is noindexed and intentionally absent from public navigation.
 
 The abstract red-carpet mark from the business-card source is available as the reusable transparent website asset [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/brand/red-carpet-seal.svg][📄 /Users/jay/Dropbox/github/photos-jaydixit/public/brand/red-carpet-seal.svg]]. The canonical Before & After page uses it as a small editorial seal beside the text wordmark; it does not replace the current global photographic logo.
 
@@ -80,7 +87,7 @@ If you're new to this project, read these in order:
 - Root [[file:../astro-cloudinary.org][astro-cloudinary.org]] - Astro Cloudinary implementation
 - Root [[file:../cloudinary-assets-content-layer.org][cloudinary-assets-content-layer.org]] - Content layer architecture
 - [[file:masonry-architecture-improvements.org][masonry-architecture-improvements.org]] - Masonry layout enhancements
-- [[file:packery-edge-to-edge-configuration.org][packery-edge-to-edge-configuration.org]] - Current homepage Packery edge-to-edge configuration
+- [[file:packery-edge-to-edge-configuration.org][packery-edge-to-edge-configuration.org]] - Preserved Photo Wall Packery edge-to-edge configuration
 - Root [[file:../photo-resequencing-guide.org][photo-resequencing-guide.org]] - Photo ordering guide
 - Root [[file:../image-configuration-guide.org][image-configuration-guide.org]] - Image configuration
 - [[file:wikimedia-commons-upload.org][wikimedia-commons-upload.org]] - Wikimedia Commons workflow

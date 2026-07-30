@@ -4,7 +4,7 @@
 * Configuration Opportunities
 
 ** Shared Masonry Options
-- Consolidate Packery, Isotope, and fallback settings into a single ~masonry.config.ts~ consumed by ~src/pages/index.astro~ and ~src/scripts/masonry.ts~ so breakpoints, gutters, and variants stay aligned.
+- Consolidate Packery, Isotope, and fallback settings into a single ~masonry.config.ts~ consumed by ~src/pages/photo-wall.astro~ and ~src/scripts/masonry.ts~ so breakpoints, gutters, and variants stay aligned.
 - Expose per-gallery overrides via frontmatter or YAML keys instead of hard-coded values, letting editors tweak layout density without code changes.
 
 ** Breakpoint Governance
@@ -18,7 +18,7 @@
 * Architecture Opportunities
 
 ** Reusable Masonry Initializer
-- Refactor the bespoke Packery setup inside ~src/pages/index.astro~ to wrap the shared ~initMasonry~ helper, extending it with admin hooks rather than duplicating layout math.
+- Refactor the bespoke Packery setup inside ~src/pages/photo-wall.astro~ to wrap the shared ~initMasonry~ helper, extending it with admin hooks rather than duplicating layout math.
 - Move progressive-reveal logic into the shared script behind an option flag so both homepage and gallery routes benefit from uniform loading behaviour.
 
 ** Admin Mode Isolation
@@ -40,5 +40,5 @@
 - Include a Playwright smoke test that snaps the homepage at desktop and mobile widths to catch regression gaps in the flex fallback.
 
 * Implementation Notes
-- Homepage Packery script now lives in ~src/scripts/packeryGallery.ts~ and exposes ~initPackeryGallery~ so routes can opt into the same layout behaviour with or without admin tooling.
+- Photo Wall Packery script now lives in ~src/scripts/packeryGallery.ts~ and exposes ~initPackeryGallery~ so routes can opt into the same layout behaviour with or without admin tooling.
 - Dynamic gallery route (~src/pages/gallery/[...folder].astro~) now renders ~.masonry-item~ articles and invokes the shared initializer; search/tag filters toggle items and trigger Packery relayout.

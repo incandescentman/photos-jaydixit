@@ -216,7 +216,8 @@ manifest.
 
 ​**** Astro Pages
 
-- src/pages/index.astro → homepage with curated Cloudinary-served photo grid
+- src/pages/index.astro → canonical Kinetic Editorial homepage
+- src/pages/photo-wall.astro → former Packery homepage, preserved as a noindexed and intentionally unlinked reference route
 
 - src/pages/gallery/index.astro → lists all gallery folders with thumbnails
 
@@ -346,7 +347,7 @@ manifest.
 - Two gallery modes exist: YAML (src/gallery/gallery.yaml) and filesystem (src/gallery/photos/**). Avoid route conflicts; prefer one source per route.
 
 - Packery is the homepage/folder-page masonry engine by deliberate choice (Jay, 2026-07-05). Do NOT propose replacing it with justified-layout or any other engine; the packery/imagesloaded/draggabilly dependencies stay.
-- Homepage Packery must quantize both axes from the responsive `.grid-sizer`: `columnWidth` and `rowHeight` both reference it, and the hidden sizer keeps `aspect-ratio: 2 / 3`. This prevents mixed 1x1, 2x1, and 2x2 tiles from developing settled holes at wide viewports. Validate both sides of every breakpoint, ultrawide widths through 7680px, and a temporary future 9- or 10-column rule; see `docs/debug/packery-responsive-row-grid-drift.org`.
+- Photo Wall Packery must quantize both axes from the responsive `.grid-sizer`: `columnWidth` and `rowHeight` both reference it, and the hidden sizer keeps `aspect-ratio: 2 / 3`. This prevents mixed 1x1, 2x1, and 2x2 tiles from developing settled holes at wide viewports. Validate both sides of every breakpoint, ultrawide widths through 7680px, and a temporary future 9- or 10-column rule; see `docs/debug/packery-responsive-row-grid-drift.org`.
 
 - Highlights are part of the real photo system: homepage and red-carpet pages also read from src/gallery/highlights/
 

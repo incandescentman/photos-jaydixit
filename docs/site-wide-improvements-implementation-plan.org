@@ -42,7 +42,7 @@ Unify the site around a quieter editorial vocabulary: monochrome labels, precise
 Use [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/before-after.astro][src/pages/before-after.astro]] as the first reference point. Its new neutral label rows and source captions are closer to the desired tone than the older colored badge treatment.
 
 The next step is to identify every place where the site describes a photo and bring those surfaces into the same language:
-- homepage image captions in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][src/pages/index.astro]]
+- homepage image captions in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/photo-wall.astro][src/pages/photo-wall.astro]]
 - person cards in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/red-carpet/index.astro][src/pages/red-carpet/index.astro]]
 - gallery cards in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/gallery/index.astro][src/pages/gallery/index.astro]]
 - photo detail pages under [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/gallery/photo][src/pages/gallery/photo]]

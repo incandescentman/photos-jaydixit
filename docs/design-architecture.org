@@ -88,12 +88,18 @@ Users should see content ASAP, not stare at blank screens. Photography portfolio
 
 ** Key Components
 
-*** Homepage (=src/pages/index.astro=)
+*** Photo Wall (=src/pages/photo-wall.astro=)
 - Curated photo grid with manual ordering
 - Admin mode for drag-and-drop reordering (=?admin=true=)
 - PhotoSwipe lightbox integration
 - Masonry layout with imagesLoaded and Packery
 - Image metadata from =src/data/homepage-images.js=
+
+*** Homepage (=src/pages/index.astro=)
+- Kinetic Editorial landing experience
+- Large typographic introduction and darkroom print composition
+- PhotoSwipe sequence for the hero prints
+- Editorial profile, portrait wall, and public portfolio navigation
 
 *** Gallery Pages (=src/pages/gallery/[...folder].astro=)
 - Dynamic routes from =src/gallery/photos/**= folder structure

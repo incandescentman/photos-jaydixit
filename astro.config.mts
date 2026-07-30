@@ -19,7 +19,9 @@ export default defineConfig({
 		mdx(),
 		sitemap({
 			filter: (page) =>
-				!page.includes('/prototype-documentary') && !page.includes('/salient-photography-demo'),
+				!page.includes('/prototype-documentary') &&
+				!page.includes('/salient-photography-demo') &&
+				!page.includes('/photo-wall'),
 		}),
 	],
 	vite: {

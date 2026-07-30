@@ -5,11 +5,11 @@
 
 This note records the Packery homepage configuration that currently fills the viewport cleanly from left edge to right edge, without the old right-side empty band.
 
-Use this before changing homepage masonry behavior in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][src/pages/index.astro]] or the shared Packery initializer in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/scripts/packeryGallery.ts][src/scripts/packeryGallery.ts]].
+Use this before changing Photo Wall masonry behavior in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/photo-wall.astro][src/pages/photo-wall.astro]] or the shared Packery initializer in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/scripts/packeryGallery.ts][src/scripts/packeryGallery.ts]].
 
 * Current Source Of Truth
 
-- Homepage route: [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][src/pages/index.astro]]
+- Photo Wall route: [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/photo-wall.astro][src/pages/photo-wall.astro]]
 - Packery initializer: [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/scripts/packeryGallery.ts][src/scripts/packeryGallery.ts]]
 - Archived pre-promotion homepage: [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/archive/source-snapshots/index-before-edge-to-edge-packery-2026-07-08.astro][docs/archive/source-snapshots/index-before-edge-to-edge-packery-2026-07-08.astro]]
 
@@ -58,7 +58,7 @@ Current breakpoints:
 
 Eight columns is the current design cap, not an engineering assumption about the largest possible monitor or future layout. The row geometry must continue to work if a later design adds 9-, 10-, or higher-column breakpoints.
 
-These rules intentionally appear twice in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][src/pages/index.astro]]:
+These rules intentionally appear twice in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/photo-wall.astro][src/pages/photo-wall.astro]]:
 
 - inside the ~criticalStyles~ string, so first paint has the same geometry Packery will read
 - inside the page-level ~<style is:inline>~ block, so the settled page keeps the same geometry
@@ -92,7 +92,7 @@ One more detail matters for polish: Packery's staggered first layout can briefly
 - Do not enable Packery ~fitWidth~ for this homepage layout.
 - Do not reintroduce side padding on ~.portfolio-wrap~ or ~.masonry-items~ unless you also rework the column formulas.
 - Do not remove ~overflow-x: hidden~ from ~.masonry-items~ unless you have verified there is no transient horizontal scroll during first layout.
-- Do not change the mobile breakpoint in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/scripts/packeryGallery.ts][src/scripts/packeryGallery.ts]] without changing the CSS fallback threshold in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][src/pages/index.astro]].
+- Do not change the mobile breakpoint in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/scripts/packeryGallery.ts][src/scripts/packeryGallery.ts]] without changing the CSS fallback threshold in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/photo-wall.astro][src/pages/photo-wall.astro]].
 - Do not remove the duplicated critical and settled CSS copies unless the homepage gets a single generated source for those rules.
 - Do not remove ~rowHeight~ or the sizer's ~2 / 3~ aspect ratio while mixed 1-by-1, 2-by-1, and 2-by-2 tiles share the Packery grid.
 - Do not leave experiment metadata on the homepage. Canonical must be ~/~, title must be ~Red Carpet Highlights~, and the homepage must not set ~noindex~.
@@ -103,7 +103,7 @@ One more detail matters for polish: Packery's staggered first layout can briefly
 Run:
 
 #+begin_src sh
-pnpm exec prettier --check src/pages/index.astro
+pnpm exec prettier --check src/pages/photo-wall.astro
 pnpm build
 git diff --check
 #+end_src
@@ -132,4 +132,4 @@ Useful browser assertions:
 
 * Reverting
 
-To revert to the pre-promotion homepage source, copy [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/archive/source-snapshots/index-before-edge-to-edge-packery-2026-07-08.astro][docs/archive/source-snapshots/index-before-edge-to-edge-packery-2026-07-08.astro]] back over [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][src/pages/index.astro]], then rerun the verification checklist.
+To revert to the pre-promotion homepage source, copy [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/archive/source-snapshots/index-before-edge-to-edge-packery-2026-07-08.astro][docs/archive/source-snapshots/index-before-edge-to-edge-packery-2026-07-08.astro]] back over [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/photo-wall.astro][src/pages/photo-wall.astro]], then rerun the verification checklist.
