@@ -3,6 +3,7 @@ export const prerender = true;
 
 import { images } from '../../data/homepage-images.js';
 import { cldSizes, cldSrcset, cldUrl } from '../../lib/cloudinary';
+import PhotoSwipeLightbox from '../../components/PhotoSwipeLightbox.astro';
 import siteConfig from '../../../site.config.mts';
 
 type HomepageImage = {
@@ -23,18 +24,20 @@ const imageData = (index: number) => {
 		publicId,
 		src: cldUrl(publicId, 1000),
 		srcset: cldSrcset(publicId, [480, 760, 1000, 1400, 1800]),
+		fullSrc: cldUrl(publicId, 2400),
+		lightboxSrcset: cldSrcset(publicId, [1000, 1600, 2000, 2400]),
 		sizes: cldSizes('(max-width: 720px) 88vw, (max-width: 1100px) 44vw, 30vw'),
 	};
 };
 
 const heroPrintLayout = [
-	{ photo: imageData(2), x: 50, y: 4, width: 29, rotation: -2.6, z: 5 },
-	{ photo: imageData(9), x: 68, y: 12, width: 27, rotation: 3.1, z: 3 },
-	{ photo: imageData(22), x: 77, y: 43, width: 18, rotation: -3.7, z: 6 },
-	{ photo: imageData(31), x: 56, y: 48, width: 22, rotation: 2.2, z: 7 },
-	{ photo: imageData(25), x: 43, y: 38, width: 18, rotation: -4.4, z: 2 },
-	{ photo: imageData(11), x: 31, y: 57, width: 18, rotation: 3.5, z: 4 },
-	{ photo: imageData(0), x: 74, y: 70, width: 19, rotation: 1.7, z: 2 },
+	{ photo: imageData(2), x: 49, y: 3, width: 29, rotation: -2.6, z: 5 },
+	{ photo: imageData(9), x: 72, y: 10, width: 27, rotation: 3.1, z: 3 },
+	{ photo: imageData(22), x: 81, y: 41, width: 18, rotation: -3.7, z: 6 },
+	{ photo: imageData(31), x: 58, y: 51, width: 22, rotation: 2.2, z: 7 },
+	{ photo: imageData(25), x: 38, y: 9, width: 18, rotation: -4.4, z: 2 },
+	{ photo: imageData(11), x: 31, y: 47, width: 18, rotation: 3.5, z: 4 },
+	{ photo: imageData(0), x: 76, y: 74, width: 19, rotation: 1.7, z: 2 },
 ];
 const wallPhotos = [2, 0, 9, 22, 8, 3, 18, 10, 24, 19, 5, 25, 32, 11, 31, 17, 33].map(imageData);
 const wallLayouts = [
@@ -59,7 +62,7 @@ const wallLayouts = [
 
 const title = 'Jay Dixit — Red Carpet Photography for Wikipedia';
 const description =
-	'I photograph actors, directors, and public figures at film festivals and premieres, then release the portraits under a free license so their Wikipedia articles can finally have great photos.';
+	'As a photographer for WikiPortraits, I take pictures of actors, writers, and scientists at film festivals and cultural events around the world, then release the images under a free license for use on Wikipedia.';
 ---
 
 <!doctype html>
@@ -86,6 +89,7 @@ const description =
 
 		<header class="site-header" data-header>
 			<a class="site-mark" href="/" aria-label="Jay Dixit Photos, current homepage">
+				<img src="/brand/red-carpet-seal.svg" alt="" width="72" height="72" />
 				<span>Jay Dixit</span>
 				<small>Photos</small>
 			</a>
@@ -127,7 +131,12 @@ const description =
 						</div>
 					</div>
 
-					<div class="hero-stage" aria-label="Selected portrait prints" data-hero-stage>
+					<div
+						id="hero-print-gallery"
+						class="hero-stage"
+						aria-label="Selected portrait prints"
+						data-hero-stage
+					>
 						<div class="darkroom-line darkroom-line-one" aria-hidden="true"></div>
 						<div class="darkroom-line darkroom-line-two" aria-hidden="true"></div>
 						{
@@ -137,9 +146,14 @@ const description =
 									data-hero-photo
 									data-depth={(index + 1) * 0.12}
 									data-tilt
-									href="/gallery"
+									data-pswp-item="true"
+									data-full-src={photo.fullSrc}
+									data-pswp-srcset={photo.lightboxSrcset}
+									data-pswp-caption={photo.caption}
+									data-cropped="true"
+									href={photo.fullSrc}
 									style={`--print-x:${x}%;--print-y:${y}%;--print-width:${width}%;--print-rotation:${rotation}deg;--print-z:${z}`}
-									aria-label={`${photo.caption} — view galleries`}
+									aria-label={`${photo.caption} — view full size`}
 								>
 									<span class="clothespin" aria-hidden="true" />
 									<img
@@ -155,7 +169,7 @@ const description =
 									/>
 									<span class="print-caption">
 										<strong>{photo.caption}</strong>
-										<small>View galleries</small>
+										<small>View full size</small>
 									</span>
 								</a>
 							))
@@ -232,6 +246,20 @@ const description =
 			</section>
 		</main>
 
+		<PhotoSwipeLightbox
+			gallerySelector="#hero-print-gallery"
+			childrenSelector="a[data-pswp-item]"
+			options={{
+				wheelToZoom: true,
+				padding: { top: 20, bottom: 80, left: 20, right: 20 },
+				showHideAnimationType: 'zoom',
+				showAnimationDuration: 650,
+				easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+				mainClass: 'pswp--kinetic-editorial',
+				bgOpacity: 0.28,
+			}}
+		/>
+
 		<footer class="experiment-footer">
 			<a href="/">← Current photography homepage</a>
 			<a href="/experiments">All experiments</a>
@@ -295,6 +323,98 @@ const description =
 		mix-blend-mode: multiply;
 	}
 
+	.pswp.pswp--kinetic-editorial {
+		--pswp-bg: var(--paper);
+		--pswp-placeholder-bg: #ded5c8;
+		--pswp-icon-color: #96773f;
+		--pswp-icon-color-secondary: var(--paper-bright);
+		--pswp-icon-stroke-color: var(--ink);
+		--pswp-icon-stroke-width: 1.5px;
+		--pswp-preloader-color: rgb(150 119 63 / 35%);
+		--pswp-preloader-color-secondary: #96773f;
+	}
+
+	.pswp--kinetic-editorial .pswp__img {
+		box-shadow:
+			0 3px 10px rgb(23 23 19 / 20%),
+			0 24px 70px rgb(23 23 19 / 30%);
+	}
+
+	.pswp--kinetic-editorial .pswp__counter {
+		color: var(--ink);
+		font-family: var(--sans);
+		font-size: 12px;
+		font-weight: 600;
+		letter-spacing: 0.12em;
+		text-shadow: 0 1px 0 var(--paper-bright);
+	}
+
+	.pswp--kinetic-editorial .pswp__button--close,
+	.pswp--kinetic-editorial .pswp__button--zoom {
+		width: 44px;
+		height: 44px;
+		margin: 8px 8px 0 0;
+		border: 1px solid rgb(150 119 63 / 45%);
+		border-radius: 50%;
+		background: var(--paper-bright);
+		box-shadow: 0 4px 18px rgb(23 23 19 / 12%);
+	}
+
+	.pswp--kinetic-editorial .pswp__button--close:hover,
+	.pswp--kinetic-editorial .pswp__button--close:focus-visible,
+	.pswp--kinetic-editorial .pswp__button--zoom:hover,
+	.pswp--kinetic-editorial .pswp__button--zoom:focus-visible {
+		border-color: #96773f;
+		background: var(--paper-bright);
+	}
+
+	.pswp--kinetic-editorial .pswp__button--close .pswp__icn,
+	.pswp--kinetic-editorial .pswp__button--zoom .pswp__icn {
+		top: 5px;
+		left: 5px;
+	}
+
+	.pswp--kinetic-editorial .pswp__button--arrow .pswp__icn {
+		filter: drop-shadow(0 2px 5px rgb(23 23 19 / 22%));
+	}
+
+	.pswp--kinetic-editorial .pswp__button--arrow {
+		top: calc(50% - 30px);
+	}
+
+	.pswp--kinetic-editorial .pswp__button--arrow--prev {
+		left: max(12px, calc(35.5vw - 87px));
+	}
+
+	.pswp--kinetic-editorial .pswp__button--arrow--next {
+		right: max(12px, calc(35.5vw - 87px));
+	}
+
+	.pswp--kinetic-editorial .pswp__custom--caption {
+		right: auto !important;
+		bottom: 22px !important;
+		left: 50% !important;
+		width: max-content !important;
+		max-width: min(80vw, 720px) !important;
+		padding: 10px 17px 11px !important;
+		transform: translateX(-50%);
+		border: 1px solid rgb(150 119 63 / 42%);
+		background: var(--paper-bright) !important;
+		box-shadow: 0 7px 26px rgb(23 23 19 / 16%);
+		color: var(--ink) !important;
+		font-family: var(--serif) !important;
+		font-size: 16px !important;
+		line-height: 1.35 !important;
+	}
+
+	.pswp--kinetic-editorial .pswp__custom--caption strong {
+		color: var(--ink) !important;
+	}
+
+	.pswp--kinetic-editorial .pswp__custom--caption em {
+		color: var(--muted) !important;
+	}
+
 	a {
 		color: inherit;
 	}
@@ -347,29 +467,43 @@ const description =
 		display: grid;
 		grid-template-columns: minmax(160px, 1fr) auto minmax(160px, 1fr);
 		align-items: center;
-		min-height: 82px;
+		min-height: 120px;
 		margin: 0 clamp(20px, 3.2vw, 60px);
 		border-bottom: 1px solid var(--rule);
 	}
 
 	.site-mark {
 		display: inline-flex;
-		align-items: baseline;
+		align-items: center;
 		gap: 8px;
 		width: max-content;
 		text-decoration: none;
 	}
 
+	.site-mark img {
+		display: block;
+		flex: none;
+		width: 72px;
+		height: 72px;
+		transition: transform 220ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+	}
+
+	.site-mark:hover img,
+	.site-mark:focus-visible img {
+		transform: rotate(-4deg) scale(1.06);
+	}
+
 	.site-mark span {
 		font-family: var(--serif);
-		font-size: 23px;
+		font-size: 2.35rem;
 		font-weight: 500;
-		letter-spacing: -0.035em;
+		line-height: 1;
+		letter-spacing: -0.025em;
 	}
 
 	.site-mark small {
 		color: var(--accent);
-		font-size: 9px;
+		font-size: 12px;
 		font-weight: 600;
 		letter-spacing: 0.18em;
 		text-transform: uppercase;
@@ -384,9 +518,9 @@ const description =
 	.site-header nav a,
 	.header-contact {
 		position: relative;
-		font-size: 10px;
+		font-size: 0.82rem;
 		font-weight: 600;
-		letter-spacing: 0.12em;
+		letter-spacing: 0.1em;
 		text-decoration: none;
 		text-transform: uppercase;
 	}
@@ -476,7 +610,7 @@ const description =
 		width: 100%;
 		min-height: max(820px, 100svh);
 		margin: 0;
-		padding: 124px clamp(20px, 2.6vw, 52px) 90px;
+		padding: 154px clamp(20px, 2vw, 40px) 90px;
 	}
 
 	.hero-copy {
@@ -532,15 +666,15 @@ const description =
 	}
 
 	.title-line-final {
-		margin-left: clamp(40px, 8vw, 150px);
+		margin-left: clamp(36px, 5vw, 100px);
 		font-size: 0.78em;
 		font-style: italic;
 	}
 
 	.hero-lede {
-		max-width: 570px;
+		max-width: 520px;
 		margin: clamp(28px, 4vh, 50px) 0 0;
-		padding-left: clamp(24px, 4vw, 76px);
+		padding-left: clamp(24px, 2.5vw, 50px);
 		font-family: var(--serif);
 		font-size: clamp(19px, 1.45vw, 26px);
 		font-weight: 300;
@@ -552,7 +686,7 @@ const description =
 		align-items: center;
 		gap: 32px;
 		margin: 34px 0 0;
-		padding-left: clamp(24px, 4vw, 76px);
+		padding-left: clamp(24px, 2.5vw, 50px);
 	}
 
 	.primary-link {
@@ -1150,8 +1284,21 @@ const description =
 
 	@media (max-width: 820px) {
 		.site-header {
-			min-height: 70px;
+			min-height: 80px;
 			margin-inline: 18px;
+		}
+
+		.site-mark img {
+			width: 48px;
+			height: 48px;
+		}
+
+		.site-mark span {
+			font-size: 1.68rem;
+		}
+
+		.site-mark small {
+			font-size: 10px;
 		}
 
 		.hero {
@@ -1160,7 +1307,7 @@ const description =
 
 		.hero-grid {
 			min-height: auto;
-			padding: 118px 20px 82px;
+			padding: 128px 20px 82px;
 		}
 
 		.hero-copy {
@@ -1279,11 +1426,11 @@ const description =
 
 	@media (max-width: 540px) {
 		.site-mark span {
-			font-size: 20px;
+			font-size: 1.5rem;
 		}
 
 		.header-contact {
-			font-size: 9px;
+			font-size: 11px;
 		}
 
 		.eyebrow {

@@ -16,6 +16,7 @@ Last Synced for AI Context: 2025-10-04
 The root **CLAUDE.md** file contains legacy documentation. This file (docs/CLAUDE.org) is the canonical documentation entry point. Both should be maintained during transition.
 
 * Recent Updates
+- 2026-07-30: Promoted the revised cinematic Before & After experiment to the canonical ~/before-after/~ route; the former experiment URL now redirects to it, and both the canonical page and Kinetic Editorial use the enlarged red-carpet seal, wordmark, and navigation treatment
 - 2026-07-28: Added four reversible visual experiment routes and a chooser without changing the live homepage; current routes, first impressions, and review status are recorded under [[*Experimental Visual Variants][Experimental Visual Variants]]
 - 2026-07-14: Fixed the wide-screen Packery row-grid drift by measuring responsive ~rowHeight~ from the portrait-ratio sizer; verified every current breakpoint through 7680px plus temporary 9- and 10-column layouts in [[file:debug/packery-responsive-row-grid-drift.org][the responsive row-grid bug report]]
 - 2026-07-13: Integrated the three Jason Bateman highlights into the saved Packery sequence; fresh-context checks at 1728px and 2048px found no internal gaps or overflow, only the unavoidable incomplete final row
@@ -45,12 +46,10 @@ These are reversible comparison routes. The live homepage at ~/~ remains unchang
 - [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/experiments/kinetic-editorial.astro][📄 Kinetic Editorial]] at [[http://127.0.0.1:4335/experiments/kinetic-editorial/][~/experiments/kinetic-editorial/~]] — Jay’s first impression was positive.
 - [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/experiments/spatial-gallery.astro][📄 Spatial Portrait Gallery]] at [[http://127.0.0.1:4335/experiments/spatial-gallery/][~/experiments/spatial-gallery/~]] — rejected: “No. Small photos, nothing special.”
 - [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/experiments/living-contact-sheet.astro][📄 Living Contact Sheet]] at [[http://127.0.0.1:4335/experiments/living-contact-sheet/][~/experiments/living-contact-sheet/~]] — Jay’s first impression was positive.
-- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/experiments/red-carpet-sequence.astro][📄 Red Carpet Sequence / Before & After]] at [[http://127.0.0.1:4335/experiments/red-carpet-sequence/][~/experiments/red-carpet-sequence/~]] — the original long red-carpet arrival sequence was rejected as too boring and removed. The route now opens directly on large Before → After portrait pairs and needs a fresh decision on whether this revised direction is useful.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/before-after.astro][📄 Cinematic Before & After]] at [[http://127.0.0.1:4335/before-after/][~/before-after/~]] — promoted to the canonical page on 2026-07-30 after the revised large-format portrait-pair direction was selected. The former ~/experiments/red-carpet-sequence/~ URL redirects here.
 - [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/experiments/index.astro][📄 Experiment Chooser]] is the comparison index.
 
-The abstract red-carpet mark from the business-card source is available as the reusable transparent website asset [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/brand/red-carpet-seal.svg][📄 /Users/jay/Dropbox/github/photos-jaydixit/public/brand/red-carpet-seal.svg]]. The revised Before & After route tests it only as a small editorial seal beside the text wordmark; it does not replace the current global photographic logo.
-
-The pending decision is tracked in [[file+emacs:/Users/jay/Dropbox/roam/velocity/goals/current-focus.org][📄 /Users/jay/Dropbox/roam/velocity/goals/current-focus.org]], not in this project documentation.
+The abstract red-carpet mark from the business-card source is available as the reusable transparent website asset [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/brand/red-carpet-seal.svg][📄 /Users/jay/Dropbox/github/photos-jaydixit/public/brand/red-carpet-seal.svg]]. The canonical Before & After page uses it as a small editorial seal beside the text wordmark; it does not replace the current global photographic logo.
 
 * Start Here
 

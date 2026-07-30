@@ -27,6 +27,7 @@ type LayoutProps = {
 	publishedTime?: string | Date;
 	modifiedTime?: string | Date;
 	keywords?: string[] | string;
+	showChrome?: boolean;
 };
 
 const owner = siteConfig.owner;
@@ -74,6 +75,7 @@ const modifiedTime = normalizeDateValue(
 		(frontmatter.publishDate as string | Date | undefined),
 );
 const structuredData = props.structuredData ?? (frontmatter.structuredData as JsonLd | undefined);
+const showChrome = props.showChrome ?? true;
 
 const websiteStructuredData = {
 	'@context': 'https://schema.org',
@@ -169,10 +171,18 @@ gtag('config', '${gaMeasurementId}', {
 		<slot name="head" />
 	</head>
 	<body>
-		<NavBar />
-		<main>
-			<slot />
-		</main>
-		<Footer />
+		{
+			showChrome ? (
+				<>
+					<NavBar />
+					<main>
+						<slot />
+					</main>
+					<Footer />
+				</>
+			) : (
+				<slot />
+			)
+		}
 	</body>
 </html>

@@ -333,16 +333,20 @@ test('before-after page renders source captions and loads comparison images afte
 	await expect(page).toHaveTitle(/Before & After/);
 	await expect(page.getByRole('heading', { name: 'Before & After' })).toBeVisible();
 
-	const comparisonCards = page.locator('.ba-pair');
+	const comparisonCards = page.locator('.comparison-card');
 	await expect(comparisonCards).toHaveCount(6);
-	await expect(comparisonCards.first().locator('.ba-name')).toHaveText('Jeremy Strong');
-	await expect(page.locator('.ba-name', { hasText: 'Jason Bateman' })).toBeVisible();
-	await expect(page.locator('.ba-arrow')).toHaveCount(6);
-	await expect(page.locator('.ba-cap-src')).toHaveCount(12);
-	await expect(page.locator('.ba-cap-src', { hasText: 'Jay Dixit, TIFF 2025' })).toBeVisible();
-	await expect(page.locator('.ba-cap-src', { hasText: 'Glenn Francis, 2019' })).toBeVisible();
+	await expect(comparisonCards.first().getByRole('heading')).toHaveText('Jason Bateman');
+	await expect(page.getByRole('heading', { name: 'Jeremy Strong' })).toBeVisible();
+	await expect(page.locator('.comparison-transition')).toHaveCount(6);
+	await expect(page.locator('.comparison-caption')).toHaveCount(12);
 	await expect(
-		page.locator('.ba-cap-src', {
+		page.locator('.comparison-caption', { hasText: 'Jay Dixit, TIFF 2025' }),
+	).toBeVisible();
+	await expect(
+		page.locator('.comparison-caption', { hasText: 'Glenn Francis, 2019' }),
+	).toBeVisible();
+	await expect(
+		page.locator('.comparison-caption', {
 			hasText: 'Jay Dixit, TIFF 2024',
 		}),
 	).toHaveCount(2);
@@ -350,14 +354,13 @@ test('before-after page renders source captions and loads comparison images afte
 	for (const card of await comparisonCards.all()) {
 		await card.scrollIntoViewIfNeeded();
 		await page.waitForTimeout(150);
-		await expect(card.locator('img')).toHaveCount(2);
+		const comparisonImages = card.locator('.comparison-image');
+		await expect(comparisonImages).toHaveCount(2);
 		await expect
 			.poll(() =>
-				card
-					.locator('img')
-					.evaluateAll((images) =>
-						images.every((image) => image.complete && image.naturalWidth > 0),
-					),
+				comparisonImages.evaluateAll((images) =>
+					images.every((image) => image.complete && image.naturalWidth > 0),
+				),
 			)
 			.toBe(true);
 	}

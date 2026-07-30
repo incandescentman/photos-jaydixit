@@ -1,560 +1,549 @@
 ---
+export const prerender = true;
+
+import { Image } from 'astro:assets';
 import MainLayout from '../layouts/MainLayout.astro';
-import EditorialPhotoFrame from '../components/EditorialPhotoFrame.astro';
-import PhotoSwipeLightbox from '../components/PhotoSwipeLightbox.astro';
 import { comparisons } from '../data/beforeAfter';
+
+const comparisonSequence = [
+	'Jason Bateman',
+	'Vanessa Kirby',
+	'Jeremy Strong',
+	'John Hopfield',
+	"Conan O'Brien",
+	'Sydney Sweeney',
+];
+
+const sequencedComparisons = comparisonSequence.map((name) => {
+	const comparison = comparisons.find((candidate) => candidate.name === name);
+	if (!comparison) throw new Error(`Missing Before & After comparison for ${name}`);
+	return comparison;
+});
 ---
 
 <MainLayout
 	title="Before & After"
 	description="Wikipedia portrait upgrades: see the difference professional photography makes"
+	showChrome={false}
 >
-	<!-- Hero -->
-	<section class="ba-hero">
-		<div class="ba-shell">
-			<p class="ba-kicker eyebrow">The WikiPortraits Project</p>
-			<h1 class="ba-title">Before &amp; After</h1>
-			<p class="ba-standfirst">
-				Wikipedia deserves better photographs. As a red-carpet photographer for Wikipedia, I replace
-				low-quality or outdated portraits with professional images I shoot at film festivals and
-				cultural events.
-			</p>
-		</div>
-	</section>
+	<header class="sequence-nav">
+		<a class="wordmark" href="/">
+			<img class="brand-seal" src="/brand/red-carpet-seal.svg" alt="" width="72" height="72" />
+			<span>Jay Dixit Photos</span>
+		</a>
+		<nav aria-label="Primary navigation">
+			<a href="/red-carpet">Red Carpet</a>
+			<a href="/gallery">Galleries</a>
+			<a href="/about">About</a>
+			<a href="/contact">Contact</a>
+		</nav>
+	</header>
 
-	<!-- Comparison Grid -->
-	<section class="ba-gallery-section">
-		<div id="before-after-gallery" class="ba-shell">
-			{
-				comparisons.length === 0 ? (
-					<div class="ba-empty">
-						<p>More comparisons coming soon.</p>
-					</div>
-				) : (
-					<div class="ba-list">
-						{comparisons.map((comparison, i) => (
-							<article class="ba-pair">
-								<header class="ba-pair-head">
-									<span class="ba-index">{String(i + 1).padStart(2, '0')}</span>
-									<div class="ba-pair-titles">
-										<h2 class="ba-name">{comparison.name}</h2>
-										{comparison.event && <p class="ba-event">{comparison.event}</p>}
+	<main>
+		<section class="finale" aria-labelledby="finale-title">
+			<p class="kicker">The public portrait</p>
+			<div class="finale-intro">
+				<h1 id="finale-title">Before &amp; After</h1>
+				<p class="finale-standfirst">
+					Wikipedia deserves better photographs. As a red-carpet photographer for Wikipedia, I
+					replace low-quality or outdated portraits with professional images I shoot at film
+					festivals and cultural events.
+				</p>
+			</div>
+			<div class="comparison-list">
+				{
+					sequencedComparisons.map((comparison, index) => (
+						<article class="comparison-card">
+							<header class="comparison-header">
+								<span class="comparison-index">{String(index + 1).padStart(2, '0')}</span>
+								<div>
+									<h3>{comparison.name}</h3>
+									<p>{comparison.event}</p>
+								</div>
+								<a
+									class="editorial-link"
+									href={comparison.article}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									View on Wikipedia <span aria-hidden="true">↗</span>
+								</a>
+							</header>
+
+							<div class="comparison-pair">
+								<figure class="comparison-panel">
+									<div class="comparison-frame">
+										<Image
+											class="comparison-image"
+											src={comparison.beforeImage}
+											alt={`${comparison.name} — previous Wikipedia photograph`}
+											widths={[500, 800, 1200]}
+											sizes="(max-width: 700px) 94vw, 41vw"
+											style={`object-position:${comparison.beforePos}`}
+											loading={index === 0 ? 'eager' : 'lazy'}
+											fetchpriority={index === 0 ? 'high' : undefined}
+										/>
+										<span class="comparison-label">Before</span>
 									</div>
-									{comparison.article && (
-										<a
-											href={comparison.article}
-											target="_blank"
-											rel="noopener noreferrer"
-											class="ba-wiki editorial-link"
-										>
-											View on Wikipedia
-											<span aria-hidden="true">&rarr;</span>
-										</a>
-									)}
-								</header>
+									<figcaption class="comparison-caption">
+										<b>Before</b>
+										<span>{comparison.beforeSource}</span>
+									</figcaption>
+								</figure>
 
-								<div class="ba-images">
-									<EditorialPhotoFrame
-										image={comparison.beforeImage}
-										alt={`${comparison.name} - previous Wikipedia photo`}
-										caption={`${comparison.name} - previous Wikipedia photo`}
-										label="Before"
-										source={comparison.beforeSource}
-										objectPosition={comparison.beforePos}
-										eager={i === 0}
-										labelVariant="ba-cap--before"
-									/>
-
-									<div class="ba-arrow" aria-hidden="true">
-										<svg viewBox="0 0 32 32" focusable="false">
-											<path d="M5 16h20" />
-											<path d="m17 8 8 8-8 8" />
-										</svg>
-									</div>
-
-									<EditorialPhotoFrame
-										image={comparison.afterImage}
-										alt={`${comparison.name} - upgraded Wikipedia photo by Jay Dixit`}
-										caption={`${comparison.name} - upgraded Wikipedia photo by Jay Dixit`}
-										label="After"
-										source={comparison.afterSource}
-										objectPosition={comparison.afterPos}
-										eager={i === 0}
-										labelVariant="ba-cap--after"
+								<div class="comparison-transition" aria-hidden="true">
+									<img
+										class="transition-arrow"
+										src="/experiments/red-carpet-direction-arrow.png"
+										alt=""
+										width="508"
+										height="512"
 									/>
 								</div>
 
-								{comparison.license && comparison.licenseUrl && (
-									<div class="ba-provenance-row">
-										<p class="ba-provenance photo-credit">
-											{comparison.articleUsageStatus === 'lead' && (
-												<span>Currently the lead photo on Wikipedia</span>
-											)}
-											<a
-												href={comparison.licenseUrl}
-												target="_blank"
-												rel="noopener noreferrer"
-												class="editorial-link"
-											>
-												{comparison.license}
-											</a>
-											{comparison.commonsUrl && (
-												<a
-													href={comparison.commonsUrl}
-													target="_blank"
-													rel="noopener noreferrer"
-													class="editorial-link"
-												>
-													View on Wikimedia Commons
-												</a>
-											)}
-										</p>
+								<figure class="comparison-panel">
+									<div class="comparison-frame">
+										<Image
+											class="comparison-image"
+											src={comparison.afterImage}
+											alt={`${comparison.name} — photograph by Jay Dixit`}
+											widths={[500, 800, 1200]}
+											sizes="(max-width: 700px) 94vw, 41vw"
+											style={`object-position:${comparison.afterPos}`}
+											loading={index === 0 ? 'eager' : 'lazy'}
+											fetchpriority={index === 0 ? 'high' : undefined}
+										/>
+										<span class="comparison-label">After</span>
 									</div>
-								)}
-							</article>
-						))}
-					</div>
-				)
-			}
-		</div>
-	</section>
-
-	<!-- Context -->
-	<section class="ba-context">
-		<div class="ba-shell ba-shell--narrow">
-			<p class="ba-kicker ba-kicker--center eyebrow">Why This Matters</p>
-			<p class="ba-pullquote">
-				For many people, a Wikipedia article is the first place they go to learn about someone. The
-				photo at the top shapes how millions perceive that person.
-			</p>
-			<p class="ba-body">
-				Yet countless articles still feature outdated, poorly lit, or unflattering images — awkward
-				crops from group shots, grainy phone photos, stills pulled from video interviews. Through
-				the
-				<a href="/blog/wikiportraits-story" class="ba-inline-link editorial-link"
-					>WikiPortraits initiative</a
-				>, I'm working to change that, one portrait at a time.
-			</p>
-		</div>
-	</section>
-
-	<!-- CTA -->
-	<section class="ba-cta">
-		<div class="ba-shell ba-shell--narrow">
-			<p class="ba-cta-lede">Want to see more of my work?</p>
-			<div class="ba-cta-actions">
-				<a href="/gallery" class="ba-btn ba-btn--solid">Browse Gallery</a>
-				<a href="/about" class="ba-btn ba-btn--ghost">About Me</a>
+									<figcaption class="comparison-caption">
+										<b>After</b>
+										<span>{comparison.afterSource}</span>
+									</figcaption>
+								</figure>
+							</div>
+						</article>
+					))
+				}
 			</div>
-		</div>
-	</section>
+			<div class="finale-actions">
+				<a class="primary-action" href="/red-carpet">Explore Red Carpet</a>
+			</div>
+		</section>
+	</main>
+
+	<script>
+		import { gsap } from 'gsap';
+		import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+		gsap.registerPlugin(ScrollTrigger);
+
+		const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+		if (!reducedMotion.matches) {
+			const context = gsap.context(() => {
+				gsap
+					.timeline()
+					.from('.sequence-nav', { y: -24, opacity: 0, duration: 0.7, ease: 'power3.out' })
+					.from('.kicker', { y: 18, opacity: 0, duration: 0.5 }, '-=0.3')
+					.from('#finale-title', {
+						yPercent: 16,
+						opacity: 0,
+						duration: 1,
+						ease: 'power4.out',
+					})
+					.from('.finale-standfirst', { y: 18, opacity: 0, duration: 0.65 }, '-=0.55');
+
+				document.querySelectorAll('.comparison-card').forEach((card) => {
+					gsap.from(card, {
+						scrollTrigger: {
+							trigger: card,
+							start: 'top 86%',
+							once: true,
+						},
+						y: 56,
+						opacity: 0,
+						duration: 0.9,
+						ease: 'power3.out',
+					});
+				});
+			});
+
+			window.addEventListener('pagehide', () => context.revert(), { once: true });
+		}
+	</script>
 </MainLayout>
 
-<PhotoSwipeLightbox
-	gallerySelector="#before-after-gallery"
-	childrenSelector="a[data-pswp-item]"
-	options={{
-		padding: { top: 20, bottom: 80, left: 20, right: 20 },
-		wheelToZoom: true,
-		preloaderDelay: 0,
-		showHideAnimationType: 'fade',
-	}}
-/>
-
 <style>
-	.ba-shell {
-		max-width: 68rem;
-		margin: 0 auto;
-		padding-left: 2.5rem;
-		padding-right: 2.5rem;
+	:global(*) {
+		box-sizing: border-box;
 	}
 
-	.ba-shell--narrow {
-		max-width: 42rem;
+	:global(html) {
+		scroll-behavior: smooth;
+		background: #f2eee5;
 	}
 
-	/* ---- Hero ---- */
-	.ba-hero {
-		background: var(--paper);
-		padding: var(--nav-clearance) 0 2rem;
-		text-align: center;
-	}
-
-	.ba-kicker {
-		margin: 0 0 1.6rem;
-	}
-
-	.ba-kicker--center {
-		text-align: center;
-		margin-bottom: 1.4rem;
-	}
-
-	.ba-title {
+	:global(body) {
+		--ink: #16120f;
+		--paper: #f2eee5;
+		--red: #991f27;
+		--gold: #96773f;
+		--rule: rgb(22 18 15 / 22%);
 		margin: 0;
-		font-family: var(--serif);
-		font-weight: 300;
-		font-size: clamp(3.2rem, 7vw, 5.1rem);
-		line-height: 1.02;
-		letter-spacing: -0.015em;
-		color: #161310;
+		min-width: 320px;
+		overflow-x: clip;
+		background:
+			linear-gradient(90deg, transparent 49.95%, rgb(22 18 15 / 5%) 50%, transparent 50.05%),
+			var(--paper);
+		color: var(--ink);
+		font-family: 'Karla', system-ui, sans-serif;
 	}
 
-	.ba-standfirst {
-		max-width: 37rem;
-		margin: 1.9rem auto 0;
-		font-family: var(--serif);
-		font-weight: 300;
-		font-size: 1.35rem;
-		line-height: 1.55;
-		color: #565049;
-	}
-
-	/* ---- Gallery ---- */
-	.ba-gallery-section {
-		background: var(--paper);
-		padding: 3.75rem 0 4rem;
-	}
-
-	.ba-list {
-		display: grid;
-		gap: 0;
-	}
-
-	.ba-pair {
-		padding: 4rem 0 4.5rem;
-		border-top: 1px solid var(--hairline);
-	}
-
-	.ba-pair:first-child {
-		border-top: none;
-		padding-top: 1rem;
-	}
-
-	.ba-pair-head {
+	.sequence-nav {
+		position: absolute;
+		z-index: 20;
+		top: 0;
+		left: 0;
 		display: flex;
-		align-items: flex-end;
-		gap: 1.5rem;
-		margin-bottom: 2.375rem;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+		padding: 1.5rem clamp(1.25rem, 4vw, 4.5rem);
+		border-bottom: 1px solid var(--rule);
 	}
 
-	.ba-index {
-		font-family: var(--serif);
-		font-weight: 300;
-		font-size: 3.25rem;
-		line-height: 0.8;
-		letter-spacing: -0.02em;
+	.sequence-nav a {
+		color: inherit;
+		font-size: 0.82rem;
+		font-weight: 700;
+		letter-spacing: 0.1em;
+		text-decoration: none;
+		text-transform: uppercase;
+	}
+
+	.sequence-nav nav {
+		display: flex;
+		gap: clamp(1rem, 3vw, 2.8rem);
+	}
+
+	.sequence-nav a:hover,
+	.sequence-nav a:focus-visible {
+		color: var(--gold);
+		outline-offset: 0.35rem;
+	}
+
+	.wordmark {
+		display: inline-flex;
+		gap: 0.85rem;
+		align-items: center;
+		font-family: 'Cormorant Garamond', Georgia, serif;
+		font-size: 2.35rem !important;
+		font-weight: 500 !important;
+		line-height: 1 !important;
+		letter-spacing: 0.02em !important;
+		text-transform: none !important;
+	}
+
+	.brand-seal {
+		display: block;
+		flex: none;
+		width: 4.5rem;
+		height: 4.5rem;
+		transition: transform 220ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+	}
+
+	.wordmark:hover .brand-seal,
+	.wordmark:focus-visible .brand-seal {
+		transform: rotate(-4deg) scale(1.06);
+	}
+
+	.kicker {
+		margin: 0 0 1.25rem;
+		color: var(--gold);
+		font-size: 0.68rem;
+		font-weight: 700;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+
+	.finale {
+		position: relative;
+		min-height: 100svh;
+		padding: clamp(9rem, 14vw, 13rem) clamp(1.25rem, 7vw, 8rem) 3rem;
+		background: radial-gradient(circle at 10% 20%, rgb(153 31 39 / 8%), transparent 30rem), #fbf8f1;
+	}
+
+	.finale-intro {
+		display: grid;
+		grid-template-columns: minmax(0, 1.5fr) minmax(22rem, 0.5fr);
+		gap: clamp(2rem, 6vw, 8rem);
+		align-items: end;
+		margin-bottom: clamp(3rem, 8vw, 7rem);
+	}
+
+	.finale h1 {
+		margin: 0;
+		font-family: 'Cormorant Garamond', Georgia, serif;
+		font-size: clamp(4rem, 10vw, 10rem);
+		font-weight: 500;
+		letter-spacing: -0.06em;
+		line-height: 0.82;
+	}
+
+	.finale-standfirst {
+		max-width: 34rem;
+		margin: 0 0 0.35rem;
+		color: rgb(22 18 15 / 68%);
+		font-family: 'Cormorant Garamond', Georgia, serif;
+		font-size: clamp(1.2rem, 1.8vw, 1.55rem);
+		font-weight: 400;
+		line-height: 1.45;
+	}
+
+	.comparison-list {
+		display: grid;
+		gap: clamp(4rem, 9vw, 8rem);
+	}
+
+	.comparison-card {
+		display: grid;
+		gap: 1.25rem;
+	}
+
+	.comparison-header {
+		display: grid;
+		grid-template-columns: auto minmax(0, 1fr) auto;
+		gap: clamp(1rem, 3vw, 2rem);
+		align-items: end;
+		padding-bottom: 1rem;
+		border-bottom: 1px solid var(--ink);
+	}
+
+	.comparison-index {
 		color: var(--accent);
+		font-family: var(--serif);
+		font-size: 3.25rem;
+		font-weight: 300;
+		letter-spacing: -0.02em;
+		line-height: 0.8;
 		opacity: 0.55;
 	}
 
-	.ba-pair-titles {
-		flex: 1;
-		min-width: 0;
-	}
-
-	.ba-name {
+	.comparison-header h3 {
 		margin: 0;
-		font-family: var(--serif);
-		font-weight: 400;
-		font-size: clamp(1.9rem, 3.2vw, 2.625rem);
-		line-height: 1;
-		letter-spacing: -0.015em;
-		color: #161310;
+		font-family: 'Cormorant Garamond', Georgia, serif;
+		font-size: clamp(2rem, 4.5vw, 4rem);
+		font-weight: 500;
+		letter-spacing: -0.04em;
+		line-height: 0.9;
 	}
 
-	.ba-event {
+	.comparison-header p {
 		margin: 0.875rem 0 0;
+		color: var(--muted);
 		font-family: var(--sans);
 		font-size: 0.78rem;
 		font-weight: 500;
 		letter-spacing: 0.14em;
 		text-transform: uppercase;
-		color: var(--muted);
 	}
 
-	.ba-wiki {
+	.comparison-header a {
 		display: inline-flex;
 		align-items: center;
 		gap: 0.4rem;
-		flex-shrink: 0;
-		font-family: var(--sans);
-		font-size: 0.81rem;
-		letter-spacing: 0.04em;
-		white-space: nowrap;
 		padding-bottom: 0.375rem;
 		border-bottom: 1px solid transparent;
+		color: var(--accent);
+		font-family: var(--sans);
+		font-size: 0.81rem;
+		font-weight: 400;
+		letter-spacing: 0.04em;
+		text-decoration: none;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 2px;
+		white-space: nowrap;
 	}
 
-	.ba-images {
+	.comparison-header a:hover,
+	.comparison-header a:focus-visible {
+		color: #6f552a;
+		text-decoration: underline;
+	}
+
+	.comparison-pair {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-		gap: 1.25rem;
+		gap: clamp(0.75rem, 2vw, 2rem);
 		align-items: start;
+		width: 90%;
+		margin-inline: auto;
 	}
 
-	.ba-provenance-row {
+	.comparison-panel {
 		display: grid;
-		grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-		gap: 1.25rem;
-		margin-top: 0.75rem;
-	}
-
-	.ba-provenance {
-		grid-column: 3;
-		display: flex;
-		flex-wrap: wrap;
-		align-items: baseline;
-		gap: 0.25rem 2ch;
+		gap: 0.8rem;
 		margin: 0;
 	}
 
-	:global(.ba-figure) {
-		margin: 0;
-	}
-
-	.ba-arrow {
+	.comparison-transition {
 		display: grid;
-		place-items: center;
+		justify-items: center;
 		align-self: center;
-		width: 2.75rem;
-		height: 2.75rem;
-		margin-top: -1rem;
-		border: 1px solid var(--hairline);
-		border-radius: 999px;
-		background: var(--paper);
-		color: var(--muted);
-		box-shadow: 0 6px 18px rgba(41, 37, 36, 0.06);
+		width: clamp(5rem, 7vw, 7rem);
+		color: var(--red);
 	}
 
-	.ba-arrow svg {
-		width: 1.15rem;
-		height: 1.15rem;
-	}
-
-	.ba-arrow path {
-		fill: none;
-		stroke: currentColor;
-		stroke-width: 2;
-		stroke-linecap: round;
-		stroke-linejoin: round;
-	}
-
-	:global(.ba-frame) {
+	.transition-arrow {
 		display: block;
-		width: 100%;
-		aspect-ratio: 3 / 4;
-		overflow: hidden;
-		background: #eceae3;
-		cursor: zoom-in;
+		width: clamp(3.5rem, 5vw, 4.75rem);
+		height: auto;
+		filter: drop-shadow(0 0.4rem 1rem rgb(54 31 25 / 14%));
 	}
 
-	:global(.ba-img) {
+	.comparison-frame {
+		position: relative;
+		aspect-ratio: 4 / 5;
+		overflow: hidden;
+		background: #ddd7cc;
+		box-shadow: 0 2rem 7rem rgb(54 31 25 / 14%);
+	}
+
+	:global(.comparison-image) {
+		display: block;
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		display: block;
-		transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
 	}
 
-	:global(.ba-frame:hover .ba-img) {
-		transform: scale(1.035);
-	}
-
-	:global(.ba-cap) {
-		display: flex;
-		justify-content: space-between;
-		align-items: baseline;
-		gap: 0.75rem;
-		margin-top: 0.875rem;
-		padding-top: 0.75rem;
-	}
-
-	:global(.ba-cap--before) {
-		border-top: 1px solid var(--hairline);
-	}
-
-	:global(.ba-cap--after) {
-		border-top: 1px solid var(--ink);
-	}
-
-	:global(.ba-cap-label) {
-		flex-shrink: 0;
-		font-family: var(--sans);
-		font-size: 0.69rem;
-		font-weight: 600;
-		letter-spacing: 0.24em;
-		text-transform: uppercase;
-	}
-
-	:global(.ba-cap--before .ba-cap-label) {
-		color: #a79e90;
-	}
-
-	:global(.ba-cap--after .ba-cap-label) {
+	.comparison-label {
+		position: absolute;
+		top: 1rem;
+		left: 1rem;
+		padding: 0.55rem 0.7rem;
+		background: rgb(251 248 241 / 88%);
 		color: var(--ink);
-	}
-
-	:global(.ba-cap-src) {
-		min-width: 0;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		text-align: right;
-		font-family: var(--sans);
-		font-size: 0.78rem;
-	}
-
-	:global(.ba-cap--before .ba-cap-src) {
-		color: var(--muted);
-	}
-
-	:global(.ba-cap--after .ba-cap-src) {
-		color: #4a443c;
-	}
-
-	.ba-empty {
-		text-align: center;
-		padding: 4rem 1rem;
-		border: 1px solid var(--hairline);
-		font-family: var(--sans);
-		color: var(--muted);
-	}
-
-	/* ---- Context / pull-quote ---- */
-	.ba-context {
-		background: var(--paper-deep);
-		padding: 5.5rem 0;
-		border-top: 1px solid var(--hairline);
-		border-bottom: 1px solid var(--hairline);
-	}
-
-	.ba-pullquote {
-		margin: 0 0 1.75rem;
-		text-align: center;
-		font-family: var(--serif);
-		font-weight: 300;
-		font-size: clamp(1.4rem, 2.6vw, 1.65rem);
-		line-height: 1.5;
-		letter-spacing: -0.01em;
-		color: #26221d;
-	}
-
-	.ba-body {
-		margin: 0;
-		font-family: var(--sans);
-		font-size: 1rem;
-		line-height: 1.75;
-		color: #5c554c;
-	}
-
-	.ba-inline-link {
-		text-decoration: underline;
-		text-underline-offset: 2px;
-		text-decoration-thickness: 1px;
-	}
-
-	/* ---- CTA ---- */
-	.ba-cta {
-		background: var(--paper);
-		padding: 5rem 0;
-		text-align: center;
-	}
-
-	.ba-cta-lede {
-		margin: 0 0 2rem;
-		font-family: var(--serif);
-		font-weight: 300;
-		font-style: italic;
-		font-size: 1.5rem;
-		color: #565049;
-	}
-
-	.ba-cta-actions {
-		display: flex;
-		gap: 0.875rem;
-		justify-content: center;
-		flex-wrap: wrap;
-	}
-
-	.ba-btn {
-		display: inline-flex;
-		align-items: center;
-		padding: 0.85rem 1.6rem;
-		font-family: var(--sans);
-		font-size: 0.78rem;
-		font-weight: 600;
+		font-size: 0.65rem;
+		font-weight: 700;
 		letter-spacing: 0.14em;
+		pointer-events: none;
 		text-transform: uppercase;
-		text-decoration: none;
-		border-radius: 2px;
-		transition:
-			background-color 0.25s ease,
-			color 0.25s ease,
-			border-color 0.25s ease;
+		backdrop-filter: blur(8px);
 	}
 
-	.ba-btn--solid {
-		background: var(--ink);
-		color: #faf9f6;
-		border: 1px solid var(--ink);
+	.comparison-caption {
+		display: flex;
+		gap: 0.65rem;
+		color: rgb(22 18 15 / 62%);
+		font-size: 0.72rem;
+		line-height: 1.4;
 	}
 
-	.ba-btn--solid:hover {
-		background: #000;
-	}
-
-	.ba-btn--ghost {
-		background: transparent;
+	.comparison-caption b {
 		color: var(--ink);
-		border: 1px solid #cfc8bb;
+		font-size: 0.64rem;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
 	}
 
-	.ba-btn--ghost:hover {
-		border-color: var(--ink);
+	.finale-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem 2rem;
+		align-items: center;
+		margin: clamp(3rem, 7vw, 6rem) 0;
 	}
 
-	/* ---- Mobile ---- */
-	@media (max-width: 767px) {
-		.ba-shell {
-			padding-left: 1.5rem;
-			padding-right: 1.5rem;
+	.finale-actions a {
+		color: inherit;
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-decoration: none;
+		text-transform: uppercase;
+	}
+
+	.primary-action {
+		padding: 1rem 1.35rem;
+		background: var(--red);
+		color: white !important;
+	}
+
+	.finale-actions a:hover,
+	.finale-actions a:focus-visible {
+		text-decoration: underline;
+		text-underline-offset: 0.35rem;
+	}
+
+	@media (max-width: 700px) {
+		.wordmark {
+			gap: 0.6rem;
+			font-size: 1.68rem !important;
 		}
 
-		.ba-pair-head {
-			align-items: flex-start;
-			flex-direction: column;
-			gap: 0.9rem;
-			margin-bottom: 1.6rem;
+		.brand-seal {
+			width: 3rem;
+			height: 3rem;
 		}
 
-		.ba-index {
-			font-size: 2.4rem;
+		.sequence-nav nav a:not(:last-child) {
+			display: none;
 		}
 
-		.ba-images {
+		.finale h1 {
+			font-size: clamp(4rem, 20vw, 7rem);
+			line-height: 0.8;
+		}
+
+		.finale-intro {
 			grid-template-columns: 1fr;
-			gap: 1.5rem;
+			gap: 1.75rem;
 		}
 
-		.ba-provenance-row {
-			display: block;
-			margin-top: 0.75rem;
+		.finale {
+			padding-right: 1rem;
+			padding-left: 1rem;
 		}
 
-		.ba-arrow {
+		.comparison-header {
+			grid-template-columns: auto minmax(0, 1fr);
+		}
+
+		.comparison-header > a {
+			grid-column: 2;
+			justify-self: start;
+		}
+
+		.comparison-pair {
+			grid-template-columns: 1fr;
+			gap: 1.25rem;
+			width: 100%;
+		}
+
+		.comparison-transition {
 			justify-self: center;
-			margin-top: 0;
-			margin-bottom: 0.1rem;
-			width: 2.5rem;
-			height: 2.5rem;
+			width: 5.5rem;
+			margin-block: 0.4rem;
 		}
 
-		.ba-arrow svg {
+		.transition-arrow {
+			width: 4rem;
 			transform: rotate(90deg);
 		}
+	}
 
-		:global(.ba-cap-src) {
-			white-space: normal;
+	@media (prefers-reduced-motion: reduce) {
+		:global(html) {
+			scroll-behavior: auto;
+		}
+
+		:global(*),
+		:global(*::before),
+		:global(*::after) {
+			scroll-behavior: auto !important;
+			animation-duration: 0.01ms !important;
+			animation-iteration-count: 1 !important;
+			transition-duration: 0.01ms !important;
 		}
 	}
 </style>
