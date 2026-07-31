@@ -1,0 +1,45 @@
+{
+	"id": "kinetic-editorial",
+	"title": "Kinetic Editorial",
+	"routes": ["/", "/about"],
+	"status": "promoted-loved-durable-reference",
+	"project": "Jay Dixit Photography",
+	"artistic_intention": "Create a big, splashy, elegant photography portfolio whose visual scale matches the importance of the work: oversized editorial typography, a physical pile of photographic prints, asymmetrical composition, generous negative space, restrained navigation, and cinematic but controlled motion.",
+	"user_reactions": [
+		{
+			"date": "2026-07-30",
+			"reaction": "The other ones I really like.",
+			"status": "positive"
+		},
+		{
+			"date": "2026-07-31",
+			"reaction": "I really love the way my photos portfolio site turned out.",
+			"status": "loved"
+		},
+		{
+			"date": "2026-07-31",
+			"reaction": "Obviously those sites won't be as photo-heavy as my photography portfolio site, but I like the big splashy elegant look of my photography site.",
+			"status": "durable-cross-project-reference"
+		}
+	],
+	"qualities_to_preserve": [
+		"Visual scale comes from large type, large objects, and decisive composition rather than interface decoration",
+		"Real photographs remain the emotional center",
+		"Overlapping physical prints create depth without a dark or forensic mood",
+		"Editorial serif typography and restrained red and gold accents create elegance",
+		"Asymmetry is balanced by generous negative space",
+		"The page reads as one coherent continuous composition rather than disconnected slides",
+		"Motion supports spatial relationships and does not become the subject"
+	],
+	"cross_project_translation": {
+		"jaydixit.com": "Use fewer but equally large real photographs of Jay speaking, teaching, interviewing, or working; combine them with oversized editorial typography and a small number of genuine career artifacts rather than shrinking everything into cards.",
+		"socraticai.co": "Keep the corporate clarity and proof structure of a briefing document, but give the hero and key evidence the same photographic scale, asymmetry, confidence, and spatial motion as the portfolio. Do not interpret this preference as a request to make the site photograph-heavy."
+	},
+	"avoid": [
+		"Small photos arranged as conventional cards",
+		"Generic SaaS gradients and pill-heavy interface styling",
+		"Uniform full-viewport sections that read as slides",
+		"Dark forensic or serial-killer analog atmosphere",
+		"Decorative motion with no spatial or narrative purpose"
+	]
+}

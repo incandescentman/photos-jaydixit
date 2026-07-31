@@ -81,39 +81,34 @@ import quotePhoto from '../assets/images/about/jay-dixit_2024-10-04_telos_ryan-j
 							thing is created. That never happens with writing.
 						</p>
 					</div>
-
-					<nav class="ed-link-list" aria-label="More about Jay">
-						<a
-							class="ed-link"
-							href="https://jaydixit.com"
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							<span>Visit jaydixit.com</span>
-							<svg viewBox="0 0 36 14" aria-hidden="true">
-								<path d="M1 7h32M27 1l6 6-6 6"></path>
-							</svg>
-						</a>
-						<a
-							class="ed-link"
-							href="https://socraticai.co/"
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							<span>Socratic AI</span>
-							<svg viewBox="0 0 36 14" aria-hidden="true">
-								<path d="M1 7h32M27 1l6 6-6 6"></path>
-							</svg>
-						</a>
-						<a class="ed-link" href="/contact">
-							<span>Get in Touch</span>
-							<svg class="ed-link-envelope" viewBox="0 0 26 20" aria-hidden="true">
-								<rect x="1" y="1" width="24" height="18" rx="1.5"></rect>
-								<path d="m2 3 11 8 11-8"></path>
-							</svg>
-						</a>
-					</nav>
 				</div>
+
+				<nav class="ed-link-list ed-link-list--essay" aria-label="More about Jay">
+					<a class="ed-link" href="https://jaydixit.com" target="_blank" rel="noopener noreferrer">
+						<span>Visit jaydixit.com</span>
+						<svg viewBox="0 0 36 14" aria-hidden="true">
+							<path d="M1 7h32M27 1l6 6-6 6"></path>
+						</svg>
+					</a>
+					<a
+						class="ed-link"
+						href="https://socraticai.co/"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						<span>Socratic AI</span>
+						<svg viewBox="0 0 36 14" aria-hidden="true">
+							<path d="M1 7h32M27 1l6 6-6 6"></path>
+						</svg>
+					</a>
+					<a class="ed-link" href="/contact">
+						<span>Get in Touch</span>
+						<svg class="ed-link-envelope" viewBox="0 0 26 20" aria-hidden="true">
+							<rect x="1" y="1" width="24" height="18" rx="1.5"></rect>
+							<path d="m2 3 11 8 11-8"></path>
+						</svg>
+					</a>
+				</nav>
 			</div>
 		</section>
 
@@ -153,18 +148,32 @@ import quotePhoto from '../assets/images/about/jay-dixit_2024-10-04_telos_ryan-j
 
 		<!-- Contact CTA -->
 		<section class="ed-section">
-			<div class="ed-shell ed-shell--narrow ed-center">
+			<div class="ed-shell ed-shell--cta ed-center">
 				<p class="ed-cta-text">
 					Most people land here looking for my photos. But I also teach AI workshops, write, and do
 					consulting. If you want to talk about photography, writing, or what AI can actually do for
 					your team, I&rsquo;d love to hear from you.
 				</p>
-				<p class="ed-cta-route">
-					My AI work lives at
-					<a href="https://socraticai.co/" target="_blank" rel="noopener noreferrer"
-						>socraticai.co</a
-					>.
-				</p>
+				<div class="ed-cta-routes">
+					<p class="ed-cta-route">
+						My AI work lives at
+						<a href="https://socraticai.co/" target="_blank" rel="noopener noreferrer"
+							>socraticai.co</a
+						>.
+					</p>
+					<p class="ed-cta-route">
+						My storytelling and writing workshops are at
+						<a href="https://storytelling.nyc/" target="_blank" rel="noopener noreferrer"
+							>storytelling.nyc</a
+						>.
+					</p>
+					<p class="ed-cta-route">
+						And my personal website is at
+						<a href="https://jaydixit.com/" target="_blank" rel="noopener noreferrer"
+							>jaydixit.com</a
+						>.
+					</p>
+				</div>
 				<div class="ed-actions ed-actions--center">
 					<a href="/contact" class="ed-btn ed-btn--solid">Get In Touch</a>
 					<a href="/gallery" class="ed-btn ed-btn--ghost">View Portfolio</a>
@@ -199,6 +208,10 @@ import quotePhoto from '../assets/images/about/jay-dixit_2024-10-04_telos_ryan-j
 
 	.ed-shell--narrow {
 		max-width: 46rem;
+	}
+
+	.ed-shell--cta {
+		max-width: 58rem;
 	}
 
 	.ed-shell--quote {
@@ -305,11 +318,6 @@ import quotePhoto from '../assets/images/about/jay-dixit_2024-10-04_telos_ryan-j
 		color: #1c1813;
 	}
 
-	.ed-essay-opening p + p {
-		margin-left: clamp(1.5rem, 3vw, 4rem);
-		color: #6e675c;
-	}
-
 	.ed-essay-main {
 		padding-left: clamp(3rem, 6vw, 8rem);
 		border-left: 1px solid #cfc6b3;
@@ -337,6 +345,12 @@ import quotePhoto from '../assets/images/about/jay-dixit_2024-10-04_telos_ryan-j
 		width: min(100%, 32rem);
 		margin-top: 3rem;
 		border-top: 1px solid var(--ink);
+	}
+
+	.ed-link-list--essay {
+		grid-column: 1 / -1;
+		justify-self: center;
+		margin-top: clamp(4.5rem, 7vw, 7rem);
 	}
 
 	.ed-link {
@@ -515,7 +529,8 @@ import quotePhoto from '../assets/images/about/jay-dixit_2024-10-04_telos_ryan-j
 
 	/* Contact CTA */
 	.ed-cta-text {
-		margin: 0;
+		max-width: 41rem;
+		margin: 0 auto;
 		font-family: var(--serif);
 		font-weight: 300;
 		font-size: clamp(1.6rem, 3.2vw, 2.25rem);
@@ -524,11 +539,20 @@ import quotePhoto from '../assets/images/about/jay-dixit_2024-10-04_telos_ryan-j
 		color: #2a2620;
 	}
 
+	.ed-cta-routes {
+		display: grid;
+		gap: 1rem;
+		width: fit-content;
+		max-width: 100%;
+		margin: 2.75rem auto 0;
+		text-align: left;
+	}
+
 	.ed-cta-route {
-		margin: 1.4rem 0 0;
-		font-family: var(--sans);
-		font-size: 1rem;
-		line-height: 1.6;
+		margin: 0;
+		font-family: var(--serif);
+		font-size: clamp(1.35rem, 1.6vw, 1.65rem);
+		line-height: 1.5;
 		color: #5c554c;
 	}
 
@@ -573,6 +597,10 @@ import quotePhoto from '../assets/images/about/jay-dixit_2024-10-04_telos_ryan-j
 			padding: 3rem 0 0;
 			border-top: 1px solid #cfc6b3;
 			border-left: 0;
+		}
+
+		.ed-link-list--essay {
+			margin-top: 0;
 		}
 
 		.ed-quote {

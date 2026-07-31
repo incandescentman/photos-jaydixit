@@ -1,6 +1,24 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-31 - Record the promoted portfolio as a loved cross-project reference
+
+** Summary
+- Recorded Jay's definitive reaction to the finished homepage and About page:
+  “I really love the way my photos portfolio site turned out.”
+- Preserved the more transferable preference separately: jaydixit.com and
+  Socratic AI should not become equally photo-heavy, but should learn from the
+  portfolio's “big splashy elegant look.”
+- Updated the local experiment chooser and the
+  [[file+emacs:/Users/jay/Dropbox/github/socratic-video/references/look-and-feel/experiment-reactions.org][📄
+  cross-repo visual reaction ledger]].
+- Added
+  [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/experiment-intentions/kinetic-editorial.json][📄
+  the Kinetic Editorial intention sidecar]] to preserve the artistic objective,
+  the loved qualities, and the correct cross-project translation: preserve
+  scale, elegance, asymmetry, real presence, and coherent spatial motion rather
+  than merely increasing the number of photographs.
+
 * 2026-07-31 - Link photography decisions to the cross-repo reaction ledger
 
 ** Summary
