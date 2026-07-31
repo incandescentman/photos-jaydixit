@@ -6,6 +6,7 @@ const blogPosts = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/blog' }),
   schema: z.object({
     title: z.string(),
+    description: z.string().optional(),
     excerpt: z.string().optional(),
     publishDate: z.coerce.date().optional(),
     updateDate: z.coerce.date().optional(),
@@ -15,6 +16,7 @@ const blogPosts = defineCollection({
     imageAlt: z.string().optional(),
     tags: z.array(z.string()).optional(),
     category: z.string().optional(),
+    presentation: z.enum(['standard', 'feature']).optional().default('standard'),
   }),
 });
 

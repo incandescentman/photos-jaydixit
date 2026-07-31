@@ -3,6 +3,7 @@ title: 'The Story of WikiPortraits'
 description: "How we're fixing Wikipedia's famously bad celebrity portraits, one photo at a time"
 publishDate: 2024-10-01
 author: 'Jay Dixit'
+presentation: feature
 tags:
   - photography
   - wikipedia
@@ -12,130 +13,220 @@ tags:
 
 import jeremyBeforeImg from '../../assets/images/wikiportraits/jeremy-strong-before.jpg';
 import jeremyAfterImg from '../../assets/images/wikiportraits/jeremy-strong_the-apprentice-premiere_2024.jpg';
-import vanessaBeforeImg from '../../assets/images/wikiportraits/vanessa-kirby-before-2018.jpg';
-import vanessaAfterImg from '../../assets/images/wikiportraits/vanessa-kirby_tiff_2024.jpg';
 
-<figure className="wikiportraits-hero">
-	<div className="wikiportraits-hero-grid">
-		<div className="wikiportraits-hero-panel">
-			<div className="wikiportraits-hero-frame">
-				<img
-					className="wikiportraits-hero-img wikiportraits-hero-img--before"
-					src={vanessaBeforeImg.src}
-					alt="Vanessa Kirby's 2018 Wikipedia portrait"
-				/>
-			</div>
-			<div className="wikiportraits-hero-meta wikiportraits-hero-meta--before">
-				<strong>Before</strong>
-				<span>Wikipedia portrait, 2018</span>
-			</div>
-		</div>
-
-	<div className="wikiportraits-hero-arrow" aria-hidden="true">→</div>
-
-	<div className="wikiportraits-hero-panel">
-		<div className="wikiportraits-hero-frame">
-			<img
-				className="wikiportraits-hero-img wikiportraits-hero-img--after"
-				src={vanessaAfterImg.src}
-				alt="Vanessa Kirby - Wikipedia photo by Jay Dixit"
-			/>
-		</div>
-		<div className="wikiportraits-hero-meta wikiportraits-hero-meta--after">
-			<strong>After</strong>
-			<span className="wikiportraits-hero-title">
-				Vanessa Kirby - Wikipedia photo by Jay Dixit
-			</span>
-		</div>
+<section className="wikiportraits-opening">
+	<div className="wikiportraits-opening-statement">
+		Wikipedia's articles are amazing but the photos are horrible.
 	</div>
+	<div className="wikiportraits-opening-copy">
+		<p>
+			There's a reason for that. Wikipedia images have to carry a Creative Commons license, which
+			means you contribute it to the public domain and anyone can use it for any purpose they want
+			without paying you royalties.
+		</p>
+		<p>
+			What that means is that professional photographers don't upload their photos to Wikipedia,
+			since their business depends on charging money for their work.
+		</p>
+	</div>
+</section>
+
+<section className="wikiportraits-evidence">
+	<div className="wikiportraits-evidence-lede">
+		As a result, most photos on Wikipedia come from amateurs — often, a civilian at an airport being
+		like, "Oh my God look, it's Pete Davidson!" and taking a blurry snapshot with their iPhone.
+	</div>
+
+    <div className="wikiportraits-pete-grid">
+	<figure className="wikiportraits-pete-figure">
+		<img
+			src="/images/blog/pete-davidson-former-wikipedia-photo-2015.jpg"
+			alt="Pete Davidson's former Wikipedia photo"
+		/>
+		<figcaption>For years, this was Pete Davidson's Wikipedia photo.</figcaption>
+	</figure>
+
+	<div className="wikiportraits-pete-transition">
+	<p>It was eventually replaced with this one. Not as bad as the first, but still really bad.</p>
+		<span aria-hidden="true">→</span>
+	</div>
+
+	<figure className="wikiportraits-pete-figure">
+		<img
+			src="/images/blog/pete-davidson-wikipedia-portrait-cropped.png"
+			alt="Pete Davidson's newer Wikipedia portrait"
+		/>
+		<figcaption>
+			Mr. Davidson's current Wikipedia photo, which appears to be a screenshot with the background
+			cut out.
+		</figcaption>
+	</figure>
     </div>
 
-</figure>
+    <div className="wikiportraits-evidence-context">
+	<div className="wikiportraits-evidence-copy">
+		<p>
+			While it may be amusing to see how awful some celebrities' photos are, low-quality Wikipedia
+			photos are a bigger problem than it may seem. When you google someone, their Wikipedia
+			article is the first result that comes up - and their Wikipedia photo is the first thing you
+			see. For a public figure, their Wikipedia photo basically becomes their official portrait -
+			whether they like it or not.
+		</p>
+		<p>
+			Portraits on Wikipedia are so bad there are Instagram pages dedicated to them:
+			<a href="https://www.instagram.com/badwikiphotos/?hl=en">Bad Wikipedia Photos</a>,
+			<a href="https://www.instagram.com/badwikipediaphotos/?hl=en">Bad Wiki Photos</a>. Some
+			photos are so bad that editors simply delete them, noting that having no photo at all would
+			be better than some of the photos that get uploaded.
+		</p>
+	</div>
 
-Wikipedia's articles are amazing but the photos are horrible.
+	<figure className="article-image-medium wikiportraits-emil">
+		<img
+			src="/images/blog/emil-wakim-wikipedia-photo-reddit.png"
+			alt="A screenshot of a low-quality Wikipedia portrait discussed online"
+		/>
+		<figcaption>
+			Wikipedia editors pulled down this photo, deeming that having no photo at all would be more
+			useful and informative to the public than displaying whatever this is.
+		</figcaption>
+	</figure>
+    </div>
 
-There's a reason for that. Wikipedia images have to carry a Creative Commons license, which means you contribute it to the public domain and anyone can use it for any purpose they want without paying you royalties.
+</section>
 
-What that means is that professional photographers don't upload their photos to Wikipedia, since their business depends on charging money for their work.
+<section className="wikiportraits-origin">
+	<div className="wikiportraits-origin-grid">
+		<div className="wikiportraits-origin-lede">
+			My friend Jenny 8. Lee decided to do something about it. She'd noticed that I own a $3,000
+			Sony pro camera and keep buying more lenses — even though the only photos I ever seemed to
+			take were of my own friends at my own parties, and the only people who ever saw my photos were
+			the people in the photos.
+		</div>
+		<div className="wikiportraits-origin-copy">
+			<p>
+				"If I could get you a press pass to shoot celebrities at SXSW would you want to do it?" she
+				asked me.
+			</p>
+			<p>Um, yes? For a hobbyist photographer, it was a dream come true.</p>
+			<p>
+				I went to SXSW and took photos of Conan O'Brien on stage. My photos appeared on his
+				Wikipedia page just days after I uploaded them. That was the start of WikiPortraits, and
+				soon, Jenny made it official, founding a 501(c)(3) nonprofit with Wikipedia veteran Kevin
+				Payravi.
+			</p>
+			<p>
+				That was two years ago. Since then, I've traveled to film festivals and cultural events
+				around the world, including Sundance, the Toronto Film Festival, Edinburgh Fringe, the
+				International Festival of Journalism in Perugia, the Nobel Prizes in Stockholm and Oslo, the
+				Locarno Film Festival in Switzerland, and the Busan Film Festival in Korea.
+			</p>
+		</div>
+	</div>
+</section>
 
-As a result, most photos on Wikipedia come from amateurs — often, ordinary civilians being like, "Oh my God, look, it's Pete Davidson!" and taking a photo with an iPhone.
+<aside
+	className="wikiportraits-application"
+	aria-label="Toronto International Film Festival press accreditation application"
+>
+	<div className="wikiportraits-application-intro">
+		<div className="wikiportraits-application-title">
+			Applying for a red carpet press pass as a Wikipedia photographer is fun. Especially when you
+			get to this part of the application.
+		</div>
+		<span className="wikiportraits-application-arrow" aria-hidden="true">→</span>
+		<div className="wikiportraits-application-context">
+			When we apply for press credentials and the online form asks “What is the total readership of
+			your publication,” we say "1.5 billion people." We usually get credentialed. 🙂
+		</div>
+	</div>
+	<div
+		className="wikiportraits-application-form"
+		aria-label="Audience figures entered in the application"
+	>
+		<h3>Toronto International Film Festival Media Accreditation</h3>
+		<div className="wikiportraits-application-field">
+			<span>Name of outlet:</span>
+			<strong>Wikipedia</strong>
+		</div>
+		<div className="wikiportraits-application-field">
+			<span>Monthly unique visitors</span>
+			<strong>1500000000</strong>
+		</div>
+		<div className="wikiportraits-application-field">
+			<span>Monthly page views</span>
+			<strong>24000000000</strong>
+		</div>
+	</div>
+</aside>
 
-<figure className="article-image-small">
-	<img
-		src="/images/blog/pete-davidson-former-wikipedia-photo-2015.jpg"
-		alt="Pete Davidson's former Wikipedia photo"
-	/>
-	<figcaption>For years, this was Pete Davidson's Wikipedia photo.</figcaption>
-</figure>
+<section className="wikiportraits-stats" aria-label="WikiPortraits reach">
+	<div className="wikiportraits-stat">
+		Today, my photos alone are viewed by <strong>10 million people a month.</strong>
+	</div>
+	<div className="wikiportraits-stat">
+		Collectively, WikiPortraits photos are viewed more than
+		<strong>150 million times a month,</strong> across articles in over 150 languages. WikiPortraits
+		photographers have covered dozens of festivals and ceremonies and taken nearly 5,000
+		freely-licensed photos.
+	</div>
+</section>
 
-It was eventually replaced with this:
+<section className="wikiportraits-jeremy">
+	<div className="wikiportraits-jeremy-copy">
+		<h2>“For the love of God, please take down that photo.”</h2>
+		<p>
+			At a New York screening of The Apprentice, I found Jeremy Strong of Succession, whose
+			Wikipedia photo was from 2014. His publicist said no. Then Jeremy overheard: "Wait, you're
+			from Wikipedia? For the love of God, please take down that photo. You'd be doing me a service,
+			I'd be forever in your debt." He posed and I got the shot.
+		</p>
+	</div>
 
-<figure className="article-image-small">
-	<img
-		src="/images/blog/pete-davidson-wikipedia-portrait-cropped.png"
-		alt="Pete Davidson's newer Wikipedia portrait"
-	/>
-	<figcaption>
-		Mr. Davidson's current Wikipedia photo, which appears to be a screenshot with the background cut
-		out.
-	</figcaption>
-</figure>
-
-While it may be amusing to see how awful some celebrities' photos are, low-quality Wikipedia photos are a bigger problem than it may seem. When you google someone, their Wikipedia article is the first result that comes up - and their Wikipedia photo is the first thing you see. For a public figure, their Wikipedia photo basically becomes their official portrait - whether they like it or not.
-
-Portraits on Wikipedia are so bad there are Instagram pages dedicated to them: [Bad Wikipedia Photos](https://www.instagram.com/badwikiphotos/?hl=en), [Bad Wiki Photos](https://www.instagram.com/badwikipediaphotos/?hl=en). Some photos are so bad that editors simply delete them, noting that having no photo at all would be better than some of the photos that get uploaded.
-
-<figure className="article-image-medium">
-	<img
-		src="/images/blog/emil-wakim-wikipedia-photo-reddit.png"
-		alt="A screenshot of a low-quality Wikipedia portrait discussed online"
-	/>
-	<figcaption>
-		Wikipedia editors pulled down this photo, deeming that having no photo at all would be more
-		useful and informative to the public than displaying whatever this is.
-	</figcaption>
-</figure>
-
-My friend Jenny 8. Lee decided to do something about it. She'd noticed that I own a $3,000 Sony pro camera and keep buying more lenses — even though the only photos I ever seemed to take were of my own friends at my own parties, and the only people who ever saw my photos were the people in the photos.
-
-"If I could get you a press pass to shoot celebrities at SXSW would you want to do it?" she asked me.
-
-Um, yes? For a hobbyist photographer, it was a dream come true.
-
-I went to SXSW and took photos of Conan O'Brien on stage. My photos appeared on his Wikipedia page just days after I uploaded them. That was the start of WikiPortraits, and soon, Jenny made it official, founding a 501(c)(3) nonprofit with Wikipedia veteran Kevin Payravi.
-
-That was two years ago. Since then, I've traveled to film festivals and cultural events around the world, including Sundance, the Toronto Film Festival, Edinburgh Fringe, the International Festival of Journalism in Perugia, the Nobel Prizes in Stockholm and Oslo, the Locarno Film Festival in Switzerland, and the Busan Film Festival in Korea.
-
-Today, my photos alone are viewed by 10 million people a month.
-
-Collectively, WikiPortraits photos are viewed more than 150 million times a month, across articles in over 150 languages. WikiPortraits photographers have covered dozens of festivals and ceremonies and taken nearly 5,000 freely-licensed photos.
-
-When we apply for press credentials and the online form asks "What is the total readership of your publication," we say 1.5 billion people.
-
-We usually get credentialed.
-
-## “For the love of God, please take down that photo.”
-
-At a New York screening of The Apprentice, I found Jeremy Strong of Succession, whose Wikipedia photo was from 2014. His publicist said no. Then Jeremy overheard: "Wait, you're from Wikipedia? For the love of God, please take down that photo. You'd be doing me a service, I'd be forever in your debt." He posed and I got the shot.
-
-<figure className="before-after-inline">
+    <figure className="before-after-inline">
 	<div className="before-after-grid">
 		<img src={jeremyBeforeImg.src} alt="Jeremy Strong's 2014 Wikipedia photo" />
-		<div className="before-after-arrow" aria-hidden="true">
-			→
-		</div>
+		<div className="before-after-arrow" aria-hidden="true">→</div>
 		<img src={jeremyAfterImg.src} alt="Portrait of Jeremy Strong by Jay Dixit" />
 	</div>
 	<figcaption>
-		Mr. Strong happily sat for a portrait, emphasizing his eagerness to see his existing Wikipedia
-		photo replaced.
+		Mr. Strong happily sat for a portrait, emphasizing his eagerness to see his existing
+		Wikipedia photo replaced.
 	</figcaption>
-</figure>
+    </figure>
 
-The trick on a red carpet isn't getting a natural expression. These are professional actors — they always look good on camera. The trick is getting them to look at your lens when every photographer in the pit is shouting their name. I've tried wearing a red Switzerland flag hat and yelling "over here in the red hat!" I've called people by their character names. I got Ana de Armas's attention by saying, "Oye, Ana, por aqui, por favor!" She looked right at me and gave me the sweetest smile. Click, got the shot.
+</section>
 
-But WikiPortraits isn't just about getting better photos. Because everything we shoot is freely licensed, our images are free for anyone to use, including news outlets that can't afford Getty or the wire services, from Brazil to Serbia to Japan. And most notable people of color still aren't represented on Wikipedia with a good portrait, or any portrait at all. Closing that gap is a big part of why the project exists. Wikipedia shapes how the world sees people. When the photo is bad, or missing, that's a problem worth fixing.
+<section className="wikiportraits-closing">
+	<div className="wikiportraits-technique">
+		The trick on a red carpet isn't getting a natural expression. These are professional actors —
+		they always look good on camera. The trick is getting them to look at your lens when every
+		photographer in the pit is shouting their name. I've tried wearing a red Switzerland flag hat
+		and yelling "over here in the red hat!" I've called people by their character names. I got Ana
+		de Armas's attention by saying, "Oye, Ana, por aqui, por favor!" She looked right at me and
+		gave me the sweetest smile. Click, got the shot.
+	</div>
 
-Jenny and Kevin keep pushing us into new kinds of events, from the Jaipur Literature Festival to CES in Las Vegas. We're a team of more than 50 volunteer photographers, and we're just getting started.
+        <div className="wikiportraits-mission">
+	<div className="wikiportraits-mission-primary">
+		But WikiPortraits isn't just about getting better photos. Because everything we shoot is
+		freely licensed, our images are free for anyone to use, including news outlets that can't
+		afford Getty or the wire services, from Brazil to Serbia to Japan. And most notable people of
+		color still aren't represented on Wikipedia with a good portrait, or any portrait at all.
+		Closing that gap is a big part of why the project exists. Wikipedia shapes how the world sees
+		people. When the photo is bad, or missing, that's a problem worth fixing.
+	</div>
+	<div className="wikiportraits-mission-secondary">
+		Jenny and Kevin keep pushing us into new kinds of events, from the Jaipur Literature Festival
+		to CES in Las Vegas. We're a team of more than 50 volunteer photographers, and we're just
+		getting started.
+	</div>
+    </div>
 
-If you want to join us, help fund travel and gear, or just learn more, visit [WikiPortraits.org](https://www.wikiportraits.org) or [get in touch](mailto:jay@jaydixit.com).
+        <div className="wikiportraits-cta">
+	If you want to join us, help fund travel and gear, or just learn more, visit
+	<a href="https://www.wikiportraits.org">WikiPortraits.org</a> or
+	<a href="mailto:jay@jaydixit.com">get in touch</a>.
+        </div>
+
+</section>

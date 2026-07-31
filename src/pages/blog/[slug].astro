@@ -2,6 +2,7 @@
 import MainLayout from '../../layouts/MainLayout.astro';
 import RelatedPosts from '../../components/RelatedPosts.astro';
 import SocialShare from '../../components/SocialShare.astro';
+import WikiPortraitsHero from '../../components/WikiPortraitsHero.astro';
 import { getCollection, render } from 'astro:content';
 import { smartQuotes } from '@jaydixit/astro-utils';
 import { cldUrl, cldSrcset, cldSizes } from '../../lib/cloudinary';
@@ -43,15 +44,17 @@ const formattedDate = publishDate
 	: null;
 const heroImage = data.imagePublicId ? cldUrl(data.imagePublicId, 2000) : (data.image ?? null);
 const heroSrcset = data.imagePublicId ? cldSrcset(data.imagePublicId) : undefined;
-const excerpt = data.excerpt ? smartQuotes(data.excerpt) : null;
+const excerptSource = data.excerpt ?? data.description;
+const excerpt = excerptSource ? smartQuotes(excerptSource) : null;
 const siteUrl = Astro.site?.origin ?? siteConfig.siteUrl ?? 'https://photos.jaydixit.com';
 const canonicalUrl = new URL(`/blog/${post.id}/`, siteUrl).toString();
 const showRelatedPosts = post.id !== 'wikiportraits-story';
+const isFeature = data.presentation === 'feature';
 const blogStructuredData = {
 	'@context': 'https://schema.org',
 	'@type': 'BlogPosting',
 	headline: data.title,
-	description: data.excerpt ?? '',
+	description: excerptSource ?? '',
 	datePublished: publishDate?.toISOString(),
 	dateModified: (data.updateDate ?? data.publishDate)?.toISOString(),
 	author: {
@@ -70,7 +73,7 @@ const blogStructuredData = {
 
 <MainLayout
 	title={data.title}
-	description={data.excerpt}
+	description={excerptSource}
 	canonical={canonicalUrl}
 	image={heroImage ?? undefined}
 	imageAlt={data.imageAlt ?? data.title}
@@ -82,7 +85,10 @@ const blogStructuredData = {
 >
 	<article
 		id="blog-lightbox-gallery"
-		class="blog-article mx-auto max-w-3xl px-6 pb-24 pt-44 md:pt-56"
+		class:list={[
+			'blog-article',
+			isFeature ? 'blog-article--feature' : 'mx-auto max-w-3xl px-6 pb-24 pt-44 md:pt-56',
+		]}
 	>
 		{
 			heroImage && (
@@ -100,33 +106,53 @@ const blogStructuredData = {
 			)
 		}
 
-		<header class="blog-header text-center">
-			<p class="blog-kicker eyebrow">Essay</p>
-			<h1 class="blog-title">{data.title}</h1>
-			{
-				formattedDate && (
-					<time datetime={publishDate?.toISOString()} class="blog-meta">
-						{formattedDate}
-					</time>
-				)
-			}
-			{
-				data.tags && (
-					<ul class="blog-tags">
-						{data.tags.map((tag) => (
-							<li>{formatTagLabel(tag)}</li>
-						))}
-					</ul>
-				)
-			}
-			{excerpt && <p class="blog-excerpt">{excerpt}</p>}
-		</header>
-
-		<SocialShare
-			title={data.title}
-			text={data.excerpt ?? `Read ${data.title} on ${siteConfig.title}`}
-			className="mb-10"
-		/>
+		{
+			isFeature ? (
+				<div class="feature-masthead">
+					<header class="blog-header feature-header">
+						<p class="blog-kicker eyebrow">Essay</p>
+						<h1 class="blog-title">{data.title}</h1>
+						{excerpt && <p class="blog-excerpt">{excerpt}</p>}
+						{formattedDate && (
+							<time datetime={publishDate?.toISOString()} class="blog-meta">
+								{formattedDate}
+							</time>
+						)}
+						<SocialShare
+							title={data.title}
+							text={excerptSource ?? `Read ${data.title} on ${siteConfig.title}`}
+							className="feature-share"
+						/>
+					</header>
+					<WikiPortraitsHero />
+				</div>
+			) : (
+				<>
+					<header class="blog-header text-center">
+						<p class="blog-kicker eyebrow">Essay</p>
+						<h1 class="blog-title">{data.title}</h1>
+						{formattedDate && (
+							<time datetime={publishDate?.toISOString()} class="blog-meta">
+								{formattedDate}
+							</time>
+						)}
+						{data.tags && (
+							<ul class="blog-tags">
+								{data.tags.map((tag) => (
+									<li>{formatTagLabel(tag)}</li>
+								))}
+							</ul>
+						)}
+						{excerpt && <p class="blog-excerpt">{excerpt}</p>}
+					</header>
+					<SocialShare
+						title={data.title}
+						text={excerptSource ?? `Read ${data.title} on ${siteConfig.title}`}
+						className="mb-10"
+					/>
+				</>
+			)
+		}
 
 		<div class="article-content mx-auto max-w-none">
 			<Content />
@@ -178,7 +204,7 @@ const blogStructuredData = {
 		if (!(gallery instanceof HTMLElement)) return;
 
 		const targets = gallery.querySelectorAll<HTMLImageElement>(
-			'.blog-hero-image, .article-content img',
+			'.blog-hero-image, .wikiportraits-feature-hero img, .article-content img',
 		);
 		targets.forEach((img) => {
 			img.classList.add('cursor-zoom-in');
@@ -411,109 +437,6 @@ const blogStructuredData = {
 		text-decoration: none;
 	}
 
-	.article-content :global(.wikiportraits-hero) {
-		width: min(58rem, calc(100vw - 3rem));
-		max-width: none;
-		margin: 0 50% 4rem;
-		transform: translateX(-50%);
-	}
-
-	.article-content :global(.wikiportraits-hero-grid) {
-		display: grid;
-		grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-		gap: 1.25rem;
-		align-items: start;
-	}
-
-	.article-content :global(.wikiportraits-hero-panel) {
-		display: grid;
-		gap: 0.9rem;
-		min-width: 0;
-	}
-
-	.article-content :global(.wikiportraits-hero-frame) {
-		aspect-ratio: 3 / 4;
-		overflow: hidden;
-		background: #eceae3;
-	}
-
-	.article-content :global(.wikiportraits-hero-frame .portfolio-lightbox) {
-		display: block;
-		width: 100%;
-		height: 100%;
-	}
-
-	.article-content :global(.wikiportraits-hero-img) {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-	}
-
-	.article-content :global(.wikiportraits-hero-img--before) {
-		object-position: center 20%;
-	}
-
-	.article-content :global(.wikiportraits-hero-img--after) {
-		object-position: center top;
-	}
-
-	.article-content :global(.wikiportraits-hero-arrow) {
-		display: grid;
-		place-items: center;
-		align-self: start;
-		width: 2.75rem;
-		height: 2.75rem;
-		margin-top: clamp(9rem, 20vw, 16rem);
-		border: 1px solid var(--hairline);
-		border-radius: 999px;
-		background: var(--paper);
-		color: var(--muted);
-		font-size: 1.8rem;
-		line-height: 1;
-		box-shadow: 0 6px 18px rgba(41, 37, 36, 0.06);
-	}
-
-	.article-content :global(.wikiportraits-hero-meta) {
-		display: grid;
-		gap: 0.35rem;
-		font-family: var(--sans);
-		font-size: 0.8rem;
-		line-height: 1.35;
-		color: #5c554c;
-	}
-
-	.article-content :global(.wikiportraits-hero-meta p) {
-		margin: 0;
-		font: inherit;
-		line-height: inherit;
-		color: inherit;
-	}
-
-	.article-content :global(.wikiportraits-hero-meta span) {
-		font-family: var(--sans);
-		font-size: inherit;
-		line-height: inherit;
-		color: inherit;
-	}
-
-	.article-content :global(.wikiportraits-hero-meta strong) {
-		font-size: 0.7rem;
-		font-weight: 600;
-		letter-spacing: 0.2em;
-		text-transform: uppercase;
-		color: var(--ink);
-	}
-
-	.article-content :global(.wikiportraits-hero-title) {
-		display: block;
-		margin-bottom: 0.45rem;
-		font-family: var(--sans);
-		font-size: 0.9rem;
-		line-height: 1.35;
-		font-weight: 500;
-		color: #2a2620;
-	}
-
 	.article-content :global(.article-image-small) {
 		max-width: 34rem;
 		margin-inline: auto;
@@ -561,6 +484,658 @@ const blogStructuredData = {
 		line-height: 1;
 	}
 
+	/* WikiPortraits feature essay */
+	.blog-article--feature {
+		max-width: none;
+		padding: 0 0 clamp(6rem, 9vw, 10rem);
+	}
+
+	.feature-masthead {
+		display: grid;
+		grid-template-columns: minmax(23rem, 0.72fr) minmax(40rem, 1.28fr);
+		gap: clamp(3rem, 6vw, 9rem);
+		align-items: center;
+		min-height: calc(100vh - 6rem);
+		padding: clamp(9rem, 12vw, 14rem) clamp(1.5rem, 4vw, 5rem) clamp(6rem, 8vw, 9rem);
+		border-bottom: 1px solid var(--hairline);
+	}
+
+	.feature-header {
+		max-width: 52rem;
+		margin: 0;
+		text-align: left;
+	}
+
+	.feature-header .blog-kicker {
+		margin-bottom: 1.6rem;
+		color: #96773f;
+	}
+
+	.feature-header .blog-title {
+		max-width: 11ch;
+		font-size: clamp(4.75rem, 7.1vw, 9rem);
+		line-height: 0.9;
+		letter-spacing: -0.035em;
+	}
+
+	.feature-header .blog-excerpt {
+		max-width: 31rem;
+		margin: clamp(2rem, 3vw, 3.5rem) 0 0;
+		font-size: clamp(1.45rem, 1.8vw, 2rem);
+		line-height: 1.35;
+		color: #4f493f;
+	}
+
+	.feature-header .blog-meta {
+		margin-top: 2rem;
+	}
+
+	.feature-header :global(.feature-share) {
+		margin: 2.25rem 0 0;
+	}
+
+	.feature-header :global(.feature-share .social-share-button) {
+		border: 0;
+		border-top: 1px solid #cfc6b3;
+		border-bottom: 1px solid #cfc6b3;
+		border-radius: 0;
+		padding: 0.75rem 0;
+		background: transparent;
+		backdrop-filter: none;
+		box-shadow: none;
+		color: #6e675c;
+	}
+
+	.feature-header :global(.feature-share .social-share-button:hover) {
+		border-color: #96773f;
+		background: transparent;
+		box-shadow: none;
+		color: #96773f;
+	}
+
+	.blog-article--feature .article-content {
+		max-width: none;
+		margin: 0;
+	}
+
+	.blog-article--feature .article-content :global(section) {
+		box-sizing: border-box;
+	}
+
+	.blog-article--feature .article-content :global(p:empty) {
+		display: none;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-opening) {
+		display: grid;
+		grid-template-columns: minmax(20rem, 0.82fr) minmax(30rem, 1fr);
+		max-width: 112rem;
+		margin: 0 auto;
+		padding: clamp(7rem, 10vw, 12rem) clamp(1.5rem, 4vw, 5rem);
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-opening-statement) {
+		padding-right: clamp(3rem, 6vw, 8rem);
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-opening-statement p) {
+		margin: 0;
+		font-size: clamp(3.4rem, 4.7vw, 6.4rem);
+		line-height: 1;
+		letter-spacing: -0.035em;
+		color: #1c1813;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-opening-copy) {
+		display: grid;
+		align-content: center;
+		gap: 1.75rem;
+		padding-left: clamp(3rem, 6vw, 8rem);
+		border-left: 1px solid #cfc6b3;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-opening-copy p) {
+		margin: 0;
+		font-size: clamp(1.45rem, 1.55vw, 1.85rem);
+		line-height: 1.48;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-evidence) {
+		padding: clamp(6rem, 9vw, 10rem) clamp(1.5rem, 4vw, 5rem);
+		background: #f1ebe1;
+		border-block: 1px solid #ded4c4;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-evidence-lede) {
+		max-width: 58rem;
+		margin: 0 auto clamp(4rem, 7vw, 7rem);
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-evidence-lede p) {
+		margin: 0;
+		font-size: clamp(2.25rem, 3.35vw, 4.6rem);
+		line-height: 1.08;
+		letter-spacing: -0.025em;
+		text-align: center;
+		color: #211d18;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-pete-grid) {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(8rem, 0.28fr) minmax(0, 1fr);
+		gap: clamp(1.5rem, 3vw, 4rem);
+		align-items: center;
+		max-width: 92rem;
+		margin: 0 auto;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-pete-figure) {
+		margin: 0;
+		min-width: 0;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-pete-figure .portfolio-lightbox) {
+		display: grid;
+		place-items: center;
+		height: clamp(30rem, 42vw, 48rem);
+		padding: clamp(1rem, 2vw, 2.5rem);
+		background: #e7dfd3;
+		box-shadow: 0 24px 52px -36px rgba(42, 32, 23, 0.48);
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-pete-figure img) {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-pete-figure figcaption),
+	.blog-article--feature .article-content :global(.wikiportraits-emil figcaption),
+	.blog-article--feature .article-content :global(.wikiportraits-jeremy figcaption) {
+		max-width: none;
+		margin: 1rem 0 0;
+		font-family: var(--serif);
+		font-size: clamp(1.05rem, 1.2vw, 1.3rem);
+		line-height: 1.45;
+		text-align: left;
+		color: #5c554c;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-pete-transition) {
+		display: grid;
+		gap: 1.5rem;
+		justify-items: center;
+		text-align: center;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-pete-transition p) {
+		margin: 0;
+		font-size: clamp(1.25rem, 1.4vw, 1.55rem);
+		line-height: 1.35;
+		color: #4f493f;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-pete-transition span) {
+		display: grid;
+		place-items: center;
+		width: 3.25rem;
+		height: 3.25rem;
+		border: 1px solid #c7bda9;
+		border-radius: 50%;
+		background: var(--paper);
+		color: #c0261f;
+		font-size: 2rem;
+		line-height: 1;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-evidence-context) {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 24rem;
+		gap: clamp(3rem, 7vw, 9rem);
+		align-items: center;
+		max-width: 84rem;
+		margin: clamp(6rem, 9vw, 10rem) auto 0;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-evidence-copy) {
+		display: grid;
+		gap: 1.75rem;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-evidence-copy p) {
+		margin: 0;
+		font-size: clamp(1.4rem, 1.5vw, 1.7rem);
+		line-height: 1.52;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-emil) {
+		width: 100%;
+		max-width: 24rem;
+		margin: 0;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-origin) {
+		max-width: 112rem;
+		margin: 0 auto;
+		padding: clamp(7rem, 10vw, 12rem) clamp(1.5rem, 4vw, 5rem);
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-origin-grid) {
+		display: grid;
+		grid-template-columns: minmax(22rem, 0.85fr) minmax(30rem, 1fr);
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-origin-lede) {
+		padding-right: clamp(3rem, 6vw, 8rem);
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-origin-lede p) {
+		margin: 0;
+		font-size: clamp(2.65rem, 3.5vw, 4.75rem);
+		line-height: 1.08;
+		letter-spacing: -0.025em;
+		color: #211d18;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-origin-copy) {
+		display: grid;
+		gap: 1.75rem;
+		align-content: start;
+		padding-left: clamp(3rem, 6vw, 8rem);
+		border-left: 1px solid #cfc6b3;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-origin-copy p) {
+		margin: 0;
+		font-size: clamp(1.4rem, 1.5vw, 1.75rem);
+		line-height: 1.5;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-origin-copy p:first-child) {
+		font-size: clamp(1.8rem, 2.1vw, 2.5rem);
+		font-style: italic;
+		line-height: 1.35;
+		color: #2a2620;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-stats) {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 0;
+		max-width: 112rem;
+		margin: 0 auto;
+		padding: 0 clamp(1.5rem, 4vw, 5rem) clamp(7rem, 10vw, 11rem);
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-stat) {
+		padding: clamp(2rem, 3vw, 3.5rem);
+		border-top: 1px solid #b9aa92;
+		border-bottom: 1px solid #b9aa92;
+		font-size: clamp(1.15rem, 1.25vw, 1.4rem);
+		line-height: 1.45;
+		color: #4f493f;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-stat + .wikiportraits-stat) {
+		border-left: 1px solid #b9aa92;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-stat p) {
+		margin: 0;
+		font: inherit;
+		line-height: inherit;
+		color: inherit;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-stats strong) {
+		display: block;
+		margin: 0.45rem 0;
+		font-family: var(--serif);
+		font-size: clamp(2.35rem, 3.3vw, 4.5rem);
+		font-weight: 300;
+		line-height: 0.98;
+		letter-spacing: -0.03em;
+		color: #c0261f;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-stats span) {
+		display: block;
+		margin-top: 1rem;
+		font-style: italic;
+		color: #211d18;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-application) {
+		display: grid;
+		grid-template-columns: minmax(20rem, 0.85fr) minmax(30rem, 1.15fr);
+		gap: clamp(3rem, 7vw, 9rem);
+		align-items: center;
+		max-width: 100rem;
+		margin: 0 auto clamp(5rem, 7vw, 8rem);
+		padding: clamp(3rem, 5vw, 6rem);
+		background: #ece7dc;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-application-intro p) {
+		margin: 0;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-application-title) {
+		font-family: var(--serif);
+		font-size: clamp(2.5rem, 3.25vw, 4.4rem);
+		font-weight: 300;
+		line-height: 1.02;
+		letter-spacing: -0.025em;
+		color: #17130f;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-application-title p) {
+		margin: 0;
+		font: inherit;
+		line-height: inherit;
+		letter-spacing: inherit;
+		color: inherit;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-application-arrow) {
+		display: grid;
+		place-items: center;
+		width: 3.25rem;
+		height: 3.25rem;
+		margin: 2rem 0;
+		border: 1px solid #cfc6b3;
+		border-radius: 50%;
+		font-family: var(--sans);
+		font-size: 1.65rem;
+		line-height: 1;
+		color: #c0261f;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-application-context) {
+		max-width: 34rem;
+		font-family: var(--serif);
+		font-size: clamp(1.45rem, 1.65vw, 2rem);
+		font-weight: 400;
+		line-height: 1.35;
+		color: #3e3932;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-application-context p) {
+		margin: 0;
+		font: inherit;
+		line-height: inherit;
+		color: inherit;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-application-form) {
+		display: grid;
+		gap: 1.5rem;
+		padding: clamp(2rem, 3vw, 3.5rem);
+		background: #fbfaf6;
+		box-shadow: 0 1.4rem 4rem rgb(70 55 31 / 10%);
+		transform: rotate(0.5deg);
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-application-form h3) {
+		margin: 0 0 0.75rem;
+		font-family: var(--serif);
+		font-size: clamp(1.5rem, 2vw, 2.35rem);
+		font-weight: 400;
+		line-height: 1.1;
+		letter-spacing: -0.015em;
+		color: #17130f;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-application-field span) {
+		display: block;
+		margin-bottom: 0.55rem;
+		font-family: var(--sans);
+		font-size: clamp(0.9rem, 1vw, 1.1rem);
+		font-weight: 650;
+		color: #29251f;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-application-field strong) {
+		display: block;
+		padding: 0.8rem 1rem;
+		border: 1.5px solid #8b867e;
+		font-family: var(--sans);
+		font-size: clamp(1.45rem, 2.4vw, 3rem);
+		font-weight: 450;
+		line-height: 1.15;
+		letter-spacing: 0.01em;
+		color: #17130f;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-jeremy) {
+		display: grid;
+		grid-template-columns: minmax(24rem, 0.72fr) minmax(38rem, 1.28fr);
+		gap: clamp(3rem, 7vw, 10rem);
+		align-items: center;
+		max-width: 112rem;
+		margin: 0 auto;
+		padding: clamp(7rem, 9vw, 11rem) clamp(1.5rem, 4vw, 5rem);
+		border-top: 1px solid var(--hairline);
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-jeremy-copy h2) {
+		margin: 0 0 clamp(2rem, 3vw, 3.5rem);
+		font-size: clamp(3.25rem, 4.65vw, 6.35rem);
+		font-weight: 300;
+		line-height: 0.98;
+		letter-spacing: -0.035em;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-jeremy-copy p) {
+		margin: 0;
+		font-size: clamp(1.35rem, 1.45vw, 1.65rem);
+		line-height: 1.5;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-jeremy figure) {
+		margin: 0;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-jeremy .before-after-arrow) {
+		color: #c0261f;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-closing) {
+		max-width: 112rem;
+		margin: 0 auto;
+		padding: clamp(6rem, 8vw, 9rem) clamp(1.5rem, 4vw, 5rem) 0;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-technique) {
+		max-width: 48rem;
+		margin: 0 auto;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-technique p) {
+		margin: 0;
+		font-size: clamp(1.45rem, 1.6vw, 1.85rem);
+		line-height: 1.52;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-mission) {
+		display: grid;
+		grid-template-columns: minmax(28rem, 1.2fr) minmax(22rem, 0.8fr);
+		margin-top: clamp(5rem, 8vw, 9rem);
+		padding-top: clamp(4rem, 6vw, 7rem);
+		border-top: 1px solid #b9aa92;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-mission-primary) {
+		padding-right: clamp(3rem, 6vw, 8rem);
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-mission-primary p) {
+		margin: 0;
+		font-size: clamp(2.2rem, 3vw, 4rem);
+		line-height: 1.12;
+		letter-spacing: -0.02em;
+		color: #211d18;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-mission-secondary) {
+		padding-left: clamp(3rem, 6vw, 8rem);
+		border-left: 1px solid #cfc6b3;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-mission-secondary p) {
+		margin: 0;
+		font-size: clamp(1.4rem, 1.5vw, 1.7rem);
+		line-height: 1.5;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-cta) {
+		max-width: 54rem;
+		margin: clamp(6rem, 9vw, 10rem) auto 0;
+		padding-top: clamp(3rem, 4vw, 4.5rem);
+		border-top: 1px solid #b9aa92;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-cta p) {
+		margin: 0;
+		font-size: clamp(2rem, 2.8vw, 3.5rem);
+		line-height: 1.25;
+		letter-spacing: -0.015em;
+		text-align: center;
+		color: #211d18;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-cta a) {
+		color: #c0261f;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.18em;
+	}
+
+	@media (max-width: 1050px) {
+		.feature-masthead {
+			grid-template-columns: 1fr;
+			gap: 4rem;
+			min-height: 0;
+			padding-top: 10rem;
+		}
+
+		.feature-header {
+			max-width: 48rem;
+		}
+
+		.feature-header .blog-title {
+			max-width: 10ch;
+		}
+
+		.blog-article--feature .article-content :global(.wikiportraits-opening),
+		.blog-article--feature .article-content :global(.wikiportraits-origin-grid),
+		.blog-article--feature .article-content :global(.wikiportraits-jeremy),
+		.blog-article--feature .article-content :global(.wikiportraits-mission) {
+			grid-template-columns: 1fr;
+		}
+
+		.blog-article--feature .article-content :global(.wikiportraits-opening-statement),
+		.blog-article--feature .article-content :global(.wikiportraits-origin-lede),
+		.blog-article--feature .article-content :global(.wikiportraits-mission-primary) {
+			padding-right: 0;
+			padding-bottom: 3.5rem;
+		}
+
+		.blog-article--feature .article-content :global(.wikiportraits-opening-copy),
+		.blog-article--feature .article-content :global(.wikiportraits-origin-copy),
+		.blog-article--feature .article-content :global(.wikiportraits-mission-secondary) {
+			padding: 3.5rem 0 0;
+			border-top: 1px solid #cfc6b3;
+			border-left: 0;
+		}
+
+		.blog-article--feature .article-content :global(.wikiportraits-jeremy) {
+			gap: 4rem;
+		}
+
+		.blog-article--feature .article-content :global(.wikiportraits-evidence-context) {
+			grid-template-columns: minmax(0, 1fr) 20rem;
+			gap: 4rem;
+		}
+	}
+
+	@media (max-width: 760px) {
+		.feature-masthead {
+			padding: 8.5rem 1.5rem 5rem;
+		}
+
+		.feature-header .blog-title {
+			font-size: clamp(3.5rem, 15.5vw, 5.5rem);
+		}
+
+		.blog-article--feature .article-content :global(.wikiportraits-opening),
+		.blog-article--feature .article-content :global(.wikiportraits-origin),
+		.blog-article--feature .article-content :global(.wikiportraits-jeremy),
+		.blog-article--feature .article-content :global(.wikiportraits-closing) {
+			padding-inline: 1.5rem;
+		}
+
+		.blog-article--feature .article-content :global(.wikiportraits-opening-statement p),
+		.blog-article--feature .article-content :global(.wikiportraits-origin-lede p),
+		.blog-article--feature .article-content :global(.wikiportraits-jeremy-copy h2) {
+			font-size: clamp(2.9rem, 13vw, 4.5rem);
+		}
+
+		.blog-article--feature .article-content :global(.wikiportraits-evidence) {
+			padding-inline: 1.5rem;
+		}
+
+		.blog-article--feature .article-content :global(.wikiportraits-evidence-lede) {
+			text-align: left;
+		}
+
+		.blog-article--feature .article-content :global(.wikiportraits-pete-grid) {
+			grid-template-columns: 1fr;
+			gap: 2.5rem;
+		}
+
+		.blog-article--feature .article-content :global(.wikiportraits-pete-transition span) {
+			transform: rotate(90deg);
+		}
+
+		.blog-article--feature
+			.article-content
+			:global(.wikiportraits-pete-figure .portfolio-lightbox) {
+			height: auto;
+			min-height: 28rem;
+		}
+
+		.blog-article--feature .article-content :global(.wikiportraits-evidence-context) {
+			grid-template-columns: 1fr;
+		}
+
+		.blog-article--feature .article-content :global(.wikiportraits-emil) {
+			margin-inline: auto;
+		}
+
+		.blog-article--feature .article-content :global(.wikiportraits-stats) {
+			grid-template-columns: 1fr;
+			padding-inline: 1.5rem;
+		}
+
+		.blog-article--feature .article-content :global(.wikiportraits-application) {
+			grid-template-columns: 1fr;
+			margin-inline: 1.5rem;
+		}
+
+		.blog-article--feature .article-content :global(.wikiportraits-stat + .wikiportraits-stat) {
+			border-top: 0;
+			border-left: 0;
+		}
+
+		.blog-article--feature .article-content :global(.wikiportraits-mission) {
+			margin-top: 5rem;
+		}
+
+		.blog-article--feature .article-content :global(.wikiportraits-cta) {
+			text-align: left;
+		}
+	}
+
 	@media (max-width: 640px) {
 		.blog-title {
 			font-size: 3rem;
@@ -574,16 +1149,6 @@ const blogStructuredData = {
 
 		.article-content :global(.before-after-grid) {
 			grid-template-columns: 1fr;
-		}
-
-		.article-content :global(.wikiportraits-hero-grid) {
-			grid-template-columns: 1fr;
-		}
-
-		.article-content :global(.wikiportraits-hero-arrow) {
-			justify-self: center;
-			margin-top: 0;
-			transform: rotate(90deg);
 		}
 
 		.article-content :global(.before-after-arrow) {

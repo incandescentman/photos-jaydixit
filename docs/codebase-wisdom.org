@@ -1,6 +1,19 @@
 #+TITLE: Codebase Wisdom
 #+DATE: 2025-10-03
 
+* 2026-07-31 - MDX Feature Variants Need Non-Reserved Metadata and Valid Paragraph Structure
+
+** Trigger
+The WikiPortraits feature essay first failed to build when its frontmatter used ~layout: feature~. After renaming that field, several large display paragraphs rendered at ordinary body size while empty elements received the intended classes.
+
+** Mechanism
+Astro MDX treats ~layout~ as a reserved frontmatter key and attempts to resolve its value as a layout module. A visual variant named ~layout: feature~ therefore produces a module-resolution error for ~feature~ instead of ordinary collection metadata.
+
+Multiline Markdown content inside an explicit JSX ~<p>~ can compile to a nested paragraph. Because nested ~<p>~ elements are invalid HTML, the browser repairs the DOM into an empty classed paragraph plus unclassed sibling paragraphs. The CSS selector remains attached to the empty element, and grid containers receive unexpected extra children.
+
+** Actionable insight
+Use a schema field such as ~presentation~ for content-driven visual variants; reserve ~layout~ for a real Astro/MDX layout import. For multiline prose that needs a display class, use a semantic ~<div>~ wrapper and style its generated child paragraph, or keep the complete text inline inside one explicit ~<p>~. Inspect the rendered children rather than trusting the MDX source when classed prose appears unstyled or a grid has unexplained extra items. Prettier can also emit mixed leading spaces and tabs for nested MDX JSX; after formatting, normalize that indentation and require ~git diff --check~ to pass.
+
 * 2026-07-14 - Responsive Packery Needs Compatible Row Geometry, Not Just Column Geometry
 
 ** Trigger

@@ -1,6 +1,25 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-31 - Redesign The Story of WikiPortraits as a feature essay
+
+** Direction
+- Bring [[http://localhost:4322/blog/wikiportraits-story][The Story of WikiPortraits]] into the same full-width editorial system as the Kinetic homepage and revised About page.
+- Preserve the article's wording except for Jay's two explicit Pete Davidson sentence revisions and the TIFF application language supplied in his reference screenshot.
+
+** Changed
+- Added a ~feature~ presentation variant to the blog content schema and used it to give this essay a route-specific masthead, full-width section rhythm, large serif statements, warm evidence surface, reach statistics, Jeremy Strong climax, and broad closing mission section without changing the standard blog-post template.
+- Extracted the Vanessa Kirby before-and-after comparison into [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/WikiPortraitsHero.astro][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/components/WikiPortraitsHero.astro]] and retained PhotoSwipe behavior for its photographs.
+- Rebuilt the Pete Davidson sequence as an editorial comparison and incorporated Jay's revised copy: “It was eventually replaced with this one. Not as bad as the first, but still really bad.”
+- Updated the evidence lede with Jay's airport and blurry-iPhone wording.
+- Recreated the audience fields from [[file+emacs:/Users/jay/Downloads/BB48104F-BFAC-4715-9538-CDF268EDF11F.jpg][📄 /Users/jay/Downloads/BB48104F-BFAC-4715-9538-CDF268EDF11F.jpg]] as a responsive TIFF media-accreditation artifact rather than committing the phone screenshot. It identifies the outlet as Wikipedia and preserves the original audience values: ~1500000000~ monthly unique visitors and ~24000000000~ monthly page views.
+- Added a restrained red right-arrow pivot beneath the TIFF artifact's large left-hand sentence, then moved the complete ~1.5 billion people~ press-credential payoff out of the statistics and into the left panel, ending with Jay's smiley emoji.
+- Stopped the origin-story prose grid from stretching its paragraph rows to match the taller left-hand statement; the four paragraphs now use their intended ~1.75rem~ vertical gap.
+
+** Validation
+- Browser-reviewed the complete essay at the default ~3360 x 1739~ viewport and at ~390 x 844~. The desktop and mobile layouts have no horizontal overflow; the masthead, TIFF artifact, statistics, Pete Davidson comparison, and Jeremy Strong comparison all reflow at the intended breakpoints.
+- ~npm run lint~, all 21 Vitest tests, ~npm run build~ (102 pages), focused Astro/TypeScript Prettier, and ~git diff --check~ passed. The MDX formatter's mixed leading indentation was normalized after its formatting pass. The build retains only the existing Vite chunk-size warning.
+
 * 2026-07-31 - Record the promoted portfolio as a loved cross-project reference
 
 ** Summary
