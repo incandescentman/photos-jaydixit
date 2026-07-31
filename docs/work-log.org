@@ -1,6 +1,29 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-07-31 - Link photography decisions to the cross-repo reaction ledger
+
+** Summary
+- Backfilled the explicit reactions to the photography homepage variants into
+  [[file+emacs:/Users/jay/Dropbox/github/socratic-video/references/look-and-feel/experiment-reactions.org][📄
+  the cross-repo visual experiment reaction ledger]].
+- Preserved the original distinctions:
+  - Kinetic Editorial was liked, then promoted to the canonical homepage.
+  - Living Contact Sheet was liked and supplied the physical-print hero
+    composition used by Kinetic Editorial.
+  - Spatial Portrait Gallery was rejected: “No. Small photos, nothing
+    special.”
+  - The original Red Carpet Sequence was rejected: “No. Too boring, nothing
+    really happening.” Its reconstructed cinematic Before & After was later
+    promoted to the canonical ~/before-after/~ page.
+  - Photo Wall was superseded and demoted to an intentionally unlinked,
+    noindexed reference route rather than recorded as a wholesale rejection.
+  - No explicit reaction was found for the older Living Archive and Contact
+    Sheet / Public Record experiments, so they remain unreviewed.
+- Added the global-ledger link to the photography experiment documentation so
+  future sessions update both the local implementation record and the
+  cross-project index.
+
 * 2026-07-30 - Align Before & After with the new homepage
 
 ** Direction

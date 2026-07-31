@@ -42,6 +42,12 @@ The root **CLAUDE.md** file contains legacy documentation. This file (docs/CLAUD
 
 * Experimental Visual Variants
 
+Cross-repo approvals, rework requests, and rejections are indexed in
+[[file+emacs:/Users/jay/Dropbox/github/socratic-video/references/look-and-feel/experiment-reactions.org][📄
+Cross-Repo Visual Experiment Reactions]]. Keep the local status below as the
+implementation record, and update the global ledger whenever Jay gives an
+explicit reaction.
+
 These are reversible comparison routes. Review the remaining variants from [[http://127.0.0.1:4335/experiments/][the local experiment chooser]].
 
 ** Experiment URL Lifecycle
