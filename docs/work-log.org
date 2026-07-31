@@ -20,6 +20,10 @@
 - Browser-reviewed the complete essay at the default ~3360 x 1739~ viewport and at ~390 x 844~. The desktop and mobile layouts have no horizontal overflow; the masthead, TIFF artifact, statistics, Pete Davidson comparison, and Jeremy Strong comparison all reflow at the intended breakpoints.
 - ~npm run lint~, all 21 Vitest tests, ~npm run build~ (102 pages), focused Astro/TypeScript Prettier, and ~git diff --check~ passed. The MDX formatter's mixed leading indentation was normalized after its formatting pass. The build retains only the existing Vite chunk-size warning.
 
+** Publication
+- Committed the final feature-essay redesign as ~db5b3c4~ (~Redesign WikiPortraits story as feature essay~), following the two committed About-page refinement passes ~8661c45~ and ~5672e20~.
+- This documentation closeout publishes those three reviewed commits together from ~main~ to ~origin/main~.
+
 * 2026-07-31 - Record the promoted portfolio as a loved cross-project reference
 
 ** Summary
