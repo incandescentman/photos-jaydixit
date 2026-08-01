@@ -1,26 +1,35 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import {
-	BufferAttribute,
-	BufferGeometry,
-	DoubleSide,
-	Mesh,
-	MeshBasicMaterial,
-	PerspectiveCamera,
-	Points,
-	PointsMaterial,
-	RingGeometry,
-	Scene,
-	WebGLRenderer,
-} from 'three';
 
 type Disposable = () => void;
 
 const selectAll = <T extends Element>(selector: string) =>
 	Array.from(document.querySelectorAll<T>(selector));
 
-function initAtmosphere(canvas: HTMLCanvasElement, hero: HTMLElement): Disposable {
-	let renderer: WebGLRenderer;
+async function initAtmosphere(canvas: HTMLCanvasElement, hero: HTMLElement): Promise<Disposable> {
+	let three: typeof import('three');
+
+	try {
+		three = await import('three');
+	} catch {
+		canvas.hidden = true;
+		return () => undefined;
+	}
+
+	const {
+		BufferAttribute,
+		BufferGeometry,
+		DoubleSide,
+		Mesh,
+		MeshBasicMaterial,
+		PerspectiveCamera,
+		Points,
+		PointsMaterial,
+		RingGeometry,
+		Scene,
+		WebGLRenderer,
+	} = three;
+	let renderer: import('three').WebGLRenderer;
 
 	try {
 		renderer = new WebGLRenderer({
@@ -119,7 +128,7 @@ function initAtmosphere(canvas: HTMLCanvasElement, hero: HTMLElement): Disposabl
 		if (!running) return;
 
 		if (visible && !document.hidden) {
-			const positions = geometry.attributes.position as BufferAttribute;
+			const positions = geometry.attributes.position as import('three').BufferAttribute;
 			for (let i = 0; i < pointCount; i++) {
 				const index = i * 3;
 				positions.setY(i, pointOrigins[index + 1] + Math.sin(time * 0.00024 + i * 0.47) * 0.06);
@@ -189,6 +198,64 @@ function initTilt(): Disposable {
 	return () => cleanups.forEach((cleanup) => cleanup());
 }
 
+function initMobileWallReveals(): Disposable {
+	const cards = selectAll<HTMLElement>('[data-wall-card]');
+	if (!cards.length) return () => undefined;
+
+	const revealed = new Set<HTMLElement>();
+	let frame = 0;
+
+	gsap.set(cards, { autoAlpha: 0 });
+
+	const revealEligibleCards = () => {
+		frame = 0;
+		const threshold = window.innerHeight * 0.92;
+
+		cards.forEach((card, index) => {
+			if (revealed.has(card) || card.getBoundingClientRect().top > threshold) return;
+
+			revealed.add(card);
+			const direction = index % 3 === 0 ? -1 : index % 3 === 1 ? 1 : 0;
+			gsap.fromTo(
+				card,
+				{
+					x: direction * 18,
+					y: 30 + (index % 3) * 8,
+					rotation: direction * 0.8,
+					scale: 0.985,
+					autoAlpha: 0,
+				},
+				{
+					x: 0,
+					y: 0,
+					rotation: 0,
+					scale: 1,
+					autoAlpha: 1,
+					duration: 0.68,
+					ease: 'power3.out',
+				},
+			);
+		});
+	};
+
+	const requestRevealCheck = () => {
+		if (frame) return;
+		frame = requestAnimationFrame(revealEligibleCards);
+	};
+
+	window.addEventListener('scroll', requestRevealCheck, { passive: true });
+	window.addEventListener('resize', requestRevealCheck, { passive: true });
+	requestRevealCheck();
+
+	return () => {
+		if (frame) cancelAnimationFrame(frame);
+		window.removeEventListener('scroll', requestRevealCheck);
+		window.removeEventListener('resize', requestRevealCheck);
+		gsap.killTweensOf(cards);
+		gsap.set(cards, { clearProps: 'opacity,visibility,transform' });
+	};
+}
+
 export function initKineticEditorial() {
 	const hero = document.querySelector<HTMLElement>('[data-hero]');
 	if (!hero) return;
@@ -196,6 +263,7 @@ export function initKineticEditorial() {
 	gsap.registerPlugin(ScrollTrigger);
 
 	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const mobileLayout = window.matchMedia('(max-width: 820px)').matches;
 	const cleanup: Disposable[] = [];
 
 	const onHeroPointer = (event: PointerEvent) => {
@@ -264,50 +332,28 @@ export function initKineticEditorial() {
 				});
 			});
 
-			gsap.from('.bridge-copy', {
-				y: 80,
-				autoAlpha: 0,
-				duration: 1.1,
-				ease: 'power3.out',
-				scrollTrigger: {
-					trigger: '.editorial-bridge',
-					start: 'top 78%',
-					once: true,
-				},
-			});
-
-			gsap.from('.bridge-index, .bridge-link', {
-				y: 24,
-				autoAlpha: 0,
-				duration: 0.7,
-				stagger: 0.12,
-				scrollTrigger: {
-					trigger: '.editorial-bridge',
-					start: 'top 74%',
-					once: true,
-				},
-			});
-
-			const wallCards = selectAll<HTMLElement>('[data-wall-card]');
-			wallCards.forEach((card, index) => {
-				const direction = index % 3 === 0 ? -1 : index % 3 === 1 ? 1 : 0;
-				gsap.from(card, {
-					x: direction * (54 + (index % 5) * 9),
-					y: 80 + (index % 4) * 24,
-					rotation: direction * (2 + (index % 3)),
-					scale: 0.94,
-					autoAlpha: 0,
-					duration: 1,
-					ease: 'power3.out',
-					scrollTrigger: {
-						trigger: card,
-						start: 'top 92%',
-						end: 'top 60%',
-						toggleActions: 'play none none none',
-						once: true,
-					},
+			if (!mobileLayout) {
+				const wallCards = selectAll<HTMLElement>('[data-wall-card]');
+				wallCards.forEach((card, index) => {
+					const direction = index % 3 === 0 ? -1 : index % 3 === 1 ? 1 : 0;
+					gsap.from(card, {
+						x: direction * (54 + (index % 5) * 9),
+						y: 80 + (index % 4) * 24,
+						rotation: direction * (2 + (index % 3)),
+						scale: 0.94,
+						autoAlpha: 0,
+						duration: 1,
+						ease: 'power3.out',
+						scrollTrigger: {
+							trigger: card,
+							start: 'top 92%',
+							end: 'top 60%',
+							toggleActions: 'play none none none',
+							once: true,
+						},
+					});
 				});
-			});
+			}
 
 			gsap.from('.closing-panel h2', {
 				y: 90,
@@ -323,9 +369,26 @@ export function initKineticEditorial() {
 		});
 
 		cleanup.push(() => context.revert());
+		if (mobileLayout) cleanup.push(initMobileWallReveals());
 
 		const canvas = document.querySelector<HTMLCanvasElement>('[data-atmosphere]');
-		if (canvas) cleanup.push(initAtmosphere(canvas, hero));
+		if (canvas && !mobileLayout) {
+			let atmosphereDisposed = false;
+			let disposeAtmosphere: Disposable = () => undefined;
+
+			void initAtmosphere(canvas, hero).then((dispose) => {
+				if (atmosphereDisposed) {
+					dispose();
+					return;
+				}
+				disposeAtmosphere = dispose;
+			});
+
+			cleanup.push(() => {
+				atmosphereDisposed = true;
+				disposeAtmosphere();
+			});
+		}
 		cleanup.push(initTilt());
 	}
 

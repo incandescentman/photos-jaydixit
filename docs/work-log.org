@@ -1,6 +1,28 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-08-01 - Repair the Kinetic homepage on mobile
+
+** Problems observed
+- At ~390 x 844~, the phone collage's fixed ~128vw~ stage ended while five of its seven print cards still continued below it. The hero's ~overflow: hidden~ cut the collage off abruptly at the transition into Jay's profile.
+- A fast mobile flick could cross a ScrollTrigger reveal window without playing it. Passed photo-wall cards remained at zero opacity, leaving a long blank paper grid.
+- The homepage PhotoSwipe anchors did not provide full-image dimensions, so the shared lightbox fell back to the responsive thumbnail's natural dimensions and opened the portrait at only ~183px~ wide. The global dark backdrop also overrode the homepage's intended light editorial treatment.
+- The complete brand plus Contact action overflowed at the supported ~320px~ width, and Contact's interactive height was below the ~44px~ mobile target.
+- The profile portrait always delivered its ~3.1 MB~, ~3000px~-wide original even though it renders at roughly ~280–323px~ on a phone.
+
+** Changed
+- Let the mobile print grid determine its own height, removed the stale nonexistent ~hero-photo-*~ rules, and centered the final odd print. The complete seven-print sequence now remains inside the hero before the profile begins.
+- Replaced the phone wall's fragile per-card ScrollTrigger with a request-animation-frame-coalesced reveal check that reveals every card whose top has passed the viewport threshold, including after a fast flick. Disabled ~content-visibility~ for the 17-card phone layout so offscreen placeholder geometry cannot invalidate the reveal positions; desktop keeps the original larger GSAP entrance.
+- Added exact lightbox dimensions from [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/image-metadata.json][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/data/image-metadata.json]] and scoped the Kinetic viewer to the light paper backdrop. The portrait now fills the available phone width while retaining its responsive source set.
+- Tightened the narrow header, hid the small ~Photos~ label only below ~360px~, and made Contact a ~44px~-high target.
+- Added ~720px~ and ~1280px~ responsive derivatives of Jay's profile image, supplied class-aware Cloudinary ~sizes~ for the mixed mobile wall, reduced eager hero loading to its first print, and made every below-fold wall image lazy. The ~390px~ profile selects the ~720px~, ~113 KB~ derivative instead of the ~3.1 MB~ original.
+- Hid the WebGL atmosphere on phone layouts and moved Three.js behind a desktop-only dynamic import, so mobile visitors do not download that visual-effect dependency.
+- Removed obsolete GSAP animations targeting the deleted ~editorial-bridge~ markup.
+
+** Validation
+- Browser-reviewed [[http://127.0.0.1:4322/][http://127.0.0.1:4322/]] at ~390 x 844~ and ~320 x 568~. The full collage-to-profile transition is intact, a ~1900px~ fast flick leaves no passed cards hidden, the lightbox portrait renders at ~335px~ wide on the ~390px~ viewport, and the ~320px~ header fits without clipping.
+- ~pnpm run lint~, all 21 Vitest tests, all 23 Playwright browser tests, ~pnpm run build~ (102 pages), focused Prettier, and ~git diff --check~ passed. The build retains only the existing Vite chunk-size warning.
+
 * 2026-07-31 - Redesign The Story of WikiPortraits as a feature essay
 
 ** Direction
