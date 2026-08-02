@@ -84,6 +84,16 @@ const wallImageSizes = (index: number) => {
 	);
 };
 
+const navLinks = [
+	{ href: '/red-carpet', label: 'Red Carpet' },
+	{ href: '/before-after', label: 'Before & After' },
+	{ href: '/about', label: 'About Me' },
+	{ href: '/blog/wikiportraits-story', label: 'Why WikiPortraits' },
+	{ href: '#red-carpets-around-the-world', label: 'Red Carpets Around the World' },
+	{ href: '/contact', label: 'Contact' },
+	{ href: 'https://jaydixit.com', label: 'jaydixit.com', external: true },
+];
+
 const title = 'Jay Dixit: Red Carpet Photography for Wikipedia';
 const description =
 	'As a red carpet photographer for WikiPortraits, I take pictures of celebrities, leaders, and scientists at film festivals and cultural events around the world, then release the images under a free license for use on Wikipedia.';
@@ -107,18 +117,43 @@ const description =
 			<span>Jay Dixit</span>
 			<small>Photos</small>
 		</a>
-		<nav aria-label="Primary navigation">
-			<a href="/red-carpet">Red Carpet</a>
-			<a href="/before-after">Before &amp; After</a>
-			<a href="/about">About Me</a>
-			<a href="/blog/wikiportraits-story">Why WikiPortraits</a>
-			<a href="#red-carpets-around-the-world">Red Carpets Around the World</a>
-			<a href="/contact">Contact</a>
-			<a href="https://jaydixit.com" target="_blank" rel="noopener noreferrer"
-				>jaydixit.com <span aria-hidden="true">↗</span></a
-			>
+		<nav class="site-nav-primary" aria-label="Primary navigation">
+			{
+				navLinks.map(({ href, label, external }) =>
+					external ? (
+						<a href={href} target="_blank" rel="noopener noreferrer">
+							{label} <span aria-hidden="true">↗</span>
+						</a>
+					) : (
+						<a href={href}>{label}</a>
+					),
+				)
+			}
 		</nav>
 		<a class="header-contact" href="/contact">Contact <span aria-hidden="true">↗</span></a>
+		<button
+			class="header-menu-toggle"
+			type="button"
+			data-menu-toggle
+			aria-expanded="false"
+			aria-controls="homepage-menu"
+		>
+			<span class="header-menu-bars" aria-hidden="true"></span>
+			<span class="header-menu-label">Menu</span>
+		</button>
+		<nav class="header-menu" id="homepage-menu" data-menu-panel aria-label="Site menu" hidden>
+			{
+				navLinks.map(({ href, label, external }) => (
+					<a
+						href={href}
+						data-menu-link
+						{...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+					>
+						{label} <span aria-hidden="true">{external ? '↗' : '→'}</span>
+					</a>
+				))
+			}
+		</nav>
 	</header>
 
 	<main id="main-content">
@@ -223,6 +258,11 @@ const description =
 				<span>Selected portraits</span>
 				<a href="#selected-portraits">Scroll to explore <i aria-hidden="true">↓</i></a>
 			</div>
+
+			<a class="scroll-cue" href="#selected-portraits" data-scroll-cue>
+				<span>Scroll</span>
+				<i aria-hidden="true">↓</i>
+			</a>
 		</section>
 
 		<section
@@ -286,7 +326,17 @@ const description =
 							data-wall-card
 							style={`--card-index: ${index}`}
 						>
-							<a href="/gallery" aria-label={`${photo.caption} — view galleries`}>
+							<a
+								data-pswp-item="true"
+								data-full-src={photo.fullSrc}
+								data-pswp-srcset={photo.lightboxSrcset}
+								data-pswp-width={photo.lightboxWidth}
+								data-pswp-height={photo.lightboxHeight}
+								data-pswp-caption={photo.caption}
+								data-cropped="true"
+								href={photo.fullSrc}
+								aria-label={`${photo.caption} — view full size`}
+							>
 								<div class="wall-media" data-tilt>
 									<img
 										src={photo.src}
@@ -327,6 +377,20 @@ const description =
 
 	<PhotoSwipeLightbox
 		gallerySelector="#hero-print-gallery"
+		childrenSelector="a[data-pswp-item]"
+		options={{
+			wheelToZoom: true,
+			padding: { top: 20, bottom: 80, left: 20, right: 20 },
+			showHideAnimationType: 'zoom',
+			showAnimationDuration: 650,
+			easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+			mainClass: 'pswp--kinetic-editorial',
+			bgOpacity: 0.28,
+		}}
+	/>
+
+	<PhotoSwipeLightbox
+		gallerySelector="[data-photo-wall]"
 		childrenSelector="a[data-pswp-item]"
 		options={{
 			wheelToZoom: true,
@@ -535,7 +599,7 @@ const description =
 		width: 100%;
 		height: 100%;
 		background: var(--accent);
-		transform: scaleY(0);
+		transform: scaleY(var(--reading-progress, 0));
 		transform-origin: top;
 	}
 
@@ -591,14 +655,14 @@ const description =
 		text-transform: uppercase;
 	}
 
-	.site-header nav {
+	.site-nav-primary {
 		display: flex;
 		align-items: center;
 		justify-content: flex-end;
 		gap: clamp(14px, 1.3vw, 25px);
 	}
 
-	.site-header nav a,
+	.site-nav-primary a,
 	.header-contact {
 		position: relative;
 		font-size: 0.76rem;
@@ -609,11 +673,11 @@ const description =
 		white-space: nowrap;
 	}
 
-	.site-header nav a span {
+	.site-nav-primary a span {
 		color: var(--accent);
 	}
 
-	.site-header nav a::after,
+	.site-nav-primary a::after,
 	.header-contact::after {
 		position: absolute;
 		right: 100%;
@@ -625,8 +689,8 @@ const description =
 		transition: right 220ms ease;
 	}
 
-	.site-header nav a:hover::after,
-	.site-header nav a:focus-visible::after,
+	.site-nav-primary a:hover::after,
+	.site-nav-primary a:focus-visible::after,
 	.header-contact:hover::after,
 	.header-contact:focus-visible::after {
 		right: 0;
@@ -641,6 +705,95 @@ const description =
 
 	.header-contact span {
 		color: var(--accent);
+	}
+
+	/* Compact navigation. Hidden at full desktop width, where the inline nav is shown. */
+	.header-menu-toggle {
+		display: none;
+		align-items: center;
+		gap: 9px;
+		justify-self: end;
+		min-height: 44px;
+		padding: 0 2px;
+		border: 0;
+		background: none;
+		color: var(--ink);
+		font-family: var(--sans);
+		font-size: 0.76rem;
+		font-weight: 600;
+		letter-spacing: 0.085em;
+		text-transform: uppercase;
+		cursor: pointer;
+	}
+
+	.header-menu-bars {
+		position: relative;
+		width: 20px;
+		height: 9px;
+	}
+
+	.header-menu-bars::before,
+	.header-menu-bars::after {
+		position: absolute;
+		right: 0;
+		left: 0;
+		height: 1.5px;
+		background: var(--ink);
+		content: '';
+		transition:
+			transform 240ms ease,
+			opacity 180ms ease;
+	}
+
+	.header-menu-bars::before {
+		top: 0;
+	}
+
+	.header-menu-bars::after {
+		bottom: 0;
+		left: 5px;
+	}
+
+	.header-menu-toggle[aria-expanded='true'] .header-menu-bars::before {
+		transform: translateY(3.75px) rotate(45deg);
+	}
+
+	.header-menu-toggle[aria-expanded='true'] .header-menu-bars::after {
+		left: 0;
+		transform: translateY(-3.75px) rotate(-45deg);
+	}
+
+	.header-menu {
+		display: none;
+		grid-column: 1 / -1;
+		padding-bottom: 12px;
+	}
+
+	.header-menu[hidden] {
+		display: none;
+	}
+
+	.header-menu a {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 20px;
+		min-height: 52px;
+		border-top: 1px solid var(--rule);
+		color: var(--ink);
+		font-family: var(--serif);
+		font-size: 19px;
+		font-weight: 400;
+		letter-spacing: -0.012em;
+		text-decoration: none;
+	}
+
+	.header-menu a span {
+		color: var(--accent);
+	}
+
+	.scroll-cue {
+		display: none;
 	}
 
 	.hero {
@@ -1404,15 +1557,25 @@ const description =
 
 	@media (max-width: 1420px) {
 		.site-header {
-			grid-template-columns: 1fr auto;
+			grid-template-columns: minmax(0, 1fr) auto auto;
+			row-gap: 0;
+			column-gap: clamp(16px, 2.4vw, 34px);
 		}
 
-		.site-header nav {
+		.site-nav-primary {
 			display: none;
 		}
 
 		.header-contact {
 			display: inline-flex;
+		}
+
+		.header-menu-toggle {
+			display: inline-flex;
+		}
+
+		.header-menu:not([hidden]) {
+			display: grid;
 		}
 	}
 
@@ -1485,10 +1648,82 @@ const description =
 
 		h1 {
 			font-size: clamp(57px, 14vw, 96px);
+			/* Desktop sets 0.76; at phone sizes that pulls descenders into the next line. */
+			line-height: 0.88;
+		}
+
+		.title-line {
+			margin-top: -0.04em;
 		}
 
 		.title-line-final {
 			margin-left: 10vw;
+		}
+
+		/* Keep the decorative rings composed inside the viewport instead of clipped. */
+		.hero-orbit {
+			top: 9%;
+			right: 0;
+			width: min(72vw, 380px);
+			height: min(72vw, 380px);
+		}
+
+		/* Contact lives in the menu at this width; two labels plus the mark collide. */
+		.header-contact {
+			display: none;
+		}
+
+		/* A hairline down the screen edge reads as an artefact on a phone. */
+		.reading-progress {
+			top: 0;
+			right: 0;
+			left: 0;
+			width: auto;
+			height: 3px;
+		}
+
+		.reading-progress span {
+			transform: scaleX(var(--reading-progress, 0));
+			transform-origin: left;
+		}
+
+		.scroll-cue {
+			position: fixed;
+			z-index: 60;
+			right: 16px;
+			bottom: 18px;
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			padding: 9px 15px;
+			border: 1px solid var(--rule);
+			border-radius: 999px;
+			background: rgba(251, 248, 241, 0.92);
+			box-shadow: 0 6px 22px rgb(23 23 19 / 12%);
+			color: var(--ink);
+			font-size: 10px;
+			font-weight: 600;
+			letter-spacing: 0.18em;
+			text-decoration: none;
+			text-transform: uppercase;
+			backdrop-filter: blur(8px);
+			transition:
+				opacity 320ms ease,
+				transform 320ms ease;
+		}
+
+		.scroll-cue i {
+			color: var(--accent);
+			font-family: var(--serif);
+			font-size: 15px;
+			font-style: normal;
+			animation: float-arrow 1.8s ease-in-out infinite;
+		}
+
+		.scroll-cue[data-cue-dismissed] {
+			opacity: 0;
+			pointer-events: none;
+			transform: translateY(12px);
 		}
 
 		.hero-lede,
@@ -1496,17 +1731,23 @@ const description =
 			padding-left: 10vw;
 		}
 
+		/*
+		 * Mobile collage: three lead prints at the full column width, then the
+		 * remaining prints as a contact-sheet strip. Prints never overlap here, so
+		 * captions always have clear space; the desktop pinned-print composition
+		 * above is untouched.
+		 */
 		.hero-stage {
 			position: relative;
 			inset: auto;
 			display: grid;
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-			gap: 18px 12px;
-			width: min(100%, 650px);
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+			gap: 22px 8px;
+			width: 100%;
 			height: auto;
 			min-height: 0;
-			margin: 40px auto 0;
-			padding: 20px 0;
+			margin: 44px 0 0;
+			padding: 20px 0 0;
 		}
 
 		.darkroom-line {
@@ -1518,31 +1759,59 @@ const description =
 			z-index: auto;
 			top: auto;
 			left: auto;
+			grid-column: 1 / -1;
 			width: auto;
-			padding: 6px;
-			padding-bottom: 42px;
-			transform: rotate(var(--print-rotation));
-		}
-
-		.hero-print:nth-of-type(2) {
-			grid-column: span 2;
+			margin: 0;
+			padding: 8px;
+			padding-bottom: 46px;
+			/* Softened so a full-width print stays inside the page gutter when rotated. */
+			transform: rotate(calc(var(--print-rotation) * 0.34));
 		}
 
 		.hero-print:nth-of-type(2) img {
 			aspect-ratio: 3 / 2;
 		}
 
-		.hero-print:nth-of-type(4) {
-			margin-top: -40px;
+		.hero-print:nth-of-type(n + 4) {
+			grid-column: span 1;
+			padding: 4px;
+			padding-bottom: 6px;
+			transform: rotate(calc(var(--print-rotation) * 0.6));
 		}
 
-		.hero-print:nth-of-type(6) {
-			margin-top: -30px;
+		.hero-print:nth-of-type(n + 4) img {
+			aspect-ratio: 2 / 3;
+		}
+
+		.hero-print:nth-of-type(n + 4) .print-caption {
+			display: none;
+		}
+
+		.hero-print:nth-of-type(n + 4) .clothespin {
+			top: -10px;
+			left: 7px;
+			width: 8px;
+			height: 21px;
+			border-radius: 3px 3px 2px 2px;
+		}
+
+		.hero-print:nth-of-type(n + 4) .clothespin::before,
+		.hero-print:nth-of-type(n + 4) .clothespin::after {
+			display: none;
+		}
+
+		/* There is room for a second line at full width, so stop clipping the name. */
+		.print-caption {
+			bottom: 9px;
 		}
 
 		.print-caption strong {
 			max-width: 100%;
-			font-size: 10px;
+			overflow: visible;
+			font-size: 12px;
+			line-height: 1.25;
+			text-overflow: clip;
+			white-space: normal;
 		}
 
 		.print-caption small {
@@ -1583,16 +1852,53 @@ const description =
 			margin-top: 25px;
 		}
 
+		/*
+		 * Two even columns in strict document order. `dense` packing is what let a
+		 * full-width card be overtaken by the card after it, so the printed numbers
+		 * ran 08, 10, 09; a uniform media ratio is what keeps a short card from
+		 * leaving a tall hole beside its neighbour.
+		 */
+		.photo-wall {
+			grid-auto-flow: row;
+		}
+
 		.wall-card,
-		.wall-card.wall-tall {
+		.wall-card.wall-tall,
+		.wall-card.wall-feature,
+		.wall-card.wall-landscape {
 			grid-column: span 6;
 			content-visibility: visible;
 			contain-intrinsic-size: none;
 		}
 
-		.wall-card.wall-feature,
-		.wall-card.wall-landscape {
+		.wall-card .wall-media,
+		.wall-card.wall-tall .wall-media,
+		.wall-card.wall-feature .wall-media,
+		.wall-card.wall-landscape .wall-media {
+			aspect-ratio: 4 / 5;
+		}
+
+		/* Full-width beats, placed so the half-width cards always pair off evenly. */
+		.wall-card:nth-child(3),
+		.wall-card:nth-child(10),
+		.wall-card:nth-child(17) {
 			grid-column: span 12;
+		}
+
+		.wall-card:nth-child(3) .wall-media,
+		.wall-card:nth-child(17) .wall-media {
+			aspect-ratio: 3 / 2;
+		}
+
+		.section-header a {
+			display: inline-flex;
+			align-items: center;
+			min-height: 44px;
+		}
+
+		.profile-link {
+			min-height: 44px;
+			padding-bottom: 14px;
 		}
 
 		.closing-panel {
@@ -1621,7 +1927,7 @@ const description =
 
 		h1 {
 			font-size: clamp(51px, 16vw, 78px);
-			line-height: 0.79;
+			line-height: 0.9;
 		}
 
 		.hero-lede {
@@ -1636,12 +1942,6 @@ const description =
 		.hero-stage {
 			height: auto;
 			min-height: 0;
-		}
-
-		.hero-print:last-of-type {
-			width: calc((100% - 12px) / 2);
-			grid-column: 1 / -1;
-			justify-self: center;
 		}
 
 		.editorial-profile {
@@ -1681,7 +1981,8 @@ const description =
 		}
 
 		.profile-coverage {
-			font-size: clamp(27px, 8vw, 38px);
+			font-size: clamp(24px, 6.6vw, 32px);
+			line-height: 1.2;
 		}
 
 		.profile-bio {
@@ -1705,17 +2006,8 @@ const description =
 			gap: 8px;
 		}
 
-		.wall-card,
-		.wall-card.wall-tall,
-		.wall-card.wall-feature,
-		.wall-card.wall-landscape {
-			grid-column: span 6;
+		.wall-card {
 			margin-bottom: 24px;
-		}
-
-		.wall-card.wall-landscape:nth-child(3n),
-		.wall-card.wall-feature:nth-child(3n) {
-			grid-column: span 12;
 		}
 
 		.wall-card p {

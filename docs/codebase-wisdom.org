@@ -1,6 +1,36 @@
 #+TITLE: Codebase Wisdom
 #+DATE: 2025-10-03
 
+* 2026-08-01 - Measuring a Change Requires a Reference That Isolates the Variable
+
+** Trigger
+Two measurements during the mobile homepage rebuild produced confident, wrong answers before being caught.
+
+The dev server reported ~886KB~ of JavaScript on the homepage, which would have been reported as a headline performance defect. The production build ships ~54KB~ gzipped; the dev figure is unbundled modules plus the Vite client.
+
+A re-encode of the profile portrait measured ~29.7dB~ PSNR against the shipped file's ~35.3dB~, apparently proving the smaller file was much worse. Raising JPEG quality barely moved the number — it plateaued near ~30dB~ at every quality from 78 to 92, which is not how JPEG behaves.
+
+** Mechanism
+The PSNR plateau was the tell. The ground truth had been produced with ImageMagick's resampler while the candidates came from sharp's. The metric was dominated by resampler mismatch, a constant structural difference that no amount of JPEG quality can close. Regenerating the reference with sharp made the numbers behave: ~34.8dB~ at q80 rising to ~38.6dB~ at q92, and mozjpeg q84 reached ~35.4dB~ at 43% of the shipped bytes.
+
+The same class of error nearly recurred when comparing font payloads across two ~astro preview~ servers on different ports. Both serve from the same ~dist/~ directory, so rebuilding for the second measurement silently replaced the first server's content too, and "before" and "after" were the same build.
+
+** Actionable insight
+Never quote a bundle size, payload, or asset weight from ~npm run dev~; build and serve ~dist/~ first. When a quality metric refuses to respond to the parameter being swept, suspect the reference rather than the encoder. Generate the reference through the same pipeline as the candidates so the only variable is the one under test. Two ~astro preview~ instances on different ports are not two builds — for a genuine before/after, capture the baseline artefacts to disk while the baseline ~dist/~ exists, then rebuild. Stashing the tree, building, screenshotting, popping, and rebuilding is a reliable way to pixel-diff a "this only changes mobile" claim.
+
+* 2026-08-01 - CSS Grid Auto-Placement Silently Reorders Numbered Content
+
+** Trigger
+The homepage photo wall printed its badges ~08, 10, 09~ on a phone. The numbers come from the map index, so the markup order was correct and the defect was purely visual.
+
+** Mechanism
+~.photo-wall~ sets ~grid-auto-flow: dense~. At two columns a full-width card cannot fit in the remaining half-slot, so dense packing pulls the *next* card forward to backfill it and defers the full-width card to its own row. Dense packing optimises for holes, and it will reorder to get them — which is invisible when items are interchangeable and glaring when they are numbered.
+
+Separately, a short landscape card beside a tall portrait card left roughly ~200px~ of empty paper, because per-card aspect ratios tuned for a 3-4 column desktop layout produce large height mismatches once only two cards share a row.
+
+** Actionable insight
+~grid-auto-flow: dense~ is unsafe wherever items carry a visible sequence — numbers, dates, steps, rankings. Use ~row~ there and remove holes by controlling geometry instead: a uniform media aspect ratio per breakpoint, plus full-width items placed at indices where the preceding half-width items pair off evenly. On this page that is ~nth-child(3)~, ~nth-child(10)~, ~nth-child(17)~ for 17 cards. Also note that GSAP tweening ~rotation~ to ~0~ destroys a deliberate CSS ~transform: rotate()~; read the base angle with ~gsap.getProperty(el, 'rotation')~ and animate around it.
+
 * 2026-07-31 - MDX Feature Variants Need Non-Reserved Metadata and Valid Paragraph Structure
 
 ** Trigger

@@ -198,8 +198,78 @@ function initTilt(): Disposable {
 	return () => cleanups.forEach((cleanup) => cleanup());
 }
 
-function initMobileWallReveals(): Disposable {
-	const cards = selectAll<HTMLElement>('[data-wall-card]');
+function initHeaderMenu(): Disposable {
+	const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+	const panel = document.querySelector<HTMLElement>('[data-menu-panel]');
+	if (!toggle || !panel) return () => undefined;
+
+	const setOpen = (open: boolean) => {
+		toggle.setAttribute('aria-expanded', String(open));
+		panel.hidden = !open;
+	};
+
+	const onToggle = () => setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+
+	const onKeydown = (event: KeyboardEvent) => {
+		if (event.key !== 'Escape' || panel.hidden) return;
+		setOpen(false);
+		toggle.focus();
+	};
+
+	// An in-page anchor does not navigate, so close the panel behind it.
+	const onPanelClick = (event: Event) => {
+		if ((event.target as HTMLElement).closest('[data-menu-link]')) setOpen(false);
+	};
+
+	// The panel only exists below the inline-nav breakpoint; reset it on the way back up.
+	const wideNav = window.matchMedia('(min-width: 1421px)');
+	const onBreakpoint = () => {
+		if (wideNav.matches) setOpen(false);
+	};
+
+	toggle.addEventListener('click', onToggle);
+	panel.addEventListener('click', onPanelClick);
+	document.addEventListener('keydown', onKeydown);
+	wideNav.addEventListener('change', onBreakpoint);
+
+	return () => {
+		toggle.removeEventListener('click', onToggle);
+		panel.removeEventListener('click', onPanelClick);
+		document.removeEventListener('keydown', onKeydown);
+		wideNav.removeEventListener('change', onBreakpoint);
+	};
+}
+
+function initScrollCue(hero: HTMLElement): Disposable {
+	const cue = document.querySelector<HTMLElement>('[data-scroll-cue]');
+	if (!cue) return () => undefined;
+
+	let frame = 0;
+
+	const update = () => {
+		frame = 0;
+		const dismissed = window.scrollY > Math.min(hero.offsetHeight * 0.28, window.innerHeight);
+		cue.toggleAttribute('data-cue-dismissed', dismissed);
+	};
+
+	const request = () => {
+		if (frame) return;
+		frame = requestAnimationFrame(update);
+	};
+
+	window.addEventListener('scroll', request, { passive: true });
+	window.addEventListener('resize', request, { passive: true });
+	update();
+
+	return () => {
+		if (frame) cancelAnimationFrame(frame);
+		window.removeEventListener('scroll', request);
+		window.removeEventListener('resize', request);
+	};
+}
+
+function initMobileReveals(selector: string): Disposable {
+	const cards = selectAll<HTMLElement>(selector);
 	if (!cards.length) return () => undefined;
 
 	const revealed = new Set<HTMLElement>();
@@ -216,19 +286,22 @@ function initMobileWallReveals(): Disposable {
 
 			revealed.add(card);
 			const direction = index % 3 === 0 ? -1 : index % 3 === 1 ? 1 : 0;
+			// The hero prints carry a deliberate CSS tilt; animate around it rather
+			// than to zero, or the reveal would leave every print flat.
+			const baseRotation = Number(gsap.getProperty(card, 'rotation')) || 0;
 			gsap.fromTo(
 				card,
 				{
 					x: direction * 18,
 					y: 30 + (index % 3) * 8,
-					rotation: direction * 0.8,
+					rotation: baseRotation + direction * 0.8,
 					scale: 0.985,
 					autoAlpha: 0,
 				},
 				{
 					x: 0,
 					y: 0,
-					rotation: 0,
+					rotation: baseRotation,
 					scale: 1,
 					autoAlpha: 1,
 					duration: 0.68,
@@ -277,12 +350,17 @@ export function initKineticEditorial() {
 	hero.addEventListener('pointermove', onHeroPointer, { passive: true });
 	cleanup.push(() => hero.removeEventListener('pointermove', onHeroPointer));
 
+	cleanup.push(initHeaderMenu());
+	if (mobileLayout) cleanup.push(initScrollCue(hero));
+
 	const progress = document.querySelector<HTMLElement>('.reading-progress span');
 	if (progress) {
 		const updateProgress = () => {
 			const max = document.documentElement.scrollHeight - window.innerHeight;
 			const value = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
-			gsap.set(progress, { scaleY: value });
+			// Written as a custom property so the rail can run vertically on desktop
+			// and horizontally along the top edge on phones.
+			progress.style.setProperty('--reading-progress', String(value));
 		};
 		updateProgress();
 		window.addEventListener('scroll', updateProgress, { passive: true });
@@ -303,8 +381,12 @@ export function initKineticEditorial() {
 					{ yPercent: 112, rotate: 2.5, duration: 1.15, stagger: 0.08 },
 					0.12,
 				)
-				.from('[data-reveal]', { y: 22, autoAlpha: 0, duration: 0.7, stagger: 0.09 }, 0.38)
-				.from(
+				.from('[data-reveal]', { y: 22, autoAlpha: 0, duration: 0.7, stagger: 0.09 }, 0.38);
+
+			// On phones the prints are stacked well below the fold, so they reveal on
+			// scroll instead of flying in during a load animation nobody is watching.
+			if (!mobileLayout) {
+				intro.from(
 					'[data-hero-photo]',
 					{
 						x: (index) => (index % 2 ? 180 : -150),
@@ -318,19 +400,21 @@ export function initKineticEditorial() {
 					0.22,
 				);
 
-			selectAll<HTMLElement>('[data-hero-photo]').forEach((photo) => {
-				const depth = Number(photo.dataset.depth ?? 0.1);
-				gsap.to(photo, {
-					yPercent: depth * -42,
-					ease: 'none',
-					scrollTrigger: {
-						trigger: hero,
-						start: 'top top',
-						end: 'bottom top',
-						scrub: 0.7,
-					},
+				// Per-print parallax would break the alignment of the stacked mobile collage.
+				selectAll<HTMLElement>('[data-hero-photo]').forEach((photo) => {
+					const depth = Number(photo.dataset.depth ?? 0.1);
+					gsap.to(photo, {
+						yPercent: depth * -42,
+						ease: 'none',
+						scrollTrigger: {
+							trigger: hero,
+							start: 'top top',
+							end: 'bottom top',
+							scrub: 0.7,
+						},
+					});
 				});
-			});
+			}
 
 			if (!mobileLayout) {
 				const wallCards = selectAll<HTMLElement>('[data-wall-card]');
@@ -369,7 +453,10 @@ export function initKineticEditorial() {
 		});
 
 		cleanup.push(() => context.revert());
-		if (mobileLayout) cleanup.push(initMobileWallReveals());
+		if (mobileLayout) {
+			cleanup.push(initMobileReveals('[data-hero-photo]'));
+			cleanup.push(initMobileReveals('[data-wall-card]'));
+		}
 
 		const canvas = document.querySelector<HTMLCanvasElement>('[data-atmosphere]');
 		if (canvas && !mobileLayout) {

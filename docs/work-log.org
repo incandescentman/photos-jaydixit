@@ -1,6 +1,101 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-08-01 - Rebuild the mobile homepage experience
+
+** Why a second pass
+The previous same-day pass verified the specific defects it had just repaired and
+treated a green result as a healthy experience. Those are different jobs. A fresh
+end-to-end review at ~390 x 664~ (iPhone 14, DPR 3) found first-order defects the
+regression checks could not see, because nothing in the suite tests reading order,
+caption legibility, or whether navigation exists.
+
+** Problems found
+- The mobile collage overlapped its own prints via ~.hero-print:nth-of-type(4)~
+  ~margin-top: -40px~. The overlap landed exactly on the caption band, burying the
+  end of ~Ana de Armas, Sydney Sweeney, and Ron Howard~ and striking the ~W~ in
+  ~Judd Apatow at SXSW~ with the next print's clothespin.
+- ~:nth-of-type(2)~ spanned both grid columns, so print 1 sat alone in a 2-column
+  row with the entire right half empty; the final print was stranded centred in a
+  full-width row.
+- The photo wall printed its numbered badges out of order — ~08, 10, 09~ — because
+  ~grid-auto-flow: dense~ let the card after a full-width card overtake it.
+- Short landscape cards left roughly ~200px~ holes beside taller neighbours, and
+  the wall ended on a lone half-width card.
+- ~h1~ ran ~62.4px~ on a ~49.3px~ line-height; the descenders of ~Photography~
+  touched ~for Wikipedia~ at both ~390px~ and ~320px~.
+- The primary nav was ~display: none~ below *1420px* with no toggle, so every
+  windowed laptop as well as every phone lost it. ~/red-carpet~ was reachable only
+  from the closing panel, 12.5 screens down; jaydixit.com was unreachable.
+- All 17 wall cards linked to ~/gallery~ — seventeen portraits, one destination —
+  while the hero prints opened a lightbox.
+- The profile portrait shipped its ~1280px~ derivative on a phone: ~sizes~ resolves
+  to ~350~ CSS px, and at DPR 3 that needs ~1050~ device px. The earlier work-log
+  claim that ~390px~ selects the ~720px~ derivative holds only at DPR 1-2.
+
+** Changed
+- Rebuilt the mobile collage as three lead prints at full column width followed by
+  a four-up contact-sheet strip, inside a 4-column grid. Prints no longer overlap,
+  so captions always have clear space and now wrap to a second line instead of
+  being ellipsised. All seven photographs are preserved. Lead prints went from
+  ~182px~ to ~350px~ wide while the stage grew only ~1519px~ to ~1593px~.
+- Gave the mobile wall strict document order (~grid-auto-flow: row~) and a uniform
+  ~4 / 5~ media ratio, with full-width beats at cards 3, 10 and 17 chosen so the
+  half-width cards always pair evenly. The numbering defect and the holes both
+  dissolve as a consequence.
+- Added a compact menu toggle and panel to the homepage header below ~1420px~,
+  rendering both it and the inline nav from one ~navLinks~ array so they cannot
+  drift. Scoped the old ~.site-header nav~ rules to a new ~.site-nav-primary~ class
+  so they stop leaking onto the panel.
+- Pointed wall cards at PhotoSwipe with full ~data-pswp-*~ dimensions and an
+  ~href~ of the full-size image, matching the hero prints and degrading without JS.
+- Added a fixed mobile scroll cue that dismisses itself once the reader is ~28%~
+  into the hero, replacing a cue that sat uselessly at the bottom of a ~2610px~ hero.
+- Raised the mobile ~h1~ line-height to ~0.88~ / ~0.9~, moved the reading-progress
+  rail to a horizontal bar along the top edge on phones (driven by a
+  ~--reading-progress~ custom property so one script serves both axes), contained
+  the decorative orbit, and raised the two sub-44px tap targets.
+- Disabled the per-print parallax and the load-time fly-in on mobile; hero prints
+  now reveal on scroll like wall cards. The reveal reads each element's base
+  rotation via ~gsap.getProperty~ and animates around it, or it would have flattened
+  the deliberate CSS tilt.
+- Dropped italic weight 400 from the Google Fonts request. Requesting a single
+  italic weight makes Google serve a static instance rather than a variable font:
+  ~147KB~ to ~63KB~.
+- Re-encoded the profile derivatives with mozjpeg q84 4:4:4.
+
+** Validation
+- Desktop is unchanged, verified rather than assumed: built the pre-change tree
+  from a stash, captured ~1728px~ and ~1280px~ screenshots at four scroll
+  positions, then pixel-diffed against the new build. Document heights identical
+  (~8197~ and ~7365~). Differences: ~0px~ at ~1728/top~ and ~1728/wall~; ~3238px~
+  at ~1728/profile~ (the re-encoded JPEG); ~88px~ at ~1728/closing~ and ~425px~ at
+  ~1280/top~ (the new menu button).
+- The font change has no visual effect anywhere: ~<em>~ appears in exactly one of
+  102 built pages, and every italic in the built site — the closing wordmark, the
+  contact intro, the blog blockquote, the WikiPortraits origin copy — computes to
+  weight 300, which is still served.
+- Image re-encode measured against a resampler-matched reference, after a first
+  attempt compared sharp-encoded files to a magick-resized reference and was
+  measuring resize mismatch rather than compression. q84 mozjpeg reaches ~35.4dB~
+  PSNR where the shipped file reached ~35.3dB~ against its own reference, at 43%
+  of the bytes.
+- Initial mobile payload ~1173KB~ to ~931KB~. LCP ~132ms~. Three.js still absent on
+  mobile. No horizontal overflow at ~390px~ or ~320px~, no console errors, no wall
+  card left hidden after a fast flick, reduced motion leaves nothing invisible.
+- ~npm run lint~, 21 Vitest tests, 23 Playwright tests, ~npm run build~ (102 pages),
+  Prettier, and ~git diff --check~ all pass.
+
+** Open
+- Two Cloudinary highlights weigh ~290-299KB~ at ~w_760~ where comparable cards are
+  ~50-90KB~. The built URLs already include ~f_auto,q_auto,w_760~ through
+  [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/lib/cloudinary.ts][📄 cloudinary.ts]],
+  so the extra weight is not caused by a missing global quality transform. The cause
+  remains unverified. Any further reduction would require a separately measured and
+  visually reviewed targeted or global compression change; none was made.
+- Six of the seven hero prints reappear in the wall below, so mobile visitors scroll
+  past the same faces twice.
+
 * 2026-08-01 - Repair the Kinetic homepage on mobile
 
 ** Problems observed

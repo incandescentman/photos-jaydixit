@@ -347,6 +347,23 @@ manifest.
 - Two gallery modes exist: YAML (src/gallery/gallery.yaml) and filesystem (src/gallery/photos/**). Avoid route conflicts; prefer one source per route.
 
 - Packery is the homepage/folder-page masonry engine by deliberate choice (Jay, 2026-07-05). Do NOT propose replacing it with justified-layout or any other engine; the packery/imagesloaded/draggabilly dependencies stay.
+
+- *Jay likes the desktop homepage.* Changes intended for phones belong inside the ~max-width~ blocks of [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][📄 index.astro]]. Anything that alters desktop appearance must be flagged to him before it ships, and is worth verifying rather than asserting: build the pre-change tree from a stash, screenshot both, and pixel-diff.
+
+- *Homepage mobile is a separate layout regime, not a squeezed desktop.* Below ~820px~ the hero neutralizes the desktop absolute positioning (~position: relative~, ~inset/top/left/width: auto~) and rebuilds the collage as three full-width lead prints followed by a four-up contact-sheet strip. Desktop's ~--print-x~ / ~--print-y~ / ~--print-width~ composition is never read at that width.
+
+- *Hero prints must not overlap on mobile.* Negative margins on ~.hero-print~ (previously ~nth-of-type(4)~ and ~(6)~) land on the caption band and bury the subject's name. Overlap is a desktop-only device.
+
+- *The mobile photo wall must stay in strict document order* — ~grid-auto-flow: row~ below ~820px~, never ~dense~. The cards carry printed ~01~–~17~ badges and dense packing reorders them visibly. Holes are prevented by a uniform ~4 / 5~ media aspect plus full-width beats at ~nth-child(3)~, ~nth-child(10)~, ~nth-child(17)~ — indices chosen so the half-width cards always pair off evenly. Changing the ~wallPhotos~ count invalidates those indices.
+
+- *The homepage header hides its inline nav below 1420px*, which is laptop territory and not only phones. The compact toggle plus ~[data-menu-panel]~ is the only navigation at those widths and must not be removed. Both the inline nav and the panel render from the single ~navLinks~ array in the frontmatter so they cannot drift, and ~.site-nav-primary~ scopes the inline-nav styling so it does not leak onto the panel.
+
+- *Homepage weight measurements must come from a production build.* ~npm run dev~ reports roughly ~886KB~ of homepage JavaScript; the built site ships about ~54KB~ gzipped and correctly excludes Three.js on mobile. See [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/codebase-wisdom.org][📄 codebase-wisdom.org]].
+
+- *The Google Fonts request asks for Newsreader italic at weight 300 only.* Requesting a single italic weight makes Google serve a static instance (~63KB~) rather than a variable font (~147KB~). Every italic in the built site computes to weight 300, so restoring italic 400 costs ~84KB~ on every page for no rendering gain. Verify with a computed-style check before changing it.
+
+- *Responsive image ~sizes~ must be reasoned about at DPR 3.* The profile portrait renders at ~350~ CSS px on a phone, which asks for ~1050~ device px and therefore selects the ~1280w~ derivative, not the ~720w~ one. A derivative that wins at DPR 1–2 can be bypassed entirely on real phones.
+
 - Photo Wall Packery must quantize both axes from the responsive `.grid-sizer`: `columnWidth` and `rowHeight` both reference it, and the hidden sizer keeps `aspect-ratio: 2 / 3`. This prevents mixed 1x1, 2x1, and 2x2 tiles from developing settled holes at wide viewports. Validate both sides of every breakpoint, ultrawide widths through 7680px, and a temporary future 9- or 10-column rule; see `docs/debug/packery-responsive-row-grid-drift.org`.
 
 - Highlights are part of the real photo system: homepage and red-carpet pages also read from src/gallery/highlights/
