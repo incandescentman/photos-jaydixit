@@ -1,6 +1,16 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-08-10 - Review the Williamsburg waterfront portrait edits
+
+** Changed
+- Compared the existing brighter Display P3 export with the newer, darker sRGB export from [[file+emacs:/Users/jay/Dropbox/Pics/headshots-canonical/jay-dixit-waterfront-horizontal.jpg][📄 the canonical portrait]].
+- Jay selected the visually lighter existing export. [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][📄 The homepage]] and About page use it; the homepage portrait opens in PhotoSwipe.
+
+** Validation
+- ~pnpm run build~ passes.
+- Production-preview checks at 1440px, 1181px, 820px, and 390px found no horizontal overflow or browser errors.
+
 * 2026-08-01 - Rebuild the mobile homepage experience
 
 ** Why a second pass
