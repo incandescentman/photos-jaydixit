@@ -160,12 +160,23 @@ const structuredData = {
 			<div class="hero-copy">
 				<p class="eyebrow">Stockholm + Oslo · December 2024</p>
 				<h1>The year AI won the Nobel Prize.</h1>
-				<p class="standfirst">
-					In 2024, the Physics prize went to John Hopfield and Geoffrey Hinton for work that enabled
-					machine learning with artificial neural networks. The Chemistry prize went to David Baker,
-					Demis Hassabis, and John Jumper for computational protein design and protein structure
-					prediction. I photographed all five at the Nobel Lectures in Stockholm.
-				</p>
+				<div class="standfirst">
+					<p>
+						In 2024, two Nobel committees, in two different fields, awarded prizes for work in AI.
+						The Physics prize went to John Hopfield and Geoffrey Hinton, whose foundational
+						discoveries in artificial neural networks made modern machine learning possible.
+					</p>
+					<p>
+						The Chemistry prize went to David Baker, Demis Hassabis, and John Jumper, for using
+						computation and AI to predict and design proteins, the molecular machinery of life.
+						Baker pioneered computational protein design; Hassabis and Jumper developed AlphaFold2,
+						which predicts a protein's three-dimensional structure from its amino-acid sequence.
+					</p>
+					<p>
+						I photographed all five of them at the Nobel Lectures in Stockholm, then flew to Oslo
+						for the Nobel Peace Prize.
+					</p>
+				</div>
 			</div>
 			<NobelPhoto photo={photo('hopfield')} eager className="hero-photo" />
 		</header>
@@ -323,6 +334,14 @@ const structuredData = {
 		max-width: 39rem;
 		margin: 2.5rem 0 0;
 		color: var(--muted);
+	}
+
+	.standfirst p {
+		margin: 0 0 1.25em;
+	}
+
+	.standfirst p:last-child {
+		margin-bottom: 0;
 	}
 
 	:global(.nobel-photo) {
