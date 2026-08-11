@@ -2022,6 +2022,7 @@ imagesLoaded(container).on('progress', function(instance, image) {
 - Corrected the Wikipedia section to reflect verified current uses of the ceremony, James A. Robinson, and John Hopfield photographs across five language editions.
 - Replaced the initial Demis Hassabis selection with Jay’s supplied Lightroom export and removed the old Commons link because it referred to a different frame.
 - Added Jay’s new John Jumper and Daron Acemoglu exports, replacing both ~TK~ cards, and replaced the initial David Baker frame with Jay’s new selection.
+- Made John Hopfield the lead photograph because his Physics prize recognized work enabling machine learning with artificial neural networks; moved Baker into the three-person Chemistry sequence so no photograph repeats.
 
 ** Completed selections
 - John Jumper and Daron Acemoglu initially appeared as visible ~TK~ placeholders; Jay supplied both photographs on 2026-08-11.

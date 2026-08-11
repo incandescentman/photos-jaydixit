@@ -142,8 +142,8 @@ const structuredData = {
 <MainLayout
 	title={pageTitle}
 	{description}
-	image={davidBaker.src}
-	imageAlt="David Baker at the 2024 Nobel Lectures in Stockholm"
+	image={photo('hopfield').full.src}
+	imageAlt="John Hopfield at the 2024 Nobel Lectures in Stockholm"
 	keywords={[
 		'2024 Nobel Prize photographs',
 		'Nobel Lectures Stockholm',
@@ -167,7 +167,7 @@ const structuredData = {
 					prediction. I photographed all five at the Nobel Lectures in Stockholm.
 				</p>
 			</div>
-			<NobelPhoto photo={photo('baker')} eager className="hero-photo" />
+			<NobelPhoto photo={photo('hopfield')} eager className="hero-photo" />
 		</header>
 
 		<section class="prose-section intro-section" aria-labelledby="lectures-title">
@@ -190,9 +190,8 @@ const structuredData = {
 					200 photographs of him.
 				</p>
 			</div>
-			<div class="photo-pair">
-				<NobelPhoto photo={photo('hopfield')} />
-				<NobelPhoto photo={photo('hinton')} />
+			<div class="photo-single-wrap">
+				<NobelPhoto photo={photo('hinton')} className="photo-single" />
 			</div>
 		</section>
 
@@ -202,7 +201,8 @@ const structuredData = {
 				<h2 id="chemistry-title">David Baker, Demis Hassabis, and John Jumper</h2>
 				<p>David Baker was a great speaker. Demis Hassabis was nice and friendly.</p>
 			</div>
-			<div class="photo-pair photo-pair--mixed">
+			<div class="photo-trio">
+				<NobelPhoto photo={photo('baker')} />
 				<NobelPhoto photo={photo('hassabis')} />
 				<NobelPhoto photo={photo('jumper')} />
 			</div>
@@ -409,6 +409,22 @@ const structuredData = {
 		align-items: start;
 	}
 
+	.photo-trio {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: clamp(1rem, 2vw, 2rem);
+		align-items: start;
+	}
+
+	.photo-single-wrap {
+		display: flex;
+		justify-content: center;
+	}
+
+	:global(.photo-single) {
+		width: min(100%, 70rem);
+	}
+
 	.oslo-section {
 		padding: clamp(6rem, 11vw, 12rem) clamp(2rem, 6vw, 7rem);
 		background: #171513;
@@ -482,6 +498,10 @@ const structuredData = {
 		.section-heading > p:last-child {
 			max-width: 42rem;
 		}
+
+		.photo-trio {
+			grid-template-columns: 1fr;
+		}
 	}
 
 	@media (max-width: 680px) {
@@ -503,6 +523,7 @@ const structuredData = {
 		}
 
 		.photo-pair,
+		.photo-trio,
 		.oslo-grid {
 			grid-template-columns: 1fr;
 		}
