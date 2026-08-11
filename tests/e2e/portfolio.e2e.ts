@@ -436,7 +436,7 @@ test('before-after page renders source captions and loads comparison images afte
 	).toHaveAttribute('href', '/about');
 	await expect(
 		page.locator('.sequence-nav').getByRole('link', { name: 'Red Carpets Around the World' }),
-	).toHaveAttribute('href', '/#red-carpets-around-the-world');
+	).toHaveAttribute('href', '/red-carpets');
 
 	const comparisonCards = page.locator('.comparison-card');
 	await expect(comparisonCards).toHaveCount(6);
