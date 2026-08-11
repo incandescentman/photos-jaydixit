@@ -11,7 +11,7 @@ interface Props {
 		};
 		alt: string;
 		caption: string;
-		commons: string;
+		commons?: string;
 	};
 	eager?: boolean;
 	className?: string;
@@ -40,6 +40,12 @@ const { photo, eager = false, className = '' } = Astro.props;
 	</a>
 	<figcaption>
 		<span>{photo.caption}</span>
-		<a href={photo.commons} target="_blank" rel="noopener noreferrer">Wikimedia Commons ↗</a>
+		{
+			photo.commons && (
+				<a href={photo.commons} target="_blank" rel="noopener noreferrer">
+					Wikimedia Commons ↗
+				</a>
+			)
+		}
 	</figcaption>
 </figure>

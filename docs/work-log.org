@@ -2020,6 +2020,7 @@ imagesLoaded(container).on('progress', function(instance, image) {
 - Added the new photographs under [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/gallery/photos/events/nobel-prizes-2024/][📁 Nobel Prizes 2024]] with explicit tags and Wikimedia Commons links.
 - Added the award presentation at Oslo City Hall as the lead Oslo frame, connecting the ceremony described in the text to the photographed event.
 - Corrected the Wikipedia section to reflect verified current uses of the ceremony, James A. Robinson, and John Hopfield photographs across five language editions.
+- Replaced the initial Demis Hassabis selection with Jay’s supplied Lightroom export and removed the old Commons link because it referred to a different frame.
 
 ** Known gaps
 - Added visible ~TK~ photograph placeholders for John Jumper and Daron Acemoglu. These must remain placeholders until Jay supplies the photographs.

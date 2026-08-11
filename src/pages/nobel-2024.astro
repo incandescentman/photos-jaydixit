@@ -52,8 +52,7 @@ const photographs = [
 		src: demisHassabis,
 		alt: 'Demis Hassabis speaking at the 2024 Nobel Lectures in Stockholm',
 		caption: 'Demis Hassabis · Nobel Lectures, Stockholm',
-		commons:
-			'https://commons.wikimedia.org/wiki/File:Demis_Hassabis_at_the_2024_Nobel_Lectures_2.jpg',
+		commons: undefined,
 	},
 	{
 		id: 'robinson',
@@ -120,7 +119,7 @@ const structuredData = {
 		caption: image.caption,
 		creditText: 'Photograph by Jay Dixit',
 		license: 'https://creativecommons.org/licenses/by-sa/4.0/',
-		contentUrl: image.commons,
+		...(image.commons ? { contentUrl: image.commons } : {}),
 	})),
 };
 ---
