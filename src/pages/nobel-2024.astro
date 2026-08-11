@@ -13,6 +13,7 @@ import demisHassabis from '../gallery/photos/events/nobel-prizes-2024/demis-hass
 import geoffreyHinton from '../gallery/photos/events/nobel-prizes-2024/geoffrey-hinton_nobel-lectures-stockholm_2024.jpg';
 import jamesRobinson from '../gallery/photos/events/nobel-prizes-2024/james-robinson_nobel-lectures-stockholm_2024.jpg';
 import johnHopfield from '../gallery/photos/events/nobel-prizes-2024/john-hopfield_nobel-lectures-stockholm_2024.jpg';
+import peacePrizePresentation from '../gallery/photos/events/nobel-prizes-2024/nobel-peace-prize-ceremony-award-presentation-oslo_2024.jpg';
 import oslo04 from '../gallery/photos/events/nobel-prizes-2024/nobel-peace-prize-torchlight-procession-oslo-04_2024.jpg';
 import oslo06 from '../gallery/photos/events/nobel-prizes-2024/nobel-peace-prize-torchlight-procession-oslo-06_2024.jpg';
 import oslo15 from '../gallery/photos/events/nobel-prizes-2024/nobel-peace-prize-torchlight-procession-oslo-15_2024.jpg';
@@ -61,6 +62,15 @@ const photographs = [
 		caption: 'James A. Robinson · Nobel Lectures, Stockholm',
 		commons:
 			'https://commons.wikimedia.org/wiki/File:James_A._Robinson_at_the_2024_Nobel_Lectures_2.jpg',
+	},
+	{
+		id: 'peace-prize-presentation',
+		src: peacePrizePresentation,
+		alt: 'Jørgen Watne Frydnes presenting the 2024 Nobel Peace Prize to representatives of Nihon Hidankyo',
+		caption:
+			'Jørgen Watne Frydnes presents the Nobel Peace Prize to Terumi Tanaka, Shigemitsu Tanaka, and Toshiyuki Mimaki · Oslo City Hall',
+		commons:
+			'https://commons.wikimedia.org/wiki/File:J%C3%B8rgen_Watne_Frydnes_awarding_Terumi_Tanaka,_Shigemitsu_Tanaka,_and_Toshiyuki_Mimaki_at_2024_Nobel_Peace_Prize_Ceremony_4_(cropped).jpg',
 	},
 	{
 		id: 'peace-campaigners',
@@ -163,8 +173,7 @@ const structuredData = {
 				<p>
 					I had my camera trained on Geoffrey Hinton for an hour. Not once did he look up from his
 					notes. John Hopfield looked at the audience the entire time, so I came away with around
-					200 photographs of him. I didn’t speak with either of them; these were impressions formed
-					from watching the lectures.
+					200 photographs of him.
 				</p>
 			</div>
 			<div class="photo-pair">
@@ -208,7 +217,8 @@ const structuredData = {
 				</p>
 			</div>
 			<div class="oslo-grid">
-				<NobelPhoto photo={photo('peace-campaigners')} className="oslo-lead" />
+				<NobelPhoto photo={photo('peace-prize-presentation')} className="oslo-lead" />
+				<NobelPhoto photo={photo('peace-campaigners')} />
 				<NobelPhoto photo={photo('oslo-04')} />
 				<NobelPhoto photo={photo('oslo-06')} />
 				<NobelPhoto photo={photo('oslo-15')} />
@@ -220,18 +230,20 @@ const structuredData = {
 			<p class="section-number">06 · The public portrait</p>
 			<h2 id="legacy-title">Where the photographs went.</h2>
 			<p>
-				My Hopfield photograph is currently the lead image on his English Wikipedia article. Other
-				images I made that week have since been replaced by newer photographs from other volunteers.
-				That’s okay. The point is not to own the slot; it’s to make sure the article has a strong,
-				freely licensed photograph.
+				Photographs from this week now illustrate Wikipedia in five languages. The award
+				presentation appears in the English, Persian, and Korean articles about the 2024 Nobel Peace
+				Prize. My James A. Robinson photograph appears on Japanese and Armenian Wikipedia, and my
+				John Hopfield photograph appears on Korean Wikipedia. Placements change as other volunteers
+				contribute newer photographs. That’s okay. The point is not to own the slot; it’s to make
+				sure the article has a strong, freely licensed photograph.
 			</p>
 			<div class="legacy-links">
 				<a
-					href="https://en.wikipedia.org/wiki/John_Hopfield"
+					href="https://en.wikipedia.org/wiki/2024_Nobel_Peace_Prize"
 					target="_blank"
 					rel="noopener noreferrer"
 				>
-					See John Hopfield on Wikipedia <span aria-hidden="true">↗</span>
+					See the 2024 Nobel Peace Prize on Wikipedia <span aria-hidden="true">↗</span>
 				</a>
 				<a href="/blog/wikiportraits-story"
 					>Why I contribute to WikiPortraits <span aria-hidden="true">→</span></a
