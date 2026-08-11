@@ -4,15 +4,16 @@ export const prerender = true;
 import { getImage } from 'astro:assets';
 import MainLayout from '../layouts/MainLayout.astro';
 import NobelPhoto from '../components/NobelPhoto.astro';
-import NobelTkCard from '../components/NobelTkCard.astro';
 import PhotoSwipeLightbox from '../components/PhotoSwipeLightbox.astro';
 
 import peaceCampaigners from '../gallery/photos/events/nobel-prizes-2024/anti-nuclear-campaigners_nobel-peace-prize-torchlight-procession-oslo_2024.jpg';
+import daronAcemoglu from '../gallery/photos/events/nobel-prizes-2024/daron-acemoglu_nobel-lectures-stockholm_2024.jpg';
 import davidBaker from '../gallery/photos/events/nobel-prizes-2024/david-baker_nobel-lectures-stockholm_2024.jpg';
 import demisHassabis from '../gallery/photos/events/nobel-prizes-2024/demis-hassabis_nobel-lectures-stockholm_2024.jpg';
 import geoffreyHinton from '../gallery/photos/events/nobel-prizes-2024/geoffrey-hinton_nobel-lectures-stockholm_2024.jpg';
 import jamesRobinson from '../gallery/photos/events/nobel-prizes-2024/james-robinson_nobel-lectures-stockholm_2024.jpg';
 import johnHopfield from '../gallery/photos/events/nobel-prizes-2024/john-hopfield_nobel-lectures-stockholm_2024.jpg';
+import johnJumper from '../gallery/photos/events/nobel-prizes-2024/john-jumper_nobel-lectures-stockholm_2024.jpg';
 import peacePrizePresentation from '../gallery/photos/events/nobel-prizes-2024/nobel-peace-prize-ceremony-award-presentation-oslo_2024.jpg';
 import oslo04 from '../gallery/photos/events/nobel-prizes-2024/nobel-peace-prize-torchlight-procession-oslo-04_2024.jpg';
 import oslo06 from '../gallery/photos/events/nobel-prizes-2024/nobel-peace-prize-torchlight-procession-oslo-06_2024.jpg';
@@ -29,7 +30,7 @@ const photographs = [
 		src: davidBaker,
 		alt: 'David Baker speaking at the 2024 Nobel Lectures in Stockholm',
 		caption: 'David Baker · Nobel Lectures, Stockholm',
-		commons: 'https://commons.wikimedia.org/wiki/File:David_Baker_at_the_2024_Nobel_Lectures.jpg',
+		commons: undefined,
 	},
 	{
 		id: 'hopfield',
@@ -55,12 +56,26 @@ const photographs = [
 		commons: undefined,
 	},
 	{
+		id: 'jumper',
+		src: johnJumper,
+		alt: 'John Jumper speaking at the 2024 Nobel Lectures in Stockholm',
+		caption: 'John Jumper · Nobel Lectures, Stockholm',
+		commons: undefined,
+	},
+	{
 		id: 'robinson',
 		src: jamesRobinson,
 		alt: 'James A. Robinson speaking at the 2024 Nobel Lectures in Stockholm',
 		caption: 'James A. Robinson · Nobel Lectures, Stockholm',
 		commons:
 			'https://commons.wikimedia.org/wiki/File:James_A._Robinson_at_the_2024_Nobel_Lectures_2.jpg',
+	},
+	{
+		id: 'acemoglu',
+		src: daronAcemoglu,
+		alt: 'Daron Acemoglu speaking at the 2024 Nobel Lectures in Stockholm',
+		caption: 'Daron Acemoglu · Nobel Lectures, Stockholm',
+		commons: undefined,
 	},
 	{
 		id: 'peace-prize-presentation',
@@ -189,7 +204,7 @@ const structuredData = {
 			</div>
 			<div class="photo-pair photo-pair--mixed">
 				<NobelPhoto photo={photo('hassabis')} />
-				<NobelTkCard name="John Jumper" />
+				<NobelPhoto photo={photo('jumper')} />
 			</div>
 		</section>
 
@@ -200,7 +215,7 @@ const structuredData = {
 			</div>
 			<div class="photo-pair photo-pair--mixed">
 				<NobelPhoto photo={photo('robinson')} />
-				<NobelTkCard name="Daron Acemoglu" />
+				<NobelPhoto photo={photo('acemoglu')} />
 			</div>
 		</section>
 
@@ -423,42 +438,6 @@ const structuredData = {
 		align-items: start;
 	}
 
-	:global(.tk-card) {
-		display: flex;
-		aspect-ratio: 4 / 5;
-		min-height: 24rem;
-		padding: clamp(2rem, 5vw, 5rem);
-		border: 1px solid var(--rule);
-		background: rgba(255, 255, 255, 0.18);
-		flex-direction: column;
-		justify-content: flex-end;
-	}
-
-	:global(.tk-card span) {
-		margin-bottom: auto;
-		font-family: var(--serif, Georgia, serif);
-		font-size: clamp(5rem, 12vw, 12rem);
-		font-style: italic;
-		font-weight: 300;
-		line-height: 0.8;
-		opacity: 0.14;
-	}
-
-	:global(.tk-card strong) {
-		font-family: var(--serif, Georgia, serif);
-		font-size: clamp(2rem, 4vw, 4.5rem);
-		font-weight: 300;
-		line-height: 1;
-	}
-
-	:global(.tk-card small) {
-		margin-top: 1rem;
-		font-size: 0.7rem;
-		font-weight: 700;
-		letter-spacing: 0.18em;
-		text-transform: uppercase;
-	}
-
 	.oslo-section {
 		padding: clamp(6rem, 11vw, 12rem) clamp(2rem, 6vw, 7rem);
 		background: #171513;
@@ -587,10 +566,6 @@ const structuredData = {
 
 		.oslo-grid :global(.oslo-lead) {
 			grid-column: auto;
-		}
-
-		:global(.tk-card) {
-			min-height: 30rem;
 		}
 
 		:global(.nobel-photo figcaption) {

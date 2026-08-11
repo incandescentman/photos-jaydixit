@@ -2021,9 +2021,10 @@ imagesLoaded(container).on('progress', function(instance, image) {
 - Added the award presentation at Oslo City Hall as the lead Oslo frame, connecting the ceremony described in the text to the photographed event.
 - Corrected the Wikipedia section to reflect verified current uses of the ceremony, James A. Robinson, and John Hopfield photographs across five language editions.
 - Replaced the initial Demis Hassabis selection with Jay’s supplied Lightroom export and removed the old Commons link because it referred to a different frame.
+- Added Jay’s new John Jumper and Daron Acemoglu exports, replacing both ~TK~ cards, and replaced the initial David Baker frame with Jay’s new selection.
 
-** Known gaps
-- Added visible ~TK~ photograph placeholders for John Jumper and Daron Acemoglu. These must remain placeholders until Jay supplies the photographs.
+** Completed selections
+- John Jumper and Daron Acemoglu initially appeared as visible ~TK~ placeholders; Jay supplied both photographs on 2026-08-11.
 
 ** Discovery
 - Linked the Stockholm chapter of ~/red-carpets~ to the new Nobel page without adding another item to the global navigation.
