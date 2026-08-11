@@ -49,6 +49,12 @@ manifest.
 
 ​*** 💡 Lightbox Viewer
 
+- *Every page that displays photographs must have working PhotoSwipe for every photograph.* This is a site-wide requirement, including homepages, galleries, person pages, editorial and story pages, blog posts, About pages, comparison pages, and experimental routes.
+
+- Never replace a PhotoSwipe-enabled photograph with a plain image or ordinary image link while changing copy, layout, or image sources.
+
+- A page change involving photographs is not complete until browser verification confirms that the first click opens the correct full-size image, navigation works when the page contains multiple photographs, and Escape closes the lightbox. Verify at desktop and mobile widths and check for browser errors; a successful build alone does not prove PhotoSwipe works.
+
 - Main galleries and comparison pages use PhotoSwipe for full-screen viewing
 
 - Older docs and backups may still mention GLightbox, but live gallery surfaces should stay on PhotoSwipe
