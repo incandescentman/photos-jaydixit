@@ -184,12 +184,23 @@ const structuredData = {
 			<div class="section-heading">
 				<p class="section-number">02 · Physics</p>
 				<h2 id="physics-title">John Hopfield and Geoffrey Hinton</h2>
-				<p>
-					Hopfield walked on stage with two crutches. He was 91. It made me sad they waited 42 years
-					to give him the Nobel. I had my camera trained on Geoffrey Hinton for an hour. Not once
-					did he look up from his notes. John Hopfield looked at the audience the entire time, so I
-					came away with around 200 photographs of him.
-				</p>
+				<div class="section-copy">
+					<p>
+						John Hopfield's work on associative neural networks was published in 1982. By the time I
+						photographed him at the Nobels, he was 91 years old.
+					</p>
+					<p>
+						He used two canes to walk across the stage, but set them down when he reached the
+						microphone. He leaned on the podium with one hand, using his free hand to gesture as he
+						spoke animatedly for an hour about his life's work. It made me sad they waited 42 years
+						to recognize his contributions.
+					</p>
+					<p>
+						I had my camera trained on Geoffrey Hinton for an hour. Not once did he look up from his
+						notes. John Hopfield looked at the audience the entire time, so I came away with around
+						200 photographs of him.
+					</p>
+				</div>
 			</div>
 			<div class="photo-single-wrap">
 				<NobelPhoto photo={photo('hinton')} className="photo-single" />
@@ -305,6 +316,7 @@ const structuredData = {
 
 	.standfirst,
 	.section-heading > p:not(.section-number),
+	.section-copy,
 	.prose-section > p:not(.section-number) {
 		font-family: var(--serif, Georgia, serif);
 		font-size: clamp(1.25rem, 1.75vw, 1.75rem);
@@ -403,6 +415,18 @@ const structuredData = {
 		color: var(--muted);
 	}
 
+	.section-copy {
+		color: var(--muted);
+	}
+
+	.section-copy p {
+		margin: 0 0 1.4em;
+	}
+
+	.section-copy p:last-child {
+		margin-bottom: 0;
+	}
+
 	.photo-pair {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -496,7 +520,8 @@ const structuredData = {
 			gap: 1.5rem;
 		}
 
-		.section-heading > p:last-child {
+		.section-heading > p:last-child,
+		.section-copy {
 			max-width: 42rem;
 		}
 
