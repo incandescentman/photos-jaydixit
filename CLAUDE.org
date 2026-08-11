@@ -235,6 +235,8 @@ manifest.
 
 - src/pages/before-after.astro → Wikipedia portrait upgrade comparisons
 
+- src/pages/nobel-2024.astro → 2024 Nobel coverage in Stockholm and Oslo
+
 - src/pages/blog/index.astro and src/pages/blog/[slug].astro → blog with MDX
 
 - src/pages/contact.astro → contact form (Formspree-backed)

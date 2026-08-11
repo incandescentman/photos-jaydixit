@@ -16,6 +16,7 @@ Last Synced for AI Context: 2025-10-04
 The root **CLAUDE.md** file contains legacy documentation. This file (docs/CLAUDE.org) is the canonical documentation entry point. Both should be maintained during transition.
 
 * Recent Updates
+- 2026-08-11: Added the canonical ~/nobel-2024/~ editorial page covering the AI-related Physics and Chemistry prizes in Stockholm and the Nobel Peace Prize ceremony and Torchlight Procession in Oslo; John Hopfield leads, all thirteen selected photographs appear once, and the source copy is Jay-authored
 - 2026-07-30: Promoted Kinetic Editorial to the canonical ~/~ homepage, moved the former Packery homepage to the noindexed and intentionally unlinked ~/photo-wall/~ route, and removed the internal Kinetic experiment route rather than preserving it
 - 2026-07-30: Promoted the revised cinematic Before & After experiment to the canonical ~/before-after/~ route; its internal experiment URL was removed, and both the canonical page and Kinetic Editorial use the enlarged red-carpet seal, wordmark, and navigation treatment
 - 2026-07-28: Added four reversible visual experiment routes and a chooser without changing the live homepage; current routes, first impressions, and review status are recorded under [[*Experimental Visual Variants][Experimental Visual Variants]]
