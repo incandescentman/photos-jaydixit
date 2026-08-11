@@ -2034,6 +2034,7 @@ imagesLoaded(container).on('progress', function(instance, image) {
 
 ** Discovery
 - Linked the Stockholm chapter of ~/red-carpets~ to the new Nobel page without adding another item to the global navigation.
+- Updated the homepage menu, homepage hero action, and Before & After navigation so every “Red Carpets Around the World” link opens the canonical ~/red-carpets~ page instead of the former homepage section anchor.
 
 ** Verification
 - ~npm run build~ passes and generates ~/nobel-2024~ plus the associated optimized image derivatives.

@@ -237,6 +237,8 @@ manifest.
 
 - src/pages/nobel-2024.astro → 2024 Nobel coverage in Stockholm and Oslo
 
+- src/pages/red-carpets.astro → canonical Red Carpets Around the World editorial journey
+
 - src/pages/blog/index.astro and src/pages/blog/[slug].astro → blog with MDX
 
 - src/pages/contact.astro → contact form (Formspree-backed)
