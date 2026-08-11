@@ -240,31 +240,6 @@ const structuredData = {
 			</div>
 		</section>
 
-		<section class="legacy-section" aria-labelledby="legacy-title">
-			<p class="section-number">06 · The public portrait</p>
-			<h2 id="legacy-title">Where the photographs went.</h2>
-			<p>
-				Photographs from this week now illustrate Wikipedia in five languages. The award
-				presentation appears in the English, Persian, and Korean articles about the 2024 Nobel Peace
-				Prize. My James A. Robinson photograph appears on Japanese and Armenian Wikipedia, and my
-				John Hopfield photograph appears on Korean Wikipedia. Placements change as other volunteers
-				contribute newer photographs. That’s okay. The point is not to own the slot; it’s to make
-				sure the article has a strong, freely licensed photograph.
-			</p>
-			<div class="legacy-links">
-				<a
-					href="https://en.wikipedia.org/wiki/2024_Nobel_Peace_Prize"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					See the 2024 Nobel Peace Prize on Wikipedia <span aria-hidden="true">↗</span>
-				</a>
-				<a href="/blog/wikiportraits-story"
-					>Why I contribute to WikiPortraits <span aria-hidden="true">→</span></a
-				>
-			</div>
-		</section>
-
 		<footer class="nobel-contact">
 			<p>Editorial, institutional, and event photography</p>
 			<h2>Bring me into the room.</h2>
@@ -329,8 +304,7 @@ const structuredData = {
 
 	.standfirst,
 	.section-heading > p:not(.section-number),
-	.prose-section > p:not(.section-number),
-	.legacy-section > p:not(.section-number) {
+	.prose-section > p:not(.section-number) {
 		font-family: var(--serif, Georgia, serif);
 		font-size: clamp(1.25rem, 1.75vw, 1.75rem);
 		font-weight: 300;
@@ -378,15 +352,13 @@ const structuredData = {
 	}
 
 	:global(.nobel-photo figcaption a),
-	.legacy-links a,
 	.nobel-contact a {
 		color: inherit;
 		text-decoration: none;
 	}
 
 	.prose-section,
-	.story-section,
-	.legacy-section {
+	.story-section {
 		padding: clamp(5rem, 10vw, 10rem) clamp(2rem, 9vw, 11rem);
 	}
 
@@ -403,7 +375,6 @@ const structuredData = {
 
 	.prose-section h2,
 	.section-heading h2,
-	.legacy-section h2,
 	.nobel-contact h2 {
 		font-size: clamp(3.2rem, 6vw, 7rem);
 		line-height: 0.94;
@@ -464,30 +435,6 @@ const structuredData = {
 		border-color: rgba(241, 236, 226, 0.25);
 	}
 
-	.legacy-section {
-		display: grid;
-		grid-template-columns: minmax(11rem, 0.35fr) minmax(0, 1fr);
-		gap: 2rem clamp(3rem, 8vw, 10rem);
-	}
-
-	.legacy-section > p:not(.section-number),
-	.legacy-links {
-		grid-column: 2;
-		max-width: 52rem;
-	}
-
-	.legacy-section > p:not(.section-number) {
-		margin: 1rem 0 0;
-	}
-
-	.legacy-links {
-		display: flex;
-		margin-top: 1rem;
-		gap: 1rem 2rem;
-		flex-wrap: wrap;
-	}
-
-	.legacy-links a,
 	.nobel-contact a {
 		border-bottom: 1px solid currentColor;
 		font-weight: 700;
@@ -511,8 +458,7 @@ const structuredData = {
 	@media (max-width: 900px) {
 		.nobel-hero,
 		.prose-section,
-		.section-heading,
-		.legacy-section {
+		.section-heading {
 			grid-template-columns: 1fr;
 		}
 
@@ -524,9 +470,7 @@ const structuredData = {
 			max-width: 48rem;
 		}
 
-		.prose-section .section-number,
-		.legacy-section > p:not(.section-number),
-		.legacy-links {
+		.prose-section .section-number {
 			grid-row: auto;
 			grid-column: auto;
 		}
@@ -552,7 +496,6 @@ const structuredData = {
 
 		.prose-section,
 		.story-section,
-		.legacy-section,
 		.oslo-section,
 		.nobel-contact {
 			padding-right: 1rem;
