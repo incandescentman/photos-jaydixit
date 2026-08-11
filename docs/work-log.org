@@ -1,6 +1,51 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-08-11 - Create the Red Carpets copy-rewrite workbook
+
+** Changed
+- Added [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/red-carpets-copy-workbook.org][📄 the Red Carpets copy-rewrite workbook]] with every page-specific visible, metadata, image-description, and accessibility text grouped in page order.
+- For each text block, recorded the current wording, the job its replacement must perform, and questions intended to elicit replacement language from Jay rather than generate it for him.
+- Kept shared site navigation and footer language out of the workbook because those elements are not specific to the Red Carpets page.
+
+** Validation
+- Cross-checked the workbook against [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/red-carpets.astro][📄 the page source]], [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/worldTour.ts][📄 the World Tour data]], and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/worldTourVariants.ts][📄 the route data]].
+
+* 2026-08-10 - Bring the Departures board into the Red Carpets opening
+
+** Changed
+- Replaced the plain six-city hero list on ~/red-carpets/~ with a large split-flap assignment board adapted from the Departures experiment.
+- Preserved the original Stockholm-to-Toronto editorial order and the list’s navigation behavior: each animated row jumps directly to its city chapter.
+- Gave the board a dedicated half of the desktop hero and reduced the embedded treatment to Destination, Assignment, and Status; mobile keeps Destination and Status.
+- Added Space-key chapter advancement: each press aligns the next city below the fixed navigation, from Stockholm through Toronto, without intercepting typing or keyboard activation of controls.
+
+** Validation
+- Verified all six animated rows, city-anchor navigation, all six Space-key transitions, reduced-motion-safe initialization, desktop and mobile fit, and no horizontal overflow or browser errors.
+- ~pnpm run build~ and the focused Playwright regression pass.
+
+* 2026-08-10 - Remove the false Nobel portrait-session article
+
+** Changed
+- Removed ~/blog/nobel-portrait-session/~ after Jay identified its account of the shoot as AI-generated and false.
+- Removed the fabricated lighting-diagram asset used only by that article.
+- Removed the route smoke test and retargeted the generic related-essay and UTC-date checks to the remaining blog pages.
+
+** Validation
+- ~pnpm run lint~, 21 Vitest tests, 22 Playwright tests, and ~pnpm run build~ (101 pages) pass.
+- The production build contains no ~/blog/nobel-portrait-session/~ route.
+
+* 2026-08-10 - Remove repeated photographs from the mobile homepage
+
+** Changed
+- Kept the complete seven-print hero and the complete 17-card desktop wall, but hid the six wall cards whose Cloudinary public IDs already appear in the hero below ~820px~.
+- Renumbered the 11 remaining mobile wall cards ~01~–~11~, preserved strict document order, and moved the full-width landscape beats to visible positions ~3~, ~8~, and ~11~ so every half-width card still has a partner.
+- Excluded the hidden duplicates from the mobile PhotoSwipe data source as well as the rendered wall. Desktop PhotoSwipe still includes all 17 wall cards.
+
+** Validation
+- Browser-reviewed the settled wall at ~390 x 844~: 11 visible cards, no Cloudinary public ID shared with the seven-print hero, sequential ~01~–~11~ badges, full-width beats at ~03~, ~08~, and ~11~, no stranded half-row, and no horizontal overflow.
+- Verified the responsive PhotoSwipe data source contains 11 slides on mobile while desktop retains all 17 wall cards and its ~01~–~17~ numbering.
+- ~pnpm run lint~, 21 Vitest tests, 24 Playwright tests, ~pnpm run build~ (102 pages), and focused Prettier all pass.
+
 * 2026-08-10 - Review the Williamsburg waterfront portrait edits
 
 ** Changed
@@ -1957,3 +2002,28 @@ imagesLoaded(container).on('progress', function(instance, image) {
 ** Validation
 - ~npm run lint~
 - ~npm run build~
+* 2026-08-10 - Restore Red Carpets concept lab to the experiment chooser
+
+** Change
+- Restored the six-city Red Carpets concept lab from the unmerged ~codex/around-the-world~ branch without importing that branch’s superseded navigation or portrait-route changes.
+- Restored the Full Bleed, Passport, Departures, Contact Sheet, Editorial Journey, and map-led Route review surfaces under ~/red-carpets/~.
+- Added the concept chooser at ~/red-carpets/variants/~ to the main ~/experiments/~ page.
+
+** Source history
+- The concept was originally developed in twelve commits on 2026-07-22 and 2026-07-23, then remained isolated on the remote feature branch rather than being merged into ~main~.
+
+* 2026-08-11 - Build the 2024 Nobel coverage page
+
+** Page and photographs
+- Added a dedicated editorial page at ~/nobel-2024~ using the ten photographs Jay kept from the Commons Gallery download.
+- Organized the page around the Nobel Lectures in Stockholm and the Nobel Peace Prize Torchlight Procession in Oslo, with every photograph used once and a single-column mobile sequence.
+- Added the new photographs under [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/gallery/photos/events/nobel-prizes-2024/][📁 Nobel Prizes 2024]] with explicit tags and Wikimedia Commons links.
+
+** Known gaps
+- Added visible ~TK~ photograph placeholders for John Jumper and Daron Acemoglu. These must remain placeholders until Jay supplies the photographs.
+
+** Discovery
+- Linked the Stockholm chapter of ~/red-carpets~ to the new Nobel page without adding another item to the global navigation.
+
+** Verification
+- ~npm run build~ passes and generates ~/nobel-2024~ plus the associated optimized image derivatives.

@@ -53,7 +53,23 @@ const heroPrintLayout = [
 	{ photo: imageData(8), x: 31, y: 47, width: 18, rotation: 3.5, z: 4 },
 	{ photo: imageData(0), x: 76, y: 74, width: 19, rotation: 1.7, z: 2 },
 ];
-const wallPhotos = [2, 0, 9, 22, 8, 3, 18, 10, 24, 19, 5, 25, 32, 11, 31, 17, 33].map(imageData);
+const heroPublicIds = new Set(heroPrintLayout.map(({ photo }) => photo.publicId));
+const mobileWideWallPositions = new Set([3, 8, 11]);
+let mobileWallPosition = 0;
+const wallPhotos = [2, 0, 9, 22, 8, 3, 18, 10, 24, 19, 5, 25, 32, 11, 31, 17, 33].map(
+	(imageIndex) => {
+		const photo = imageData(imageIndex);
+		const mobileDuplicate = heroPublicIds.has(photo.publicId);
+		const mobilePosition = mobileDuplicate ? null : ++mobileWallPosition;
+
+		return {
+			...photo,
+			mobileDuplicate,
+			mobilePosition,
+			mobileWide: mobilePosition !== null && mobileWideWallPositions.has(mobilePosition),
+		};
+	},
+);
 const wallLayouts = [
 	'wall-feature',
 	'wall-portrait',
@@ -74,13 +90,12 @@ const wallLayouts = [
 	'wall-landscape',
 ];
 
-const wallImageSizes = (index: number) => {
+const wallImageSizes = (index: number, mobileWide: boolean) => {
 	const layout = wallLayouts[index];
 	const isWide = layout === 'wall-feature' || layout === 'wall-landscape';
-	const isPhoneWide = isWide && (index + 1) % 3 === 0;
 
 	return cldSizes(
-		`(max-width: 540px) ${isPhoneWide ? 'calc(100vw - 16px)' : 'calc((100vw - 24px) / 2)'}, (max-width: 820px) ${isWide ? 'calc(100vw - 24px)' : 'calc((100vw - 36px) / 2)'}, (max-width: 1180px) ${isWide ? '50vw' : '33vw'}, ${isWide ? '50vw' : '25vw'}`,
+		`(max-width: 540px) ${mobileWide ? 'calc(100vw - 16px)' : 'calc((100vw - 24px) / 2)'}, (max-width: 820px) ${mobileWide ? 'calc(100vw - 24px)' : 'calc((100vw - 36px) / 2)'}, (max-width: 1180px) ${isWide ? '50vw' : '33vw'}, ${isWide ? '50vw' : '25vw'}`,
 	);
 };
 
@@ -334,10 +349,13 @@ const description =
 						<article
 							class={`wall-card ${wallLayouts[index]}`}
 							data-wall-card
+							data-mobile-duplicate={photo.mobileDuplicate ? 'true' : undefined}
+							data-mobile-position={photo.mobilePosition ?? undefined}
 							style={`--card-index: ${index}`}
 						>
 							<a
 								data-pswp-item="true"
+								data-mobile-duplicate={photo.mobileDuplicate ? 'true' : undefined}
 								data-full-src={photo.fullSrc}
 								data-pswp-srcset={photo.lightboxSrcset}
 								data-pswp-width={photo.lightboxWidth}
@@ -351,7 +369,7 @@ const description =
 									<img
 										src={photo.src}
 										srcset={photo.srcset}
-										sizes={wallImageSizes(index)}
+										sizes={wallImageSizes(index, photo.mobileWide)}
 										alt={photo.caption}
 										width={photo.size === 'landscape' ? 1200 : 800}
 										height={photo.size === 'landscape' ? 800 : 1200}
@@ -359,7 +377,12 @@ const description =
 										decoding="async"
 									/>
 									<span class="wall-number" aria-hidden="true">
-										{String(index + 1).padStart(2, '0')}
+										<span class="wall-number-desktop">{String(index + 1).padStart(2, '0')}</span>
+										{photo.mobilePosition !== null && (
+											<span class="wall-number-mobile">
+												{String(photo.mobilePosition).padStart(2, '0')}
+											</span>
+										)}
 									</span>
 									<span class="wall-arrow" aria-hidden="true">
 										↗
@@ -402,6 +425,10 @@ const description =
 	<PhotoSwipeLightbox
 		gallerySelector="[data-photo-wall]"
 		childrenSelector="a[data-pswp-item]"
+		responsiveExclude={{
+			media: '(max-width: 820px)',
+			selector: '[data-mobile-duplicate="true"]',
+		}}
 		options={{
 			wheelToZoom: true,
 			padding: { top: 20, bottom: 80, left: 20, right: 20 },
@@ -1466,6 +1493,10 @@ const description =
 		backdrop-filter: blur(8px);
 	}
 
+	.wall-number-mobile {
+		display: none;
+	}
+
 	.wall-number {
 		left: 12px;
 	}
@@ -1889,6 +1920,18 @@ const description =
 			grid-auto-flow: row;
 		}
 
+		.wall-card[data-mobile-duplicate='true'] {
+			display: none;
+		}
+
+		.wall-number-desktop {
+			display: none;
+		}
+
+		.wall-number-mobile {
+			display: inline;
+		}
+
 		.wall-card,
 		.wall-card.wall-tall,
 		.wall-card.wall-feature,
@@ -1906,13 +1949,14 @@ const description =
 		}
 
 		/* Full-width beats, placed so the half-width cards always pair off evenly. */
-		.wall-card:nth-child(3),
-		.wall-card:nth-child(10),
+		.wall-card:nth-child(8),
+		.wall-card:nth-child(13),
 		.wall-card:nth-child(17) {
 			grid-column: span 12;
 		}
 
-		.wall-card:nth-child(3) .wall-media,
+		.wall-card:nth-child(8) .wall-media,
+		.wall-card:nth-child(13) .wall-media,
 		.wall-card:nth-child(17) .wall-media {
 			aspect-ratio: 3 / 2;
 		}

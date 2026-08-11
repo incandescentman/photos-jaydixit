@@ -1,0 +1,810 @@
+#+TITLE: Red Carpets Around the World - Copy Rewrite Workbook
+#+DATE: 2026-08-10
+
+* Purpose
+This workbook contains all page-specific text currently used by [[http://localhost:4322/red-carpets][Red Carpets Around the World]]. It is meant to help Jay replace that language in his own words.
+
+Shared site navigation and footer text are not included because they belong to the site-wide interface, not this page. Visual-only numbers, geographic coordinates, proper names, and generated labels are included where they affect what a visitor reads, hears through a screen reader, or sees in a search or social preview.
+
+The live sources are:
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/red-carpets.astro][📄 Red Carpets page]]
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/worldTour.ts][📄 World Tour content data]]
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/worldTourVariants.ts][📄 World Tour route data]]
+
+* How to use this workbook
+Under each prompt, write whatever comes naturally. Fragments, memories, sensory details, and blunt statements are useful. Do not try to make the answers polished or concise yet. If the current text is already right, write ~KEEP~. If a factual label is wrong, correct it directly.
+
+* 1. Search and sharing metadata
+** 1.1 Page title
+*** What it currently says
+#+begin_quote
+Red Carpets Around the World
+#+end_quote
+
+*** What the replacement has to do / cover
+- Name the page clearly in browser tabs, search results, and shared links.
+- Establish that this is your photography across multiple international festivals or assignments.
+- Stay concise enough to work as a page title.
+
+*** Questions to elicit the replacement
+- What do you call this body of work when you describe it to another person?
+- Is the unifying idea red carpets, festivals, assignments, travel, portraiture, or something else?
+- Which words must appear so the title feels unmistakably yours?
+
+** 1.2 Search and social description
+*** What it currently says
+#+begin_quote
+Jay Dixit photographs actors, filmmakers, and public figures at festivals and cultural events from Stockholm and Busan to Locarno, Sundance, SXSW, and Toronto.
+#+end_quote
+
+*** What the replacement has to do / cover
+- Explain what the page contains to someone who has not seen it.
+- Identify you as the photographer and accurately describe the people and settings shown.
+- Include useful festival and location language without becoming a list of keywords.
+
+*** Questions to elicit the replacement
+- In one sentence, what will someone find on this page?
+- Who are you photographing, and under what circumstances?
+- Which locations or events are essential enough to name in a short preview?
+- What makes this work different from ordinary event coverage?
+
+** 1.3 Social-preview image description
+*** What it currently says
+#+begin_quote
+John Hopfield photographed by Jay Dixit during Nobel Prize week in Stockholm
+#+end_quote
+
+*** What the replacement has to do / cover
+- Describe the preview image accurately for people who cannot see it.
+- Identify John Hopfield, the setting, and your authorship only if each fact is both useful and correct.
+
+*** Questions to elicit the replacement
+- What is visibly happening in this particular photograph?
+- Which facts about Hopfield and the occasion matter to understanding the image?
+- Would you naturally say “Nobel Prize week,” “the Nobel Prize ceremony,” or something else?
+
+** 1.4 Search keywords
+*** What it currently says
+- Red carpet photography
+- Film festival photographer
+- Nobel Prize photographer
+- TIFF photographer
+- Sundance photographer
+- SXSW photographer
+
+*** What the replacement has to do / cover
+- Represent the real assignments and kinds of photography on the page.
+- Use phrases a potential editor, festival, publicist, or client might actually search for.
+- Avoid claiming services or credentials the page does not substantiate.
+
+*** Questions to elicit the replacement
+- What kinds of clients should be able to find this page?
+- What would those people type when looking for a photographer like you?
+- Which events are genuine credentials you want indexed by name?
+- Are there important terms besides “red carpet” and “festival photographer” that describe the work better?
+
+* 2. Opening hero
+** 2.1 Eyebrow
+*** What it currently says
+#+begin_quote
+On assignment · 6 cities · 3 continents
+#+end_quote
+
+*** What the replacement has to do / cover
+- Orient the visitor before the headline.
+- Convey the scale or organizing principle of the journey in very few words.
+- Remain visually short enough for the small uppercase line.
+
+*** Questions to elicit the replacement
+- What are the most meaningful numbers or facts about this body of work?
+- Does “on assignment” accurately describe every city shown?
+- What do you want the visitor to understand before reading the headline?
+
+** 2.2 Main headline
+*** What it currently says
+#+begin_quote
+Red carpets
+around the world.
+#+end_quote
+
+*** What the replacement has to do / cover
+- Name the central idea of the page in a memorable phrase.
+- Work across two display lines, with the second line receiving italic emphasis.
+- Introduce the international scope without sounding inflated.
+
+*** Questions to elicit the replacement
+- What is the truest short phrase for what connects these photographs?
+- When you think about moving from one festival to another, what phrase comes to mind naturally?
+- Do you want the headline to emphasize place, people, access, speed, or the portrait itself?
+
+** 2.3 Opening paragraph
+*** What it currently says
+#+begin_quote
+From Nobel week in Stockholm to the cinema capitals of Busan, Locarno, Park City, Austin, and Toronto—portraits made in the few charged seconds when the world is watching.
+#+end_quote
+
+*** What the replacement has to do / cover
+- Explain the range represented by the six stops.
+- Tell the visitor what kind of photographs these are and how they are made.
+- Create a reason to continue into the individual city chapters.
+- Remain compact enough to sit beside the departures board.
+
+*** Questions to elicit the replacement
+- What actually connects these six experiences for you?
+- What is happening in the seconds before you make one of these portraits?
+- What pressure, access, limitation, or opportunity defines this kind of photography?
+- What do you notice or try to accomplish that the surrounding cameras may not?
+- Which city names genuinely help the sentence, and which are unnecessary because the board already lists them?
+
+** 2.4 Opening action
+*** What it currently says
+#+begin_quote
+Begin the journey
+#+end_quote
+
+*** What the replacement has to do / cover
+- Tell the visitor that the page continues into a sequence of city chapters.
+- Function as a short, inviting action label.
+
+*** Questions to elicit the replacement
+- What would you naturally invite someone to do here: begin, travel, follow, enter, scroll, or something else?
+- Should the invitation feel cinematic, journalistic, playful, or direct?
+- Would you mention that the Space key advances through the cities, and if so, in what words?
+
+* 3. Split-flap route board
+** 3.1 Column labels
+*** What it currently says
+#+begin_quote
+Destination · Assignment · Status
+#+end_quote
+
+*** What the replacement has to do / cover
+- Explain the three kinds of information in each row.
+- Preserve the split-flap departures-board metaphor.
+- Fit in the narrow column headings on desktop; mobile shows only the first and third labels implicitly through the layout.
+
+*** Questions to elicit the replacement
+- Does “Assignment” accurately describe every festival appearance?
+- Is “Destination” the right word, or is this more like a city, stop, dateline, or location?
+- What should the third column communicate: completion, chronology, availability, or simply the travel-board illusion?
+
+** 3.2 Destination rows
+*** What they currently say
+- Stockholm
+- Busan
+- Locarno
+- Park City
+- Austin
+- Toronto
+
+*** What the replacement has to do / cover
+- Identify each chapter and remain identical to its anchor destination.
+- Use the place name visitors will recognize most readily.
+
+*** Questions to elicit the replacement
+- Are these the exact place names you use for each assignment?
+- Should Park City instead be labeled Sundance, or should the page consistently use cities?
+- Do any of these need a local-language spelling or a more specific geographic label?
+
+** 3.3 Assignment codes
+*** What they currently say
+- Stockholm: ~NPC3927~
+- Busan: ~BIF6995~
+- Locarno: ~LFF3976~
+- Park City: ~SFF1953~
+- Austin: ~SXW1513~
+- Toronto: ~TIF0346~
+
+These are generated from an abbreviated event name plus the route mileage stored for the departures experiment.
+
+*** What the replacement has to do / cover
+- Give the board a plausible split-flap assignment or route code.
+- Avoid looking like a real flight number or official festival credential if it is not one.
+- Either encode meaningful information or read clearly as a visual device.
+
+*** Questions to elicit the replacement
+- Should these codes carry real meaning, or are they purely graphic texture?
+- If they carry meaning, what should they encode: year, city, festival, assignment number, or distance?
+- Would recognizable festival abbreviations such as TIFF, SXSW, BIFF, and LFF be clearer?
+- Is the mileage idea meaningful to your story, or arbitrary?
+
+** 3.4 Status labels
+*** What they currently say
+- Stockholm through Austin: ~LANDED~
+- Toronto: ~ARRIVED~
+
+*** What the replacement has to do / cover
+- Complete the departures-board metaphor.
+- Distinguish the final stop if that distinction matters.
+- Avoid implying a chronology or travel fact that is not true.
+
+*** Questions to elicit the replacement
+- What status is actually meaningful for these assignments: photographed, selected, archived, complete, published, or something else?
+- Should all six rows carry the same status?
+- What, if anything, makes Toronto the endpoint?
+
+* 4. Transition statement
+** 4.1 Manifesto line
+*** What it currently says
+#+begin_quote
+One camera. One press line. Six very different worlds.
+#+end_quote
+
+*** What the replacement has to do / cover
+- Bridge the opening overview and the first city chapter.
+- State the page’s unifying idea in one rhythmic line.
+- Set up both what stays constant and what changes from city to city.
+
+*** Questions to elicit the replacement
+- What genuinely stayed the same across these assignments?
+- What changed most dramatically from city to city?
+- Is “one camera” literally true and important, or merely a rhetorical device?
+- What single contrast best captures the experience?
+
+* 5. Repeated city-chapter interface text
+** 5.1 Portrait credit
+*** What it currently says
+#+begin_quote
+Portrait by Jay Dixit
+#+end_quote
+
+*** What the replacement has to do / cover
+- Credit the photographer beside each finished portrait.
+- Stay quiet enough not to compete with the subject’s name.
+
+*** Questions to elicit the replacement
+- Do you want an explicit credit on your own portfolio page?
+- Would “Photographed by Jay Dixit,” “Photo: Jay Dixit,” or no label better match how you speak?
+- Is there another useful fact that belongs in this small caption line instead?
+
+** 5.2 Next-chapter prompt
+*** What it currently says
+#+begin_quote
+Next stop
+#+end_quote
+
+The destination name below it changes to Busan, Locarno, Park City, Austin, or Toronto.
+
+*** What the replacement has to do / cover
+- Make the city-to-city navigation obvious.
+- Reinforce the travel structure without requiring explanatory prose.
+
+*** Questions to elicit the replacement
+- What would you call the next chapter in your own words?
+- Should this feel like travel language, editorial sequencing, or a simple navigation control?
+- Does the destination name alone already do enough?
+
+** 5.3 Temporary-image notice for Busan and Locarno
+*** What it currently says
+#+begin_quote
+Temporary portfolio frame · final Busan image pending
+Temporary portfolio frame · final Locarno image pending
+
+Layout preview only
+Final festival selection pending
+#+end_quote
+
+*** What the replacement has to do / cover
+- Make unmistakably clear that these displayed Toronto photographs are temporary layout stand-ins, not photographs from Busan or Locarno.
+- Avoid presenting placeholder imagery as real documentary evidence.
+- Disappear once final images are selected.
+
+*** Questions to elicit the replacement
+- Do you want visitors to see unfinished Busan and Locarno chapters at all?
+- If they remain visible, how plainly should the page describe the placeholders?
+- Is there anything true and useful to show in these chapters before the final photographs are ready?
+- Would you rather omit the images, omit the chapters, or keep the current explicit notice?
+
+* 6. Stockholm chapter
+** 6.1 Factual labels
+*** What they currently say
+- Chapter: ~01~
+- Coordinates: ~59.3293° N · 18.0686° E~
+- Country: ~Sweden~
+- City: ~Stockholm~
+- Event: ~Nobel Prize Ceremony~
+
+*** What the replacement has to do / cover
+- Identify the place and occasion accurately.
+- Use the event name you would use publicly.
+- Preserve the chapter’s compact hierarchy.
+
+*** Questions to elicit the replacement
+- What exact Nobel event or context were you photographing?
+- Is “Nobel Prize Ceremony” accurate, or should the page name Nobel Week, Nobel Prize Outreach, a portrait session, or another context?
+- Does the country add anything once Stockholm is named?
+- Are the coordinates meaningful to you, or only a visual motif?
+
+** 6.2 Stockholm narrative line
+*** What it currently says
+#+begin_quote
+A laureate, a borrowed moment, and a portrait made for the public record.
+#+end_quote
+
+*** What the replacement has to do / cover
+- Say something specific and true about making the John Hopfield portrait.
+- Give the image context without inventing circumstances or significance.
+- Work as a single short paragraph beside the photograph.
+
+*** Questions to elicit the replacement
+- How did you actually come to photograph John Hopfield?
+- Where were you, how much time did you have, and what was happening around you?
+- What do you remember noticing about him or the moment?
+- What were you trying to make in the portrait?
+- What happened to the photograph afterward, if that matters to the story?
+
+** 6.3 Stockholm portrait caption and image description
+*** What they currently say
+#+begin_quote
+John Hopfield
+
+Nobel Prize-winning physicist John Hopfield photographed in Stockholm
+#+end_quote
+
+*** What the replacement has to do / cover
+- Name the subject correctly.
+- Describe what is visible in the photograph, not only his credential and location.
+- Include context that helps someone understand the image without seeing it.
+
+*** Questions to elicit the replacement
+- What is Hopfield doing, wearing, or expressing in this frame?
+- What visible setting or lighting detail matters?
+- Which credential is necessary to identify him here?
+
+* 7. Busan chapter
+** 7.1 Factual labels
+*** What they currently say
+- Chapter: ~02~
+- Coordinates: ~35.1796° N · 129.0756° E~
+- Country: ~South Korea~
+- City: ~Busan~
+- Event: ~Busan International Film Festival~
+
+*** What the replacement has to do / cover
+- Identify the place and festival accurately.
+- Preserve the same factual hierarchy as the other city chapters.
+
+*** Questions to elicit the replacement
+- What year or edition of BIFF does this chapter represent?
+- What was your actual role or reason for being there?
+- Are country and coordinates useful, or would another factual detail matter more?
+
+** 7.2 Busan narrative line
+*** What it currently says
+#+begin_quote
+Cinema at the edge of the sea, framed in the electric light of the festival.
+#+end_quote
+
+*** What the replacement has to do / cover
+- Say something concrete and true about your experience photographing in Busan.
+- Distinguish Busan from the other festivals through observed detail rather than generic atmosphere.
+- Prepare the visitor to understand the final selected photograph.
+
+*** Questions to elicit the replacement
+- What do you remember seeing, hearing, or physically experiencing at BIFF?
+- Who did you photograph there, and under what circumstances?
+- What was different about working there compared with the other cities?
+- Is the sea actually part of your memory or photographs, or only an association with Busan?
+- What moment from the assignment still feels vivid?
+
+* 8. Locarno chapter
+** 8.1 Factual labels
+*** What they currently say
+- Chapter: ~03~
+- Coordinates: ~46.1690° N · 8.7955° E~
+- Country: ~Switzerland~
+- City: ~Locarno~
+- Event: ~Locarno Film Festival~
+
+*** What the replacement has to do / cover
+- Identify the place and festival accurately.
+- Preserve the same factual hierarchy as the other city chapters.
+
+*** Questions to elicit the replacement
+- What year or edition of Locarno does this chapter represent?
+- What was your assignment, access, or role there?
+- Is there a more specific venue or event name that matters?
+
+** 8.2 Locarno narrative line
+*** What it currently says
+#+begin_quote
+A historic piazza, a summer premiere, and the unmistakable leopard of Locarno.
+#+end_quote
+
+*** What the replacement has to do / cover
+- Say something concrete and true about your experience photographing in Locarno.
+- Distinguish the assignment through a specific moment, constraint, encounter, or observation.
+- Avoid relying on festival-brand imagery unless it mattered to you directly.
+
+*** Questions to elicit the replacement
+- Where exactly were you photographing in Locarno?
+- Who did you photograph, and what do you remember about the encounter?
+- What surprised you about the festival or the way the press line worked?
+- Did the Piazza Grande or the leopard symbol matter to your actual experience?
+- What detail could only come from someone who was there?
+
+* 9. Park City chapter
+** 9.1 Factual labels
+*** What they currently say
+- Chapter: ~04~
+- Coordinates: ~40.6461° N · 111.4980° W~
+- Country: ~United States~
+- City: ~Park City~
+- Event: ~Sundance Film Festival~
+
+*** What the replacement has to do / cover
+- Identify the Park City Sundance setting accurately.
+- Make clear whether this represents one year, several years, or a particular assignment.
+
+*** Questions to elicit the replacement
+- Which Sundance and which year does the Steven Yeun photograph come from?
+- What brought you to the festival and what access did you have?
+- Is Park City the meaningful location label, or would you naturally lead with Sundance?
+
+** 9.2 Park City narrative line
+*** What it currently says
+#+begin_quote
+Independent cinema, mountain air, and a red carpet built in the snow.
+#+end_quote
+
+*** What the replacement has to do / cover
+- Say something specific and true about making photographs at Sundance.
+- Connect naturally to the Steven Yeun portrait if that remains the featured image.
+- Distinguish lived experience from familiar Sundance imagery.
+
+*** Questions to elicit the replacement
+- What was happening when you photographed Steven Yeun?
+- How much time and physical room did you have?
+- What did the cold, altitude, crowd, venue, or schedule actually change about the work?
+- What were you looking for in his expression or posture?
+- What do you remember that the photograph alone does not show?
+
+** 9.3 Park City portrait caption and image description
+*** What they currently say
+#+begin_quote
+Steven Yeun
+
+Steven Yeun photographed at the Sundance Film Festival in Park City
+#+end_quote
+
+*** What the replacement has to do / cover
+- Name Steven Yeun correctly.
+- Describe the visible photograph and provide only useful event context.
+
+*** Questions to elicit the replacement
+- What is visible in Yeun’s expression, clothing, pose, and surroundings?
+- Does the frame visibly read as a festival portrait, or does that context need to be supplied?
+- What would you tell someone who cannot see this image?
+
+* 10. Austin chapter
+** 10.1 Factual labels
+*** What they currently say
+- Chapter: ~05~
+- Coordinates: ~30.2672° N · 97.7431° W~
+- Country: ~United States~
+- City: ~Austin~
+- Event: ~SXSW~
+
+*** What the replacement has to do / cover
+- Identify the Austin SXSW setting accurately.
+- Make clear which year or assignment the chapter represents if that matters.
+
+*** Questions to elicit the replacement
+- Which SXSW appearance or assignment is represented here?
+- What kind of event or press line were you photographing?
+- Is “SXSW” sufficient, or should the film, comedy, premiere, or venue be named?
+
+** 10.2 Austin narrative line
+*** What it currently says
+#+begin_quote
+The press line moves fast. The comedy moves faster. The portrait has one chance.
+#+end_quote
+
+*** What the replacement has to do / cover
+- Say something specific and true about photographing Lisa Gilroy or the relevant SXSW event.
+- Explain the pace or constraint without turning it into a generic press-line slogan.
+- Give the visitor a detail or insight that belongs to your experience.
+
+*** Questions to elicit the replacement
+- What was happening when you photographed Lisa Gilroy?
+- Why did this particular frame work for you?
+- How fast did the interaction actually unfold, and what did you do in that time?
+- What was funny, difficult, chaotic, or unexpected?
+- What do you want someone to notice in the finished portrait?
+
+** 10.3 Austin portrait caption and image description
+*** What they currently say
+#+begin_quote
+Lisa Gilroy
+
+Lisa Gilroy photographed at SXSW in Austin
+#+end_quote
+
+*** What the replacement has to do / cover
+- Name Lisa Gilroy correctly.
+- Describe the visible image and include the relevant SXSW context.
+
+*** Questions to elicit the replacement
+- What is visible in Gilroy’s expression, gesture, clothing, or surroundings?
+- What makes this portrait recognizably hers?
+- Which event detail is helpful rather than redundant?
+
+* 11. Toronto introduction
+** 11.1 Factual labels
+*** What they currently say
+- Chapter: ~06~
+- Coordinates: ~43.6532° N · 79.3832° W~
+- Country: ~Canada~
+- City: ~Toronto~
+- Event: ~Toronto International Film Festival~
+
+*** What the replacement has to do / cover
+- Identify Toronto and TIFF accurately.
+- Introduce a chapter containing photographs from 2024 and 2025 rather than implying a single moment if that is not true.
+
+*** Questions to elicit the replacement
+- Is this one TIFF assignment or a collection across multiple years?
+- Should the event be called Toronto International Film Festival or TIFF in the main label?
+- Is there another organizing fact that matters more than the coordinates?
+
+** 11.2 Toronto introductory line
+*** What it currently says
+#+begin_quote
+One city became an archive. Keep scrolling—you control the speed of the press line.
+#+end_quote
+
+*** What the replacement has to do / cover
+- Explain why Toronto receives an extended sequence rather than a single portrait.
+- Tell the visitor that scrolling controls the progression through the portraits.
+- Transition from the city chapters into the interactive sequence.
+
+*** Questions to elicit the replacement
+- Why do you have a deeper body of work from Toronto?
+- Over what span of time did you make these photographs?
+- What does the sequence reveal that one selected portrait cannot?
+- How would you invite someone to move through the images without sounding like interface instructions?
+- What does “archive” mean to you here, if it is the right word at all?
+
+* 12. Toronto portrait sequence
+** 12.1 Sequence label and location caption
+*** What they currently say
+#+begin_quote
+Toronto portrait sequence
+
+Toronto · TIFF
+#+end_quote
+
+The screen-reader label identifies the interactive section; the visible location caption remains constant while the subject name and frame count change.
+
+*** What the replacement has to do / cover
+- Identify the interactive sequence for screen-reader users.
+- Keep the visible location or event context concise while portraits change.
+
+*** Questions to elicit the replacement
+- What do you call this sequence: portraits, press-line photographs, TIFF archive, contact sheet, or something else?
+- What constant label should accompany every image?
+- Should the year change by photograph, and if so, do you know which images belong to 2024 and 2025?
+
+** 12.2 Subject names
+*** What they currently say
+- Vanessa Kirby
+- Ana de Armas
+- Sydney Sweeney
+- Willem Dafoe
+- Kaia Gerber
+- Gabriel LaBelle
+- Ella Hunt
+- Nicholas Braun
+- Jude Law
+- Jason Bateman
+- Jason Bateman & Jude Law
+- Jason Bateman & Jude Law
+- Ana de Armas & Sydney Sweeney
+
+*** What the replacement has to do / cover
+- Identify every visible subject accurately and consistently.
+- Distinguish the two Jason Bateman and Jude Law frames if a more informative caption is warranted.
+
+*** Questions to elicit the replacement
+- Are all names and spellings correct?
+- Do any photographs include another person who should be named?
+- Should repeated subjects receive a distinguishing moment, film, premiere, or year?
+- Do you prefer “and” or an ampersand for group captions?
+
+** 12.3 Image descriptions
+*** What they currently say
+- Vanessa Kirby at the Toronto International Film Festival
+- Ana de Armas at the Toronto International Film Festival
+- Sydney Sweeney at the Toronto International Film Festival
+- Willem Dafoe at the Toronto International Film Festival
+- Kaia Gerber at the Toronto International Film Festival
+- Gabriel LaBelle at the Toronto International Film Festival
+- Ella Hunt at the Toronto International Film Festival
+- Nicholas Braun at the Toronto International Film Festival
+- Jude Law at the Toronto International Film Festival
+- Jason Bateman at the Toronto International Film Festival
+- Jason Bateman and Jude Law at the Toronto International Film Festival
+- Jason Bateman and Jude Law on the Toronto International Film Festival red carpet
+- Ana de Armas and Sydney Sweeney at the Toronto International Film Festival
+
+*** What the replacement has to do / cover
+- Describe what is visibly distinct about each photograph for someone who cannot see it.
+- Preserve accurate subject and event identification.
+- Avoid thirteen near-identical descriptions that communicate no visual information.
+
+*** Questions to elicit the replacement
+- For each frame, what are the subjects doing and how are they relating to the camera or each other?
+- What expression, gesture, clothing, lighting, or background distinguishes the image?
+- Is it visibly a red carpet, portrait station, premiere, or another setting?
+- Which image-specific detail would let a listener tell one frame from the next?
+
+* 13. Toronto contact sheet
+** 13.1 Section eyebrow
+*** What it currently says
+#+begin_quote
+After the flash
+#+end_quote
+
+*** What the replacement has to do / cover
+- Introduce the grid that follows the scrolling portrait sequence.
+- Signal a shift from one-at-a-time viewing to seeing the selected set together.
+- Remain very short.
+
+*** Questions to elicit the replacement
+- What changes when the portraits become a grid?
+- Do you think of this as after the flash, after the press line, the edit, the selects, or something else?
+- What phrase would you use in the studio or when showing the work to an editor?
+
+** 13.2 Contact-sheet headline
+*** What it currently says
+#+begin_quote
+The Toronto contact sheet.
+#+end_quote
+
+*** What the replacement has to do / cover
+- Name the collection of selected Toronto frames.
+- Accurately describe the grid; it is a designed selection, not necessarily a literal unedited camera contact sheet.
+
+*** Questions to elicit the replacement
+- Do you genuinely call this a contact sheet?
+- Is the important idea Toronto, TIFF, the people, the edit, or the accumulation across years?
+- What title would you give this set if it were hanging on a wall?
+
+** 13.3 Contact-sheet count line
+*** What it currently says
+#+begin_quote
+13 selected frames · TIFF 2024–2025
+#+end_quote
+
+The number is generated from the current portrait list.
+
+*** What the replacement has to do / cover
+- Tell the visitor how many images are in the set.
+- State the time span accurately.
+- Remain valid if the image count changes, or be generated from the underlying list.
+
+*** Questions to elicit the replacement
+- Is 2024–2025 the correct span for every image shown?
+- Is “selected frames” how you would describe them?
+- Does the count add useful information, or would another fact better orient the visitor?
+
+* 14. Finale
+** 14.1 City recap
+*** What it currently says
+#+begin_quote
+Stockholm · Busan · Locarno · Park City · Austin · Toronto
+#+end_quote
+
+*** What the replacement has to do / cover
+- Mark the completion of the six-city sequence.
+- Echo the route without introducing new claims.
+- Provide rhythm and closure before the final statement.
+
+*** Questions to elicit the replacement
+- Do you want to repeat the city list at the end?
+- What has changed in the meaning of those names after someone has seen the photographs?
+- Would dates, festivals, people, or another repeated element create a stronger ending?
+
+** 14.2 Closing statement
+*** What it currently says
+#+begin_quote
+The red carpet is global.
+The portrait is personal.
+#+end_quote
+
+*** What the replacement has to do / cover
+- State what the entire sequence means to you.
+- Bring the international scale back to the individual encounter or photograph.
+- End with a line strong enough to stand above the contact invitation.
+
+*** Questions to elicit the replacement
+- After seeing all six cities, what do you want a visitor to understand about your work?
+- What remains personal when the surrounding event is public, crowded, and international?
+- What is your actual relationship to the person in front of the camera during those few seconds?
+- What truth about these portraits have you learned by making them repeatedly?
+- If you removed the words “global” and “personal,” how would you say the contrast in your own language?
+
+** 14.3 Contact invitation
+*** What it currently says
+#+begin_quote
+Bring me to your next festival
+#+end_quote
+
+*** What the replacement has to do / cover
+- Invite a potential client or collaborator to contact you.
+- State the desired next action clearly.
+- Match the kinds of assignments you actually want.
+
+*** Questions to elicit the replacement
+- Who exactly do you hope acts on this invitation?
+- What do you want them to hire you to do?
+- Is travel to a festival the core offer, or is the real offer portraits, press-line coverage, editorial access, or something more specific?
+- What would you say directly to the right editor, festival, publicist, or organizer?
+
+* 15. Invisible navigation and accessibility text
+** 15.1 Route-board navigation label
+*** What it currently says
+#+begin_quote
+Jump to a festival destination
+#+end_quote
+
+Each row is announced as “Jump to [city], [event].”
+
+*** What the replacement has to do / cover
+- Explain to screen-reader users that the board is navigation, not merely decoration.
+- Identify each destination link clearly without depending on the visual columns.
+
+*** Questions to elicit the replacement
+- What would you call this navigation if you could not refer to its visual design?
+- Should each link name only the city, or both the city and event?
+- Is “jump” the right action word for the smooth chapter transition?
+
+** 15.2 City-to-city navigation labels
+*** What they currently say
+#+begin_quote
+Continue from Stockholm to Busan
+Continue from Busan to Locarno
+Continue from Locarno to Park City
+Continue from Park City to Austin
+Continue from Austin to Toronto
+#+end_quote
+
+*** What the replacement has to do / cover
+- Give each next-chapter control an unambiguous accessible name.
+- Identify both the current and next destination only if both are useful.
+
+*** Questions to elicit the replacement
+- What action should a screen-reader user expect after activating this control?
+- Is naming the current city redundant?
+- Would “Next city: Busan” and its equivalents be clearer?
+
+** 15.3 Placeholder-image accessible labels
+*** What they currently say
+#+begin_quote
+Busan portrait selection pending
+Locarno portrait selection pending
+#+end_quote
+
+*** What the replacement has to do / cover
+- Prevent temporary imagery from being mistaken for actual Busan or Locarno work.
+- Describe the incomplete state plainly.
+
+*** Questions to elicit the replacement
+- If the placeholders remain, what does a nonvisual visitor need to know?
+- Should the temporary photograph itself be described, or should it be hidden because it does not belong to the chapter?
+- Would removing these unfinished states produce a more truthful page?
+
+* 16. Rewrite-level questions
+These questions cut across the individual blocks and may reveal the page’s actual voice before any line-by-line rewriting begins.
+
+- Why do you want these six cities on one page?
+- What is the real story that begins in Stockholm and ends in Toronto?
+- Which of these assignments were commissioned, self-assigned, incidental, or part of another role?
+- What access did you have in each place, and what should never be implied?
+- Which photographs or encounters changed how you think about portraiture?
+- What do you do in a press-line environment that is distinctively yours?
+- Who is the ideal visitor to this page, and what should that person do after seeing it?
+- Which existing lines feel false, generic, inflated, or simply unlike you?
+- Which existing lines contain a useful fact or structure worth preserving?
+- If you told the whole story aloud to a friend without trying to sound impressive, where would you begin?
+

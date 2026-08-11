@@ -455,7 +455,7 @@ export function initKineticEditorial() {
 		cleanup.push(() => context.revert());
 		if (mobileLayout) {
 			cleanup.push(initMobileReveals('[data-hero-photo]'));
-			cleanup.push(initMobileReveals('[data-wall-card]'));
+			cleanup.push(initMobileReveals('[data-wall-card]:not([data-mobile-duplicate="true"])'));
 		}
 
 		const canvas = document.querySelector<HTMLCanvasElement>('[data-atmosphere]');

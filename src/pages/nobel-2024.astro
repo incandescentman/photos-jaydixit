@@ -1,0 +1,596 @@
+---
+export const prerender = true;
+
+import { getImage } from 'astro:assets';
+import MainLayout from '../layouts/MainLayout.astro';
+import NobelPhoto from '../components/NobelPhoto.astro';
+import NobelTkCard from '../components/NobelTkCard.astro';
+import PhotoSwipeLightbox from '../components/PhotoSwipeLightbox.astro';
+
+import peaceCampaigners from '../gallery/photos/events/nobel-prizes-2024/anti-nuclear-campaigners_nobel-peace-prize-torchlight-procession-oslo_2024.jpg';
+import davidBaker from '../gallery/photos/events/nobel-prizes-2024/david-baker_nobel-lectures-stockholm_2024.jpg';
+import demisHassabis from '../gallery/photos/events/nobel-prizes-2024/demis-hassabis_nobel-lectures-stockholm_2024.jpg';
+import geoffreyHinton from '../gallery/photos/events/nobel-prizes-2024/geoffrey-hinton_nobel-lectures-stockholm_2024.jpg';
+import jamesRobinson from '../gallery/photos/events/nobel-prizes-2024/james-robinson_nobel-lectures-stockholm_2024.jpg';
+import johnHopfield from '../gallery/photos/events/nobel-prizes-2024/john-hopfield_nobel-lectures-stockholm_2024.jpg';
+import oslo04 from '../gallery/photos/events/nobel-prizes-2024/nobel-peace-prize-torchlight-procession-oslo-04_2024.jpg';
+import oslo06 from '../gallery/photos/events/nobel-prizes-2024/nobel-peace-prize-torchlight-procession-oslo-06_2024.jpg';
+import oslo15 from '../gallery/photos/events/nobel-prizes-2024/nobel-peace-prize-torchlight-procession-oslo-15_2024.jpg';
+import oslo21 from '../gallery/photos/events/nobel-prizes-2024/nobel-peace-prize-torchlight-procession-oslo-21_2024.jpg';
+
+const pageTitle = 'The Year AI Won the Nobel Prize';
+const description =
+	'Jay Dixit photographs the 2024 Nobel Lectures in Stockholm and the Nobel Peace Prize Torchlight Procession in Oslo.';
+
+const photographs = [
+	{
+		id: 'baker',
+		src: davidBaker,
+		alt: 'David Baker speaking at the 2024 Nobel Lectures in Stockholm',
+		caption: 'David Baker · Nobel Lectures, Stockholm',
+		commons: 'https://commons.wikimedia.org/wiki/File:David_Baker_at_the_2024_Nobel_Lectures.jpg',
+	},
+	{
+		id: 'hopfield',
+		src: johnHopfield,
+		alt: 'John Hopfield speaking at the 2024 Nobel Lectures in Stockholm',
+		caption: 'John Hopfield · Nobel Lectures, Stockholm',
+		commons:
+			'https://commons.wikimedia.org/wiki/File:John_Hopfield_at_the_2024_Nobel_Lectures_5.jpg',
+	},
+	{
+		id: 'hinton',
+		src: geoffreyHinton,
+		alt: 'Geoffrey Hinton speaking at the 2024 Nobel Lectures in Stockholm',
+		caption: 'Geoffrey Hinton · Nobel Lectures, Stockholm',
+		commons:
+			'https://commons.wikimedia.org/wiki/File:Geoffrey_Hinton_at_the_2024_Nobel_Lectures_3.jpg',
+	},
+	{
+		id: 'hassabis',
+		src: demisHassabis,
+		alt: 'Demis Hassabis speaking at the 2024 Nobel Lectures in Stockholm',
+		caption: 'Demis Hassabis · Nobel Lectures, Stockholm',
+		commons:
+			'https://commons.wikimedia.org/wiki/File:Demis_Hassabis_at_the_2024_Nobel_Lectures_2.jpg',
+	},
+	{
+		id: 'robinson',
+		src: jamesRobinson,
+		alt: 'James A. Robinson speaking at the 2024 Nobel Lectures in Stockholm',
+		caption: 'James A. Robinson · Nobel Lectures, Stockholm',
+		commons:
+			'https://commons.wikimedia.org/wiki/File:James_A._Robinson_at_the_2024_Nobel_Lectures_2.jpg',
+	},
+	{
+		id: 'peace-campaigners',
+		src: peaceCampaigners,
+		alt: 'Anti-nuclear campaigners at the 2024 Nobel Peace Prize Torchlight Procession in Oslo',
+		caption: 'Anti-nuclear campaigners · Torchlight Procession, Oslo',
+		commons:
+			'https://commons.wikimedia.org/wiki/File:Nei_til_atomv%C3%A5pen_at_the_Nobel_Peace_Prize_torchlight_procession_in_Oslo,_Norway_3.jpg',
+	},
+	...[
+		{ id: 'oslo-04', src: oslo04, number: '4' },
+		{ id: 'oslo-06', src: oslo06, number: '6' },
+		{ id: 'oslo-15', src: oslo15, number: '15' },
+		{ id: 'oslo-21', src: oslo21, number: '21' },
+	].map(({ id, src, number }) => ({
+		id,
+		src,
+		alt: 'The 2024 Nobel Peace Prize Torchlight Procession in Oslo',
+		caption: 'Nobel Peace Prize Torchlight Procession · Oslo',
+		commons: `https://commons.wikimedia.org/wiki/File:The_Nobel_Peace_Prize_torchlight_procession_in_Oslo,_Norway_${number}.jpg`,
+	})),
+];
+
+const lightboxImages = await Promise.all(
+	photographs.map(async (photo) => ({
+		...photo,
+		full: await getImage({ src: photo.src, width: 2600, quality: 90, format: 'webp' }),
+	})),
+);
+
+const photo = (id: string) => {
+	const match = lightboxImages.find((candidate) => candidate.id === id);
+	if (!match) throw new Error(`Missing Nobel photograph: ${id}`);
+	return match;
+};
+
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'ImageGallery',
+	name: pageTitle,
+	description,
+	creator: { '@type': 'Person', name: 'Jay Dixit' },
+	dateCreated: '2024-12',
+	associatedMedia: photographs.map((image) => ({
+		'@type': 'ImageObject',
+		name: image.caption,
+		caption: image.caption,
+		creditText: 'Photograph by Jay Dixit',
+		license: 'https://creativecommons.org/licenses/by-sa/4.0/',
+		contentUrl: image.commons,
+	})),
+};
+---
+
+<MainLayout
+	title={pageTitle}
+	{description}
+	image={davidBaker.src}
+	imageAlt="David Baker at the 2024 Nobel Lectures in Stockholm"
+	keywords={[
+		'2024 Nobel Prize photographs',
+		'Nobel Lectures Stockholm',
+		'Nobel Peace Prize Oslo',
+		'John Hopfield',
+		'Geoffrey Hinton',
+		'David Baker',
+		'Demis Hassabis',
+	]}
+	{structuredData}
+>
+	<main class="nobel-page">
+		<header class="nobel-hero">
+			<div class="hero-copy">
+				<p class="eyebrow">Stockholm + Oslo · December 2024</p>
+				<h1>The year AI won the Nobel Prize.</h1>
+				<p class="standfirst">
+					In 2024, the Physics prize went to John Hopfield and Geoffrey Hinton for work that enabled
+					machine learning with artificial neural networks. The Chemistry prize went to David Baker,
+					Demis Hassabis, and John Jumper for computational protein design and protein structure
+					prediction. I photographed all five at the Nobel Lectures in Stockholm.
+				</p>
+			</div>
+			<NobelPhoto photo={photo('baker')} eager className="hero-photo" />
+		</header>
+
+		<section class="prose-section intro-section" aria-labelledby="lectures-title">
+			<p class="section-number">01 · The lectures</p>
+			<h2 id="lectures-title">An hour with each laureate.</h2>
+			<p>
+				The Nobel Prizes consist of a few different events: the ceremony, the Nobel Lectures, and
+				the press conference. In Stockholm, I covered the lectures. Each laureate gets an hour to
+				talk about their life’s work.
+			</p>
+		</section>
+
+		<section class="story-section" aria-labelledby="physics-title">
+			<div class="section-heading">
+				<p class="section-number">02 · Physics</p>
+				<h2 id="physics-title">John Hopfield and Geoffrey Hinton</h2>
+				<p>
+					I had my camera trained on Geoffrey Hinton for an hour. Not once did he look up from his
+					notes. John Hopfield looked at the audience the entire time, so I came away with around
+					200 photographs of him. I didn’t speak with either of them; these were impressions formed
+					from watching the lectures.
+				</p>
+			</div>
+			<div class="photo-pair">
+				<NobelPhoto photo={photo('hopfield')} />
+				<NobelPhoto photo={photo('hinton')} />
+			</div>
+		</section>
+
+		<section class="story-section" aria-labelledby="chemistry-title">
+			<div class="section-heading">
+				<p class="section-number">03 · Chemistry</p>
+				<h2 id="chemistry-title">David Baker, Demis Hassabis, and John Jumper</h2>
+				<p>David Baker was a great speaker. Demis Hassabis was nice and friendly.</p>
+			</div>
+			<div class="photo-pair photo-pair--mixed">
+				<NobelPhoto photo={photo('hassabis')} />
+				<NobelTkCard name="John Jumper" />
+			</div>
+		</section>
+
+		<section class="story-section" aria-labelledby="economics-title">
+			<div class="section-heading">
+				<p class="section-number">04 · Economic sciences</p>
+				<h2 id="economics-title">The institutions behind prosperity</h2>
+			</div>
+			<div class="photo-pair photo-pair--mixed">
+				<NobelPhoto photo={photo('robinson')} />
+				<NobelTkCard name="Daron Acemoglu" />
+			</div>
+		</section>
+
+		<section class="oslo-section" aria-labelledby="oslo-title">
+			<div class="section-heading section-heading--light">
+				<p class="section-number">05 · Oslo</p>
+				<h2 id="oslo-title">The Torchlight Procession</h2>
+				<p>
+					In Oslo, I was credentialed for the Nobel Peace Prize ceremony at City Hall. The 2024
+					prize went to Nihon Hidankyo, represented by its three co-chairs. That evening, I
+					photographed the annual Torchlight Procession from the Nobel Peace Center to the Grand
+					Hotel.
+				</p>
+			</div>
+			<div class="oslo-grid">
+				<NobelPhoto photo={photo('peace-campaigners')} className="oslo-lead" />
+				<NobelPhoto photo={photo('oslo-04')} />
+				<NobelPhoto photo={photo('oslo-06')} />
+				<NobelPhoto photo={photo('oslo-15')} />
+				<NobelPhoto photo={photo('oslo-21')} />
+			</div>
+		</section>
+
+		<section class="legacy-section" aria-labelledby="legacy-title">
+			<p class="section-number">06 · The public portrait</p>
+			<h2 id="legacy-title">Where the photographs went.</h2>
+			<p>
+				My Hopfield photograph is currently the lead image on his English Wikipedia article. Other
+				images I made that week have since been replaced by newer photographs from other volunteers.
+				That’s okay. The point is not to own the slot; it’s to make sure the article has a strong,
+				freely licensed photograph.
+			</p>
+			<div class="legacy-links">
+				<a
+					href="https://en.wikipedia.org/wiki/John_Hopfield"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					See John Hopfield on Wikipedia <span aria-hidden="true">↗</span>
+				</a>
+				<a href="/blog/wikiportraits-story"
+					>Why I contribute to WikiPortraits <span aria-hidden="true">→</span></a
+				>
+			</div>
+		</section>
+
+		<footer class="nobel-contact">
+			<p>Editorial, institutional, and event photography</p>
+			<h2>Bring me into the room.</h2>
+			<a href="/contact">Get in touch <span aria-hidden="true">→</span></a>
+		</footer>
+	</main>
+
+	<PhotoSwipeLightbox gallerySelector=".nobel-page" childrenSelector="a[data-nobel-photo]" />
+</MainLayout>
+
+<style>
+	:global(body) {
+		background: #f1ece2;
+		color: #171513;
+	}
+
+	.nobel-page {
+		--paper: #f1ece2;
+		--ink: #171513;
+		--muted: #6f685f;
+		--rule: rgba(23, 21, 19, 0.18);
+		background: var(--paper);
+	}
+
+	.nobel-hero {
+		display: grid;
+		grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+		min-height: 100svh;
+		padding: clamp(9rem, 13vw, 13rem) clamp(2rem, 6vw, 7rem) clamp(4rem, 7vw, 7rem);
+		gap: clamp(3rem, 7vw, 8rem);
+		align-items: center;
+	}
+
+	.hero-copy {
+		max-width: 43rem;
+	}
+
+	.eyebrow,
+	.section-number,
+	.nobel-contact > p {
+		margin: 0 0 1.4rem;
+		font-family: var(--font-sans, system-ui, sans-serif);
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+	}
+
+	h1,
+	h2 {
+		margin: 0;
+		font-family: var(--serif, Georgia, serif);
+		font-weight: 300;
+		letter-spacing: -0.045em;
+	}
+
+	h1 {
+		max-width: 10ch;
+		font-size: clamp(4rem, 7vw, 8.8rem);
+		line-height: 0.88;
+	}
+
+	.standfirst,
+	.section-heading > p:not(.section-number),
+	.prose-section > p:not(.section-number),
+	.legacy-section > p:not(.section-number) {
+		font-family: var(--serif, Georgia, serif);
+		font-size: clamp(1.25rem, 1.75vw, 1.75rem);
+		font-weight: 300;
+		line-height: 1.55;
+	}
+
+	.standfirst {
+		max-width: 39rem;
+		margin: 2.5rem 0 0;
+		color: var(--muted);
+	}
+
+	:global(.nobel-photo) {
+		min-width: 0;
+		margin: 0;
+	}
+
+	:global(.nobel-photo > a) {
+		display: block;
+		overflow: hidden;
+		background: #d7d0c4;
+	}
+
+	:global(.nobel-photo img) {
+		display: block;
+		width: 100%;
+		height: auto;
+		transition: transform 500ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+	}
+
+	:global(.nobel-photo > a:hover img) {
+		transform: scale(1.012);
+	}
+
+	:global(.nobel-photo figcaption) {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		padding-top: 0.8rem;
+		border-top: 1px solid var(--rule);
+		font-size: 0.72rem;
+		letter-spacing: 0.08em;
+		line-height: 1.5;
+		text-transform: uppercase;
+	}
+
+	:global(.nobel-photo figcaption a),
+	.legacy-links a,
+	.nobel-contact a {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.prose-section,
+	.story-section,
+	.legacy-section {
+		padding: clamp(5rem, 10vw, 10rem) clamp(2rem, 9vw, 11rem);
+	}
+
+	.prose-section {
+		display: grid;
+		grid-template-columns: minmax(12rem, 0.55fr) minmax(0, 1fr);
+		column-gap: clamp(3rem, 8vw, 10rem);
+		border-top: 1px solid var(--rule);
+	}
+
+	.prose-section .section-number {
+		grid-row: span 2;
+	}
+
+	.prose-section h2,
+	.section-heading h2,
+	.legacy-section h2,
+	.nobel-contact h2 {
+		font-size: clamp(3.2rem, 6vw, 7rem);
+		line-height: 0.94;
+	}
+
+	.prose-section > p:last-child {
+		max-width: 52rem;
+		margin: 2.5rem 0 0;
+	}
+
+	.story-section {
+		border-top: 1px solid var(--rule);
+	}
+
+	.section-heading {
+		display: grid;
+		grid-template-columns: minmax(10rem, 0.32fr) minmax(0, 0.78fr) minmax(18rem, 0.55fr);
+		gap: clamp(2rem, 5vw, 6rem);
+		margin-bottom: clamp(4rem, 7vw, 8rem);
+		align-items: start;
+	}
+
+	.section-heading > p:last-child {
+		margin: 0;
+		color: var(--muted);
+	}
+
+	.photo-pair {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: clamp(1rem, 3vw, 3rem);
+		align-items: start;
+	}
+
+	:global(.tk-card) {
+		display: flex;
+		aspect-ratio: 4 / 5;
+		min-height: 24rem;
+		padding: clamp(2rem, 5vw, 5rem);
+		border: 1px solid var(--rule);
+		background: rgba(255, 255, 255, 0.18);
+		flex-direction: column;
+		justify-content: flex-end;
+	}
+
+	:global(.tk-card span) {
+		margin-bottom: auto;
+		font-family: var(--serif, Georgia, serif);
+		font-size: clamp(5rem, 12vw, 12rem);
+		font-style: italic;
+		font-weight: 300;
+		line-height: 0.8;
+		opacity: 0.14;
+	}
+
+	:global(.tk-card strong) {
+		font-family: var(--serif, Georgia, serif);
+		font-size: clamp(2rem, 4vw, 4.5rem);
+		font-weight: 300;
+		line-height: 1;
+	}
+
+	:global(.tk-card small) {
+		margin-top: 1rem;
+		font-size: 0.7rem;
+		font-weight: 700;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+	}
+
+	.oslo-section {
+		padding: clamp(6rem, 11vw, 12rem) clamp(2rem, 6vw, 7rem);
+		background: #171513;
+		color: #f1ece2;
+	}
+
+	.section-heading--light > p:last-child {
+		color: #b9b0a5;
+	}
+
+	.oslo-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: clamp(2.5rem, 5vw, 6rem) clamp(1rem, 2vw, 2rem);
+	}
+
+	.oslo-grid :global(.oslo-lead) {
+		grid-column: 1 / -1;
+		width: min(100%, 84rem);
+		margin-inline: auto;
+	}
+
+	.oslo-grid :global(.nobel-photo figcaption) {
+		border-color: rgba(241, 236, 226, 0.25);
+	}
+
+	.legacy-section {
+		display: grid;
+		grid-template-columns: minmax(11rem, 0.35fr) minmax(0, 1fr);
+		gap: 2rem clamp(3rem, 8vw, 10rem);
+	}
+
+	.legacy-section > p:not(.section-number),
+	.legacy-links {
+		grid-column: 2;
+		max-width: 52rem;
+	}
+
+	.legacy-section > p:not(.section-number) {
+		margin: 1rem 0 0;
+	}
+
+	.legacy-links {
+		display: flex;
+		margin-top: 1rem;
+		gap: 1rem 2rem;
+		flex-wrap: wrap;
+	}
+
+	.legacy-links a,
+	.nobel-contact a {
+		border-bottom: 1px solid currentColor;
+		font-weight: 700;
+		line-height: 1.8;
+	}
+
+	.nobel-contact {
+		padding: clamp(6rem, 12vw, 12rem) clamp(2rem, 9vw, 11rem);
+		background: #b93226;
+		color: #fff8ed;
+	}
+
+	.nobel-contact h2 {
+		margin-bottom: 3rem;
+	}
+
+	.nobel-contact a {
+		font-size: 1.1rem;
+	}
+
+	@media (max-width: 900px) {
+		.nobel-hero,
+		.prose-section,
+		.section-heading,
+		.legacy-section {
+			grid-template-columns: 1fr;
+		}
+
+		.nobel-hero {
+			min-height: auto;
+		}
+
+		.hero-copy {
+			max-width: 48rem;
+		}
+
+		.prose-section .section-number,
+		.legacy-section > p:not(.section-number),
+		.legacy-links {
+			grid-row: auto;
+			grid-column: auto;
+		}
+
+		.section-heading {
+			gap: 1.5rem;
+		}
+
+		.section-heading > p:last-child {
+			max-width: 42rem;
+		}
+	}
+
+	@media (max-width: 680px) {
+		.nobel-hero {
+			padding: 7.5rem 1rem 4rem;
+			gap: 3rem;
+		}
+
+		h1 {
+			font-size: clamp(3.6rem, 18vw, 5.6rem);
+		}
+
+		.prose-section,
+		.story-section,
+		.legacy-section,
+		.oslo-section,
+		.nobel-contact {
+			padding-right: 1rem;
+			padding-left: 1rem;
+		}
+
+		.photo-pair,
+		.oslo-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.oslo-grid :global(.oslo-lead) {
+			grid-column: auto;
+		}
+
+		:global(.tk-card) {
+			min-height: 30rem;
+		}
+
+		:global(.nobel-photo figcaption) {
+			align-items: flex-start;
+			flex-direction: column;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		:global(.nobel-photo img) {
+			transition: none;
+		}
+	}
+</style>

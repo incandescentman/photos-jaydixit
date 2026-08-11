@@ -1,0 +1,638 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import WorldTourVariantNav from '../../components/WorldTourVariantNav.astro';
+import { cldSizes, cldSrcset, cldUrl } from '../../lib/cloudinary';
+import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
+---
+
+<MainLayout
+	title="Red Carpets Around the World — Contact Sheet"
+	description="Jay Dixit's international red carpet assignments presented as a continuous photographic film strip."
+>
+	<main class="contact-page">
+		<header class="contact-hero">
+			<p>Concept 04 · Continuous film strip</p>
+			<h1>The contact<br /><em>sheet travels.</em></h1>
+			<div>
+				<span>35 mm treatment · six assignments</span>
+				<a href="#strip">Roll the film ↓</a>
+			</div>
+		</header>
+
+		<section
+			id="strip"
+			class="strip-scroll"
+			data-strip-scroll
+			style={`--strip-height:${routeStops.length * 72 + 100}vw`}
+			aria-label="Six city film strip"
+		>
+			<div class="strip-sticky">
+				<div class="strip-track" data-strip-track>
+					{
+						routeStops.map((stop, index) => (
+							<article id={`film-${stop.id}`} class="film-frame" data-film-frame data-index={index}>
+								<div class="film-index">
+									<span>JD–{String(index + 1).padStart(2, '0')}</span>
+									<i>{stop.flag}</i>
+								</div>
+
+								<div class="film-photo">
+									{stop.portrait ? (
+										<img
+											src={cldUrl(stop.portrait.publicId, 1400)}
+											srcset={cldSrcset(stop.portrait.publicId, [640, 900, 1400, 1800])}
+											sizes={cldSizes('(max-width: 760px) 88vw, 48vw')}
+											alt={stop.portrait.alt}
+											loading={index < 2 ? 'eager' : 'lazy'}
+											decoding="async"
+											style={`object-position:${stop.portrait.position ?? '50% 24%'}`}
+										/>
+									) : (
+										<div class="film-empty" aria-label={`${stop.city} portrait pending`}>
+											<span>
+												Unexposed
+												<br />
+												portrait selection pending
+											</span>
+										</div>
+									)}
+									{stop.isPlaceholder && (
+										<span class="temporary-frame" data-placeholder-frame>
+											Temporary portfolio frame · final {stop.city} image pending
+										</span>
+									)}
+								</div>
+
+								<div class="film-caption">
+									<div>
+										<>
+											<span>Frame</span>
+											<b>{stop.number} / 06</b>
+										</>
+									</div>
+									<h2>{stop.city}</h2>
+									<p>
+										{stop.event} · {stop.years}
+									</p>
+									<dl>
+										<div>
+											<>
+												<dt>Position</dt>
+												<dd>{stop.coordinates}</dd>
+											</>
+										</div>
+										<div>
+											<>
+												<dt>From Brooklyn</dt>
+												<dd>{stop.miles.toLocaleString()} mi</dd>
+											</>
+										</div>
+										{stop.subject && (
+											<div>
+												<dt>Subject</dt>
+												<dd>{stop.subject}</dd>
+											</div>
+										)}
+									</dl>
+								</div>
+
+								{index < routeStops.length - 1 && (
+									<a
+										class="film-next"
+										href={`#film-${routeStops[index + 1].id}`}
+										data-film-next={index + 1}
+										aria-label={`Advance from ${stop.city} to ${routeStops[index + 1].city}`}
+									>
+										<span>
+											<small>Next frame</small>
+											{routeStops[index + 1].city}
+										</span>
+										<i class="film-next-desktop" aria-hidden="true">
+											→
+										</i>
+										<i class="film-next-mobile" aria-hidden="true">
+											↓
+										</i>
+									</a>
+								)}
+							</article>
+						))
+					}
+				</div>
+				<div class="strip-progress" aria-hidden="true"><i data-strip-progress></i></div>
+			</div>
+		</section>
+
+		<section class="contact-finale">
+			<header>
+				<p>Roll 02 · Toronto</p>
+				<h2>Thirteen frames,<br />held at once.</h2>
+				<span>TIFF 2024–2025</span>
+			</header>
+			<div class="toronto-sheet">
+				{
+					torontoPortraits.map((portrait, index) => (
+						<figure>
+							<img
+								src={cldUrl(portrait.publicId, 600)}
+								alt={portrait.alt}
+								loading="lazy"
+								decoding="async"
+								style={`object-position:${portrait.position ?? '50% 24%'}`}
+							/>
+							<figcaption>
+								<span>{String(index + 1).padStart(2, '0')}</span>
+								{portrait.subject}
+							</figcaption>
+						</figure>
+					))
+				}
+			</div>
+		</section>
+	</main>
+	<WorldTourVariantNav active="contact-sheet" />
+</MainLayout>
+
+<script>
+	const scrollSection = document.querySelector<HTMLElement>('[data-strip-scroll]');
+	const track = document.querySelector<HTMLElement>('[data-strip-track]');
+	const progressBar = document.querySelector<HTMLElement>('[data-strip-progress]');
+	const filmFrames = [...document.querySelectorAll<HTMLElement>('[data-film-frame]')];
+	const mobileLayout = matchMedia('(max-width: 760px)');
+	const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+	let ticking = false;
+
+	const updateStrip = () => {
+		ticking = false;
+		if (!scrollSection || !track || matchMedia('(max-width: 760px)').matches) return;
+		const rect = scrollSection.getBoundingClientRect();
+		const travel = Math.max(1, rect.height - innerHeight);
+		const progress = Math.max(0, Math.min(1, -rect.top / travel));
+		const maxShift = Math.max(0, track.scrollWidth - innerWidth);
+		track.style.transform = `translate3d(${-progress * maxShift}px,0,0)`;
+		if (progressBar) progressBar.style.transform = `scaleX(${progress})`;
+	};
+
+	const requestUpdate = () => {
+		if (ticking) return;
+		ticking = true;
+		requestAnimationFrame(updateStrip);
+	};
+
+	addEventListener('scroll', requestUpdate, { passive: true });
+	addEventListener('resize', requestUpdate);
+	requestUpdate();
+
+	document.querySelectorAll<HTMLAnchorElement>('[data-film-next]').forEach((link) => {
+		link.addEventListener('click', (event) => {
+			const targetIndex = Number(link.dataset.filmNext);
+			const target = filmFrames[targetIndex];
+			if (!target || !scrollSection || !track) return;
+			event.preventDefault();
+
+			if (mobileLayout.matches) {
+				target.scrollIntoView({
+					behavior: reducedMotion.matches ? 'auto' : 'smooth',
+					block: 'start',
+				});
+			} else {
+				const travel = Math.max(1, scrollSection.offsetHeight - innerHeight);
+				const maxShift = Math.max(1, track.scrollWidth - innerWidth);
+				const targetShift = Math.min(maxShift, target.offsetLeft);
+				const top = scrollSection.offsetTop + (targetShift / maxShift) * travel;
+				scrollTo({ top, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+			}
+
+			history.replaceState(null, '', link.hash);
+		});
+	});
+</script>
+
+<style>
+	:global(body) {
+		background: #151310;
+	}
+
+	.contact-page {
+		--cream: #eee7da;
+		--negative: #171411;
+		--orange: #db6d3a;
+		background: var(--negative);
+		color: var(--cream);
+	}
+
+	.contact-hero {
+		min-height: 94svh;
+		padding: calc(var(--nav-clearance) + clamp(3rem, 8vw, 8rem)) clamp(1.2rem, 6vw, 6rem) 4rem;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		background: linear-gradient(115deg, rgba(219, 109, 58, 0.1), transparent 36%), var(--negative);
+	}
+
+	.contact-hero > p,
+	.contact-finale header > p {
+		margin: 0;
+		color: var(--orange);
+		font-size: 0.65rem;
+		font-weight: 600;
+		letter-spacing: 0.28em;
+		text-transform: uppercase;
+	}
+
+	.contact-hero h1 {
+		margin: 1.4rem 0;
+		font-family: var(--serif);
+		font-size: clamp(4.6rem, 12vw, 12rem);
+		font-weight: 300;
+		letter-spacing: -0.07em;
+		line-height: 0.76;
+	}
+
+	.contact-hero h1 em {
+		color: #d7c4a7;
+	}
+
+	.contact-hero > div {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+		justify-content: space-between;
+		margin-top: 3rem;
+		border-top: 1px solid rgba(238, 231, 218, 0.22);
+		padding-top: 1rem;
+		font-size: 0.62rem;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+	}
+
+	.contact-hero a {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.strip-scroll {
+		position: relative;
+		height: var(--strip-height);
+		background: #0e0d0b;
+	}
+
+	.strip-sticky {
+		position: sticky;
+		top: 0;
+		height: 100svh;
+		display: flex;
+		align-items: center;
+		overflow: hidden;
+	}
+
+	.strip-track {
+		display: flex;
+		width: max-content;
+		will-change: transform;
+	}
+
+	.film-frame {
+		position: relative;
+		width: min(76vw, 74rem);
+		height: min(78svh, 52rem);
+		display: grid;
+		gap: clamp(1.5rem, 4vw, 4rem);
+		grid-template-columns: minmax(17rem, 0.95fr) minmax(17rem, 0.75fr);
+		align-items: center;
+		margin-right: clamp(2rem, 7vw, 7rem);
+		padding: clamp(2.5rem, 5vw, 5rem);
+		background:
+			radial-gradient(circle, #ddcfb8 0 2px, transparent 2.5px) top / 30px 18px repeat-x,
+			radial-gradient(circle, #ddcfb8 0 2px, transparent 2.5px) bottom / 30px 18px repeat-x,
+			#211d18;
+		scroll-margin-top: var(--nav-clearance);
+	}
+
+	.film-index {
+		position: absolute;
+		top: 1.2rem;
+		right: 1.5rem;
+		left: 1.5rem;
+		display: flex;
+		justify-content: space-between;
+		color: #9f917e;
+		font-family: monospace;
+		font-size: 0.62rem;
+		letter-spacing: 0.18em;
+	}
+
+	.film-index i {
+		font-size: 1rem;
+		font-style: normal;
+	}
+
+	.film-photo {
+		position: relative;
+		height: 61svh;
+		min-height: 0;
+		display: grid;
+		background: #100f0d;
+		place-items: center;
+	}
+
+	.temporary-frame {
+		position: absolute;
+		right: 0.8rem;
+		bottom: 0.8rem;
+		max-width: calc(100% - 1.6rem);
+		padding: 0.5rem 0.65rem;
+		background: rgba(16, 15, 13, 0.86);
+		color: #d9a74c;
+		font-family: monospace;
+		font-size: 0.55rem;
+		letter-spacing: 0.14em;
+		line-height: 1.5;
+		text-align: right;
+		text-transform: uppercase;
+	}
+
+	.film-photo img {
+		width: 100%;
+		height: 100%;
+		display: block;
+		object-fit: contain;
+	}
+
+	.film-empty {
+		width: calc(100% - 2rem);
+		height: calc(100% - 2rem);
+		display: grid;
+		border: 1px dashed rgba(238, 231, 218, 0.25);
+		background: repeating-linear-gradient(
+			135deg,
+			transparent 0 18px,
+			rgba(255, 255, 255, 0.025) 18px 36px
+		);
+		place-items: center;
+	}
+
+	.film-empty span {
+		color: #8d8274;
+		font-family: monospace;
+		font-size: 0.62rem;
+		letter-spacing: 0.16em;
+		line-height: 1.7;
+		text-align: center;
+		text-transform: uppercase;
+	}
+
+	.film-caption > div {
+		display: flex;
+		justify-content: space-between;
+		border-bottom: 1px solid rgba(238, 231, 218, 0.2);
+		padding-bottom: 0.6rem;
+		color: #a69a8a;
+		font-family: monospace;
+		font-size: 0.58rem;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+
+	.film-caption h2 {
+		margin: 1.2rem 0 0;
+		font-family: var(--serif);
+		font-size: clamp(4rem, 8vw, 8rem);
+		font-weight: 300;
+		letter-spacing: -0.065em;
+		line-height: 0.78;
+	}
+
+	.film-caption > p {
+		margin: 1rem 0 2rem;
+		color: #c5b9a8;
+		font-family: var(--serif);
+		font-size: clamp(1.1rem, 2vw, 1.45rem);
+		line-height: 1.35;
+	}
+
+	.film-caption dl {
+		display: grid;
+		gap: 0.8rem;
+		margin: 0;
+		font-family: monospace;
+	}
+
+	.film-caption dt {
+		color: #82786c;
+		font-size: 0.52rem;
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+	}
+
+	.film-caption dd {
+		margin: 0.2rem 0 0;
+		font-size: 0.7rem;
+	}
+
+	.film-next {
+		position: absolute;
+		right: 1.5rem;
+		bottom: 1.15rem;
+		display: flex;
+		gap: 0.75rem;
+		align-items: center;
+		padding: 0.52rem 0.62rem 0.52rem 0.72rem;
+		border: 1px solid rgba(238, 231, 218, 0.28);
+		background: rgba(14, 13, 11, 0.78);
+		color: var(--cream);
+		font-family: monospace;
+		font-size: 0.61rem;
+		letter-spacing: 0.12em;
+		text-decoration: none;
+		text-transform: uppercase;
+		transition:
+			border-color 180ms ease,
+			color 180ms ease,
+			transform 180ms ease;
+	}
+
+	.film-next span {
+		display: grid;
+		gap: 0.15rem;
+	}
+
+	.film-next small {
+		color: #9f917e;
+		font-size: 0.48rem;
+		letter-spacing: 0.17em;
+	}
+
+	.film-next i {
+		color: var(--orange);
+		font-size: 1rem;
+		font-style: normal;
+	}
+
+	.film-next-mobile {
+		display: none;
+	}
+
+	.film-next:hover,
+	.film-next:focus-visible {
+		border-color: rgba(238, 231, 218, 0.62);
+		color: #fff;
+		transform: translateX(2px);
+	}
+
+	.strip-progress {
+		position: absolute;
+		right: 5vw;
+		bottom: 3vh;
+		left: 5vw;
+		height: 2px;
+		background: rgba(238, 231, 218, 0.14);
+	}
+
+	.strip-progress i {
+		display: block;
+		width: 100%;
+		height: 100%;
+		background: var(--orange);
+		transform: scaleX(0);
+		transform-origin: left;
+	}
+
+	.contact-finale {
+		padding: clamp(5rem, 10vw, 10rem) clamp(1rem, 5vw, 5rem) 8rem;
+		background: #e9dfce;
+		color: #211d18;
+	}
+
+	.contact-finale > header {
+		max-width: 88rem;
+		margin: 0 auto 3rem;
+		display: grid;
+		gap: 1rem;
+		grid-template-columns: 1fr auto;
+		align-items: end;
+	}
+
+	.contact-finale header > p {
+		grid-column: 1 / -1;
+	}
+
+	.contact-finale h2 {
+		margin: 0;
+		font-family: var(--serif);
+		font-size: clamp(3.5rem, 8vw, 8rem);
+		font-weight: 300;
+		letter-spacing: -0.06em;
+		line-height: 0.82;
+	}
+
+	.contact-finale header > span {
+		color: #776b5d;
+		font-family: monospace;
+		font-size: 0.62rem;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+
+	.toronto-sheet {
+		max-width: 88rem;
+		margin: 0 auto;
+		display: grid;
+		gap: 0.7rem;
+		grid-template-columns: repeat(5, 1fr);
+	}
+
+	.toronto-sheet figure {
+		margin: 0;
+	}
+
+	.toronto-sheet img {
+		width: 100%;
+		aspect-ratio: 3 / 4;
+		display: block;
+		object-fit: cover;
+	}
+
+	.toronto-sheet figcaption {
+		display: flex;
+		gap: 0.5rem;
+		margin-top: 0.4rem;
+		color: #5e554a;
+		font-family: monospace;
+		font-size: 0.55rem;
+		line-height: 1.3;
+	}
+
+	.toronto-sheet figcaption span {
+		color: var(--orange);
+	}
+
+	@media (max-width: 760px) {
+		.strip-scroll {
+			height: auto !important;
+			padding: 1rem;
+		}
+
+		.strip-sticky {
+			position: relative;
+			height: auto;
+			overflow: visible;
+		}
+
+		.strip-track {
+			width: 100%;
+			display: grid;
+			gap: 1rem;
+			transform: none !important;
+		}
+
+		.film-frame {
+			width: 100%;
+			height: auto;
+			min-height: 88svh;
+			grid-template-columns: 1fr;
+			margin: 0;
+			padding: 3.5rem 1.5rem;
+			padding-bottom: 6.2rem;
+		}
+
+		.film-photo {
+			height: 50svh;
+		}
+
+		.strip-progress {
+			display: none;
+		}
+
+		.film-next {
+			right: 1rem;
+			bottom: 1rem;
+		}
+
+		.film-next-desktop {
+			display: none;
+		}
+
+		.film-next-mobile {
+			display: inline;
+		}
+
+		.contact-finale > header {
+			grid-template-columns: 1fr;
+		}
+
+		.toronto-sheet {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.strip-track {
+			will-change: auto;
+		}
+
+		.film-next {
+			transition: none;
+		}
+	}
+</style>

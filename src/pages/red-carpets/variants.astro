@@ -1,0 +1,437 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import WorldTourVariantNav from '../../components/WorldTourVariantNav.astro';
+import { cldUrl } from '../../lib/cloudinary';
+import { routeVariants } from '../../data/worldTourVariants';
+---
+
+<MainLayout
+	title="Red Carpets Around the World — Design Concepts"
+	description="Six visual directions for Jay Dixit's international red carpet photography page."
+>
+	<main class="concepts">
+		<header>
+			<p>Design study · July 2026</p>
+			<h1>Six ways<br /><em>around the world.</em></h1>
+			<div class="concept-intro">
+				<p>
+					My original editorial journey plus five radically different treatments of the same six
+					assignments. Open each concept full-screen; the point is to feel the rhythm, not compare
+					decoration.
+				</p>
+				<a href="/red-carpets">Open my original concept →</a>
+			</div>
+		</header>
+
+		<section class="concept-grid" aria-label="Design concepts">
+			<a href="/red-carpets" class="concept-card concept-card--original">
+				<div class="concept-art" aria-hidden="true">
+					<img src={cldUrl('highlights/john-hopfield_nobel-physics_2024', 1200)} alt="" />
+				</div>
+				<div class="concept-copy">
+					<span>00 · Codex original</span>
+					<h2>Editorial Journey</h2>
+					<p>
+						Oversized city chapters, coordinate stamps, and a scroll-controlled Toronto press line
+						that resolves into a contact sheet.
+					</p>
+					<strong>Open original ↗</strong>
+				</div>
+			</a>
+			{
+				routeVariants.map((variant, index) => (
+					<a href={variant.path} class={`concept-card concept-card--${variant.id}`}>
+						<div class="concept-art" aria-hidden="true">
+							{index === 0 && (
+								<img src={cldUrl('highlights/steven-yeun_sundance_2025', 1000)} alt="" />
+							)}
+							{index === 1 && (
+								<>
+									<img src={cldUrl('highlights/john-hopfield_nobel-physics_2024', 800)} alt="" />
+									<i>
+										STOCKHOLM
+										<br />
+										ENTRY · 2024
+									</i>
+								</>
+							)}
+							{index === 2 && (
+								<div class="board-preview">
+									<span>BUSAN</span>
+									<b>LANDED</b>
+									<span>LOCARNO</span>
+									<b>LANDED</b>
+									<span>TORONTO</span>
+									<b>ARRIVED</b>
+								</div>
+							)}
+							{index === 3 && (
+								<div class="strip-preview">
+									<img src={cldUrl('highlights/lisa-gilroy_sxsw_2025', 600)} alt="" />
+									<img src={cldUrl('highlights/vanessa-kirby_tiff_2024', 600)} alt="" />
+									<img src={cldUrl('highlights/john-hopfield_nobel-physics_2024', 600)} alt="" />
+								</div>
+							)}
+							{index === 4 && (
+								<>
+									<img src={cldUrl('highlights/vanessa-kirby_tiff_2024', 1000)} alt="" />
+									<div class="route-preview">
+										<b>THE ROUTE</b>
+										<i>six cities, one camera</i>
+										<span>01 / 06</span>
+									</div>
+								</>
+							)}
+						</div>
+						<div class="concept-copy">
+							<span>
+								{variant.number} · {variant.tone}
+							</span>
+							<h2>{variant.name}</h2>
+							<p>{variant.line}</p>
+							<strong>Open concept ↗</strong>
+						</div>
+					</a>
+				))
+			}
+		</section>
+	</main>
+	<WorldTourVariantNav />
+</MainLayout>
+
+<style>
+	:global(body) {
+		background: #0a0a0a;
+	}
+
+	.concepts {
+		min-height: 100vh;
+		padding: calc(var(--nav-clearance) + clamp(3rem, 8vw, 8rem)) clamp(1rem, 5vw, 5rem) 8rem;
+		background:
+			radial-gradient(circle at 82% 18%, rgba(184, 133, 66, 0.15), transparent 28rem), #0a0a0a;
+		color: #eee8df;
+	}
+
+	header {
+		max-width: 78rem;
+		margin: 0 auto clamp(4rem, 9vw, 8rem);
+	}
+
+	header > p,
+	.concept-copy > span {
+		color: #caa664;
+		font-size: 0.66rem;
+		font-weight: 600;
+		letter-spacing: 0.28em;
+		text-transform: uppercase;
+	}
+
+	h1 {
+		margin: 1.5rem 0 0;
+		font-family: var(--serif);
+		font-size: clamp(4.4rem, 11vw, 10.5rem);
+		font-weight: 300;
+		letter-spacing: -0.065em;
+		line-height: 0.78;
+	}
+
+	h1 em {
+		color: #d8c8b2;
+	}
+
+	.concept-intro {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 2rem;
+		align-items: end;
+		justify-content: space-between;
+		margin-top: 3rem;
+	}
+
+	.concept-intro p {
+		max-width: 40rem;
+		margin: 0;
+		color: #a9a198;
+		font-family: var(--serif);
+		font-size: clamp(1.2rem, 2vw, 1.6rem);
+		line-height: 1.45;
+	}
+
+	.concept-intro a {
+		color: #eee8df;
+		font-size: 0.72rem;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+
+	.concept-grid {
+		max-width: 88rem;
+		margin: 0 auto;
+		display: grid;
+		gap: 1.25rem;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.concept-card--original {
+		grid-column: 1 / -1;
+		grid-template-columns: minmax(0, 1.35fr) minmax(20rem, 0.65fr);
+		grid-template-rows: none;
+	}
+
+	.concept-card--original .concept-copy {
+		align-content: end;
+	}
+
+	.concept-card--original .concept-art::after {
+		position: absolute;
+		right: 1rem;
+		bottom: 1rem;
+		content: 'STOCKHOLM';
+		color: #fff;
+		font-family: var(--serif);
+		font-size: clamp(3.5rem, 8vw, 8rem);
+		font-weight: 300;
+		letter-spacing: -0.07em;
+		line-height: 0.72;
+	}
+
+	.concept-card {
+		display: grid;
+		min-height: 42rem;
+		grid-template-rows: 1fr auto;
+		border: 1px solid rgba(255, 255, 255, 0.13);
+		color: inherit;
+		text-decoration: none;
+		overflow: hidden;
+		transition:
+			border-color 180ms ease,
+			transform 300ms ease;
+	}
+
+	.concept-card:hover {
+		border-color: rgba(255, 255, 255, 0.42);
+		transform: translateY(-4px);
+	}
+
+	.concept-art {
+		position: relative;
+		min-height: 25rem;
+		overflow: hidden;
+		background: #141414;
+	}
+
+	.concept-art > img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center 22%;
+		filter: saturate(0.88);
+		transition: transform 700ms ease;
+	}
+
+	.concept-card:hover .concept-art > img {
+		transform: scale(1.025);
+	}
+
+	.concept-card--full-bleed .concept-art::after {
+		position: absolute;
+		inset: auto 0 1rem;
+		content: 'PARK CITY';
+		color: #fff;
+		font-family: var(--serif);
+		font-size: clamp(3.4rem, 8vw, 7.5rem);
+		font-weight: 300;
+		letter-spacing: -0.07em;
+		line-height: 0.75;
+	}
+
+	.concept-card--passport .concept-art {
+		display: grid;
+		grid-template-columns: 0.9fr 1.1fr;
+		gap: 1.5rem;
+		align-items: center;
+		padding: 2rem;
+		background: #ede2cc;
+	}
+
+	.concept-card--passport .concept-art img {
+		height: 85%;
+		border: 8px solid #fdfaf5;
+		box-shadow: 0 16px 35px rgba(60, 45, 30, 0.25);
+	}
+
+	.concept-card--passport .concept-art i {
+		display: grid;
+		width: 10rem;
+		aspect-ratio: 1;
+		border: 3px double #9b3930;
+		border-radius: 50%;
+		color: #9b3930;
+		font-family: monospace;
+		font-size: 0.72rem;
+		font-style: normal;
+		letter-spacing: 0.14em;
+		place-items: center;
+		text-align: center;
+		transform: rotate(-8deg);
+	}
+
+	.concept-card--departures .concept-art {
+		display: grid;
+		padding: 2rem;
+		background: #0e1115;
+		place-items: center;
+	}
+
+	.board-preview {
+		width: 100%;
+		display: grid;
+		gap: 0.35rem;
+		grid-template-columns: 1fr auto;
+		font-family: monospace;
+		font-size: clamp(1rem, 2.5vw, 1.75rem);
+	}
+
+	.board-preview span,
+	.board-preview b {
+		padding: 0.8rem;
+		background: #1b1f24;
+		letter-spacing: 0.08em;
+	}
+
+	.board-preview b {
+		color: #e2b058;
+		font-size: 0.72em;
+	}
+
+	.concept-card--contact-sheet .concept-art {
+		display: flex;
+		gap: 0.5rem;
+		align-items: center;
+		padding: 2rem 0;
+		background:
+			radial-gradient(circle, #d8cbb5 0 2px, transparent 2.5px) top / 28px 14px repeat-x,
+			radial-gradient(circle, #d8cbb5 0 2px, transparent 2.5px) bottom / 28px 14px repeat-x,
+			#1c1916;
+	}
+
+	.strip-preview {
+		display: flex;
+		gap: 0.45rem;
+		width: 115%;
+		transform: translateX(-7%);
+	}
+
+	.strip-preview img {
+		width: 34%;
+		aspect-ratio: 3 / 4;
+		object-fit: cover;
+	}
+
+	.concept-card--the-route {
+		grid-column: 1 / -1;
+		grid-template-columns: minmax(0, 1.25fr) minmax(20rem, 0.75fr);
+		grid-template-rows: none;
+	}
+
+	.concept-card--the-route .concept-art {
+		background: #0b0b0c;
+	}
+
+	.concept-card--the-route .concept-art > img {
+		width: 38%;
+		margin-left: 57%;
+		object-fit: contain;
+		filter: none;
+	}
+
+	.route-preview {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		padding: 7%;
+		pointer-events: none;
+	}
+
+	.route-preview::before {
+		position: absolute;
+		top: 8%;
+		bottom: 8%;
+		left: 3%;
+		width: 1px;
+		content: '';
+		background: rgba(255, 255, 255, 0.28);
+	}
+
+	.route-preview b {
+		font-family: Georgia, var(--serif);
+		font-size: clamp(3.5rem, 9vw, 8rem);
+		letter-spacing: -0.075em;
+		line-height: 0.72;
+	}
+
+	.route-preview i {
+		color: #ef776b;
+		font-family: Georgia, var(--serif);
+		font-size: clamp(1.6rem, 4vw, 4rem);
+	}
+
+	.route-preview span {
+		position: absolute;
+		top: 10%;
+		left: 1.2%;
+		font-family: monospace;
+		font-size: 0.65rem;
+		letter-spacing: 0.12em;
+		transform: rotate(90deg);
+	}
+
+	.concept-copy {
+		padding: 1.7rem;
+		background: #111;
+	}
+
+	.concept-copy h2 {
+		margin: 0.6rem 0;
+		font-family: var(--serif);
+		font-size: clamp(2rem, 4vw, 3.4rem);
+		font-weight: 300;
+	}
+
+	.concept-copy p {
+		max-width: 32rem;
+		margin: 0;
+		color: #99928a;
+		line-height: 1.5;
+	}
+
+	.concept-copy strong {
+		display: block;
+		margin-top: 1.4rem;
+		font-size: 0.66rem;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+
+	@media (max-width: 760px) {
+		.concept-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.concept-card {
+			min-height: 36rem;
+		}
+
+		.concept-card--original {
+			grid-template-columns: 1fr;
+			grid-template-rows: 1fr auto;
+		}
+
+		.concept-card--the-route {
+			grid-template-columns: 1fr;
+			grid-template-rows: 1fr auto;
+		}
+	}
+</style>

@@ -61,13 +61,6 @@ const routes: SmokeRoute[] = [
 		path: '/blog/',
 		title: /Blog — Jay Dixit/,
 		heading: 'Notes From the Field',
-		minImages: 3,
-	},
-	{
-		name: 'Nobel blog post',
-		path: '/blog/nobel-portrait-session/',
-		title: /Inside the Nobel Portrait Session — Jay Dixit/,
-		heading: 'Inside the Nobel Portrait Session',
 		minImages: 2,
 	},
 	{
@@ -172,6 +165,38 @@ test('site nav renders redesigned desktop and mobile states', async ({ page }) =
 	await expect(mobileMenu.locator('.site-nav-mobile-social a')).toHaveCount(3);
 });
 
+test('mobile homepage does not repeat hero photographs in the wall', async ({ page }) => {
+	await page.setViewportSize({ width: 390, height: 844 });
+	await page.goto('/');
+	await waitForInitialImages(page);
+
+	const heroSources = await page
+		.locator('#hero-print-gallery a[data-pswp-item]')
+		.evaluateAll((links) => links.map((link) => link.getAttribute('data-full-src')));
+	const mobileWallLinks = page.locator(
+		'[data-wall-card]:not([data-mobile-duplicate="true"]) a[data-pswp-item]',
+	);
+	const wallSources = await mobileWallLinks.evaluateAll((links) =>
+		links.map((link) => link.getAttribute('data-full-src')),
+	);
+
+	await expect(mobileWallLinks).toHaveCount(11);
+	expect(
+		await page
+			.locator('[data-wall-card][data-mobile-duplicate="true"]')
+			.evaluateAll((cards) => cards.map((card) => getComputedStyle(card).display)),
+	).toEqual(Array(6).fill('none'));
+	expect(wallSources.filter((source) => heroSources.includes(source))).toEqual([]);
+	await expect(
+		page.locator('[data-wall-card]:not([data-mobile-duplicate="true"]) .wall-number-mobile'),
+	).toHaveText(['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11']);
+
+	await mobileWallLinks.first().scrollIntoViewIfNeeded();
+	await expect(mobileWallLinks.first()).toBeVisible();
+	await mobileWallLinks.first().click();
+	await expect(page.locator('.pswp__counter')).toHaveText('1 / 11');
+});
+
 for (const route of ['/', '/gallery/red-carpet/sundance/']) {
 	test(`PhotoSwipe opens on first click and Escape closes on ${route}`, async ({ page }) => {
 		await page.goto(route);
@@ -210,25 +235,58 @@ test('photo wall is noindexed and internal promoted experiment URLs are absent',
 	}
 });
 
-test('Nobel related essay thumbnail uses the live Vanessa Kirby asset', async ({ page }) => {
-	await page.goto('/blog/nobel-portrait-session/');
+test('experiments page exposes the restored six-city Red Carpets concept lab', async ({ page }) => {
+	await page.goto('/experiments/');
 
-	const relatedCard = page.getByRole('link', { name: /Hello From the Darkroom/i });
-	await relatedCard.scrollIntoViewIfNeeded();
+	const conceptLab = page.getByRole('link', { name: /Red Carpets — Six Cities/ });
+	await expect(conceptLab).toHaveAttribute('href', '/red-carpets/variants/');
+	await conceptLab.click();
+	await expect(page).toHaveURL(/\/red-carpets\/variants\/?$/);
+	await expect(page.locator('.concept-card')).toHaveCount(6);
 
-	const image = relatedCard.getByRole('img', {
-		name: 'Vanessa Kirby on the Toronto International Film Festival red carpet',
-	});
-	await expect(image).toBeVisible();
+	await page.goto('/red-carpets/passport/');
+	await expect(page.locator('.passport-page')).toHaveCount(6);
+	await expect(page.locator('.passport-stamp')).toHaveCount(6);
 
-	await expect
-		.poll(() =>
-			image.evaluate((element: HTMLImageElement) => element.complete && element.naturalWidth > 0),
-		)
-		.toBe(true);
-	await expect
-		.poll(() => image.evaluate((element: HTMLImageElement) => element.currentSrc || element.src))
-		.toContain('/highlights/vanessa-kirby_tiff_2024');
+	await page.goto('/red-carpets/departures/');
+	await expect(page.locator('.board-trigger')).toHaveCount(6);
+
+	await page.goto('/red-carpets/the-route/');
+	await expect(page.locator('[data-route-map-stop]')).toHaveCount(6);
+});
+
+test('red-carpets hero uses the split-flap board as its city navigation', async ({ page }) => {
+	await page.goto('/red-carpets/');
+
+	const board = page.locator('.world-route-board');
+	await expect(board).toBeVisible();
+	await expect(board.locator('.world-board-trigger')).toHaveCount(6);
+	await expect(board.locator('.world-board-trigger').first()).toHaveAttribute('href', '#stockholm');
+	await expect(board.locator('[data-world-board-text] i').first()).toBeVisible();
+
+	await board.locator('.world-board-trigger').first().click();
+	await expect(page).toHaveURL(/#stockholm$/);
+});
+
+test('space advances through the red-carpets city chapters', async ({ page }) => {
+	await page.goto('/red-carpets/');
+
+	for (const cityId of ['stockholm', 'busan', 'locarno', 'park-city', 'austin', 'toronto']) {
+		await page.keyboard.press('Space');
+		await expect
+			.poll(() =>
+				page.evaluate((id) => {
+					const chapter = document.getElementById(id);
+					const rootStyles = getComputedStyle(document.documentElement);
+					const navClearanceValue = rootStyles.getPropertyValue('--nav-clearance').trim();
+					const navClearance =
+						(Number.parseFloat(navClearanceValue) || 0) *
+						(navClearanceValue.endsWith('rem') ? Number.parseFloat(rootStyles.fontSize) || 16 : 1);
+					return chapter ? Math.abs(chapter.getBoundingClientRect().top - navClearance) : Infinity;
+				}, cityId),
+			)
+			.toBeLessThan(2);
+	}
 });
 
 test('red-carpet index renders editorial person cards from generated data', async ({ page }) => {
@@ -310,7 +368,7 @@ test('blog index renders editorial post list with live thumbnails', async ({ pag
 	await waitForInitialImages(page);
 
 	const posts = page.locator('.post');
-	await expect(posts).toHaveCount(3);
+	await expect(posts).toHaveCount(2);
 	await expect(page.locator('.post-title').first()).toHaveText('Hello From the Darkroom');
 	await expect(page.locator('.post-date').first()).toHaveText('October 1, 2025');
 	await expect(
@@ -329,12 +387,12 @@ test('blog index renders editorial post list with live thumbnails', async ({ pag
 });
 
 test('blog detail and related post dates render in UTC', async ({ page }) => {
-	await page.goto('/blog/nobel-portrait-session/');
+	await page.goto('/blog/hello-world/');
 	await waitForInitialImages(page);
 
-	await expect(page.locator('article time')).toHaveText('September 20, 2025');
+	await expect(page.locator('article time')).toHaveText('October 1, 2025');
 	await expect(
-		page.locator('section', { hasText: 'Related essays' }).getByText('Oct 1, 2025'),
+		page.locator('section', { hasText: 'Related essays' }).getByText('Oct 1, 2024'),
 	).toBeVisible();
 });
 
