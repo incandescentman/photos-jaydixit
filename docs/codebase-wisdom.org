@@ -1,6 +1,17 @@
 #+TITLE: Codebase Wisdom
 #+DATE: 2025-10-03
 
+* 2026-08-19 - Astro 7 Agent Preview And Legacy Hoist Scripts Need Explicit Migration
+
+** Trigger
+After the Astro 7 upgrade, Playwright's managed web-server command exited even though an Astro preview child process was serving the site. Once the suite ran against that preview, the Sundance gallery's PhotoSwipe test navigated directly to the image instead of opening the lightbox.
+
+** Mechanism
+Astro 7 detects agent environments and backgrounds ~astro preview~ automatically. That ends the parent command Playwright is monitoring even while the detached server remains healthy. Separately, Astro 7 no longer processes the legacy ~<script hoist>~ syntax used by three routes in this repo: the built HTML retained literal ~<script hoist>~ blocks with TypeScript and bare package imports, so the browser could not initialize Packery or PhotoSwipe.
+
+** Actionable insight
+For a Playwright-managed Astro 7 preview in an agent environment, prefix the preview command with ~ASTRO_PREVIEW_BACKGROUND=1~ so it remains attached and Playwright owns its lifecycle. Replace legacy ~<script hoist>~ blocks with ordinary Astro-processed ~<script>~ blocks. After either migration, inspect built HTML for literal ~<script hoist>~ tags and bare imports, then browser-test the affected interactive path instead of relying on a successful static build.
+
 * 2026-08-01 - Measuring a Change Requires a Reference That Isolates the Variable
 
 ** Trigger

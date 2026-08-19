@@ -1,6 +1,21 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-08-19 - Upgrade the portfolio to Astro 7
+
+** Changed
+- Upgraded Astro to ~7.2.3~, ~@astrojs/mdx~ to ~7.0.6~, ~@lucide/astro~ to ~1.32.0~, and the Tailwind packages to ~4.3.3~. Raised the Node.js floor to ~22.12.0~ for Astro 7's compiler runtime.
+- Set ~compressHTML: true~ in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/astro.config.mts][📄 /Users/jay/Dropbox/github/photos-jaydixit/astro.config.mts]] to retain Astro 6 whitespace behavior.
+- Kept the published ~@jaydixit/astro-utils 1.0.6~ package and added a pnpm peer override so the app resolves one Astro 7 installation instead of installing a second Astro 6 copy. This app uses the package's Astro-independent typography utility and stylesheet.
+- Replaced obsolete ~<script hoist>~ tags in the filesystem gallery, blog-post route, and preserved Photo Wall route with Astro-processed ~<script>~ blocks. The Astro 7 build now bundles their Packery and PhotoSwipe dependencies instead of emitting raw TypeScript imports.
+- Kept Playwright's Astro preview server attached by setting ~ASTRO_PREVIEW_BACKGROUND=1~ in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/playwright.config.ts][📄 /Users/jay/Dropbox/github/photos-jaydixit/playwright.config.ts]]. Astro 7 otherwise backgrounds preview automatically in the detected agent environment, causing Playwright to treat its managed server process as finished.
+
+** Validation
+- ~pnpm install --frozen-lockfile~, ~pnpm run lint~, and the production build pass. The build generates 123 pages.
+- All 21 Vitest tests and all 25 Playwright tests pass, including desktop and mobile navigation plus PhotoSwipe opening and Escape dismissal.
+- Astro 6 and Astro 7 homepage captures retain identical desktop and mobile document dimensions. The Astro 7 production preview reports 26 images, 25 PhotoSwipe links, no horizontal overflow, and no console or page errors at both review sizes.
+- The package graph resolves a single Astro version, ~7.2.3~, across the app, MDX, Lucide, and ~@jaydixit/astro-utils~.
+
 * 2026-08-11 - Create the Red Carpets copy-rewrite workbook
 
 ** Changed

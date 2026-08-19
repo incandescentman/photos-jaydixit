@@ -3,7 +3,7 @@
 	"type": "module",
 	"version": "0.0.1",
 	"engines": {
-		"node": ">=22"
+		"node": ">=22.12.0"
 	},
 	"scripts": {
 		"dev": "astro dev --open",
@@ -27,16 +27,16 @@
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.39.3",
-		"@lucide/astro": "^1.7.0",
+		"@lucide/astro": "^1.32.0",
 		"@playwright/test": "^1.61.1",
-		"@tailwindcss/typography": "^0.5.16",
-		"@tailwindcss/vite": "^4.0.14",
+		"@tailwindcss/typography": "^0.5.19",
+		"@tailwindcss/vite": "^4.3.3",
 		"@types/js-yaml": "^4.0.9",
 		"@types/justified-layout": "^4.1.4",
 		"@types/node": "^22.14.0",
 		"@typescript-eslint/eslint-plugin": "^8.31.0",
 		"@typescript-eslint/parser": "^8.31.0",
-		"astro": "^6.4.3",
+		"astro": "^7.2.3",
 		"astro-eslint-parser": "^1.4.0",
 		"commander": "^13.1.0",
 		"eslint": "^9.25.1",
@@ -50,12 +50,12 @@
 		"prettier": "3.5.3",
 		"prettier-plugin-astro": "^0.14.1",
 		"sharp": "^0.34.3",
-		"tailwindcss": "^4.0.14",
+		"tailwindcss": "^4.3.3",
 		"tsx": "^4.19.3",
 		"vitest": "^3.1.1"
 	},
 	"dependencies": {
-		"@astrojs/mdx": "^6.0.1",
+		"@astrojs/mdx": "^7.0.6",
 		"@astrojs/sitemap": "^3.7.3",
 		"@jaydixit/astro-utils": "^1.0.6",
 		"@supabase/supabase-js": "^2.96.0",
@@ -73,5 +73,10 @@
 		"packery": "^3.0.0",
 		"photoswipe": "^5.4.4",
 		"three": "^0.185.1"
+	},
+	"pnpm": {
+		"overrides": {
+			"@jaydixit/astro-utils>astro": "^7.2.3"
+		}
 	}
 }

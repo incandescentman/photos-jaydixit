@@ -16,6 +16,7 @@ Last Synced for AI Context: 2025-10-04
 The root **CLAUDE.md** file contains legacy documentation. This file (docs/CLAUDE.org) is the canonical documentation entry point. Both should be maintained during transition.
 
 * Recent Updates
+- 2026-08-19: Upgraded the portfolio to Astro 7.2.3, MDX 7.0.6, Tailwind CSS 4.3.3, and Lucide Astro 1.32.0; preserved Astro 6 HTML whitespace behavior, migrated legacy ~<script hoist>~ blocks so gallery interactions remain bundled, and kept Playwright's Astro preview process attached in agent environments
 - 2026-08-11: Made ~/red-carpets/~ the canonical destination for every “Red Carpets Around the World” menu and hero-action link; the homepage section anchor is no longer used as the navigation target
 - 2026-08-11: Added the canonical ~/nobel-2024/~ editorial page covering the AI-related Physics and Chemistry prizes in Stockholm and the Nobel Peace Prize ceremony and Torchlight Procession in Oslo; John Hopfield leads, all thirteen selected photographs appear once, and the source copy is Jay-authored
 - 2026-07-30: Promoted Kinetic Editorial to the canonical ~/~ homepage, moved the former Packery homepage to the noindexed and intentionally unlinked ~/photo-wall/~ route, and removed the internal Kinetic experiment route rather than preserving it
@@ -384,4 +385,4 @@ Frequency: Very High
 ---
 [[file:the-photos-approach.org][→ Philosophy]] | [[file:design-architecture.org][→ Architecture]] | [[file:../instructions.org][→ Instructions]]
 
-Last Updated: 2026-01-06
+Last Updated: 2026-08-19

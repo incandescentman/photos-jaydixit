@@ -12,6 +12,7 @@ const __dirname = path.dirname(__filename);
 export default defineConfig({
 	site: 'https://photos.jaydixit.com',
 	output: 'static', // Static output for Vercel deployment (admin features work only in dev)
+	compressHTML: true, // Preserve Astro 6 whitespace behavior after the Astro 7 upgrade
 	server: {
 		port: 4322,
 	},

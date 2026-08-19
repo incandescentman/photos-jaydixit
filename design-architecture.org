@@ -344,13 +344,13 @@ If you want, I can:
 
 ** Technology Stack
 
-- *Site Generator*: Astro v5.13.2 --- Static site generation
+- *Site Generator*: Astro v7.2.3 --- Static site generation
 - *Image Delivery*: Cloudinary (t_gallery: c_fill,g_auto,f_auto,q_auto)
 - *Layout System*: CSS Grid / Masonry (CSS columns fallback)
 - *Lightbox*: PhotoSwipe v5+
-- *Styling*: Tailwind CSS v4.0.14
+- *Styling*: Tailwind CSS v4.3.3
 - *Build Tool*: Vite
-- *Package Manager*: npm
+- *Package Manager*: pnpm
 - *Hosting Target*: Vercel
 - *Domain*: photos.jaydixit.com
 
