@@ -2100,3 +2100,20 @@ imagesLoaded(container).on('progress', function(instance, image) {
 - Added Steven Yeun as an eighth hero print between Alexander Skarsgård and Sydney Sweeney, then set his reviewed position to ~x: 47%~, ~y: 64%~, and ~-1.7deg~.
 - Swapped Sydney Sweeney into the large central slot and Vanessa Kirby into Sydney’s former lower slot, then brought Vanessa to the front layer.
 - Changed the mobile contact-sheet strip from four to five columns so all five smaller prints remain on one row. The production build passes, and PhotoSwipe opens Steven as item 5 of 8, navigates to the next image, and closes with Escape.
+
+* 2026-08-22 - Apply Arno Pro to long-form reading text
+
+** Scope and font loading
+- Loaded Adobe Fonts kit ~lvx1ktg~ only on the homepage, About Me, Before & After, Red Carpets Around the World, Nobel 2024, and individual blog posts; the blog index, gallery, photo pages, and other utility surfaces do not load it.
+- Applied ~arno-pro~ to running prose, ~arno-pro-subhead~ to leads and pullquotes, and kept Newsreader display titles plus Instrument Sans interface text unchanged.
+- Used the system fallback stack ~"Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif~ for every Arno family.
+
+** Typography
+- Homepage hero intro: ~arno-pro-subhead~, weight ~400~, ~28px~, line-height ~1.4~.
+- Essay body paragraphs and list items: ~arno-pro~, weight ~400~, ~21px~, line-height ~1.55~, approximately ~23px~ paragraph spacing, maximum measure ~68ch~; ~strong~ uses weight ~600~ and ~em~ uses Arno italic.
+- Essay leads: ~arno-pro-subhead~, weight ~400~, ~25px~, line-height ~1.4~, retaining existing italic treatment where present.
+- Pullquotes: ~arno-pro-subhead~, weight ~400~, ~30px~, line-height ~1.35~; attributions retain their existing sans styling.
+- Links inside prose inherit only the reading face; their existing colours and hover behaviour remain unchanged.
+
+** Deployment follow-up
+- After the first production deploy, confirm the kit CSS loads for ~photos.jaydixit.com~ at fonts.adobe.com or in the browser Network tab. If it is blocked, add ~photos.jaydixit.com~ to the kit's domain allowlist at fonts.adobe.com.

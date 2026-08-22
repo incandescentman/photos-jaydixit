@@ -28,6 +28,7 @@ type LayoutProps = {
 	modifiedTime?: string | Date;
 	keywords?: string[] | string;
 	showChrome?: boolean;
+	useArnoPro?: boolean;
 };
 
 const owner = siteConfig.owner;
@@ -76,6 +77,12 @@ const modifiedTime = normalizeDateValue(
 );
 const structuredData = props.structuredData ?? (frontmatter.structuredData as JsonLd | undefined);
 const showChrome = props.showChrome ?? true;
+const arnoProRoutes = new Set(['/', '/about', '/before-after', '/nobel-2024', '/red-carpets']);
+const normalizedPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+const useArnoPro =
+	props.useArnoPro ??
+	(arnoProRoutes.has(normalizedPath) ||
+		(normalizedPath.startsWith('/blog/') && normalizedPath !== '/blog'));
 
 const websiteStructuredData = {
 	'@context': 'https://schema.org',
@@ -112,6 +119,8 @@ gtag('config', '${gaMeasurementId}', {
 		<link rel="manifest" href={`${base}site.webmanifest`} />
 		<meta name="theme-color" content="#FAF6EF" />
 
+		{useArnoPro && <link rel="preconnect" href="https://use.typekit.net" crossorigin />}
+		{useArnoPro && <link rel="stylesheet" href="https://use.typekit.net/lvx1ktg.css" />}
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link rel="preconnect" href="https://res.cloudinary.com" />
@@ -170,7 +179,10 @@ gtag('config', '${gaMeasurementId}', {
 		{gaBootstrapScript && <script is:inline set:html={gaBootstrapScript} />}
 		<slot name="head" />
 	</head>
-	<body>
+	<body
+		class:list={{ 'reading-face-arno': useArnoPro }}
+		data-reading-face={useArnoPro ? 'arno' : undefined}
+	>
 		{
 			showChrome ? (
 				<>
