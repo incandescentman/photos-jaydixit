@@ -54,15 +54,24 @@ const imageData = (index: number) => {
 const heroPrintLayout = [
 	{
 		photo: imageData(2),
-		x: 49,
+		// Pulled left of the 49% that used to butt this print's left edge against
+		// the Apatow and Skarsgard prints' right edges. Both of those lean
+		// counter-clockwise (-1deg and -2deg), so their top-right corners sit
+		// left of their nominal x, and at 49% this print cleared them by 4-18px
+		// instead of covering them. Skarsgard then moved 1.4% further left, so no
+		// single x can tuck both edges by the same amount: the two right edges now
+		// sit ~24px apart at 1440. This x gives the further one (Skarsgard) its
+		// ~10px tuck; Apatow, being 24px to its right, is lapped by ~34px.
+		x: 46.3,
 		y: 7,
 		width: 29,
 		rotation: 0,
 		z: 5,
-		// The Bateman print (z 6) starts at 72% and laps this print's last 6%, so
-		// a 22px right pin lands behind it — only 10-29% of it painted. The pin
-		// is pulled in to the right end of the VISIBLE top edge instead; 6.4vw
-		// tracks that 6% overlap and holds ~21-24px of daylight at 1024-3024.
+		// The Bateman print (z 6) starts at 72% and still laps this print's last
+		// ~3.1%, so a 22px right pin would land behind it. The pin is pulled in to
+		// the right end of the VISIBLE top edge instead; 6.4vw was cut for a 6%
+		// lap, so after this print moved left it now sits further in than it needs
+		// to, holding ~49-116px of daylight at 1024-3024 rather than ~21-24px.
 		pins: [
 			{ pos: 'left', tilt: -7 },
 			{ pos: 'right', tilt: -3.2, inset: 'calc(6.4vw + 18px)' },
@@ -118,7 +127,7 @@ const heroPrintLayout = [
 	},
 	{
 		photo: imageData(1),
-		x: 31,
+		x: 29.4,
 		y: 9,
 		width: 18,
 		rotation: -1,
@@ -127,7 +136,9 @@ const heroPrintLayout = [
 	},
 	{
 		photo: imageData(34),
-		x: 31,
+		// 1.4% (~20px at 1440) left of the 31% it shared with the Apatow print
+		// above it, so the two no longer stack on the same left edge.
+		x: 28.8,
 		y: 47,
 		width: 18,
 		rotation: -2,
@@ -311,8 +322,6 @@ const description =
 					aria-label="Selected portrait prints"
 					data-hero-stage
 				>
-					<div class="darkroom-line darkroom-line-one" aria-hidden="true"></div>
-					<div class="darkroom-line darkroom-line-two" aria-hidden="true"></div>
 					{
 						heroPrintLayout.map(({ photo, x, y, width, rotation, z, pins }, index) => (
 							<a
@@ -1025,11 +1034,11 @@ const description =
 
 	h1 {
 		margin: 0;
-		font-family: var(--serif);
-		font-size: clamp(62px, 5.65vw, 116px);
+		font-family: "garamond-premier-pro-display", "Newsreader", "Iowan Old Style", Georgia, serif;
+		font-size: clamp(calc(62px * 1.04), calc(5.65vw * 1.04), calc(116px * 1.04));
 		font-weight: 300;
-		letter-spacing: -0.069em;
-		line-height: 0.76;
+		letter-spacing: -0.034em;
+		line-height: 0.82;
 	}
 
 	.title-line {
@@ -1118,26 +1127,8 @@ const description =
 		pointer-events: none;
 	}
 
-	.darkroom-line {
-		position: absolute;
-		z-index: 1;
-		right: 2%;
-		left: 28%;
-		height: 1px;
-		background: rgb(37 29 23 / 30%);
-		box-shadow: 0 1px rgb(255 255 255 / 32%);
-		transform-origin: center;
-	}
 
-	.darkroom-line-one {
-		top: 11%;
-		transform: rotate(-0.7deg);
-	}
 
-	.darkroom-line-two {
-		top: 52%;
-		transform: rotate(0.6deg);
-	}
 
 	.hero-print {
 		position: absolute;
@@ -1846,9 +1837,8 @@ const description =
 		}
 
 		h1 {
-			font-size: clamp(57px, 14vw, 96px);
-			/* Desktop sets 0.76; at phone sizes that pulls descenders into the next line. */
-			line-height: 0.88;
+			font-size: clamp(calc(57px * 1.04), calc(14vw * 1.04), calc(96px * 1.04));
+			line-height: 0.82;
 		}
 
 		.title-line {
@@ -1949,9 +1939,6 @@ const description =
 			padding: 20px 0 0;
 		}
 
-		.darkroom-line {
-			display: none;
-		}
 
 		.hero-print {
 			position: relative;
@@ -2192,8 +2179,8 @@ const description =
 		}
 
 		h1 {
-			font-size: clamp(51px, 16vw, 78px);
-			line-height: 0.9;
+			font-size: clamp(calc(51px * 1.04), calc(16vw * 1.04), calc(78px * 1.04));
+			line-height: 0.82;
 		}
 
 		.hero-lede {
