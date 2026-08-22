@@ -2129,3 +2129,14 @@ imagesLoaded(container).on('progress', function(instance, image) {
 
 ** Deployment follow-up
 - After the first production deploy, confirm the kit CSS loads for ~photos.jaydixit.com~ at fonts.adobe.com or in the browser Network tab. If it is blocked, add ~photos.jaydixit.com~ to the kit's domain allowlist at fonts.adobe.com.
+
+* 2026-08-22 - Set the homepage hero in Garamond Premier Pro Light Display
+
+** Change
+- Jay said “ok let's do garamond.” Replaced Adobe Fonts kit ~lvx1ktg~ with ~mvc8kcq~, which carries the existing Arno families and ~garamond-premier-pro-display~.
+- Changed only the homepage ~#hero-title~ to ~garamond-premier-pro-display~ at weight ~300~, letter-spacing ~-0.034em~, line-height ~0.82~, and each existing responsive font-size clamp multiplied by ~1.04~. Newsreader remains the first fallback and remains loaded for the rest of the site.
+- Preserved the red ~Red Carpet~ span and the indented ~for Wikipedia~ line without changing its ~0.78em~ size or responsive margins.
+- Codex ranked Premier over Kepler over Newsreader for this display treatment.
+
+** Deployment follow-up
+- After the first deploy, confirm the Adobe Fonts kit domain allowlist includes ~photos.jaydixit.com~.
