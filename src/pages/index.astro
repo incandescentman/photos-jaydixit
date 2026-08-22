@@ -45,17 +45,20 @@ const imageData = (index: number) => {
 };
 
 const heroPrintLayout = [
-	{ photo: imageData(22), x: 49, y: 7, width: 29, rotation: 0, z: 5 },
+	{ photo: imageData(2), x: 49, y: 7, width: 29, rotation: 0, z: 5 },
 	{ photo: imageData(32), x: 72, y: 10, width: 27, rotation: 3.1, z: 3 },
 	{ photo: imageData(4), x: 81, y: 41, width: 18, rotation: -3.7, z: 6 },
-	{ photo: imageData(2), x: 58, y: 51, width: 22, rotation: 2.2, z: 9 },
-	{ photo: imageData(21), x: 47, y: 64, width: 16, rotation: -1.7, z: 6 },
+	{ photo: imageData(34), x: 58, y: 51, width: 22, rotation: 2.2, z: 9 },
+	{ photo: imageData(21), x: 78, y: 74, width: 19, rotation: 1.7, z: 8 },
 	{ photo: imageData(1), x: 31, y: 15, width: 18, rotation: -1, z: 2 },
-	{ photo: imageData(34), x: 31, y: 47, width: 18, rotation: -2, z: 4 },
-	{ photo: imageData(0), x: 78, y: 74, width: 19, rotation: 1.7, z: 8 },
+	{ photo: imageData(22), x: 31, y: 47, width: 18, rotation: -2, z: 4 },
 ];
 const heroPublicIds = new Set(heroPrintLayout.map(({ photo }) => photo.publicId));
-const mobilePreservedHiddenWallIds = new Set([imageData(8).publicId, imageData(31).publicId]);
+const mobilePreservedHiddenWallIds = new Set([
+	imageData(0).publicId,
+	imageData(8).publicId,
+	imageData(31).publicId,
+]);
 const mobileWideWallPositions = new Set([3, 8, 11]);
 let mobileWallPosition = 0;
 const wallPhotos = [2, 0, 9, 22, 8, 3, 18, 10, 24, 19, 5, 25, 32, 11, 31, 17, 33].map(
@@ -1823,8 +1826,8 @@ const description =
 			position: relative;
 			inset: auto;
 			display: grid;
-			grid-template-columns: repeat(5, minmax(0, 1fr));
-			gap: 22px 6px;
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+			gap: 22px 8px;
 			width: 100%;
 			height: auto;
 			min-height: 0;
