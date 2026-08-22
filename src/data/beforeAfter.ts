@@ -101,7 +101,7 @@ export const comparisons: BeforeAfterComparison[] = [
 		licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
 	},
 	{
-		name: "Conan O'Brien",
+		name: 'Conan O’Brien',
 		beforeImage: conanBeforeImg,
 		afterImage: conanAfterImg,
 		article: 'https://en.wikipedia.org/wiki/Conan_O%27Brien',

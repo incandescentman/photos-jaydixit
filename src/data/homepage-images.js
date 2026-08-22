@@ -54,7 +54,7 @@ export const images = [
   {
     filename: 'conan-obrien_sundance_2024.jpg',
     size: 'portrait', // 1707x2560 (0.67 ratio - portrait)
-    caption: "Conan O'Brien at Sundance 2024"
+    caption: "Conan O’Brien at Sundance 2024"
   },
   {
     filename: 'sebastian-stan.jpg',
@@ -160,12 +160,12 @@ export const images = [
   {
     filename: '2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07141.jpg',
     size: 'portrait',
-    caption: "Conan O'Brien at SXSW Office Space Event"
+    caption: "Conan O’Brien at SXSW Office Space Event"
   },
   {
     filename: '2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07162.jpg',
     size: 'portrait',
-    caption: "Conan O'Brien at SXSW Office Space Event"
+    caption: "Conan O’Brien at SXSW Office Space Event"
   },
   {
     filename: 'ron-livingston_sxsw-office-space-event_2024.jpg',

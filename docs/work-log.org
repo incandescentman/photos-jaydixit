@@ -2053,3 +2053,29 @@ imagesLoaded(container).on('progress', function(instance, image) {
 
 ** Verification
 - ~npm run build~ passes and generates ~/nobel-2024~ plus the associated optimized image derivatives.
+
+* 2026-08-21 - Refine the homepage photo wall and closing section
+
+** Homepage photographs
+- Replaced the weak top-right hero image with the existing Jason Bateman and Jude Law portrait from TIFF 2025.
+- Replaced the former bottom-left Jude Law frame with Lisa Gilroy, then completed Jay’s requested two-way position swap so Lisa Gilroy occupies Jason Bateman’s former slot and the Jason Bateman solo portrait occupies the bottom-left slot.
+- Preserved the desktop wall order and the separate 11-card mobile wall sequence, including its existing duplicate suppression.
+
+** Photo presentation and lightbox
+- Removed visible captions from both the hero collage and the main photo wall while preserving semantic alt text, accessible labels, and PhotoSwipe caption metadata.
+- Verified that wall photographs open in PhotoSwipe over the still-visible homepage, navigate between images, and close back to the same wall position rather than opening a raw image or standalone page.
+
+** Closing section and numbering
+- Rebuilt the previously skeletal closing section as a full editorial composition with an oversized Jay Dixit Photos wordmark, a red rule, a subtle paper-toned background, and large responsive navigation links.
+- Removed the useless section counters entirely and removed leading-zero formatting from the remaining photo-wall numbers.
+- Added dedicated desktop and mobile layouts for the closing navigation without changing the approved top of the homepage.
+
+** Typography
+- Applied smart apostrophes and quotation marks to rendered homepage prose, editorial pages, album captions, person names, alt text, PhotoSwipe captions, page metadata, and structured data.
+- Confirmed that the production output contains no straight quotation marks in rendered prose or metadata; code syntax, URLs, filenames, and identifiers remain unchanged.
+
+** Verification
+- ~npm run build~ passes and generates all 123 static pages.
+- ~npm run lint~ passes.
+- ~npm run test -- --run~ passes all 21 tests.
+- Browser verification passes at desktop and a true ~390x844~ mobile viewport with no console errors, no visible wall captions, no section counters, and working PhotoSwipe behavior.
