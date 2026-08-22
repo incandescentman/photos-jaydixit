@@ -44,13 +44,96 @@ const imageData = (index: number) => {
 	};
 };
 
+// `pins` places the clothespins. `tilt` is each pin's own jitter; the rendered
+// rotation subtracts the print's rotation so every pin hangs near vertical
+// whatever the print does. Two pins on the same print never share a tilt, so
+// they read as hand-placed rather than stamped. `inset` overrides the default
+// 22px edge distance and is a raw CSS length, because prints that bleed past
+// the hero's clipped right edge need a viewport-proportional inset to stay
+// on canvas at every width.
 const heroPrintLayout = [
-	{ photo: imageData(2), x: 49, y: 7, width: 29, rotation: 0, z: 5 },
-	{ photo: imageData(32), x: 72, y: 7, width: 30, rotation: 1.1, z: 6 },
-	{ photo: imageData(22), x: 83, y: 44, width: 18, rotation: 0, z: 13 },
-	{ photo: imageData(4), x: 67, y: 49, width: 22, rotation: 5.2, z: 7 },
-	{ photo: imageData(1), x: 31, y: 9, width: 18, rotation: -1, z: 2 },
-	{ photo: imageData(34), x: 31, y: 47, width: 18, rotation: -2, z: 4 },
+	{
+		photo: imageData(2),
+		x: 49,
+		y: 7,
+		width: 29,
+		rotation: 0,
+		z: 5,
+		// The Bateman print (z 6) starts at 72% and laps this print's last 6%, so
+		// a 22px right pin lands behind it — only 10-29% of it painted. The pin
+		// is pulled in to the right end of the VISIBLE top edge instead; 6.4vw
+		// tracks that 6% overlap and holds ~21-24px of daylight at 1024-3024.
+		pins: [
+			{ pos: 'left', tilt: -7 },
+			{ pos: 'right', tilt: -3.2, inset: 'calc(6.4vw + 18px)' },
+		],
+	},
+	{
+		photo: imageData(32),
+		x: 72,
+		y: 7,
+		width: 30,
+		rotation: 1.1,
+		z: 6,
+		// This print runs to 102% of the hero, and `.hero` clips at 100%, so its
+		// true top-right corner is off canvas — by 32px at 1440 and 68px at 3024.
+		// A fixed inset therefore drifts off screen as the viewport grows (52px
+		// put the pin 5px inside the edge at 1920 and fully outside it at 2560+).
+		// 2vw tracks the bleed so the pin lands ~20px inside the visible corner.
+		pins: [
+			{ pos: 'left', tilt: -8.4 },
+			{ pos: 'right', tilt: -4, inset: 'calc(2vw + 30px)' },
+		],
+	},
+	{
+		photo: imageData(22),
+		x: 83,
+		y: 44,
+		width: 18,
+		rotation: 0,
+		z: 13,
+		// Same bleed problem, half the size: this print ends at 101% of the hero.
+		pins: [
+			{ pos: 'left', tilt: -9 },
+			{ pos: 'right', tilt: -5, inset: 'calc(1vw + 26px)' },
+		],
+	},
+	{
+		photo: imageData(4),
+		x: 67,
+		y: 49,
+		width: 22,
+		rotation: 5.2,
+		z: 7,
+		// The Sweeney print (z 13) laps this print's top-right corner, and a pin
+		// inside a z-7 print can never paint above a higher-stacked sibling. Only
+		// the left ~55% of this print's top edge is on show, so the second pin
+		// sits at the right end of the VISIBLE edge rather than at the true
+		// corner: 7.4vw tracks the 6%-of-hero gap between the two prints and
+		// keeps ~14-19px of daylight at every width from 1024 to 3024.
+		pins: [
+			{ pos: 'left', tilt: -6 },
+			{ pos: 'right', tilt: -2.5, inset: 'calc(7.4vw + 26px)' },
+		],
+	},
+	{
+		photo: imageData(1),
+		x: 31,
+		y: 9,
+		width: 18,
+		rotation: -1,
+		z: 2,
+		pins: [{ pos: 'left', tilt: -8 }],
+	},
+	{
+		photo: imageData(34),
+		x: 31,
+		y: 47,
+		width: 18,
+		rotation: -2,
+		z: 4,
+		pins: [{ pos: 'left', tilt: -3 }],
+	},
 ];
 const heroPublicIds = new Set(heroPrintLayout.map(({ photo }) => photo.publicId));
 const mobilePreservedHiddenWallIds = new Set([
@@ -231,7 +314,7 @@ const description =
 					<div class="darkroom-line darkroom-line-one" aria-hidden="true"></div>
 					<div class="darkroom-line darkroom-line-two" aria-hidden="true"></div>
 					{
-						heroPrintLayout.map(({ photo, x, y, width, rotation, z }, index) => (
+						heroPrintLayout.map(({ photo, x, y, width, rotation, z, pins }, index) => (
 							<a
 								class="hero-print"
 								data-hero-photo
@@ -248,7 +331,17 @@ const description =
 								style={`--print-x:${x}%;--print-y:${y}%;--print-width:${width}%;--print-rotation:${rotation}deg;--print-z:${z}`}
 								aria-label={`${photo.caption} — view full size`}
 							>
-								<span class="clothespin" aria-hidden="true" />
+								{pins.map((pin, pinIndex) => (
+									<span
+										class="clothespin"
+										aria-hidden="true"
+										data-pin-pos={pin.pos}
+										data-pin-index={pinIndex}
+										style={`--pin-rot:${(pin.tilt - rotation).toFixed(2)}deg${
+											pin.inset ? `;--pin-inset:${pin.inset}` : ''
+										}`}
+									/>
+								))}
 								<img
 									src={photo.src}
 									srcset={photo.srcset}
@@ -1146,11 +1239,10 @@ const description =
 	.clothespin {
 		position: absolute;
 		z-index: 4;
-		top: -18px;
-		left: 17px;
-		width: 14px;
-		height: 36px;
-		border-radius: 5px 5px 3px 3px;
+		top: -23px;
+		width: 18px;
+		height: 46px;
+		border-radius: 6px 6px 4px 4px;
 		background:
 			linear-gradient(
 				90deg,
@@ -1162,16 +1254,34 @@ const description =
 		box-shadow:
 			0 2px 3px rgb(37 25 15 / 24%),
 			inset 0 0 0 1px rgb(89 53 25 / 18%);
-		transform: rotate(-7deg);
-		transform-origin: 50% 70%;
+		/* --pin-rot already has the print's own rotation subtracted out, so the pin
+		   hangs near vertical in page space whichever way its print leans. */
+		transform: rotate(var(--pin-rot, -7deg));
+		transform-origin: 50% 0;
+	}
+
+	.clothespin[data-pin-pos='left'] {
+		right: auto;
+		left: var(--pin-inset, 22px);
+	}
+
+	.clothespin[data-pin-pos='right'] {
+		right: var(--pin-inset, 22px);
+		left: auto;
+	}
+
+	.clothespin[data-pin-pos='center'] {
+		right: auto;
+		left: 50%;
+		margin-left: -9px;
 	}
 
 	.clothespin::before {
 		position: absolute;
-		top: 13px;
-		left: 3px;
-		width: 6px;
-		height: 6px;
+		top: 17px;
+		left: 4px;
+		width: 8px;
+		height: 8px;
 		border: 1px solid rgb(79 52 31 / 72%);
 		border-radius: 50%;
 		background: rgb(221 191 145 / 72%);
@@ -1181,10 +1291,10 @@ const description =
 
 	.clothespin::after {
 		position: absolute;
-		bottom: 2px;
-		left: 6px;
+		bottom: 3px;
+		left: 8px;
 		width: 1px;
-		height: 14px;
+		height: 18px;
 		background: rgb(85 52 26 / 42%);
 		content: '';
 		transform: rotate(13deg);
@@ -1877,12 +1987,30 @@ const description =
 			display: none;
 		}
 
+		/* The contact-sheet thumbnails are too small for a pair; one pin reads
+		   better there. The three lead prints run full width and keep both. */
+		.hero-print:nth-of-type(n + 4) .clothespin[data-pin-index='1'] {
+			display: none;
+		}
+
+		/* The lead prints run full width here, so the desktop bleed inset does not apply. */
+		.hero-print:nth-of-type(-n + 3) .clothespin[data-pin-pos='right'] {
+			right: 22px;
+		}
+
 		.hero-print:nth-of-type(n + 4) .clothespin {
-			top: -10px;
+			top: -13px;
+			width: 10px;
+			height: 27px;
+			border-radius: 4px 4px 3px 3px;
+		}
+
+		.hero-print:nth-of-type(n + 4) .clothespin[data-pin-pos='left'],
+		.hero-print:nth-of-type(n + 4) .clothespin[data-pin-pos='right'],
+		.hero-print:nth-of-type(n + 4) .clothespin[data-pin-pos='center'] {
+			right: auto;
 			left: 7px;
-			width: 8px;
-			height: 21px;
-			border-radius: 3px 3px 2px 2px;
+			margin-left: 0;
 		}
 
 		.hero-print:nth-of-type(n + 4) .clothespin::before,
