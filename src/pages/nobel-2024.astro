@@ -10,6 +10,7 @@ import peaceCampaigners from '../gallery/photos/events/nobel-prizes-2024/anti-nu
 import daronAcemoglu from '../gallery/photos/events/nobel-prizes-2024/daron-acemoglu_nobel-lectures-stockholm_2024.jpg';
 import davidBaker from '../gallery/photos/events/nobel-prizes-2024/david-baker_nobel-lectures-stockholm_2024.jpg';
 import demisHassabis from '../gallery/photos/events/nobel-prizes-2024/demis-hassabis_nobel-lectures-stockholm_2024.jpg';
+import demisHassabisChemistry from '../gallery/photos/events/nobel-prizes-2024/demis-hassabis-2_nobel-lectures-stockholm_2024.jpg';
 import geoffreyHinton from '../gallery/photos/events/nobel-prizes-2024/geoffrey-hinton_nobel-lectures-stockholm_2024.jpg';
 import jamesRobinson from '../gallery/photos/events/nobel-prizes-2024/james-robinson_nobel-lectures-stockholm_2024.jpg';
 import johnHopfield from '../gallery/photos/events/nobel-prizes-2024/john-hopfield_nobel-lectures-stockholm_2024.jpg';
@@ -19,6 +20,9 @@ import oslo04 from '../gallery/photos/events/nobel-prizes-2024/nobel-peace-prize
 import oslo06 from '../gallery/photos/events/nobel-prizes-2024/nobel-peace-prize-torchlight-procession-oslo-06_2024.jpg';
 import oslo15 from '../gallery/photos/events/nobel-prizes-2024/nobel-peace-prize-torchlight-procession-oslo-15_2024.jpg';
 import oslo21 from '../gallery/photos/events/nobel-prizes-2024/nobel-peace-prize-torchlight-procession-oslo-21_2024.jpg';
+import osloCrowd from '../gallery/photos/events/nobel-prizes-2024/nobel-peace-prize-torchlight-procession-oslo-crowd_2024.jpg';
+import stockholmPhotographer from '../gallery/photos/events/nobel-prizes-2024/photographer-in-stockholm_nobel-lectures_2024.jpg';
+import simonJohnson from '../gallery/photos/events/nobel-prizes-2024/simon-johnson_nobel-lectures-stockholm_2024.jpg';
 
 const pageTitle = 'The Year AI Won the Nobel Prize';
 const description =
@@ -56,11 +60,19 @@ const photographs = [
 		commons: undefined,
 	},
 	{
+		id: 'hassabis-chemistry',
+		src: demisHassabisChemistry,
+		alt: 'Demis Hassabis at the 2024 Nobel Lectures in Stockholm',
+		caption: 'Demis Hassabis · Nobel Lectures, Stockholm',
+		commons: undefined,
+	},
+	{
 		id: 'jumper',
 		src: johnJumper,
 		alt: 'John Jumper speaking at the 2024 Nobel Lectures in Stockholm',
 		caption: 'John Jumper · Nobel Lectures, Stockholm',
-		commons: undefined,
+		commons:
+			'https://commons.wikimedia.org/wiki/File:John_M._Jumper_presenting_his_Nobel_Lecture_at_the_2024_Nobel_Prizes.jpg',
 	},
 	{
 		id: 'robinson',
@@ -75,6 +87,20 @@ const photographs = [
 		src: daronAcemoglu,
 		alt: 'Daron Acemoglu speaking at the 2024 Nobel Lectures in Stockholm',
 		caption: 'Daron Acemoglu · Nobel Lectures, Stockholm',
+		commons: undefined,
+	},
+	{
+		id: 'johnson',
+		src: simonJohnson,
+		alt: 'Simon Johnson speaking at the 2024 Nobel Lectures in Stockholm',
+		caption: 'Simon Johnson · Nobel Lectures, Stockholm',
+		commons: undefined,
+	},
+	{
+		id: 'stockholm-photographer',
+		src: stockholmPhotographer,
+		alt: 'A photographer beneath illuminated arches in Stockholm',
+		caption: 'Photograph by John Sears · Stockholm',
 		commons: undefined,
 	},
 	{
@@ -94,11 +120,17 @@ const photographs = [
 		commons:
 			'https://commons.wikimedia.org/wiki/File:Nei_til_atomv%C3%A5pen_at_the_Nobel_Peace_Prize_torchlight_procession_in_Oslo,_Norway_3.jpg',
 	},
+	{
+		id: 'oslo-crowd',
+		src: osloCrowd,
+		alt: 'A torch-bearing crowd at the 2024 Nobel Peace Prize Torchlight Procession in Oslo',
+		caption: 'Nobel Peace Prize Torchlight Procession · Oslo',
+		commons: undefined,
+	},
 	...[
 		{ id: 'oslo-04', src: oslo04, number: '4' },
 		{ id: 'oslo-06', src: oslo06, number: '6' },
 		{ id: 'oslo-15', src: oslo15, number: '15' },
-		{ id: 'oslo-21', src: oslo21, number: '21' },
 	].map(({ id, src, number }) => ({
 		id,
 		src,
@@ -106,6 +138,13 @@ const photographs = [
 		caption: 'Nobel Peace Prize Torchlight Procession · Oslo',
 		commons: `https://commons.wikimedia.org/wiki/File:The_Nobel_Peace_Prize_torchlight_procession_in_Oslo,_Norway_${number}.jpg`,
 	})),
+	{
+		id: 'oslo-21',
+		src: oslo21,
+		alt: 'The 2024 Nobel Peace Prize Torchlight Procession in Oslo',
+		caption: 'Nobel Peace Prize Torchlight Procession · Oslo',
+		commons: undefined,
+	},
 ];
 
 const lightboxImages = await Promise.all(
@@ -142,8 +181,8 @@ const structuredData = {
 <MainLayout
 	title={pageTitle}
 	{description}
-	image={photo('hopfield').full.src}
-	imageAlt="John Hopfield at the 2024 Nobel Lectures in Stockholm"
+	image={photo('hassabis').full.src}
+	imageAlt="Demis Hassabis at the 2024 Nobel Lectures in Stockholm"
 	keywords={[
 		'2024 Nobel Prize photographs',
 		'Nobel Lectures Stockholm',
@@ -163,7 +202,7 @@ const structuredData = {
 				<div class="standfirst">
 					<p>
 						In 2024, two Nobel committees, in two different fields, awarded prizes for work in AI.
-						The Physics prize went to John Hopfield and Geoffrey Hinton, whose foundational
+						The Physics prize went to Geoffrey Hinton and John Hopfield, whose foundational
 						discoveries in artificial neural networks made modern machine learning possible.
 					</p>
 					<p>
@@ -178,17 +217,18 @@ const structuredData = {
 					</p>
 				</div>
 			</div>
-			<NobelPhoto photo={photo('hopfield')} eager className="hero-photo" />
+			<NobelPhoto photo={photo('hassabis')} eager className="hero-photo" />
 		</header>
 
 		<section class="prose-section intro-section" aria-labelledby="lectures-title">
 			<p class="section-number">1 · The lectures</p>
-			<h2 id="lectures-title">An hour with each laureate.</h2>
+			<h2 id="lectures-title">Photographing The Nobel Lectures in Stockholm</h2>
 			<p>
 				The Nobel Prizes consist of a few different events: the ceremony, the Nobel Lectures, and
-				the press conference. In Stockholm, I covered the lectures. Each laureate gets an hour to
-				talk about their life’s work.
+				the press conference. In Stockholm, I covered the Nobel Lectures, where each laureate gets
+				an hour on stage to present their life’s work.
 			</p>
+			<NobelPhoto photo={photo('stockholm-photographer')} className="intro-photo" />
 		</section>
 
 		<section class="story-section" aria-labelledby="physics-title">
@@ -206,10 +246,15 @@ const structuredData = {
 						spoke animatedly for an hour about his life’s work. It made me sad they waited 42 years
 						to recognize his contributions.
 					</p>
+					<p>
+						He was a delightful speaker. I never got a good shot of Hinton, though. In an hour of
+						lecturing, he didn't look up from his notes once.
+					</p>
 				</div>
 			</div>
-			<div class="photo-single-wrap">
-				<NobelPhoto photo={photo('hinton')} className="photo-single" />
+			<div class="photo-pair">
+				<NobelPhoto photo={photo('hopfield')} />
+				<NobelPhoto photo={photo('hinton')} />
 			</div>
 		</section>
 
@@ -217,22 +262,22 @@ const structuredData = {
 			<div class="section-heading">
 				<p class="section-number">3 · Chemistry</p>
 				<h2 id="chemistry-title">David Baker, Demis Hassabis, and John Jumper</h2>
-				<p>David Baker was a great speaker. Demis Hassabis was nice and friendly.</p>
 			</div>
-			<div class="photo-trio">
-				<NobelPhoto photo={photo('baker')} />
-				<NobelPhoto photo={photo('hassabis')} />
-				<NobelPhoto photo={photo('jumper')} />
+			<div class="chemistry-grid">
+				<NobelPhoto photo={photo('baker')} className="chemistry-baker" />
+				<NobelPhoto photo={photo('hassabis-chemistry')} className="chemistry-hassabis" />
+				<NobelPhoto photo={photo('jumper')} className="chemistry-portrait" />
 			</div>
 		</section>
 
 		<section class="story-section" aria-labelledby="economics-title">
 			<div class="section-heading">
 				<p class="section-number">4 · Economic sciences</p>
-				<h2 id="economics-title">The institutions behind prosperity</h2>
+				<h2 id="economics-title">The Nobel Prize in Economics</h2>
 			</div>
-			<div class="photo-pair photo-pair--mixed">
+			<div class="economics-grid">
 				<NobelPhoto photo={photo('robinson')} />
+				<NobelPhoto photo={photo('johnson')} />
 				<NobelPhoto photo={photo('acemoglu')} />
 			</div>
 		</section>
@@ -240,7 +285,7 @@ const structuredData = {
 		<section class="oslo-section" aria-labelledby="oslo-title">
 			<div class="section-heading section-heading--light">
 				<p class="section-number">5 · Oslo</p>
-				<h2 id="oslo-title">The Torchlight Procession</h2>
+				<h2 id="oslo-title">The Nobel Peace Prize in Oslo</h2>
 				<p>
 					In Oslo, I was credentialed for the Nobel Peace Prize ceremony at City Hall. The 2024
 					prize went to Nihon Hidankyo, represented by its three co-chairs. That evening, I
@@ -248,19 +293,25 @@ const structuredData = {
 					Hotel.
 				</p>
 			</div>
-			<div class="oslo-grid">
-				<NobelPhoto photo={photo('peace-prize-presentation')} className="oslo-lead" />
-				<NobelPhoto photo={photo('peace-campaigners')} />
-				<NobelPhoto photo={photo('oslo-04')} />
-				<NobelPhoto photo={photo('oslo-06')} />
-				<NobelPhoto photo={photo('oslo-15')} />
-				<NobelPhoto photo={photo('oslo-21')} />
+			<div class="oslo-subsection oslo-ceremony">
+				<h3>The ceremony</h3>
+				<NobelPhoto photo={photo('peace-prize-presentation')} />
+			</div>
+			<div class="oslo-subsection">
+				<h3>The Torchlight Procession</h3>
+				<div class="oslo-grid">
+					<NobelPhoto photo={photo('peace-campaigners')} />
+					<NobelPhoto photo={photo('oslo-04')} />
+					<NobelPhoto photo={photo('oslo-06')} />
+					<NobelPhoto photo={photo('oslo-15')} />
+					<NobelPhoto photo={photo('oslo-21')} />
+					<NobelPhoto photo={photo('oslo-crowd')} />
+				</div>
 			</div>
 		</section>
 
 		<footer class="nobel-contact">
-			<p>Editorial, institutional, and event photography</p>
-			<h2>Bring me into the room.</h2>
+			<h2>Red carpet and portrait photography</h2>
 			<a href="/contact">Get in touch <span aria-hidden="true">→</span></a>
 		</footer>
 	</main>
@@ -412,6 +463,11 @@ const structuredData = {
 		margin: 2.5rem 0 0;
 	}
 
+	:global(.intro-photo) {
+		grid-column: 1 / -1;
+		margin-top: clamp(3rem, 6vw, 6rem);
+	}
+
 	.story-section {
 		border-top: 1px solid var(--rule);
 	}
@@ -455,6 +511,39 @@ const structuredData = {
 		align-items: start;
 	}
 
+	.chemistry-grid {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+		grid-template-areas:
+			'baker portrait'
+			'hassabis portrait';
+		gap: clamp(1rem, 3vw, 3rem);
+		align-items: start;
+	}
+
+	.chemistry-grid :global(.chemistry-portrait) {
+		grid-area: portrait;
+	}
+
+	.chemistry-grid :global(.chemistry-baker) {
+		grid-area: baker;
+	}
+
+	.chemistry-grid :global(.chemistry-hassabis) {
+		grid-area: hassabis;
+	}
+
+	.economics-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: clamp(2rem, 5vw, 6rem) clamp(1rem, 3vw, 3rem);
+		align-items: start;
+	}
+
+	.economics-grid :global(.nobel-photo:last-child) {
+		grid-column: 1 / -1;
+	}
+
 	.photo-single-wrap {
 		display: flex;
 		justify-content: center;
@@ -474,16 +563,28 @@ const structuredData = {
 		color: #b9b0a5;
 	}
 
+	.oslo-subsection + .oslo-subsection {
+		margin-top: clamp(5rem, 9vw, 10rem);
+	}
+
+	.oslo-subsection h3 {
+		margin: 0 0 clamp(2rem, 4vw, 4rem);
+		font-family: var(--serif, Georgia, serif);
+		font-size: clamp(2.4rem, 5vw, 5.5rem);
+		font-weight: 300;
+		letter-spacing: -0.04em;
+		line-height: 0.96;
+	}
+
+	.oslo-ceremony :global(.nobel-photo) {
+		width: min(100%, 70rem);
+		margin: 0 auto;
+	}
+
 	.oslo-grid {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 		gap: clamp(2.5rem, 5vw, 6rem) clamp(1rem, 2vw, 2rem);
-	}
-
-	.oslo-grid :global(.oslo-lead) {
-		grid-column: 1 / -1;
-		width: min(100%, 84rem);
-		margin-inline: auto;
 	}
 
 	.oslo-grid :global(.nobel-photo figcaption) {
@@ -564,11 +665,19 @@ const structuredData = {
 
 		.photo-pair,
 		.photo-trio,
+		.chemistry-grid,
+		.economics-grid,
 		.oslo-grid {
 			grid-template-columns: 1fr;
 		}
 
-		.oslo-grid :global(.oslo-lead) {
+		.chemistry-grid {
+			grid-template-areas: none;
+		}
+
+		.chemistry-grid :global(.nobel-photo),
+		.economics-grid :global(.nobel-photo:last-child) {
+			grid-area: auto;
 			grid-column: auto;
 		}
 

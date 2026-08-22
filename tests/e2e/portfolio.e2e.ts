@@ -180,7 +180,7 @@ test('mobile homepage does not repeat hero photographs in the wall', async ({ pa
 		links.map((link) => link.getAttribute('data-full-src')),
 	);
 
-	await expect(mobileWallLinks).toHaveCount(12);
+	await expect(mobileWallLinks).toHaveCount(17);
 	expect(
 		await page
 			.locator('[data-wall-card][data-mobile-duplicate="true"]')
@@ -189,12 +189,30 @@ test('mobile homepage does not repeat hero photographs in the wall', async ({ pa
 	expect(wallSources.filter((source) => heroSources.includes(source))).toEqual([]);
 	await expect(
 		page.locator('[data-wall-card]:not([data-mobile-duplicate="true"]) .wall-number-mobile'),
-	).toHaveText(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']);
+	).toHaveText([
+		'1',
+		'2',
+		'3',
+		'4',
+		'5',
+		'6',
+		'7',
+		'8',
+		'9',
+		'10',
+		'11',
+		'12',
+		'13',
+		'14',
+		'15',
+		'16',
+		'17',
+	]);
 
 	await mobileWallLinks.first().scrollIntoViewIfNeeded();
 	await expect(mobileWallLinks.first()).toBeVisible();
 	await mobileWallLinks.first().click();
-	await expect(page.locator('.pswp__counter')).toHaveText('1 / 12');
+	await expect(page.locator('.pswp__counter')).toHaveText('1 / 17');
 });
 
 for (const route of ['/', '/gallery/red-carpet/sundance/']) {

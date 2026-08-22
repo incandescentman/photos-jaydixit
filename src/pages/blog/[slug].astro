@@ -124,7 +124,13 @@ const blogStructuredData = {
 							className="feature-share"
 						/>
 					</header>
-					<WikiPortraitsHero />
+					<div class="wikiportraits-feature-visual">
+						<WikiPortraitsHero />
+						<a class="wikiportraits-feature-link" href="/before-and-after/">
+							<span>See my other before and after photos</span>
+							<span aria-hidden="true">→</span>
+						</a>
+					</div>
 				</div>
 			) : (
 				<>
@@ -553,6 +559,32 @@ const blogStructuredData = {
 		color: #96773f;
 	}
 
+	.wikiportraits-feature-visual {
+		min-width: 0;
+	}
+
+	.wikiportraits-feature-link {
+		display: flex;
+		gap: 2rem;
+		align-items: center;
+		justify-content: space-between;
+		margin-top: 1.5rem;
+		padding: 1.35rem 0 1.1rem;
+		border-top: 1px solid #b9aa92;
+		border-bottom: 1px solid #b9aa92;
+		font-family: var(--serif);
+		font-size: clamp(1.75rem, 2.35vw, 3rem);
+		font-weight: 300;
+		line-height: 1.05;
+		letter-spacing: -0.02em;
+		color: #211d18;
+		text-decoration: none;
+	}
+
+	.wikiportraits-feature-link:hover {
+		color: #c0261f;
+	}
+
 	.blog-article--feature .article-content {
 		max-width: none;
 		margin: 0;
@@ -564,40 +596,6 @@ const blogStructuredData = {
 
 	.blog-article--feature .article-content :global(p:empty) {
 		display: none;
-	}
-
-	.blog-article--feature .article-content :global(.wikiportraits-opening) {
-		display: grid;
-		grid-template-columns: minmax(20rem, 0.82fr) minmax(30rem, 1fr);
-		max-width: 112rem;
-		margin: 0 auto;
-		padding: clamp(7rem, 10vw, 12rem) clamp(1.5rem, 4vw, 5rem);
-	}
-
-	.blog-article--feature .article-content :global(.wikiportraits-opening-statement) {
-		padding-right: clamp(3rem, 6vw, 8rem);
-	}
-
-	.blog-article--feature .article-content :global(.wikiportraits-opening-statement p) {
-		margin: 0;
-		font-size: clamp(3.4rem, 4.7vw, 6.4rem);
-		line-height: 1;
-		letter-spacing: -0.035em;
-		color: #1c1813;
-	}
-
-	.blog-article--feature .article-content :global(.wikiportraits-opening-copy) {
-		display: grid;
-		align-content: center;
-		gap: 1.75rem;
-		padding-left: clamp(3rem, 6vw, 8rem);
-		border-left: 1px solid #cfc6b3;
-	}
-
-	.blog-article--feature .article-content :global(.wikiportraits-opening-copy p) {
-		margin: 0;
-		font-size: clamp(1.45rem, 1.55vw, 1.85rem);
-		line-height: 1.48;
 	}
 
 	.blog-article--feature .article-content :global(.wikiportraits-evidence) {
@@ -620,13 +618,27 @@ const blogStructuredData = {
 		color: #211d18;
 	}
 
-	.blog-article--feature .article-content :global(.wikiportraits-pete-grid) {
+	.blog-article--feature .article-content :global(.wikiportraits-pete-sequence) {
 		display: grid;
-		grid-template-columns: minmax(0, 1fr) minmax(8rem, 0.28fr) minmax(0, 1fr);
-		gap: clamp(1.5rem, 3vw, 4rem);
-		align-items: center;
-		max-width: 92rem;
+		grid-template-columns: minmax(0, 1fr);
+		gap: clamp(2rem, 3.5vw, 3.5rem);
+		max-width: 52rem;
 		margin: 0 auto;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-pete-sequence-note) {
+		margin: 0;
+		font-size: clamp(2.25rem, 2.8vw, 3.5rem);
+		line-height: 1.14;
+		letter-spacing: -0.015em;
+		color: #211d18;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-pete-sequence-note > p) {
+		margin: 0;
+		font: inherit;
+		letter-spacing: inherit;
+		color: inherit;
 	}
 
 	.blog-article--feature .article-content :global(.wikiportraits-pete-figure) {
@@ -637,15 +649,26 @@ const blogStructuredData = {
 	.blog-article--feature .article-content :global(.wikiportraits-pete-figure .portfolio-lightbox) {
 		display: grid;
 		place-items: center;
-		height: clamp(30rem, 42vw, 48rem);
+		width: 100%;
+		aspect-ratio: 4 / 5;
 		padding: clamp(1rem, 2vw, 2.5rem);
 		background: #e7dfd3;
 		box-shadow: 0 24px 52px -36px rgba(42, 32, 23, 0.48);
 	}
 
+	.blog-article--feature
+		.article-content
+		:global(.wikiportraits-pete-figure--landscape .portfolio-lightbox) {
+		aspect-ratio: 700 / 366;
+	}
+
 	.blog-article--feature .article-content :global(.wikiportraits-pete-figure img) {
 		width: 100%;
 		height: 100%;
+		max-width: 100%;
+		max-height: 100%;
+		min-width: 0;
+		min-height: 0;
 		object-fit: contain;
 	}
 
@@ -654,46 +677,18 @@ const blogStructuredData = {
 	.blog-article--feature .article-content :global(.wikiportraits-jeremy figcaption) {
 		max-width: none;
 		margin: 1rem 0 0;
-		font-family: var(--serif);
+		font-family: var(--sans);
 		font-size: clamp(1.05rem, 1.2vw, 1.3rem);
 		line-height: 1.45;
 		text-align: left;
 		color: #5c554c;
 	}
 
-	.blog-article--feature .article-content :global(.wikiportraits-pete-transition) {
-		display: grid;
-		gap: 1.5rem;
-		justify-items: center;
-		text-align: center;
-	}
-
-	.blog-article--feature .article-content :global(.wikiportraits-pete-transition p) {
-		margin: 0;
-		font-size: clamp(1.25rem, 1.4vw, 1.55rem);
-		line-height: 1.35;
-		color: #4f493f;
-	}
-
-	.blog-article--feature .article-content :global(.wikiportraits-pete-transition span) {
-		display: grid;
-		place-items: center;
-		width: 3.25rem;
-		height: 3.25rem;
-		border: 1px solid #c7bda9;
-		border-radius: 50%;
-		background: var(--paper);
-		color: #c0261f;
-		font-size: 2rem;
-		line-height: 1;
-	}
-
 	.blog-article--feature .article-content :global(.wikiportraits-evidence-context) {
 		display: grid;
-		grid-template-columns: minmax(0, 1fr) 24rem;
-		gap: clamp(3rem, 7vw, 9rem);
+		grid-template-columns: minmax(0, 1fr);
 		align-items: center;
-		max-width: 84rem;
+		max-width: 64rem;
 		margin: clamp(6rem, 9vw, 10rem) auto 0;
 	}
 
@@ -704,8 +699,14 @@ const blogStructuredData = {
 
 	.blog-article--feature .article-content :global(.wikiportraits-evidence-copy p) {
 		margin: 0;
-		font-size: clamp(1.4rem, 1.5vw, 1.7rem);
-		line-height: 1.52;
+		font-size: clamp(1.75rem, 1.9vw, 2.25rem);
+		line-height: 1.42;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-kyle-bartley) {
+		width: 100%;
+		max-width: 48rem;
+		margin: 1rem auto 2rem;
 	}
 
 	.blog-article--feature .article-content :global(.wikiportraits-emil) {
@@ -747,15 +748,91 @@ const blogStructuredData = {
 
 	.blog-article--feature .article-content :global(.wikiportraits-origin-copy p) {
 		margin: 0;
-		font-size: clamp(1.4rem, 1.5vw, 1.75rem);
-		line-height: 1.5;
+		font-size: clamp(1.75rem, 1.9vw, 2.35rem);
+		line-height: 1.42;
+	}
+
+	:global(body.reading-face-arno[data-reading-face='arno'])
+		.blog-article--feature
+		.article-content
+		:global(.wikiportraits-origin-copy p) {
+		font-size: clamp(1.75rem, 1.9vw, 2.35rem);
+		line-height: 1.42;
 	}
 
 	.blog-article--feature .article-content :global(.wikiportraits-origin-copy p:first-child) {
-		font-size: clamp(1.8rem, 2.1vw, 2.5rem);
+		font-size: clamp(2rem, 2.15vw, 2.65rem);
 		font-style: italic;
 		line-height: 1.35;
 		color: #2a2620;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-origin-conan-pair) {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: clamp(1rem, 1.5vw, 1.5rem);
+		margin-top: clamp(2rem, 3vw, 3rem);
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-origin-conan-pair figure) {
+		margin: 0;
+		min-width: 0;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-origin-conan-pair img) {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-origin-travel),
+	:global(body.reading-face-arno[data-reading-face='arno'])
+		.blog-article--feature
+		.article-content
+		:global(.wikiportraits-origin-travel) {
+		width: 100%;
+		margin: clamp(5rem, 8vw, 9rem) 0 0;
+		font-size: clamp(2.75rem, 4.25vw, 5.5rem);
+		line-height: 1.08;
+		letter-spacing: -0.025em;
+		color: #211d18;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-origin-travel > p) {
+		margin: 0;
+		font: inherit;
+		letter-spacing: inherit;
+		color: inherit;
+	}
+
+	:global(body.reading-face-arno[data-reading-face='arno'])
+		.blog-article--feature
+		.article-content
+		:global(.wikiportraits-origin-copy p:first-child) {
+		font-size: clamp(2rem, 2.15vw, 2.65rem);
+		line-height: 1.35;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-origin-photo) {
+		width: 100%;
+		max-width: none;
+		margin: clamp(4rem, 7vw, 7rem) 0 0;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-origin-photo img) {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-origin-photo figcaption) {
+		max-width: none;
+		margin: 1rem 0 0;
+		font-family: var(--sans);
+		font-size: clamp(1.05rem, 1.2vw, 1.3rem);
+		line-height: 1.45;
+		text-align: left;
+		color: #5c554c;
 	}
 
 	.blog-article--feature .article-content :global(.wikiportraits-stats) {
@@ -771,7 +848,7 @@ const blogStructuredData = {
 		padding: clamp(2rem, 3vw, 3.5rem);
 		border-top: 1px solid #b9aa92;
 		border-bottom: 1px solid #b9aa92;
-		font-size: clamp(1.15rem, 1.25vw, 1.4rem);
+		font-size: clamp(1.75rem, 1.9vw, 2.25rem);
 		line-height: 1.45;
 		color: #4f493f;
 	}
@@ -807,8 +884,8 @@ const blogStructuredData = {
 
 	.blog-article--feature .article-content :global(.wikiportraits-application) {
 		display: grid;
-		grid-template-columns: minmax(20rem, 0.85fr) minmax(30rem, 1.15fr);
-		gap: clamp(3rem, 7vw, 9rem);
+		grid-template-columns: minmax(20rem, 0.85fr) auto minmax(30rem, 1.15fr);
+		gap: clamp(1.5rem, 3vw, 4rem);
 		align-items: center;
 		max-width: 100rem;
 		margin: 0 auto clamp(5rem, 7vw, 8rem);
@@ -842,7 +919,8 @@ const blogStructuredData = {
 		place-items: center;
 		width: 3.25rem;
 		height: 3.25rem;
-		margin: 2rem 0;
+		align-self: center;
+		margin: 0;
 		border: 1px solid #cfc6b3;
 		border-radius: 50%;
 		font-family: var(--sans);
@@ -854,7 +932,7 @@ const blogStructuredData = {
 	.blog-article--feature .article-content :global(.wikiportraits-application-context) {
 		max-width: 34rem;
 		font-family: var(--serif);
-		font-size: clamp(1.45rem, 1.65vw, 2rem);
+		font-size: clamp(1.75rem, 1.9vw, 2.25rem);
 		font-weight: 400;
 		line-height: 1.35;
 		color: #3e3932;
@@ -890,7 +968,7 @@ const blogStructuredData = {
 		display: block;
 		margin-bottom: 0.55rem;
 		font-family: var(--sans);
-		font-size: clamp(0.9rem, 1vw, 1.1rem);
+		font-size: clamp(1.75rem, 1.9vw, 2.25rem);
 		font-weight: 650;
 		color: #29251f;
 	}
@@ -900,7 +978,7 @@ const blogStructuredData = {
 		padding: 0.8rem 1rem;
 		border: 1.5px solid #8b867e;
 		font-family: var(--sans);
-		font-size: clamp(1.45rem, 2.4vw, 3rem);
+		font-size: clamp(1.75rem, 2.4vw, 3rem);
 		font-weight: 450;
 		line-height: 1.15;
 		letter-spacing: 0.01em;
@@ -928,12 +1006,34 @@ const blogStructuredData = {
 
 	.blog-article--feature .article-content :global(.wikiportraits-jeremy-copy p) {
 		margin: 0;
-		font-size: clamp(1.35rem, 1.45vw, 1.65rem);
-		line-height: 1.5;
+		font-size: clamp(1.85rem, 1.9vw, 2.25rem);
+		line-height: 1.42;
 	}
 
 	.blog-article--feature .article-content :global(.wikiportraits-jeremy figure) {
 		margin: 0;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-jeremy-visual) {
+		display: grid;
+		gap: 1.5rem;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-before-after-link) {
+		justify-self: end;
+		padding-bottom: 0.35rem;
+		border-bottom: 1px solid currentColor;
+		color: #17130f;
+		font-family: var(--sans);
+		font-size: clamp(1.75rem, 1.9vw, 2.25rem);
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-decoration: none;
+		text-transform: uppercase;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-before-after-link:hover) {
+		color: #c0261f;
 	}
 
 	.blog-article--feature .article-content :global(.wikiportraits-jeremy .before-after-arrow) {
@@ -947,26 +1047,64 @@ const blogStructuredData = {
 	}
 
 	.blog-article--feature .article-content :global(.wikiportraits-technique) {
-		max-width: 48rem;
+		display: grid;
+		grid-template-columns: minmax(22rem, 0.85fr) minmax(30rem, 1.15fr);
+		gap: clamp(3rem, 7vw, 8rem);
+		align-items: start;
+		max-width: 112rem;
 		margin: 0 auto;
 	}
 
-	.blog-article--feature .article-content :global(.wikiportraits-technique p) {
+	.blog-article--feature .article-content :global(.wikiportraits-technique-body > p) {
 		margin: 0;
-		font-size: clamp(1.45rem, 1.6vw, 1.85rem);
-		line-height: 1.52;
+		font-size: clamp(1.75rem, 1.7vw, 2.05rem);
+		line-height: 1.38;
+		letter-spacing: -0.015em;
+		color: #211d18;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-technique-body) {
+		display: grid;
+		gap: clamp(1.25rem, 2vw, 2rem);
+	}
+
+	:global(body.reading-face-arno[data-reading-face='arno'])
+		.blog-article--feature
+		.article-content
+		:global(.wikiportraits-technique-body > p) {
+		margin: 0;
+		font-size: clamp(1.75rem, 1.7vw, 2.05rem);
+		line-height: 1.38;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-ana-photo) {
+		margin: 0;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-ana-photo img) {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-ana-photo figcaption) {
+		margin: 0.9rem 0 0;
+		font-family: var(--sans);
+		font-size: clamp(1.05rem, 1.2vw, 1.3rem);
+		line-height: 1.45;
+		color: #5c554c;
 	}
 
 	.blog-article--feature .article-content :global(.wikiportraits-mission) {
 		display: grid;
-		grid-template-columns: minmax(28rem, 1.2fr) minmax(22rem, 0.8fr);
+		grid-template-columns: 1fr;
 		margin-top: clamp(5rem, 8vw, 9rem);
 		padding-top: clamp(4rem, 6vw, 7rem);
 		border-top: 1px solid #b9aa92;
 	}
 
 	.blog-article--feature .article-content :global(.wikiportraits-mission-primary) {
-		padding-right: clamp(3rem, 6vw, 8rem);
+		max-width: 86rem;
 	}
 
 	.blog-article--feature .article-content :global(.wikiportraits-mission-primary p) {
@@ -978,14 +1116,63 @@ const blogStructuredData = {
 	}
 
 	.blog-article--feature .article-content :global(.wikiportraits-mission-secondary) {
-		padding-left: clamp(3rem, 6vw, 8rem);
-		border-left: 1px solid #cfc6b3;
+		margin-top: clamp(4rem, 6vw, 7rem);
+		padding-top: clamp(3rem, 4vw, 4.5rem);
+		border-top: 1px solid #cfc6b3;
 	}
 
 	.blog-article--feature .article-content :global(.wikiportraits-mission-secondary p) {
+		max-width: 52rem;
 		margin: 0;
-		font-size: clamp(1.4rem, 1.5vw, 1.7rem);
-		line-height: 1.5;
+		font-size: clamp(1.75rem, 1.9vw, 2.25rem);
+		line-height: 1.42;
+	}
+
+	:global(body.reading-face-arno[data-reading-face='arno'])
+		.blog-article--feature
+		.article-content
+		:global(.wikiportraits-evidence-copy p),
+	:global(body.reading-face-arno[data-reading-face='arno'])
+		.blog-article--feature
+		.article-content
+		:global(.wikiportraits-application-context p),
+	:global(body.reading-face-arno[data-reading-face='arno'])
+		.blog-article--feature
+		.article-content
+		:global(.wikiportraits-stat p),
+	:global(body.reading-face-arno[data-reading-face='arno'])
+		.blog-article--feature
+		.article-content
+		:global(.wikiportraits-mission-secondary p) {
+		font-size: clamp(1.75rem, 1.9vw, 2.25rem);
+		line-height: 1.42;
+	}
+
+	:global(body.reading-face-arno[data-reading-face='arno'])
+		.blog-article--feature
+		.article-content
+		:global(.wikiportraits-jeremy-copy p) {
+		font-size: clamp(1.85rem, 1.9vw, 2.25rem);
+		line-height: 1.42;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-founders-photo) {
+		max-width: 88rem;
+		margin: clamp(3rem, 5vw, 5rem) 0 0;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-founders-photo img) {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	.blog-article--feature .article-content :global(.wikiportraits-founders-photo figcaption) {
+		margin: 0.9rem 0 0;
+		font-family: var(--sans);
+		font-size: clamp(1.05rem, 1.2vw, 1.3rem);
+		line-height: 1.45;
+		color: #5c554c;
 	}
 
 	.blog-article--feature .article-content :global(.wikiportraits-cta) {
@@ -1026,21 +1213,19 @@ const blogStructuredData = {
 			max-width: 10ch;
 		}
 
-		.blog-article--feature .article-content :global(.wikiportraits-opening),
 		.blog-article--feature .article-content :global(.wikiportraits-origin-grid),
 		.blog-article--feature .article-content :global(.wikiportraits-jeremy),
+		.blog-article--feature .article-content :global(.wikiportraits-technique),
 		.blog-article--feature .article-content :global(.wikiportraits-mission) {
 			grid-template-columns: 1fr;
 		}
 
-		.blog-article--feature .article-content :global(.wikiportraits-opening-statement),
 		.blog-article--feature .article-content :global(.wikiportraits-origin-lede),
 		.blog-article--feature .article-content :global(.wikiportraits-mission-primary) {
 			padding-right: 0;
 			padding-bottom: 3.5rem;
 		}
 
-		.blog-article--feature .article-content :global(.wikiportraits-opening-copy),
 		.blog-article--feature .article-content :global(.wikiportraits-origin-copy),
 		.blog-article--feature .article-content :global(.wikiportraits-mission-secondary) {
 			padding: 3.5rem 0 0;
@@ -1049,6 +1234,10 @@ const blogStructuredData = {
 		}
 
 		.blog-article--feature .article-content :global(.wikiportraits-jeremy) {
+			gap: 4rem;
+		}
+
+		.blog-article--feature .article-content :global(.wikiportraits-technique) {
 			gap: 4rem;
 		}
 
@@ -1067,14 +1256,12 @@ const blogStructuredData = {
 			font-size: clamp(3.5rem, 15.5vw, 5.5rem);
 		}
 
-		.blog-article--feature .article-content :global(.wikiportraits-opening),
 		.blog-article--feature .article-content :global(.wikiportraits-origin),
 		.blog-article--feature .article-content :global(.wikiportraits-jeremy),
 		.blog-article--feature .article-content :global(.wikiportraits-closing) {
 			padding-inline: 1.5rem;
 		}
 
-		.blog-article--feature .article-content :global(.wikiportraits-opening-statement p),
 		.blog-article--feature .article-content :global(.wikiportraits-origin-lede p),
 		.blog-article--feature .article-content :global(.wikiportraits-jeremy-copy h2) {
 			font-size: clamp(2.9rem, 13vw, 4.5rem);
@@ -1086,22 +1273,6 @@ const blogStructuredData = {
 
 		.blog-article--feature .article-content :global(.wikiportraits-evidence-lede) {
 			text-align: left;
-		}
-
-		.blog-article--feature .article-content :global(.wikiportraits-pete-grid) {
-			grid-template-columns: 1fr;
-			gap: 2.5rem;
-		}
-
-		.blog-article--feature .article-content :global(.wikiportraits-pete-transition span) {
-			transform: rotate(90deg);
-		}
-
-		.blog-article--feature
-			.article-content
-			:global(.wikiportraits-pete-figure .portfolio-lightbox) {
-			height: auto;
-			min-height: 28rem;
 		}
 
 		.blog-article--feature .article-content :global(.wikiportraits-evidence-context) {
@@ -1120,6 +1291,11 @@ const blogStructuredData = {
 		.blog-article--feature .article-content :global(.wikiportraits-application) {
 			grid-template-columns: 1fr;
 			margin-inline: 1.5rem;
+		}
+
+		.blog-article--feature .article-content :global(.wikiportraits-application-arrow) {
+			justify-self: center;
+			transform: rotate(90deg);
 		}
 
 		.blog-article--feature .article-content :global(.wikiportraits-stat + .wikiportraits-stat) {
@@ -1141,9 +1317,9 @@ const blogStructuredData = {
 			font-size: 3rem;
 		}
 
-		.article-content :global(p),
-		.article-content :global(li),
-		.article-content :global(blockquote) {
+		.blog-article:not(.blog-article--feature) .article-content :global(p),
+		.blog-article:not(.blog-article--feature) .article-content :global(li),
+		.blog-article:not(.blog-article--feature) .article-content :global(blockquote) {
 			font-size: 1.25rem;
 		}
 
@@ -1154,6 +1330,69 @@ const blogStructuredData = {
 		.article-content :global(.before-after-arrow) {
 			justify-self: center;
 			transform: rotate(90deg);
+		}
+	}
+
+	@media print {
+		:global(.site-nav),
+		:global(footer) {
+			display: none !important;
+		}
+
+		.feature-masthead {
+			min-height: 0;
+			padding: 0.45in 0 0.35in;
+		}
+
+		.blog-article--feature .article-content :global(.wikiportraits-origin-grid),
+		.blog-article--feature .article-content :global(.wikiportraits-jeremy),
+		.blog-article--feature .article-content :global(.wikiportraits-technique),
+		.blog-article--feature .article-content :global(.wikiportraits-mission),
+		.blog-article--feature .article-content :global(.wikiportraits-application) {
+			display: block;
+		}
+
+		.blog-article--feature .article-content :global(.wikiportraits-origin-copy),
+		.blog-article--feature .article-content :global(.wikiportraits-mission-secondary) {
+			padding: 0.3in 0 0;
+			border-top: 1px solid #cfc6b3;
+			border-left: 0;
+		}
+
+		.blog-article--feature .article-content :global(.wikiportraits-application-arrow) {
+			display: none;
+		}
+
+		.blog-article--feature .article-content :global(figure),
+		.blog-article--feature .article-content :global(.portfolio-lightbox),
+		.blog-article--feature .article-content :global(.before-after-grid),
+		.blog-article--feature .article-content :global(.wikiportraits-origin-conan-pair),
+		.blog-article--feature .article-content :global(.wikiportraits-application-form),
+		.blog-article--feature .article-content :global(.wikiportraits-evidence-lede) {
+			break-inside: avoid;
+			page-break-inside: avoid;
+		}
+
+		.blog-article--feature .article-content :global(figure .portfolio-lightbox) {
+			width: 100%;
+			height: auto !important;
+			min-height: 0 !important;
+			aspect-ratio: auto !important;
+			padding: 0.15in !important;
+		}
+
+		.blog-article--feature .article-content :global(figure img) {
+			display: block;
+			width: auto !important;
+			height: auto !important;
+			max-width: 100% !important;
+			max-height: 7.2in !important;
+			margin-inline: auto;
+			object-fit: contain;
+		}
+
+		.blog-article--feature .article-content :global(.wikiportraits-pete-sequence) {
+			gap: 0.3in;
 		}
 	}
 </style>

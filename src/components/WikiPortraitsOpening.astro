@@ -1,0 +1,143 @@
+<section class="wikiportraits-opening-composed">
+	<figure class="wikiportraits-emil-example">
+		<div class="wikiportraits-emil-image">
+			<img
+				src="/images/blog/emil-wakim-wikipedia-photo-reddit.png"
+				alt="A screenshot of a low-quality Wikipedia portrait discussed online"
+				width="1080"
+				height="1313"
+				loading="lazy"
+				decoding="async"
+			/>
+		</div>
+		<figcaption>
+			Wikipedia editors pulled down this photo, deeming that having no photo at all would serve the
+			public good better than displaying whatever this is.
+		</figcaption>
+	</figure>
+
+	<div class="wikiportraits-opening-intro">
+		<div class="wikiportraits-opening-statement">
+			<p>Wikipedia’s articles are amazing but the photos are horrible.</p>
+		</div>
+
+		<div class="wikiportraits-opening-copy">
+			<p>
+				There’s a reason for that. All images on Wikipedia have to be uploaded under a Creative
+				Commons license. That means you contribute the photo to the public domain and anyone can use
+				it for anything they want, without paying you anything.
+			</p>
+			<p>
+				What that means is that professional photographers don’t upload their photos to Wikipedia.
+				They make a living by charging for their photos, and once a photo is on Wikipedia, it's free
+				for anyone to use as they please.
+			</p>
+		</div>
+	</div>
+</section>
+
+<style>
+	.wikiportraits-opening-composed {
+		box-sizing: border-box;
+		max-width: 112rem;
+		margin: 0 auto;
+		padding: clamp(7rem, 10vw, 12rem) clamp(1.5rem, 4vw, 5rem);
+	}
+
+	.wikiportraits-opening-intro {
+		display: grid;
+		grid-template-columns: minmax(20rem, 0.82fr) minmax(30rem, 1fr);
+		align-items: center;
+		margin-top: clamp(4rem, 6vw, 7rem);
+	}
+
+	.wikiportraits-opening-statement {
+		padding-right: clamp(3rem, 6vw, 8rem);
+	}
+
+	.wikiportraits-opening-statement p {
+		margin: 0;
+		font-size: clamp(3.4rem, 4.7vw, 6.4rem);
+		font-weight: 300;
+		line-height: 1;
+		letter-spacing: -0.035em;
+		color: #1c1813;
+	}
+
+	.wikiportraits-opening-copy {
+		display: grid;
+		gap: clamp(2rem, 3vw, 3rem);
+		padding-left: clamp(3rem, 6vw, 8rem);
+		border-left: 1px solid #cfc6b3;
+	}
+
+	.wikiportraits-opening-copy p {
+		margin: 0;
+		font-size: clamp(2rem, 2.3vw, 2.8rem);
+		line-height: 1.35;
+		color: #211d18;
+	}
+
+	:global(body.reading-face-arno[data-reading-face='arno']) .wikiportraits-opening-copy p {
+		font-size: clamp(2rem, 2.3vw, 2.8rem);
+		line-height: 1.35;
+	}
+
+	.wikiportraits-emil-example {
+		max-width: 58rem;
+		margin: 0 auto !important;
+	}
+
+	.wikiportraits-emil-image {
+		min-width: 0;
+	}
+
+	.wikiportraits-emil-image img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	.wikiportraits-emil-example figcaption {
+		max-width: 48ch;
+		margin: 1rem 0 0;
+		font-family: var(--sans);
+		font-size: clamp(1.15rem, 1.25vw, 1.4rem);
+		line-height: 1.4;
+		color: #6f6559;
+	}
+
+	@media (max-width: 1050px) {
+		.wikiportraits-opening-intro {
+			grid-template-columns: 1fr;
+		}
+
+		.wikiportraits-opening-statement {
+			padding: 0 0 3.5rem;
+		}
+
+		.wikiportraits-opening-copy {
+			padding: 3.5rem 0 0;
+			border-top: 1px solid #cfc6b3;
+			border-left: 0;
+		}
+
+		.wikiportraits-emil-example figcaption {
+			max-width: 38ch;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.wikiportraits-opening-composed {
+			padding-inline: 1.5rem;
+		}
+
+		.wikiportraits-opening-statement p {
+			font-size: clamp(2.9rem, 13vw, 4.5rem);
+		}
+
+		.wikiportraits-opening-copy p {
+			font-size: clamp(1.55rem, 7vw, 2rem);
+		}
+	}
+</style>

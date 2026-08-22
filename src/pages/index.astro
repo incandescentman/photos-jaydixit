@@ -152,23 +152,23 @@ const mobilePreservedHiddenWallIds = new Set([
 	imageData(8).publicId,
 	imageData(31).publicId,
 ]);
-const mobileWideWallPositions = new Set([3, 8, 11]);
+const mobileWideWallPositions = new Set([3, 8, 11, 16, 17]);
 let mobileWallPosition = 0;
-const wallPhotos = [2, 0, 9, 22, 8, 3, 18, 10, 24, 19, 5, 25, 32, 11, 31, 17, 33, 4].map(
-	(imageIndex) => {
-		const photo = imageData(imageIndex);
-		const mobileDuplicate =
-			heroPublicIds.has(photo.publicId) || mobilePreservedHiddenWallIds.has(photo.publicId);
-		const mobilePosition = mobileDuplicate ? null : ++mobileWallPosition;
+const wallPhotos = [
+	2, 0, 9, 22, 8, 3, 18, 10, 24, 19, 5, 25, 32, 11, 31, 17, 33, 4, 35, 13, 36, 37, 38,
+].map((imageIndex) => {
+	const photo = imageData(imageIndex);
+	const mobileDuplicate =
+		heroPublicIds.has(photo.publicId) || mobilePreservedHiddenWallIds.has(photo.publicId);
+	const mobilePosition = mobileDuplicate ? null : ++mobileWallPosition;
 
-		return {
-			...photo,
-			mobileDuplicate,
-			mobilePosition,
-			mobileWide: mobilePosition !== null && mobileWideWallPositions.has(mobilePosition),
-		};
-	},
-);
+	return {
+		...photo,
+		mobileDuplicate,
+		mobilePosition,
+		mobileWide: mobilePosition !== null && mobileWideWallPositions.has(mobilePosition),
+	};
+});
 const wallLayouts = [
 	'wall-feature',
 	'wall-portrait',
@@ -187,15 +187,21 @@ const wallLayouts = [
 	'wall-portrait',
 	'wall-tall',
 	'wall-landscape',
-	'wall-portrait wall-final-portrait',
+	'wall-portrait',
+	'wall-portrait',
+	'wall-portrait',
+	'wall-landscape',
+	'wall-landscape wall-full-landscape',
+	'wall-landscape wall-full-landscape',
 ];
 
 const wallImageSizes = (index: number, mobileWide: boolean) => {
 	const layout = wallLayouts[index];
-	const isWide = layout === 'wall-feature' || layout === 'wall-landscape';
+	const isFull = layout.includes('wall-full-landscape');
+	const isWide = layout.includes('wall-feature') || layout.includes('wall-landscape');
 
 	return cldSizes(
-		`(max-width: 540px) ${mobileWide ? 'calc(100vw - 16px)' : 'calc((100vw - 24px) / 2)'}, (max-width: 820px) ${mobileWide ? 'calc(100vw - 24px)' : 'calc((100vw - 36px) / 2)'}, (max-width: 1180px) ${isWide ? '50vw' : '33vw'}, ${isWide ? '50vw' : '25vw'}`,
+		`(max-width: 540px) ${mobileWide ? 'calc(100vw - 16px)' : 'calc((100vw - 24px) / 2)'}, (max-width: 820px) ${mobileWide ? 'calc(100vw - 24px)' : 'calc((100vw - 36px) / 2)'}, (max-width: 1180px) ${isFull ? '100vw' : isWide ? '50vw' : '33vw'}, ${isFull ? '100vw' : isWide ? '50vw' : '25vw'}`,
 	);
 };
 
@@ -1531,6 +1537,10 @@ const description =
 		grid-column: span 6;
 	}
 
+	.wall-card.wall-full-landscape {
+		grid-column: 1 / -1;
+	}
+
 	.wall-card.wall-tall {
 		grid-column: span 3;
 	}
@@ -2095,13 +2105,17 @@ const description =
 		/* Full-width beats, placed so the half-width cards always pair off evenly. */
 		.wall-card:nth-child(8),
 		.wall-card:nth-child(13),
-		.wall-card:nth-child(17) {
+		.wall-card:nth-child(17),
+		.wall-card:nth-child(22),
+		.wall-card:nth-child(23) {
 			grid-column: span 12;
 		}
 
 		.wall-card:nth-child(8) .wall-media,
 		.wall-card:nth-child(13) .wall-media,
-		.wall-card:nth-child(17) .wall-media {
+		.wall-card:nth-child(17) .wall-media,
+		.wall-card:nth-child(22) .wall-media,
+		.wall-card:nth-child(23) .wall-media {
 			aspect-ratio: 3 / 2;
 		}
 

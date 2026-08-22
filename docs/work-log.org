@@ -2164,3 +2164,79 @@ imagesLoaded(container).on('progress', function(instance, image) {
 - Source audit found no remaining leading-zero formatting in visitor-facing counters; literal filenames, dates, coordinates, and media identifiers remain unchanged.
 - Desktop and ~390x844~ mobile browser checks confirmed the comparison order, TOC navigation, Fondazione Prada crops, no page overflow, no broken images, and working PhotoSwipe open and Escape-close behavior.
 - ~npm run lint~, all 21 Vitest tests, the 124-page production build, and all 25 Playwright browser tests pass.
+
+* 2026-08-22 - Replace the John Jumper Nobel photograph
+
+** Photograph
+- Replaced the John Jumper image on the Nobel 2024 page with Jay’s supplied Wikimedia Commons portrait of Jumper presenting his Nobel Lecture.
+- Preserved the existing caption, alt text, Nobel-page position, and PhotoSwipe integration, and linked the image to its Commons source page.
+- Added John Sears’s supplied Stockholm portrait beneath “Photographing The Nobel Lectures in Stockholm,” using the embedded creator credit and preserving PhotoSwipe.
+
+** Physics photograph pairing
+- Changed the Nobel-page hero to Demis Hassabis and placed John Hopfield first in a two-photo Physics pair with Geoffrey Hinton, so the existing Hopfield passage leads into Hopfield’s photograph while preserving Hinton on the page.
+- Replaced the repeated hero photograph in the Chemistry section with Jay’s supplied second Hassabis photograph. Baker and Hassabis share the first row; Jumper is centered alone below, so three photographs never occupy one row.
+
+** Body typography
+- Increased the Nobel-page introduction and section body copy to ~25px~, matching the size of the hero introduction without changing Jay’s prose.
+
+** Economic Sciences
+- Added Jay’s supplied Simon Johnson portrait to the Economic Sciences section.
+- Used orientation-specific editorial layouts: Jumper anchors the right side of the Chemistry composition beside stacked Baker and Hassabis landscapes; Robinson and Johnson share the first Economic Sciences row, with Acemoglu’s landscape spanning the row below.
+
+** Oslo section
+- Moved the Nobel Peace Prize ceremony award-presentation photograph into its own “The ceremony” subsection and kept only procession photographs under “The Torchlight Procession.”
+- Filled the sixth Torchlight Procession grid slot with Jay’s supplied wide crowd photograph.
+- Replaced the existing ~oslo-21~ procession photograph with Jay’s stronger alternate frame and removed the old frame’s no-longer-accurate Commons link.
+
+** Copy
+- Added Jay’s supplied paragraph about Hopfield as a speaker and Hinton reading from his notes, verbatim.
+- Removed the sentence about Baker being a great speaker and Hassabis being nice and friendly.
+- Replaced “An hour with each laureate.” with “Photographing The Nobel Lectures in Stockholm”.
+- Replaced “The institutions behind prosperity” with “The Nobel Prize in Economics”.
+
+** WikiPortraits story
+- Added “See my other before and after photos” links beneath both the Vanessa Kirby and Jeremy Strong comparisons, pointing to the canonical ~/before-and-after/~ page.
+- Extracted the opening beat into [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/WikiPortraitsOpening.astro][WikiPortraitsOpening.astro]] and moved the centered Emil Wakim example and its smaller caption above the “Wikipedia’s articles” explanation.
+- Rebuilt the Pete Davidson comparison as a centered single-column sequence and added the 2013 Wikipedia photograph with Jay’s setup and explanation, followed by Jay’s supplied mall image and both existing photographs.
+- Replaced the commentary following the Pete Davidson comparison with Jay's supplied passage about Wikipedia photographs becoming unofficial portraits of record.
+- Added Jay’s current Kyle Bartley Wikipedia-photo example immediately after the linked “blurry thumbnail” passage.
+- Added print-specific article reflow rules and exported a visually verified, 23-page letter-size PDF to [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/output/pdf/wikiportraits-story.pdf][wikiportraits-story.pdf]].
+- Placed Jay’s supplied TIFF group photograph full-width beneath independently sized origin columns, added Jay’s caption, and turned the travel paragraph into a large full-width transition above it.
+- Added the two existing SXSW 2024 Conan O’Brien photographs as a compact pair beneath the origin story’s right-column copy.
+- Expanded and rebalanced the Ana de Armas technique passage beside Jay’s TIFF portrait, added Jay’s caption, and kept the opening sentence as body text.
+- Added the supplied Jennifer 8. Lee and Kevin Payravi portrait beneath the shortened team passage, kept the photograph in its true orientation, enlarged it, and added Jay’s revised caption.
+- Raised undersized narrative copy throughout the feature while keeping captions visually subordinate.
+- Replaced the global Arno ~21px~ WikiPortraits rule with the Jenny/SXSW passage’s large narrative minimum and prevented the generic mobile blog rule from shrinking feature-essay copy.
+- Standardized feature captions in sans serif, moved the accreditation arrow between the explanatory copy and the form it points toward, and corrected Jeremy Strong’s caption from “sat” to “posed.”
+- Updated the reach stat with Jay’s 10-million-view line and its parenthetical contrast.
+- Updated the collective reach statistic to almost 400 million monthly views, framed as more than 1 out of every 100 Wikipedia pageviews globally.
+- Replaced the article description, corrected “Wikipedia’s” to a typographic apostrophe, and revised the Emil Wakim caption with Jay’s exact copy.
+- Enlarged every narrative transition in the Pete Davidson photo sequence to a consistent display scale, including the inner paragraphs that MDX generates inside the transition wrappers.
+- Converted “He’s just Pete, chilling at the mall.” from a display transition into the mall selfie’s caption.
+- Added the current Kyle Bartley example after the linked “blurry thumbnail” passage, moved the two bad-Wikipedia-photo Instagram links into the same all-caps ongoing-situation paragraph, and removed the redundant general sentence about editors deleting bad photographs.
+- Repaired the large full-width travel transition’s MDX wrapper so the visible paragraph receives the intended display scale instead of leaving that class on an empty generated paragraph.
+
+** Verification
+- Desktop and ~390x844~ mobile browser checks confirmed the final image order and layouts, ~25px~ body copy, no overflow or error overlays, the ceremony/procession separation, and all 17 distinct photographs loading.
+- PhotoSwipe opened the Stockholm introduction photograph as ~2 / 17~ and the final procession photograph as ~17 / 17~, and closed with Escape.
+- Formatting, lint, all 21 Vitest tests, the 128-page production build, and all 25 Playwright browser tests pass.
+
+* 2026-08-22 - Add Stephen Root, Ella Hunt, Demis Hassabis, and two Oslo photographs to the homepage photo wall
+
+** Photographs
+- Added Jay’s Stephen Root portrait from SXSW 2024 and the supplied Ella Hunt portrait from TIFF 2024 to ~src/gallery/highlights/~ and the Cloudinary-backed homepage image manifest.
+- Added the existing Demis Hassabis Nobel Lectures portrait to the Cloudinary-backed homepage image manifest without duplicating its canonical gallery source.
+- Added two separate existing Oslo Nobel Peace Prize torchlight-procession photographs to the same manifest without duplicating their canonical gallery sources.
+- Added all five photographs after Lisa Gilroy in the photo wall. Stephen Root is mobile position ~13~, Ella Hunt is position ~14~, Demis Hassabis is position ~15~, and the Oslo photographs are full-width positions ~16~ and ~17~.
+- Preserved the existing six hero-duplicate exclusions and extended the established full-width mobile-beat pattern to both new final landscape cards.
+
+** Nobel page
+- Reordered the Physics-prize sentence to name Geoffrey Hinton before John Hopfield, exactly as requested.
+- Replaced the Nobel Lectures introduction with Jay’s revised sentence describing each laureate’s hour on stage.
+- Removed ~.prose-section~ from the global Arno reading-measure selector. The selector had constrained the entire two-column Nobel intro grid to ~68ch~, leaving only a one-word-wide text column at desktop widths.
+
+** Verification
+- Updated the mobile-wall regression test for 17 visible photographs and a ~1 / 17~ PhotoSwipe sequence.
+- Desktop and ~390x844~ mobile browser checks confirmed all 23 wall cards, distinct ~oslo-21~ and ~oslo-15~ images, the final two full-width mobile beats, no horizontal overflow, and working PhotoSwipe open and Escape-close behavior.
+- Desktop and mobile browser checks confirmed the repaired Nobel introduction width and both requested copy changes.
+- ~npm run lint~, all 21 Vitest tests, the 124-page production build, and all 25 Playwright browser tests pass.

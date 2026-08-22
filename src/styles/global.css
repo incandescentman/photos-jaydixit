@@ -164,6 +164,23 @@ body.reading-face-arno[data-reading-face='arno'] .world-tour :where(.city-line, 
 	line-height: 1.55;
 }
 
+body.reading-face-arno[data-reading-face='arno']
+	.blog-article--feature
+	.article-content
+	:where(
+		.wikiportraits-opening-copy,
+		.wikiportraits-evidence-copy,
+		.wikiportraits-origin-copy,
+		.wikiportraits-application-context,
+		.wikiportraits-jeremy-copy,
+		.wikiportraits-technique,
+		.wikiportraits-mission-secondary
+	)
+	p {
+	font-size: clamp(1.75rem, 1.9vw, 2.35rem);
+	line-height: 1.42;
+}
+
 body.reading-face-arno[data-reading-face='arno'] .ed :where(.ed-lead, .ed-essay) p:not(:last-child),
 body.reading-face-arno[data-reading-face='arno']
 	.blog-article
@@ -225,6 +242,18 @@ body.reading-face-arno[data-reading-face='arno'] .nobel-page .standfirst p {
 	line-height: 1.4;
 }
 
+body.reading-face-arno[data-reading-face='arno']
+	.nobel-page
+	.prose-section
+	> p:not(.section-number),
+body.reading-face-arno[data-reading-face='arno']
+	.nobel-page
+	.section-heading
+	> p:not(.section-number),
+body.reading-face-arno[data-reading-face='arno'] .nobel-page .section-copy p {
+	font-size: 25px;
+}
+
 body.reading-face-arno[data-reading-face='arno'] .ed .ed-quote-text,
 body.reading-face-arno[data-reading-face='arno']
 	.blog-article
@@ -244,7 +273,6 @@ body.reading-face-arno
 		.ed-essay,
 		.article-content,
 		.standfirst,
-		.prose-section,
 		.section-copy,
 		.world-intro,
 		.city-line,
