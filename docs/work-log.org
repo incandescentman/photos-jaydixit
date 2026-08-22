@@ -2094,3 +2094,9 @@ imagesLoaded(container).on('progress', function(instance, image) {
 ** Verification
 - ~pnpm run test -- --run~ passes all 21 tests, and ~pnpm run build~ generates all 123 static pages.
 - Desktop and ~390x844~ mobile browser checks confirm the seven hero prints, Alexander in the intended slot, the 11-card mobile wall, no browser errors, and working PhotoSwipe open, next-image navigation, and Escape close.
+
+** Second hero-layout pass
+- Brought John Hopfield to the front layer and moved him slightly right without changing his approved rotation.
+- Added Steven Yeun as an eighth hero print between Alexander Skarsgård and Sydney Sweeney, then set his reviewed position to ~x: 47%~, ~y: 64%~, and ~-1.7deg~.
+- Swapped Sydney Sweeney into the large central slot and Vanessa Kirby into Sydney’s former lower slot, then brought Vanessa to the front layer.
+- Changed the mobile contact-sheet strip from four to five columns so all five smaller prints remain on one row. The production build passes, and PhotoSwipe opens Steven as item 5 of 8, navigates to the next image, and closes with Escape.
