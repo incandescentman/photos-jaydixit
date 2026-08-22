@@ -20,7 +20,7 @@ export type WorldTourDestination = {
 export const worldTourDestinations: WorldTourDestination[] = [
 	{
 		id: 'stockholm',
-		number: '01',
+		number: '1',
 		city: 'Stockholm',
 		country: 'Sweden',
 		event: 'Nobel Prize Ceremony',
@@ -36,7 +36,7 @@ export const worldTourDestinations: WorldTourDestination[] = [
 	},
 	{
 		id: 'busan',
-		number: '02',
+		number: '2',
 		city: 'Busan',
 		country: 'South Korea',
 		event: 'Busan International Film Festival',
@@ -46,7 +46,7 @@ export const worldTourDestinations: WorldTourDestination[] = [
 	},
 	{
 		id: 'locarno',
-		number: '03',
+		number: '3',
 		city: 'Locarno',
 		country: 'Switzerland',
 		event: 'Locarno Film Festival',
@@ -56,7 +56,7 @@ export const worldTourDestinations: WorldTourDestination[] = [
 	},
 	{
 		id: 'park-city',
-		number: '04',
+		number: '4',
 		city: 'Park City',
 		country: 'United States',
 		event: 'Sundance Film Festival',
@@ -72,7 +72,7 @@ export const worldTourDestinations: WorldTourDestination[] = [
 	},
 	{
 		id: 'austin',
-		number: '05',
+		number: '5',
 		city: 'Austin',
 		country: 'United States',
 		event: 'SXSW',

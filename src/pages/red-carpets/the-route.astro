@@ -47,7 +47,7 @@ const routeClientData = {
 	<main class="route" data-route-page>
 		<header class="route-hero">
 			<div>
-				<p class="route-kicker">Red carpets around the world · Concept 05</p>
+				<p class="route-kicker">Red carpets around the world · Concept 5</p>
 				<h1>
 					The Route
 					<em>six cities, one camera</em>
@@ -66,7 +66,7 @@ const routeClientData = {
 		</header>
 
 		<aside class="route-rail" aria-hidden="true">
-			<p><b data-route-number>01</b><span>/06</span></p>
+			<p><b data-route-number>1</b><span>/6</span></p>
 			<div><i data-route-progress></i></div>
 			<small data-route-distance>6,995 mi from Brooklyn</small>
 		</aside>
@@ -1033,7 +1033,7 @@ const routeClientData = {
 
 	const setChapter = (chapter: HTMLElement) => {
 		const index = Number(chapter.dataset.index ?? 0);
-		if (railNumber) railNumber.textContent = String(index + 1).padStart(2, '0');
+		if (railNumber) railNumber.textContent = String(index + 1);
 		if (railDistance) railDistance.textContent = chapter.dataset.distance ?? '';
 		if (railProgress) railProgress.style.height = `${((index + 1) / chapters.length) * 100}%`;
 	};
@@ -1061,7 +1061,7 @@ const routeClientData = {
 		currentFrame = index % frames.length;
 		frames[currentFrame]?.classList.add('is-active');
 		if (status)
-			status.textContent = `${String(currentFrame + 1).padStart(2, '0')} / ${frames.length} · ${routeData.portraits[currentFrame]?.subject ?? ''}`;
+			status.textContent = `${currentFrame + 1} / ${frames.length} · ${routeData.portraits[currentFrame]?.subject ?? ''}`;
 	};
 
 	const assemble = () => {

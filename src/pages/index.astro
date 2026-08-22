@@ -108,7 +108,7 @@ const heroPrintLayout = [
 		],
 	},
 	{
-		photo: imageData(4),
+		photo: imageData(21),
 		x: 67,
 		y: 49,
 		width: 22,
@@ -154,7 +154,7 @@ const mobilePreservedHiddenWallIds = new Set([
 ]);
 const mobileWideWallPositions = new Set([3, 8, 11]);
 let mobileWallPosition = 0;
-const wallPhotos = [2, 0, 9, 22, 8, 3, 18, 10, 24, 19, 5, 25, 32, 11, 31, 17, 33].map(
+const wallPhotos = [2, 0, 9, 22, 8, 3, 18, 10, 24, 19, 5, 25, 32, 11, 31, 17, 33, 4].map(
 	(imageIndex) => {
 		const photo = imageData(imageIndex);
 		const mobileDuplicate =
@@ -187,6 +187,7 @@ const wallLayouts = [
 	'wall-portrait',
 	'wall-tall',
 	'wall-landscape',
+	'wall-portrait wall-final-portrait',
 ];
 
 const wallImageSizes = (index: number, mobileWide: boolean) => {
@@ -200,7 +201,7 @@ const wallImageSizes = (index: number, mobileWide: boolean) => {
 
 const navLinks = [
 	{ href: '/red-carpet', label: 'Red Carpet' },
-	{ href: '/before-after', label: 'Before & After' },
+	{ href: '/before-and-after', label: 'Before & After' },
 	{ href: '/about', label: 'About Me' },
 	{ href: '/blog/wikiportraits-story', label: 'Why WikiPortraits' },
 	{ href: '/red-carpets', label: 'Red Carpets Around the World' },
@@ -289,7 +290,7 @@ const description =
 					</h1>
 					<p class="hero-lede" data-reveal>{description}</p>
 					<div class="hero-actions" data-reveal>
-						<a class="hero-action" href="/before-after">
+						<a class="hero-action" href="/before-and-after">
 							<span>See the Before &amp; After</span>
 							<svg viewBox="0 0 36 14" aria-hidden="true">
 								<path d="M1 7h32M27 1l6 6-6 6"></path>
@@ -500,7 +501,7 @@ const description =
 			<div class="closing-links">
 				<a href="/red-carpet">Red Carpet <span aria-hidden="true">↗</span></a>
 				<a href="/gallery">Galleries <span aria-hidden="true">↗</span></a>
-				<a href="/before-after">Before &amp; After <span aria-hidden="true">↗</span></a>
+				<a href="/before-and-after">Before &amp; After <span aria-hidden="true">↗</span></a>
 				<a href="/contact">Contact <span aria-hidden="true">↗</span></a>
 			</div>
 		</section>
@@ -1034,7 +1035,7 @@ const description =
 
 	h1 {
 		margin: 0;
-		font-family: "garamond-premier-pro-display", "Newsreader", "Iowan Old Style", Georgia, serif;
+		font-family: 'garamond-premier-pro-display', 'Newsreader', 'Iowan Old Style', Georgia, serif;
 		font-size: clamp(calc(62px * 1.04), calc(5.65vw * 1.04), calc(116px * 1.04));
 		font-weight: 300;
 		letter-spacing: -0.034em;
@@ -1126,9 +1127,6 @@ const description =
 		perspective: 1200px;
 		pointer-events: none;
 	}
-
-
-
 
 	.hero-print {
 		position: absolute;
@@ -1939,7 +1937,6 @@ const description =
 			padding: 20px 0 0;
 		}
 
-
 		.hero-print {
 			position: relative;
 			z-index: auto;
@@ -2060,7 +2057,7 @@ const description =
 		/*
 		 * Two even columns in strict document order. `dense` packing is what let a
 		 * full-width card be overtaken by the card after it, so the printed numbers
-		 * ran 08, 10, 09; a uniform media ratio is what keeps a short card from
+		 * ran 8, 10, 9; a uniform media ratio is what keeps a short card from
 		 * leaving a tall hole beside its neighbour.
 		 */
 		.photo-wall {
@@ -2106,6 +2103,10 @@ const description =
 		.wall-card:nth-child(13) .wall-media,
 		.wall-card:nth-child(17) .wall-media {
 			aspect-ratio: 3 / 2;
+		}
+
+		.wall-card.wall-final-portrait {
+			grid-column: 4 / span 6;
 		}
 
 		.section-header a {

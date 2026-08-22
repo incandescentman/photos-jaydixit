@@ -76,7 +76,7 @@ const contactImages = [
 				<a href="/red-carpet">Red Carpet</a>
 				<a href="/about">About</a>
 			</nav>
-			<p class="edition">Contact sheet <span aria-hidden="true">№</span> 01</p>
+			<p class="edition">Contact sheet <span aria-hidden="true">№</span> 1</p>
 		</header>
 
 		<main>
@@ -89,7 +89,7 @@ const contactImages = [
 						release the portraits under a free license so their Wikipedia articles can finally have
 						great photos.
 					</p>
-					<a class="before-after-link" href="/before-after">
+					<a class="before-after-link" href="/before-and-after">
 						<span>See the Before &amp; After →</span>
 						<svg viewBox="0 0 96 16" aria-hidden="true">
 							<path d="M0 8h90M83 1l7 7-7 7"></path>
@@ -119,7 +119,7 @@ const contactImages = [
 								aria-label={`View ${image.caption}`}
 							>
 								<span class="print-number" aria-hidden="true">
-									{String(index + 1).padStart(2, '0')}
+									{index + 1}
 								</span>
 								<span class="hero-image-wrap">
 									<img
@@ -152,7 +152,7 @@ const contactImages = [
 			<section class="contact-section" aria-labelledby="contact-heading">
 				<header class="contact-heading">
 					<div>
-						<p class="contact-index">JD / SELECTS / 01</p>
+						<p class="contact-index">JD / SELECTS / 1</p>
 						<h2 id="contact-heading">The working selection</h2>
 					</div>
 					<p>
@@ -184,7 +184,7 @@ const contactImages = [
 									aria-label={`View ${image.caption}`}
 								>
 									<span class="sheet-code" aria-hidden="true">
-										{String(index + 1).padStart(2, '0')} / {image.size === 'landscape' ? 'L' : 'P'}
+										{index + 1} / {image.size === 'landscape' ? 'L' : 'P'}
 									</span>
 									<span class="sheet-image-wrap">
 										<img
@@ -226,7 +226,7 @@ const contactImages = [
 		<dialog class="print-viewer" id="print-viewer" aria-labelledby="viewer-caption">
 			<div class="viewer-shell">
 				<header class="viewer-toolbar">
-					<p><span class="viewer-position">01</span> / <span class="viewer-total">00</span></p>
+					<p><span class="viewer-position">1</span> / <span class="viewer-total">0</span></p>
 					<button class="viewer-close" type="button" aria-label="Close photograph">
 						<span>Close</span>
 						<svg viewBox="0 0 24 24" aria-hidden="true">
@@ -383,7 +383,7 @@ const contactImages = [
 					viewerImage.src = source;
 					viewerImage.alt = caption;
 					viewerCaption.textContent = caption;
-					viewerPosition.textContent = String(currentIndex + 1).padStart(2, '0');
+					viewerPosition.textContent = String(currentIndex + 1);
 
 					if (animate && !reduceMotion) {
 						gsap.fromTo(
@@ -418,7 +418,7 @@ const contactImages = [
 				nextButton &&
 				typeof viewer.showModal === 'function'
 			) {
-				viewerTotal.textContent = String(allPhotoLinks.length).padStart(2, '0');
+				viewerTotal.textContent = String(allPhotoLinks.length);
 
 				allPhotoLinks.forEach((link, index) => {
 					link.addEventListener('click', (event) => {

@@ -77,7 +77,7 @@ const modifiedTime = normalizeDateValue(
 );
 const structuredData = props.structuredData ?? (frontmatter.structuredData as JsonLd | undefined);
 const showChrome = props.showChrome ?? true;
-const arnoProRoutes = new Set(['/', '/about', '/before-after', '/nobel-2024', '/red-carpets']);
+const arnoProRoutes = new Set(['/', '/about', '/before-and-after', '/nobel-2024', '/red-carpets']);
 const normalizedPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 const useArnoPro =
 	props.useArnoPro ??

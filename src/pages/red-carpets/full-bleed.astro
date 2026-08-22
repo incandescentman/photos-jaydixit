@@ -13,7 +13,7 @@ import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
 >
 	<main class="bleed" data-bleed-page>
 		<header class="bleed-hero">
-			<p>Concept 01 · Full-bleed chapters</p>
+			<p>Concept 1 · Full-bleed chapters</p>
 			<h1>Six cities.<br /><em>One camera.</em></h1>
 			<div>
 				<span>Farthest from Brooklyn first</span>
@@ -22,7 +22,7 @@ import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
 		</header>
 
 		<aside class="route-spine" aria-label="Journey progress">
-			<p><b data-route-count>01</b> / 06</p>
+			<p><b data-route-count>1</b> / 6</p>
 			<div>
 				{routeStops.map((stop, index) => <i class:list={{ 'is-active': index === 0 }} />)}
 			</div>
@@ -191,7 +191,7 @@ import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
 				const chapter = entry.target as HTMLElement;
 				const index = Number(chapter.dataset.index);
 				chapter.classList.add('is-visible');
-				if (routeCount) routeCount.textContent = String(index + 1).padStart(2, '0');
+				if (routeCount) routeCount.textContent = String(index + 1);
 				if (routeCity) routeCity.textContent = chapter.dataset.city ?? '';
 				dots.forEach((dot, dotIndex) => dot.classList.toggle('is-active', dotIndex === index));
 			}

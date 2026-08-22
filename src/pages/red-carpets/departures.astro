@@ -17,7 +17,7 @@ const festivalCode = (event: string, miles: number) => {
 					.map((word) => word[0])
 					.join('')
 					.slice(0, 3);
-	return `${letters}${String(miles).padStart(4, '0')}`;
+	return `${letters}${miles}`;
 };
 
 const rows = routeStops.map((stop, index) => ({
@@ -37,7 +37,7 @@ const rows = routeStops.map((stop, index) => ({
 >
 	<main class="departures">
 		<header>
-			<p>Concept 03 · Split-flap board</p>
+			<p>Concept 3 · Split-flap board</p>
 			<h1>Departures</h1>
 			<div>
 				<span>JDX · Brooklyn terminal</span>

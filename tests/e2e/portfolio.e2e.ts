@@ -180,7 +180,7 @@ test('mobile homepage does not repeat hero photographs in the wall', async ({ pa
 		links.map((link) => link.getAttribute('data-full-src')),
 	);
 
-	await expect(mobileWallLinks).toHaveCount(11);
+	await expect(mobileWallLinks).toHaveCount(12);
 	expect(
 		await page
 			.locator('[data-wall-card][data-mobile-duplicate="true"]')
@@ -189,12 +189,12 @@ test('mobile homepage does not repeat hero photographs in the wall', async ({ pa
 	expect(wallSources.filter((source) => heroSources.includes(source))).toEqual([]);
 	await expect(
 		page.locator('[data-wall-card]:not([data-mobile-duplicate="true"]) .wall-number-mobile'),
-	).toHaveText(['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11']);
+	).toHaveText(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']);
 
 	await mobileWallLinks.first().scrollIntoViewIfNeeded();
 	await expect(mobileWallLinks.first()).toBeVisible();
 	await mobileWallLinks.first().click();
-	await expect(page.locator('.pswp__counter')).toHaveText('1 / 11');
+	await expect(page.locator('.pswp__counter')).toHaveText('1 / 12');
 });
 
 for (const route of ['/', '/gallery/red-carpet/sundance/']) {
@@ -426,7 +426,7 @@ test('about page renders the approved editorial links and philosophy section', a
 test('before-after page renders source captions and loads comparison images after scroll', async ({
 	page,
 }) => {
-	await page.goto('/before-after/');
+	await page.goto('/before-and-after/');
 	await waitForInitialImages(page);
 
 	await expect(page).toHaveTitle(/Before & After/);
@@ -439,16 +439,45 @@ test('before-after page renders source captions and loads comparison images afte
 	).toHaveAttribute('href', '/red-carpets');
 
 	const comparisonCards = page.locator('.comparison-card');
-	await expect(comparisonCards).toHaveCount(6);
-	await expect(comparisonCards.first().getByRole('heading')).toHaveText('Jason Bateman');
-	await expect(page.getByRole('heading', { name: 'Jeremy Strong' })).toBeVisible();
-	await expect(page.locator('.comparison-transition')).toHaveCount(6);
-	await expect(page.locator('.comparison-caption')).toHaveCount(12);
+	await expect(comparisonCards).toHaveCount(8);
+	await expect(comparisonCards.getByRole('heading')).toHaveText([
+		'Jason Bateman',
+		'Vanessa Kirby',
+		'Sydney Sweeney',
+		'Lisa Gilroy',
+		'Jeremy Strong',
+		'Sebastian Stan',
+		'John Hopfield',
+		'Fondazione Prada, Milan',
+	]);
+	await expect(page.locator('.comparison-transition')).toHaveCount(8);
+	await expect(page.locator('.comparison-caption')).toHaveCount(16);
+	await expect(page.locator('.comparison-toc a')).toHaveCount(8);
 	await expect(
 		page.locator('.comparison-caption', { hasText: 'Jay Dixit, TIFF 2025' }),
 	).toBeVisible();
 	await expect(
 		page.locator('.comparison-caption', { hasText: 'Glenn Francis, 2019' }),
+	).toBeVisible();
+	await expect(
+		page.locator('.comparison-caption', { hasText: 'The Beaverton, 2019' }),
+	).toBeVisible();
+	await expect(
+		page.locator('.comparison-caption', { hasText: 'Jay Dixit, SXSW 2025' }),
+	).toBeVisible();
+	await expect(
+		page.locator('.comparison-caption', {
+			hasText: 'Gage Skidmore, San Diego Comic-Con 2019',
+		}),
+	).toBeVisible();
+	await expect(
+		page.locator('.comparison-caption', { hasText: 'Jay Dixit, New York City 2024' }),
+	).toBeVisible();
+	await expect(
+		page.locator('.comparison-caption', { hasText: 'Sailko, Milan 2015' }),
+	).toBeVisible();
+	await expect(
+		page.locator('.comparison-caption', { hasText: 'Jay Dixit, Milan 2025' }),
 	).toBeVisible();
 	await expect(
 		page.locator('.comparison-caption', {

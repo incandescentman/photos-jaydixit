@@ -11,7 +11,7 @@ import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
 >
 	<main class="contact-page">
 		<header class="contact-hero">
-			<p>Concept 04 · Continuous film strip</p>
+			<p>Concept 4 · Continuous film strip</p>
 			<h1>The contact<br /><em>sheet travels.</em></h1>
 			<div>
 				<span>35 mm treatment · six assignments</span>
@@ -32,7 +32,7 @@ import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
 						routeStops.map((stop, index) => (
 							<article id={`film-${stop.id}`} class="film-frame" data-film-frame data-index={index}>
 								<div class="film-index">
-									<span>JD–{String(index + 1).padStart(2, '0')}</span>
+									<span>JD–{index + 1}</span>
 									<i>{stop.flag}</i>
 								</div>
 
@@ -67,7 +67,7 @@ import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
 									<div>
 										<>
 											<span>Frame</span>
-											<b>{stop.number} / 06</b>
+											<b>{stop.number} / 6</b>
 										</>
 									</div>
 									<h2>{stop.city}</h2>
@@ -125,7 +125,7 @@ import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
 
 		<section class="contact-finale">
 			<header>
-				<p>Roll 02 · Toronto</p>
+				<p>Roll 2 · Toronto</p>
 				<h2>Thirteen frames,<br />held at once.</h2>
 				<span>TIFF 2024–2025</span>
 			</header>
@@ -141,7 +141,7 @@ import { routeStops, torontoPortraits } from '../../data/worldTourVariants';
 								style={`object-position:${portrait.position ?? '50% 24%'}`}
 							/>
 							<figcaption>
-								<span>{String(index + 1).padStart(2, '0')}</span>
+								<span>{index + 1}</span>
 								{portrait.subject}
 							</figcaption>
 						</figure>

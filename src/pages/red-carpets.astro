@@ -32,7 +32,7 @@ const allDestinations = [
 	...worldTourDestinations,
 	{
 		id: 'toronto',
-		number: '06',
+		number: '6',
 		city: 'Toronto',
 		country: 'Canada',
 		event: 'Toronto International Film Festival',
@@ -53,7 +53,7 @@ const festivalCode = (event: string, miles: number) => {
 					.map((word) => word[0])
 					.join('')
 					.slice(0, 3);
-	return `${letters}${String(miles).padStart(4, '0')}`;
+	return `${letters}${miles}`;
 };
 
 const routeStopsById = new Map(routeStops.map((stop) => [stop.id, stop]));
@@ -257,7 +257,7 @@ const structuredData = {
 		<section id="toronto" class="toronto-intro" data-world-city="Toronto">
 			<div class="toronto-intro-copy">
 				<div class="city-stamp city-stamp--toronto" aria-hidden="true">
-					<span>06</span>
+					<span>6</span>
 					<i></i>
 					<small>43.6532° N · 79.3832° W</small>
 				</div>
@@ -305,7 +305,7 @@ const structuredData = {
 
 				<div class="toronto-caption" aria-live="polite">
 					<div>
-						<span data-toronto-count>01 / {String(torontoPortraits.length).padStart(2, '0')}</span>
+						<span data-toronto-count>1 / {torontoPortraits.length}</span>
 						<strong data-toronto-name>{torontoPortraits[0].subject}</strong>
 					</div>
 					<p>Toronto · TIFF</p>
@@ -338,7 +338,7 @@ const structuredData = {
 									decoding="async"
 									style={`object-position: ${portrait.position ?? '50% 24%'}`}
 								/>
-								<span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+								<span aria-hidden="true">{index + 1}</span>
 							</div>
 							<figcaption>{portrait.subject}</figcaption>
 						</figure>
@@ -446,7 +446,7 @@ const structuredData = {
 		const subject = frames[activeFrame]?.dataset.subject;
 		if (name && subject) name.textContent = subject;
 		if (count) {
-			count.textContent = `${String(activeFrame + 1).padStart(2, '0')} / ${String(frames.length).padStart(2, '0')}`;
+			count.textContent = `${activeFrame + 1} / ${frames.length}`;
 		}
 		if (meter) meter.style.transform = `scaleX(${Math.max(0, Math.min(1, progress))})`;
 	};

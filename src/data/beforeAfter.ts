@@ -2,12 +2,18 @@ import type { ImageMetadata } from 'astro:assets';
 
 import conanBeforeImg from '../assets/images/wikiportraits/conan-obrien-before.jpg';
 import conanAfterImg from '../assets/images/wikiportraits/conan-obrien_sundance_2024.jpg';
+import fondazionePradaBeforeImg from '../assets/images/wikiportraits/fondazione-prada-before-2015.jpg';
+import fondazionePradaAfterImg from '../assets/images/wikiportraits/fondazione-prada-after-2025.jpg';
 import jasonBeforeImg from '../assets/images/wikiportraits/jason-bateman-before.jpg';
 import jasonAfterImg from '../gallery/photos/red-carpet/tiff/jason-bateman_tiff_2025.jpg';
 import jeremyBeforeImg from '../assets/images/wikiportraits/jeremy-strong-before.jpg';
 import jeremyAfterImg from '../assets/images/wikiportraits/jeremy-strong_the-apprentice-premiere_2024.jpg';
 import johnBeforeImg from '../assets/images/wikiportraits/john-hopfield-before-2016.jpg';
 import johnAfterImg from '../assets/images/wikiportraits/john-hopfield_nobel-physics_2024.jpg';
+import lisaBeforeImg from '../assets/images/wikiportraits/lisa-gilroy-before-2019.jpg';
+import lisaAfterImg from '../assets/images/wikiportraits/Lisa_Gilroy_at_SXSW_in_2025-1.jpg';
+import sebastianBeforeImg from '../assets/images/wikiportraits/sebastian-stan-before-2019.png';
+import sebastianAfterImg from '../gallery/photos/portraits/studio/sebastian-stan.jpg';
 import sydneyBeforeImg from '../assets/images/wikiportraits/sydney-sweeney-before-2019.jpg';
 import sydneyAfterImg from '../assets/images/wikiportraits/sydney-sweeney_tiff_2024.jpg';
 import vanessaBeforeImg from '../assets/images/wikiportraits/vanessa-kirby-before-2018.jpg';
@@ -133,5 +139,57 @@ export const comparisons: BeforeAfterComparison[] = [
 		sourceCredit: 'Jay Dixit',
 		license: 'CC BY-SA 4.0',
 		licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
+	},
+	{
+		name: 'Lisa Gilroy',
+		beforeImage: lisaBeforeImg,
+		afterImage: lisaAfterImg,
+		article: 'https://en.wikipedia.org/wiki/Lisa_Gilroy',
+		event: 'SXSW 2025',
+		beforeSource: 'The Beaverton, 2019',
+		afterSource: 'Jay Dixit, SXSW 2025',
+		beforePos: 'center 18%',
+		afterPos: 'center 18%',
+		commonsUrl: 'https://commons.wikimedia.org/wiki/File:Lisa_Gilroy_at_SXSW_in_2025.jpg',
+		uploadStatus: 'uploaded',
+		articleUsageStatus: 'lead',
+		sourceCredit: 'Jay Dixit',
+		license: 'CC BY 4.0',
+		licenseUrl: 'https://creativecommons.org/licenses/by/4.0/',
+	},
+	{
+		name: 'Sebastian Stan',
+		beforeImage: sebastianBeforeImg,
+		afterImage: sebastianAfterImg,
+		article: 'https://en.wikipedia.org/wiki/Sebastian_Stan',
+		event: 'The Apprentice premiere, New York City 2024',
+		beforeSource: 'Gage Skidmore, San Diego Comic-Con 2019',
+		afterSource: 'Jay Dixit, New York City 2024',
+		beforePos: 'center 16%',
+		afterPos: 'center 15%',
+		commonsUrl:
+			'https://commons.wikimedia.org/wiki/File:Sebastian_Stan_at_%22The_Apprentice%22_in_NYC_03.jpg',
+		uploadStatus: 'uploaded',
+		articleUsageStatus: 'unknown',
+		sourceCredit: 'Jay Dixit',
+		license: 'CC BY-SA 4.0',
+		licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
+	},
+	{
+		name: 'Fondazione Prada, Milan',
+		beforeImage: fondazionePradaBeforeImg,
+		afterImage: fondazionePradaAfterImg,
+		article: 'https://en.wikipedia.org/wiki/Fondazione_Prada',
+		event: 'Milan, 2025',
+		beforeSource: 'Sailko, Milan 2015',
+		afterSource: 'Jay Dixit, Milan 2025',
+		beforePos: 'center center',
+		afterPos: 'center center',
+		commonsUrl: 'https://commons.wikimedia.org/wiki/File:Fondazione_Prada,_Milan.jpg',
+		uploadStatus: 'uploaded',
+		articleUsageStatus: 'unknown',
+		sourceCredit: 'Jay Dixit',
+		license: 'CC BY 4.0',
+		licenseUrl: 'https://creativecommons.org/licenses/by/4.0/',
 	},
 ];

@@ -35,7 +35,7 @@ export const routeStops: RouteStop[] = ['busan', 'locarno', 'stockholm', 'park-c
 		if (!destination) throw new Error(`Missing world-tour destination: ${id}`);
 		return {
 			id,
-			number: String(index + 1).padStart(2, '0'),
+			number: String(index + 1),
 			city: destination.city,
 			country: destination.country,
 			flag: metadata[id].flag,
@@ -52,7 +52,7 @@ export const routeStops: RouteStop[] = ['busan', 'locarno', 'stockholm', 'park-c
 
 routeStops.push({
 	id: 'toronto',
-	number: '06',
+	number: '6',
 	city: 'Toronto',
 	country: 'Canada',
 	flag: '🇨🇦',
@@ -68,7 +68,7 @@ routeStops.push({
 export const routeVariants = [
 	{
 		id: 'full-bleed',
-		number: '01',
+		number: '1',
 		name: 'Full Bleed',
 		shortName: 'Bleed',
 		line: 'Six cinematic scroll chapters with a persistent route spine and a Toronto finale.',
@@ -77,7 +77,7 @@ export const routeVariants = [
 	},
 	{
 		id: 'passport',
-		number: '02',
+		number: '2',
 		name: 'Passport',
 		shortName: 'Passport',
 		line: 'Warm paper, imperfect entry stamps, and one carefully placed print per city.',
@@ -86,7 +86,7 @@ export const routeVariants = [
 	},
 	{
 		id: 'departures',
-		number: '03',
+		number: '3',
 		name: 'Departures',
 		shortName: 'Board',
 		line: 'A split-flap arrivals board that opens each destination into a portrait gate.',
@@ -95,7 +95,7 @@ export const routeVariants = [
 	},
 	{
 		id: 'contact-sheet',
-		number: '04',
+		number: '4',
 		name: 'Contact Sheet',
 		shortName: 'Filmstrip',
 		line: 'A continuous editorial film strip that travels horizontally on desktop and stacks on mobile.',
@@ -104,7 +104,7 @@ export const routeVariants = [
 	},
 	{
 		id: 'the-route',
-		number: '05',
+		number: '5',
 		name: 'The Route',
 		shortName: 'Route',
 		line: 'A typographic journey home with uncropped portraits, a credential rail, Toronto assembly, and a mapped route back to Brooklyn.',

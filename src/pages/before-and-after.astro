@@ -1,0 +1,792 @@
+---
+export const prerender = true;
+
+import { Image, getImage } from 'astro:assets';
+import MainLayout from '../layouts/MainLayout.astro';
+import PhotoSwipeLightbox from '../components/PhotoSwipeLightbox.astro';
+import { comparisons } from '../data/beforeAfter';
+
+const comparisonSequence = [
+	'Jason Bateman',
+	'Vanessa Kirby',
+	'Sydney Sweeney',
+	'Lisa Gilroy',
+	'Jeremy Strong',
+	'Sebastian Stan',
+	'John Hopfield',
+	'Fondazione Prada, Milan',
+];
+
+const comparisonAnchor = (name: string) =>
+	name
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/(^-|-$)/g, '');
+
+const sequencedComparisons = await Promise.all(
+	comparisonSequence.map(async (name) => {
+		const comparison = comparisons.find((candidate) => candidate.name === name);
+		if (!comparison) throw new Error(`Missing Before & After comparison for ${name}`);
+
+		const [beforeLightbox, afterLightbox] = await Promise.all([
+			getImage({
+				src: comparison.beforeImage,
+				width: comparison.beforeImage.width,
+				inferSize: true,
+			}),
+			getImage({
+				src: comparison.afterImage,
+				width: comparison.afterImage.width,
+				inferSize: true,
+			}),
+		]);
+
+		return {
+			...comparison,
+			anchor: comparisonAnchor(comparison.name),
+			beforeLightboxSrc: beforeLightbox.src,
+			afterLightboxSrc: afterLightbox.src,
+		};
+	}),
+);
+---
+
+<MainLayout
+	title="Before & After"
+	description="Wikipedia portrait upgrades: see the difference professional photography makes"
+	showChrome={false}
+>
+	<header class="sequence-nav">
+		<a class="wordmark" href="/">
+			<img class="brand-seal" src="/brand/red-carpet-seal.svg" alt="" width="72" height="72" />
+			<span>Jay Dixit</span>
+			<small>Photos</small>
+		</a>
+		<nav aria-label="Primary navigation">
+			<a href="/red-carpet">Red Carpet</a>
+			<a href="/before-and-after" aria-current="page">Before &amp; After</a>
+			<a href="/about">About Me</a>
+			<a href="/blog/wikiportraits-story">Why WikiPortraits</a>
+			<a href="/red-carpets">Red Carpets Around the World</a>
+			<a class="nav-contact" href="/contact">Contact</a>
+			<a href="https://jaydixit.com" target="_blank" rel="noopener noreferrer"
+				>jaydixit.com <span aria-hidden="true">↗</span></a
+			>
+		</nav>
+	</header>
+
+	<main>
+		<section class="finale" aria-labelledby="finale-title">
+			<p class="kicker">The public portrait</p>
+			<div class="finale-intro">
+				<h1 id="finale-title">Before &amp; After</h1>
+				<p class="finale-standfirst">
+					Wikipedia deserves better photographs. As a red-carpet photographer for Wikipedia, I
+					replace low-quality or outdated portraits with professional images I shoot at film
+					festivals and cultural events.
+				</p>
+			</div>
+			<nav class="comparison-toc" aria-label="Jump to a comparison">
+				<div class="comparison-toc-heading">
+					<span>The comparisons</span>
+					<span>{sequencedComparisons.length} comparisons</span>
+				</div>
+				<ol>
+					{
+						sequencedComparisons.map((comparison, index) => (
+							<li>
+								<a href={`#${comparison.anchor}`}>
+									<span>{index + 1}</span>
+									<strong>{comparison.name}</strong>
+									<i aria-hidden="true">↘</i>
+								</a>
+							</li>
+						))
+					}
+				</ol>
+			</nav>
+			<div class="comparison-list">
+				{
+					sequencedComparisons.map((comparison, index) => (
+						<article id={comparison.anchor} class="comparison-card">
+							<header class="comparison-header">
+								<span class="comparison-index">{index + 1}</span>
+								<div>
+									<h3>{comparison.name}</h3>
+									<p>{comparison.event}</p>
+								</div>
+								<a
+									class="editorial-link"
+									href={comparison.article}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									View on Wikipedia <span aria-hidden="true">↗</span>
+								</a>
+							</header>
+
+							<div class="comparison-pair">
+								<figure class="comparison-panel">
+									<a
+										class="comparison-frame portfolio-lightbox"
+										href={comparison.beforeLightboxSrc}
+										data-pswp-item="true"
+										data-pswp-width={comparison.beforeImage.width}
+										data-pswp-height={comparison.beforeImage.height}
+										data-pswp-caption={`${comparison.name} — ${comparison.beforeSource}`}
+										data-cropped="true"
+										aria-label={`${comparison.name} before photograph — view full size`}
+									>
+										<Image
+											class="comparison-image"
+											src={comparison.beforeImage}
+											alt={`${comparison.name} — previous Wikipedia photograph`}
+											widths={[500, 800, 1200]}
+											sizes="(max-width: 700px) 94vw, 41vw"
+											style={`object-position:${comparison.beforePos}`}
+											loading={index === 0 ? 'eager' : 'lazy'}
+											fetchpriority={index === 0 ? 'high' : undefined}
+										/>
+										<span class="comparison-label">Before</span>
+									</a>
+									<figcaption class="comparison-caption">
+										<b>Before</b>
+										<span>{comparison.beforeSource}</span>
+									</figcaption>
+								</figure>
+
+								<div class="comparison-transition" aria-hidden="true">
+									<img
+										class="transition-arrow"
+										src="/experiments/red-carpet-direction-arrow.png"
+										alt=""
+										width="508"
+										height="512"
+									/>
+								</div>
+
+								<figure class="comparison-panel">
+									<a
+										class="comparison-frame portfolio-lightbox"
+										href={comparison.afterLightboxSrc}
+										data-pswp-item="true"
+										data-pswp-width={comparison.afterImage.width}
+										data-pswp-height={comparison.afterImage.height}
+										data-pswp-caption={`${comparison.name} — ${comparison.afterSource}`}
+										data-cropped="true"
+										aria-label={`${comparison.name} photograph by Jay Dixit — view full size`}
+									>
+										<Image
+											class="comparison-image"
+											src={comparison.afterImage}
+											alt={`${comparison.name} — photograph by Jay Dixit`}
+											widths={[500, 800, 1200]}
+											sizes="(max-width: 700px) 94vw, 41vw"
+											style={`object-position:${comparison.afterPos}`}
+											loading={index === 0 ? 'eager' : 'lazy'}
+											fetchpriority={index === 0 ? 'high' : undefined}
+										/>
+										<span class="comparison-label">After</span>
+									</a>
+									<figcaption class="comparison-caption">
+										<b>After</b>
+										<span>{comparison.afterSource}</span>
+									</figcaption>
+								</figure>
+							</div>
+						</article>
+					))
+				}
+			</div>
+			<div class="finale-actions">
+				<a class="primary-action" href="/red-carpet">Explore Red Carpet</a>
+			</div>
+		</section>
+	</main>
+
+	<PhotoSwipeLightbox gallerySelector=".comparison-list" childrenSelector="a[data-pswp-item]" />
+
+	<script>
+		import { gsap } from 'gsap';
+		import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+		gsap.registerPlugin(ScrollTrigger);
+
+		const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+		if (!reducedMotion.matches) {
+			const context = gsap.context(() => {
+				gsap
+					.timeline()
+					.from('.sequence-nav', { y: -24, opacity: 0, duration: 0.7, ease: 'power3.out' })
+					.from('.kicker', { y: 18, opacity: 0, duration: 0.5 }, '-=0.3')
+					.from('#finale-title', {
+						yPercent: 16,
+						opacity: 0,
+						duration: 1,
+						ease: 'power4.out',
+					})
+					.from('.finale-standfirst', { y: 18, opacity: 0, duration: 0.65 }, '-=0.55')
+					.from('.comparison-toc', { y: 18, opacity: 0, duration: 0.65 }, '-=0.4');
+
+				document.querySelectorAll('.comparison-card').forEach((card) => {
+					gsap.from(card, {
+						scrollTrigger: {
+							trigger: card,
+							start: 'top 86%',
+							once: true,
+						},
+						y: 56,
+						opacity: 0,
+						duration: 0.9,
+						ease: 'power3.out',
+					});
+				});
+			});
+
+			window.addEventListener('pagehide', () => context.revert(), { once: true });
+		}
+	</script>
+</MainLayout>
+
+<style>
+	:global(*) {
+		box-sizing: border-box;
+	}
+
+	:global(html) {
+		scroll-behavior: smooth;
+		background: #f2eee5;
+	}
+
+	:global(body) {
+		--ink: #16120f;
+		--paper: #f2eee5;
+		--red: #991f27;
+		--gold: #96773f;
+		--rule: rgb(22 18 15 / 22%);
+		margin: 0;
+		min-width: 320px;
+		overflow-x: clip;
+		background:
+			linear-gradient(90deg, transparent 49.95%, rgb(22 18 15 / 5%) 50%, transparent 50.05%),
+			var(--paper);
+		color: var(--ink);
+		font-family: 'Karla', system-ui, sans-serif;
+	}
+
+	.sequence-nav {
+		position: absolute;
+		z-index: 20;
+		top: 0;
+		left: 0;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+		padding: 1.5rem clamp(1.25rem, 4vw, 4.5rem);
+		border-bottom: 1px solid var(--rule);
+	}
+
+	.sequence-nav a {
+		color: inherit;
+		font-size: 0.82rem;
+		font-weight: 700;
+		letter-spacing: 0.1em;
+		text-decoration: none;
+		text-transform: uppercase;
+		white-space: nowrap;
+	}
+
+	.sequence-nav nav {
+		display: flex;
+		gap: clamp(1rem, 3vw, 2.8rem);
+	}
+
+	.sequence-nav a:hover,
+	.sequence-nav a:focus-visible {
+		color: var(--gold);
+		outline-offset: 0.35rem;
+	}
+
+	.wordmark {
+		display: inline-flex;
+		gap: 0.5rem;
+		align-items: center;
+		font-family: 'Cormorant Garamond', Georgia, serif;
+		font-size: 2.35rem !important;
+		font-weight: 500 !important;
+		line-height: 1 !important;
+		letter-spacing: 0.02em !important;
+		text-transform: none !important;
+	}
+
+	.wordmark small {
+		color: var(--gold);
+		font-family: 'Karla', system-ui, sans-serif;
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+	}
+
+	.brand-seal {
+		display: block;
+		flex: none;
+		width: 4.5rem;
+		height: 4.5rem;
+		transition: transform 220ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+	}
+
+	.wordmark:hover .brand-seal,
+	.wordmark:focus-visible .brand-seal {
+		transform: rotate(-4deg) scale(1.06);
+	}
+
+	.kicker {
+		margin: 0 0 1.25rem;
+		color: var(--gold);
+		font-size: 0.68rem;
+		font-weight: 700;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+
+	.finale {
+		position: relative;
+		min-height: 100svh;
+		padding: clamp(9rem, 14vw, 13rem) clamp(1.25rem, 7vw, 8rem) 3rem;
+		background: radial-gradient(circle at 10% 20%, rgb(153 31 39 / 8%), transparent 30rem), #fbf8f1;
+	}
+
+	.finale-intro {
+		display: flex;
+		flex-direction: column;
+		gap: clamp(2rem, 3vw, 3rem);
+		align-items: flex-start;
+		margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+	}
+
+	.finale h1 {
+		margin: 0;
+		font-family: 'Cormorant Garamond', Georgia, serif;
+		font-size: clamp(4rem, 10vw, 10rem);
+		font-weight: 500;
+		letter-spacing: -0.06em;
+		line-height: 0.82;
+	}
+
+	.finale-standfirst {
+		max-width: 58rem;
+		margin: 0;
+		color: rgb(22 18 15 / 68%);
+		font-family: 'Cormorant Garamond', Georgia, serif;
+		font-size: clamp(1.55rem, 2.25vw, 2.25rem);
+		font-weight: 400;
+		line-height: 1.32;
+	}
+
+	.comparison-toc {
+		margin-bottom: clamp(4rem, 9vw, 8rem);
+		border-top: 1px solid var(--ink);
+		border-bottom: 1px solid var(--ink);
+	}
+
+	.comparison-toc-heading {
+		display: flex;
+		justify-content: space-between;
+		padding: 0.85rem 0;
+		border-bottom: 1px solid var(--rule);
+		color: rgb(22 18 15 / 58%);
+		font-size: 0.66rem;
+		font-weight: 700;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+	}
+
+	.comparison-toc ol {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.comparison-toc li {
+		min-width: 0;
+		border-right: 1px solid var(--rule);
+		border-bottom: 1px solid var(--rule);
+	}
+
+	.comparison-toc li:nth-child(4n) {
+		border-right: 0;
+	}
+
+	.comparison-toc li:nth-last-child(-n + 4) {
+		border-bottom: 0;
+	}
+
+	.comparison-toc a {
+		display: grid;
+		grid-template-columns: auto minmax(0, 1fr) auto;
+		gap: 0.75rem;
+		align-items: center;
+		min-height: 5.25rem;
+		padding: 1rem;
+		color: var(--ink);
+		text-decoration: none;
+		transition:
+			background-color 180ms ease,
+			color 180ms ease;
+	}
+
+	.comparison-toc a > span {
+		color: var(--gold);
+		font-family: 'Cormorant Garamond', Georgia, serif;
+		font-size: 1.5rem;
+		font-weight: 500;
+		line-height: 1;
+	}
+
+	.comparison-toc strong {
+		font-family: 'Cormorant Garamond', Georgia, serif;
+		font-size: clamp(1.1rem, 1.55vw, 1.45rem);
+		font-weight: 500;
+		line-height: 1.05;
+	}
+
+	.comparison-toc i {
+		font-size: 1rem;
+		font-style: normal;
+		transition: transform 180ms ease;
+	}
+
+	.comparison-toc a:hover,
+	.comparison-toc a:focus-visible {
+		background: var(--red);
+		color: white;
+		outline: none;
+	}
+
+	.comparison-toc a:hover > span,
+	.comparison-toc a:focus-visible > span {
+		color: white;
+	}
+
+	.comparison-toc a:hover i,
+	.comparison-toc a:focus-visible i {
+		transform: translate(0.2rem, 0.2rem);
+	}
+
+	.comparison-list {
+		display: grid;
+		gap: clamp(4rem, 9vw, 8rem);
+	}
+
+	.comparison-card {
+		display: grid;
+		gap: 1.25rem;
+		scroll-margin-top: 2rem;
+	}
+
+	.comparison-header {
+		display: grid;
+		grid-template-columns: auto minmax(0, 1fr) auto;
+		gap: clamp(1rem, 3vw, 2rem);
+		align-items: end;
+		padding-bottom: 1rem;
+		border-bottom: 1px solid var(--ink);
+	}
+
+	.comparison-index {
+		color: var(--accent);
+		font-family: var(--serif);
+		font-size: 3.25rem;
+		font-weight: 300;
+		letter-spacing: -0.02em;
+		line-height: 0.8;
+		opacity: 0.55;
+	}
+
+	.comparison-header h3 {
+		margin: 0;
+		font-family: 'Cormorant Garamond', Georgia, serif;
+		font-size: clamp(2rem, 4.5vw, 4rem);
+		font-weight: 500;
+		letter-spacing: -0.04em;
+		line-height: 0.9;
+	}
+
+	.comparison-header p {
+		margin: 0.875rem 0 0;
+		color: var(--muted);
+		font-family: var(--sans);
+		font-size: 0.78rem;
+		font-weight: 500;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+	}
+
+	.comparison-header a {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		padding-bottom: 0.375rem;
+		border-bottom: 1px solid transparent;
+		color: var(--accent);
+		font-family: var(--sans);
+		font-size: 0.81rem;
+		font-weight: 400;
+		letter-spacing: 0.04em;
+		text-decoration: none;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 2px;
+		white-space: nowrap;
+	}
+
+	.comparison-header a:hover,
+	.comparison-header a:focus-visible {
+		color: #6f552a;
+		text-decoration: underline;
+	}
+
+	.comparison-pair {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+		gap: clamp(0.75rem, 2vw, 2rem);
+		align-items: start;
+		width: 90%;
+		margin-inline: auto;
+	}
+
+	.comparison-panel {
+		display: grid;
+		gap: 0.8rem;
+		margin: 0;
+	}
+
+	.comparison-transition {
+		display: grid;
+		justify-items: center;
+		align-self: center;
+		width: clamp(5rem, 7vw, 7rem);
+		color: var(--red);
+	}
+
+	.transition-arrow {
+		display: block;
+		width: clamp(3.5rem, 5vw, 4.75rem);
+		height: auto;
+		filter: drop-shadow(0 0.4rem 1rem rgb(54 31 25 / 14%));
+	}
+
+	.comparison-frame {
+		position: relative;
+		display: block;
+		aspect-ratio: 4 / 5;
+		overflow: hidden;
+		background: #ddd7cc;
+		box-shadow: 0 2rem 7rem rgb(54 31 25 / 14%);
+	}
+
+	:global(.comparison-image) {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.comparison-label {
+		position: absolute;
+		top: 1rem;
+		left: 1rem;
+		padding: 0.55rem 0.7rem;
+		background: rgb(251 248 241 / 88%);
+		color: var(--ink);
+		font-size: 0.65rem;
+		font-weight: 700;
+		letter-spacing: 0.14em;
+		pointer-events: none;
+		text-transform: uppercase;
+		backdrop-filter: blur(8px);
+	}
+
+	.comparison-caption {
+		display: flex;
+		gap: 0.65rem;
+		color: rgb(22 18 15 / 62%);
+		font-size: 0.72rem;
+		line-height: 1.4;
+	}
+
+	.comparison-caption b {
+		color: var(--ink);
+		font-size: 0.64rem;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+	}
+
+	.finale-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem 2rem;
+		align-items: center;
+		margin: clamp(3rem, 7vw, 6rem) 0;
+	}
+
+	.finale-actions a {
+		color: inherit;
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-decoration: none;
+		text-transform: uppercase;
+	}
+
+	.primary-action {
+		padding: 1rem 1.35rem;
+		background: var(--red);
+		color: white !important;
+	}
+
+	.finale-actions a:hover,
+	.finale-actions a:focus-visible {
+		text-decoration: underline;
+		text-underline-offset: 0.35rem;
+	}
+
+	@media (max-width: 1420px) {
+		.sequence-nav {
+			padding-inline: clamp(1.25rem, 3vw, 2.5rem);
+		}
+
+		.sequence-nav nav {
+			gap: clamp(0.65rem, 1.25vw, 1.1rem);
+		}
+
+		.sequence-nav nav a {
+			font-size: 0.7rem;
+			letter-spacing: 0.075em;
+		}
+
+		.wordmark {
+			font-size: 2rem !important;
+		}
+
+		.brand-seal {
+			width: 3.75rem;
+			height: 3.75rem;
+		}
+	}
+
+	@media (max-width: 1050px) {
+		.sequence-nav nav a {
+			display: none;
+		}
+
+		.sequence-nav nav .nav-contact {
+			display: inline-flex;
+		}
+	}
+
+	@media (max-width: 700px) {
+		.wordmark {
+			gap: 0.6rem;
+			font-size: 1.68rem !important;
+		}
+
+		.brand-seal {
+			width: 3rem;
+			height: 3rem;
+		}
+
+		.finale h1 {
+			font-size: clamp(4rem, 20vw, 7rem);
+			line-height: 0.8;
+		}
+
+		.finale-intro {
+			grid-template-columns: 1fr;
+			gap: 1.75rem;
+		}
+
+		.finale {
+			padding-right: 1rem;
+			padding-left: 1rem;
+		}
+
+		.comparison-toc {
+			margin-right: -1rem;
+			margin-left: -1rem;
+		}
+
+		.comparison-toc-heading {
+			padding-inline: 1rem;
+		}
+
+		.comparison-toc ol {
+			display: flex;
+			overflow-x: auto;
+			scroll-snap-type: x mandatory;
+			scrollbar-width: none;
+		}
+
+		.comparison-toc ol::-webkit-scrollbar {
+			display: none;
+		}
+
+		.comparison-toc li,
+		.comparison-toc li:nth-child(4n),
+		.comparison-toc li:nth-last-child(-n + 4) {
+			flex: 0 0 min(78vw, 18rem);
+			border-right: 1px solid var(--rule);
+			border-bottom: 0;
+			scroll-snap-align: start;
+		}
+
+		.comparison-toc li:last-child {
+			border-right: 0;
+		}
+
+		.comparison-header {
+			grid-template-columns: auto minmax(0, 1fr);
+		}
+
+		.comparison-header > a {
+			grid-column: 2;
+			justify-self: start;
+		}
+
+		.comparison-pair {
+			grid-template-columns: 1fr;
+			gap: 1.25rem;
+			width: 100%;
+		}
+
+		.comparison-transition {
+			justify-self: center;
+			width: 5.5rem;
+			margin-block: 0.4rem;
+		}
+
+		.transition-arrow {
+			width: 4rem;
+			transform: rotate(90deg);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		:global(html) {
+			scroll-behavior: auto;
+		}
+
+		:global(*),
+		:global(*::before),
+		:global(*::after) {
+			scroll-behavior: auto !important;
+			animation-duration: 0.01ms !important;
+			animation-iteration-count: 1 !important;
+			transition-duration: 0.01ms !important;
+		}
+	}
+</style>

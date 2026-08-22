@@ -7,7 +7,7 @@
 - [ ] Prepare source photographs for Russell Crowe, Rami Malek, Matt Damon, and Don Cheadle, then run them through Exwalker and the portfolio publication workflow.
 - [ ] Review Giscus configuration if the repo or Discussions category changes; current values live in src/components/PhotoComments.astro
 - [ ] More portrait coverage: Download local highlight files for people who only have Cloudinary assets (Willem Dafoe, Gabriel LaBelle, Rose Byrne, Sydney Sweeney solo, Ana de Armas solo, Jason Collett, Kaia Gerber solo). These are referenced in src/data/homepage-images.js but have no files in src/gallery/highlights/, so they don't appear on portrait pages.
-- [ ] Before-and-after page expansion: src/pages/before-after.astro now showcases 6 people. More Wikipedia-upgraded portraits are available and could be added.
+- [ ] Before-and-after page expansion: src/pages/before-and-after.astro now showcases 8 comparisons. More Wikipedia-upgraded photographs are available and could be added.
 - [ ] Albums: The content collection at src/content/albums/ is scaffolded but empty. Could be used for curated sets (e.g., "SXSW 2024", "Nobel Laureates").
 
 
@@ -239,7 +239,7 @@ manifest.
 
 - src/pages/about.astro → bio and photography philosophy
 
-- src/pages/before-after.astro → Wikipedia portrait upgrade comparisons
+- src/pages/before-and-after.astro → Wikipedia portrait upgrade comparisons
 
 - src/pages/nobel-2024.astro → 2024 Nobel coverage in Stockholm and Oslo
 
@@ -364,9 +364,9 @@ manifest.
 
 - *Hero prints must not overlap on mobile.* Negative margins on ~.hero-print~ (previously ~nth-of-type(4)~ and ~(6)~) land on the caption band and bury the subject's name. Overlap is a desktop-only device.
 
-- *The mobile photo wall must not repeat hero photographs.* Cards whose Cloudinary public IDs already appear in ~heroPrintLayout~ remain in the 17-card desktop wall but are hidden below ~820px~ and excluded from the mobile PhotoSwipe sequence. The 11 visible mobile cards are renumbered ~01~–~11~.
+- *The mobile photo wall must not repeat hero photographs.* Cards whose Cloudinary public IDs already appear in ~heroPrintLayout~ remain in the 18-card desktop wall but are hidden below ~820px~ and excluded from the mobile PhotoSwipe sequence. The 12 visible mobile cards are numbered ~1~–~12~.
 
-- *The mobile photo wall must stay in strict document order* — ~grid-auto-flow: row~ below ~820px~, never ~dense~. Holes are prevented by a uniform ~4 / 5~ media aspect plus full-width landscape beats at DOM children ~8~, ~13~, and ~17~, which are visible mobile positions ~3~, ~8~, and ~11~ after the six hero duplicates are hidden. Changing either ~heroPrintLayout~ or ~wallPhotos~ can change the duplicate set and invalidates those indices.
+- *The mobile photo wall must stay in strict document order* — ~grid-auto-flow: row~ below ~820px~, never ~dense~. Holes are prevented by a uniform ~4 / 5~ media aspect plus full-width landscape beats at DOM children ~8~, ~13~, and ~17~, which are visible mobile positions ~3~, ~8~, and ~11~ after the six hero duplicates are hidden; the final Lisa Gilroy card is visible position ~12~ and is centered. Changing either ~heroPrintLayout~ or ~wallPhotos~ can change the duplicate set and invalidates those indices.
 
 - *Hero clothespins are data, not decoration.* Each entry in ~heroPrintLayout~ in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][📄 index.astro]] carries a ~pins~ array (~pos~ left/right/centre, ~tilt~, optional ~inset~); the markup renders one ~.clothespin~ per pin, and each counter-rotates its print through ~--pin-rot~ so it hangs near vertical. Two traps: a print that bleeds past the hero's right edge (Bateman–Law, Sweeney) needs a viewport-proportional inset or its pin drifts off canvas on wide screens, and a pin can never paint above a higher-stacked neighbouring print, so a pin on a lapped corner sits at the visible end of the top edge. Moving any print's ~x~ or stacking order means re-checking both.
 

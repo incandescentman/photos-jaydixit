@@ -2140,3 +2140,27 @@ imagesLoaded(container).on('progress', function(instance, image) {
 
 ** Deployment follow-up
 - After the first deploy, confirm the Adobe Fonts kit domain allowlist includes ~photos.jaydixit.com~.
+
+* 2026-08-22 - Expand and refine Before & After
+
+** Homepage photographs
+- Replaced Lisa Gilroy with Steven Yeun in the homepage hero while retaining Lisa as the final desktop photo-wall card and a centered mobile wall card.
+
+** Comparison sequence
+- Removed Conan O’Brien, added Lisa Gilroy after Sydney Sweeney, added Sebastian Stan after Jeremy Strong, and added Fondazione Prada, Milan as the final comparison.
+- Kept John Hopfield after Sebastian Stan and moved Jeremy Strong immediately below Lisa Gilroy.
+- Added the supplied historical photographs and reused the existing canonical Sebastian Stan gallery portrait for his 2024 after image.
+
+** Route and navigation
+- Renamed the canonical route to ~/before-and-after/~ and updated every live internal link, navigation item, font-loading route, and browser test.
+- Preserved ~/before-after/~ as a permanent redirect so existing links continue to work.
+
+** Page experience
+- Restored PhotoSwipe across every comparison photograph.
+- Added an eight-item editorial table of contents beneath the introduction, with anchor navigation, a four-column desktop grid, and a horizontally scrollable mobile strip.
+- Removed leading zeroes from visitor-facing counters and chapter labels across the homepage, Nobel page, experiment routes, and Red Carpets concepts, including counters updated at runtime.
+
+** Verification
+- Source audit found no remaining leading-zero formatting in visitor-facing counters; literal filenames, dates, coordinates, and media identifiers remain unchanged.
+- Desktop and ~390x844~ mobile browser checks confirmed the comparison order, TOC navigation, Fondazione Prada crops, no page overflow, no broken images, and working PhotoSwipe open and Escape-close behavior.
+- ~npm run lint~, all 21 Vitest tests, the 124-page production build, and all 25 Playwright browser tests pass.

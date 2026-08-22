@@ -56,7 +56,7 @@ const featured = [images[2], images[0], images[1]];
 					<figure class="photo-main">
 						<img src={imageUrl(featured[0], 1200)} alt={featured[0].caption} loading="eager" />
 						<figcaption>
-							<span>01</span><strong>{featured[0].caption}</strong>
+							<span>1</span><strong>{featured[0].caption}</strong>
 						</figcaption>
 					</figure>
 					<div class="photo-rail">
@@ -66,7 +66,7 @@ const featured = [images[2], images[0], images[1]];
 									<img src={imageUrl(photo, 720)} alt={photo.caption} loading="eager" />
 									<figcaption>
 										<>
-											<span>0{index + 2}</span>
+											<span>{index + 2}</span>
 											<strong>{photo.caption}</strong>
 										</>
 									</figcaption>
