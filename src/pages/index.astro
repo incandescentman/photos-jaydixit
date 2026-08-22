@@ -46,20 +46,22 @@ const imageData = (index: number) => {
 
 const heroPrintLayout = [
 	{ photo: imageData(2), x: 49, y: 7, width: 29, rotation: -2.6, z: 5 },
-	{ photo: imageData(9), x: 72, y: 10, width: 27, rotation: 3.1, z: 3 },
+	{ photo: imageData(32), x: 72, y: 10, width: 27, rotation: 3.1, z: 3 },
 	{ photo: imageData(22), x: 81, y: 41, width: 18, rotation: -3.7, z: 6 },
-	{ photo: imageData(31), x: 58, y: 51, width: 22, rotation: 2.2, z: 7 },
+	{ photo: imageData(4), x: 58, y: 51, width: 22, rotation: 2.2, z: 7 },
 	{ photo: imageData(1), x: 31, y: 15, width: 18, rotation: -4.4, z: 2 },
-	{ photo: imageData(8), x: 31, y: 47, width: 18, rotation: 3.5, z: 4 },
+	{ photo: imageData(31), x: 31, y: 47, width: 18, rotation: 3.5, z: 4 },
 	{ photo: imageData(0), x: 76, y: 74, width: 19, rotation: 1.7, z: 2 },
 ];
 const heroPublicIds = new Set(heroPrintLayout.map(({ photo }) => photo.publicId));
+const mobilePreservedHiddenWallIds = new Set([imageData(8).publicId]);
 const mobileWideWallPositions = new Set([3, 8, 11]);
 let mobileWallPosition = 0;
 const wallPhotos = [2, 0, 9, 22, 8, 3, 18, 10, 24, 19, 5, 25, 32, 11, 31, 17, 33].map(
 	(imageIndex) => {
 		const photo = imageData(imageIndex);
-		const mobileDuplicate = heroPublicIds.has(photo.publicId);
+		const mobileDuplicate =
+			heroPublicIds.has(photo.publicId) || mobilePreservedHiddenWallIds.has(photo.publicId);
 		const mobilePosition = mobileDuplicate ? null : ++mobileWallPosition;
 
 		return {
@@ -388,7 +390,6 @@ const description =
 										↗
 									</span>
 								</div>
-								<p>{photo.caption}</p>
 							</a>
 						</article>
 					))
