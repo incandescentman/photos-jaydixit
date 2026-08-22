@@ -1,6 +1,17 @@
 #+TITLE: Codebase Wisdom
 #+DATE: 2025-10-03
 
+* 2026-08-22 - The Dev Server Can Serve A Page Whose PhotoSwipe Silently Fails
+
+** Trigger
+Clicking any print on the dev homepage did nothing, on the real homepage as well as on a prototype route, while the production build worked. Separately, a Playwright capture of the dev homepage hung for 25 minutes with no output.
+
+** Mechanism
+A stale Vite optimize-dep made the dev server answer ~504~ for ~photoswipe.js?v=<hash>~, so the dynamic ~import('photoswipe')~ on click rejected with nothing visible on the page. Reloading does not clear it; restarting the dev server does. The capture hang was ~waitForLoadState('networkidle')~: the homepage's Three.js atmosphere and the HMR socket keep the network busy indefinitely, so ~networkidle~ never arrives.
+
+** Actionable insight
+Verify PhotoSwipe against ~npm run build~ output on a static server rather than the dev server, and in Playwright wait for ~load~ plus a fixed settle, never ~networkidle~. If the lightbox dies on every dev page at once, restart the dev server before debugging code.
+
 * 2026-08-19 - Astro 7 Agent Preview And Legacy Hoist Scripts Need Explicit Migration
 
 ** Trigger

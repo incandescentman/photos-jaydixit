@@ -1,6 +1,18 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-08-22 - Hang the homepage hero prints from varied clothespins
+
+** Changed
+- Replaced the identical top-left clothespin on every hero print with per-print pins declared in ~heroPrintLayout~ in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][📄 index.astro]] (commit ~68d1ff7~). Each pin counter-rotates its print via ~--pin-rot~ so it hangs near vertical, pins grew to ~18x46~, and placement varies: Apatow and Skarsgård one pin top-left; Kirby, Bateman–Law, Sweeney and Gilroy two pins each. Prints that bleed past the hero's right edge use viewport-proportional insets so their pins stay on canvas from 1024 to 3024 wide; pins on corners lapped by a higher-stacked print sit at the visible end of the top edge.
+- Moved the Skarsgård print from ~31%~ to ~29.6%~ and the Kirby print from ~49%~ to ~46.3%~ so Kirby just covers the right edges of Skarsgård (~10px) and Apatow (~34px) at 1440 (commit ~6b7537d~).
+- The comparison prototype (five variants; option 4 promoted) lives in ~src/pages/hero-pins-opus.astro~ and ~src/pages/hero-pins-opus/~, left untracked on disk per the prototype rule.
+
+** Validation
+- Production build 129 pages, lint clean, 21/21 Vitest. All ten pins verified on canvas and painting by pixel diff from 1024 to 3024 wide and 360 to 430 on mobile, with no caption collisions.
+- PhotoSwipe verified on the built homepage at 1440 and 390: first print opens the correct image, arrows advance, Escape closes, no console errors. The dev server's PhotoSwipe was broken by a stale Vite optimize-dep at the time; see [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/codebase-wisdom.org][📄 codebase-wisdom.org]].
+- Jay's reactions are recorded in the cross-repo experiment-reactions ledger.
+
 * 2026-08-19 - Upgrade the portfolio to Astro 7
 
 ** Changed
