@@ -192,5 +192,10 @@ export const images = [
     filename: 'jason-bateman-jude-law-09836_tiff_2025.jpg',
     size: 'landscape',
     caption: 'Jason Bateman and Jude Law at the Toronto Film Festival.'
+  },
+  {
+    filename: 'alexander-skarsgard_nyff_2025.jpg',
+    size: 'portrait',
+    caption: 'Alexander Skarsgård at the New York Film Festival'
   }
 ];

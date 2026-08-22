@@ -33,7 +33,8 @@ const __dirname = path.dirname(__filename);
 
 // Configure from env
 if (process.env.CLOUDINARY_URL) {
-  cloudinary.config({ secure: true, cloudinary_url: process.env.CLOUDINARY_URL });
+  cloudinary.config(true);
+  cloudinary.config({ secure: true });
 } else {
   const { CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, CLOUDINARY_CLOUD_NAME } = process.env;
   cloudinary.config({

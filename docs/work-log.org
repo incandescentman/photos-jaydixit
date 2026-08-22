@@ -2079,3 +2079,18 @@ imagesLoaded(container).on('progress', function(instance, image) {
 - ~npm run lint~ passes.
 - ~npm run test -- --run~ passes all 21 tests.
 - Browser verification passes at desktop and a true ~390x844~ mobile viewport with no console errors, no visible wall captions, no section counters, and working PhotoSwipe behavior.
+
+* 2026-08-22 - Refine the homepage hero-print selection
+
+** Hero photographs
+- Swapped Lisa Gilroy and Sydney Sweeney between their existing hero-print positions.
+- Added Jay’s Alexander Skarsgård portrait from NYFF as the canonical local highlight [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/gallery/highlights/alexander-skarsgard_nyff_2025.jpg][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/gallery/highlights/alexander-skarsgard_nyff_2025.jpg]], uploaded it to Cloudinary under ~highlights/alexander-skarsgard_nyff_2025~, and replaced only the solo Jason Bateman hero print with it.
+- Kept the Jason Bateman and Jude Law two-shot in the hero and kept the solo Jason Bateman portrait in the desktop wall. Explicit mobile duplicate suppression preserves the existing 11-card mobile wall sequence.
+
+** Design reaction
+- Jay said of the hero prints and clothespins: “I really like it, but maybe it could be even better. or maybe it's great as is.” No clothespin styling changed in this pass.
+- Jay then found Alexander’s initial angle strange. After trying ~-20deg~, his instruction to rotate it 15 degrees to the right was initially misread as an absolute ~+15deg~; subsequent visual review set Alexander to ~-2deg~, Judd Apatow to ~-1deg~, and Vanessa Kirby to ~0deg~.
+
+** Verification
+- ~pnpm run test -- --run~ passes all 21 tests, and ~pnpm run build~ generates all 123 static pages.
+- Desktop and ~390x844~ mobile browser checks confirm the seven hero prints, Alexander in the intended slot, the 11-card mobile wall, no browser errors, and working PhotoSwipe open, next-image navigation, and Escape close.
