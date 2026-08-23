@@ -2212,7 +2212,7 @@ imagesLoaded(container).on('progress', function(instance, image) {
 - Updated the collective reach statistic to almost 400 million monthly views, framed as more than 1 out of every 100 Wikipedia pageviews globally.
 - Replaced the article description, corrected “Wikipedia’s” to a typographic apostrophe, and revised the Emil Wakim caption with Jay’s exact copy.
 - Enlarged every narrative transition in the Pete Davidson photo sequence to a consistent display scale, including the inner paragraphs that MDX generates inside the transition wrappers.
-- Converted “He’s just Pete, chilling at the mall.” from a display transition into the mall selfie’s caption.
+- Removed “He’s just Pete, chilling at the mall.” from the mall-selfie beat.
 - Added the current Kyle Bartley example after the linked “blurry thumbnail” passage, moved the two bad-Wikipedia-photo Instagram links into the same all-caps ongoing-situation paragraph, and removed the redundant general sentence about editors deleting bad photographs.
 - Repaired the large full-width travel transition’s MDX wrapper so the visible paragraph receives the intended display scale instead of leaving that class on an empty generated paragraph.
 
@@ -2240,3 +2240,7 @@ imagesLoaded(container).on('progress', function(instance, image) {
 - Desktop and ~390x844~ mobile browser checks confirmed all 23 wall cards, distinct ~oslo-21~ and ~oslo-15~ images, the final two full-width mobile beats, no horizontal overflow, and working PhotoSwipe open and Escape-close behavior.
 - Desktop and mobile browser checks confirmed the repaired Nobel introduction width and both requested copy changes.
 - ~npm run lint~, all 21 Vitest tests, the 124-page production build, and all 25 Playwright browser tests pass.
+
+* 2026-08-22 - Make Prettier and Git whitespace checks agree for MDX
+
+- Added a narrow ~*.mdx whitespace=-space-before-tab~ rule to [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/.gitattributes][.gitattributes]]. Prettier’s MDX printer emits Markdown indentation followed by JSX tabs and still reports that output as correctly formatted; Git now accepts that formatter-owned indentation without weakening whitespace checks for other source files.

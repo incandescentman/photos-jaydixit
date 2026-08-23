@@ -457,3 +457,9 @@ JavaScript should *enhance* CSS layouts, not fight them. If you're destroying DO
 The simple Cloudinary uploader loaded the repo’s ~CLOUDINARY_URL~ with dotenv, then called ~cloudinary.config({ cloudinary_url: process.env.CLOUDINARY_URL })~. The installed Node SDK does not parse a ~cloudinary_url~ config field, so Admin API calls failed with ~Must supply cloud_name~ even though the complete URL was present.
 
 After dotenv has populated the environment, call ~cloudinary.config(true)~ to make the SDK parse ~CLOUDINARY_URL~, then apply optional settings such as ~secure: true~ in a second ~cloudinary.config~ call. This was verified by uploading and reading back ~highlights/alexander-skarsgard_nyff_2025~ with its expected 2000 by 3000 dimensions.
+
+* 2026-08-22 - Prettier MDX Output Can Trigger Git’s Space-Before-Tab Check
+
+Prettier’s MDX printer can combine Markdown’s space indentation with tabs used for embedded JSX. This still happens with ~useTabs: false~ and passes ~prettier --check~, but Git reports “space before tab in indent.” Post-processing the tabs makes Git happy but causes Prettier to reject the file.
+
+Keep Prettier’s canonical output and add ~*.mdx whitespace=-space-before-tab~ to ~.gitattributes~. This disables only that incompatible Git check for MDX while leaving every other whitespace check active.
