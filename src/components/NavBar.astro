@@ -4,9 +4,9 @@ import SocialIcon from './SocialIcon.astro';
 
 const menuItems = [
 	{ name: 'Why I Shoot', link: `/about` },
-	{ name: 'Red Carpet', link: `/red-carpet` },
 	{ name: 'Before & After', link: `/before-and-after` },
 	{ name: 'Why WikiPortraits', link: `/blog/wikiportraits-story`, active: 'exact' },
+	{ name: 'Covering the Nobel Prizes', link: `/nobel-2024` },
 	{ name: 'Contact', link: `/contact` },
 	{ name: 'jaydixit.com', link: 'https://jaydixit.com' },
 ];
@@ -442,7 +442,35 @@ function isActive(item: MenuItem) {
 		height: 30px;
 	}
 
-	@media (max-width: 1199px) {
+	@media (min-width: 1240px) and (max-width: 1599px) {
+		.site-nav-inner {
+			gap: 1rem;
+		}
+
+		.site-nav-brand {
+			gap: 0.65rem;
+		}
+
+		.site-nav-wordmark {
+			font-size: 1.9rem;
+		}
+
+		.site-nav-menu {
+			gap: 0.75rem;
+		}
+
+		.site-nav-link {
+			font-size: 0.7rem;
+			letter-spacing: 0.06em;
+		}
+
+		.site-nav-social {
+			margin-left: 0;
+			padding-left: 0.7rem;
+		}
+	}
+
+	@media (max-width: 1239px) {
 		.site-nav-menu {
 			display: none;
 		}
@@ -472,7 +500,7 @@ function isActive(item: MenuItem) {
 		}
 	}
 
-	@media (min-width: 1200px) {
+	@media (min-width: 1240px) {
 		.site-nav-mobile {
 			display: none !important;
 		}

@@ -2283,3 +2283,18 @@ imagesLoaded(container).on('progress', function(instance, image) {
 - Verified the live revision at ~2400x3000~, timestamped ~2026-08-23T07:04:02Z~, with the approved color-correction and slightly-tighter-crop comment. The prior ~2898x3623~ revision remains in file history.
 - Commons' global-usage API currently returns no transclusions for this exact file, so no Wikipedia page changed from this particular replacement.
 - Pywikibot could not complete noninteractively because ~site.login()~ waited for an interactive credential. Added ignored stdin and a 60-second timeout so a future missing credential fails instead of hanging; the authenticated browser is the verified fallback.
+
+* 2026-08-24 - Replace unfinished portfolio destinations in public navigation
+
+** Navigation
+- Removed Red Carpets Around the World from the homepage desktop navigation, homepage compact menu, and Before & After header until its AI-slop headlines have been replaced with approved copy. The ~/red-carpets/~ route, homepage editorial section, hero action, and internal experiment links remain intact.
+- Removed Red Carpet from the homepage, Before & After, and standard desktop/mobile navigation without removing or redirecting the ~/red-carpet/~ directory.
+- Promoted the finished Nobel editorial page under the exact navigation label Covering the Nobel Prizes, linking to ~/nobel-2024/~ everywhere.
+- Added a compact standard-header regime from ~1240px~ through ~1599px~ so the longer Nobel label and remaining links fit without clipping; widths below ~1240px~ use the existing menu toggle.
+
+** Follow-up
+- Recorded ~De-slop Red Carpets Around the World~ under Active Priorities in [[file+emacs:/Users/jay/Dropbox/roam/velocity/goals/current-focus.org][📄 Current Focus]], with restoration to the navigation gated on approved replacement copy.
+
+** Verification
+- Browser checks confirmed the updated homepage desktop and compact menus, Before & After header, and standard desktop/mobile navigation contain Covering the Nobel Prizes and omit both removed destinations.
+- Verified the standard header at ~1239px~, ~1240px~, ~1280px~, ~1440px~, and ~1600px~ with no clipped navigation, horizontal overflow, framework overlay, or browser errors. Scoped Prettier, lint, all 21 Vitest tests, the 128-page production build, and all 25 Playwright tests pass.

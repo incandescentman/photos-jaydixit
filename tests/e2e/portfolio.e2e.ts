@@ -135,10 +135,11 @@ test('site nav renders redesigned desktop and mobile states', async ({ page }) =
 		'aria-current',
 		'page',
 	);
-	await expect(nav.getByRole('link', { name: 'Red Carpet' })).toHaveAttribute(
+	await expect(nav.getByRole('link', { name: 'Covering the Nobel Prizes' })).toHaveAttribute(
 		'href',
-		'/red-carpet',
+		'/nobel-2024',
 	);
+	await expect(nav.getByRole('link', { name: 'Red Carpet', exact: true })).toHaveCount(0);
 	await expect(nav.getByRole('link', { name: 'Why WikiPortraits' })).toHaveAttribute(
 		'href',
 		'/blog/wikiportraits-story',
@@ -162,6 +163,11 @@ test('site nav renders redesigned desktop and mobile states', async ({ page }) =
 		'aria-current',
 		'page',
 	);
+	await expect(mobileMenu.getByRole('link', { name: 'Covering the Nobel Prizes' })).toHaveAttribute(
+		'href',
+		'/nobel-2024',
+	);
+	await expect(mobileMenu.getByRole('link', { name: 'Red Carpet', exact: true })).toHaveCount(0);
 	await expect(mobileMenu.locator('.site-nav-mobile-social a')).toHaveCount(3);
 });
 
@@ -453,8 +459,14 @@ test('before-after page renders source captions and loads comparison images afte
 		page.locator('.sequence-nav').getByRole('link', { name: 'About Me' }),
 	).toHaveAttribute('href', '/about');
 	await expect(
+		page.locator('.sequence-nav').getByRole('link', { name: 'Covering the Nobel Prizes' }),
+	).toHaveAttribute('href', '/nobel-2024');
+	await expect(
 		page.locator('.sequence-nav').getByRole('link', { name: 'Red Carpets Around the World' }),
-	).toHaveAttribute('href', '/red-carpets');
+	).toHaveCount(0);
+	await expect(
+		page.locator('.sequence-nav').getByRole('link', { name: 'Red Carpet', exact: true }),
+	).toHaveCount(0);
 
 	const comparisonCards = page.locator('.comparison-card');
 	await expect(comparisonCards).toHaveCount(8);
