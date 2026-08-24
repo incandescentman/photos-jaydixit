@@ -7,6 +7,7 @@ import NobelPhoto from '../components/NobelPhoto.astro';
 import PhotoSwipeLightbox from '../components/PhotoSwipeLightbox.astro';
 
 import peaceCampaigners from '../gallery/photos/events/nobel-prizes-2024/anti-nuclear-campaigners_nobel-peace-prize-torchlight-procession-oslo_2024.jpg';
+import pressCredentials from '../gallery/photos/events/nobel-prizes-2024/press-credentials_nobel-peace-prize-oslo_2024.jpg';
 import daronAcemoglu from '../gallery/photos/events/nobel-prizes-2024/daron-acemoglu_nobel-lectures-stockholm_2024.jpg';
 import davidBaker from '../gallery/photos/events/nobel-prizes-2024/david-baker_nobel-lectures-stockholm_2024.jpg';
 import demisHassabis from '../gallery/photos/events/nobel-prizes-2024/demis-hassabis_nobel-lectures-stockholm_2024.jpg';
@@ -16,6 +17,12 @@ import jamesRobinson from '../gallery/photos/events/nobel-prizes-2024/james-robi
 import johnHopfield from '../gallery/photos/events/nobel-prizes-2024/john-hopfield_nobel-lectures-stockholm_2024.jpg';
 import johnJumper from '../gallery/photos/events/nobel-prizes-2024/john-jumper_nobel-lectures-stockholm_2024.jpg';
 import peacePrizePresentation from '../gallery/photos/events/nobel-prizes-2024/nobel-peace-prize-ceremony-award-presentation-oslo_2024.jpg';
+import peacePrizeCeremonyHighAngle from '../gallery/photos/events/nobel-prizes-2024/nobel-peace-prize-ceremony-high-angle_oslo-city-hall_2024.jpg';
+import peacePrizeCeremony01 from '../gallery/photos/events/nobel-prizes-2024/nobel-peace-prize-ceremony-oslo-01_2024.jpg';
+import peacePrizeCeremony02 from '../gallery/photos/events/nobel-prizes-2024/nobel-peace-prize-ceremony-oslo-02_2024.jpg';
+import peacePrizeCeremony03 from '../gallery/photos/events/nobel-prizes-2024/nobel-peace-prize-ceremony-oslo-03_2024.jpg';
+import peacePrizeCeremony04 from '../gallery/photos/events/nobel-prizes-2024/nobel-peace-prize-ceremony-oslo-04_2024.jpg';
+import ceremonyProgram from '../gallery/photos/events/nobel-prizes-2024/nobel-peace-prize-ceremony-program_oslo-city-hall_2024.jpg';
 import oslo04 from '../gallery/photos/events/nobel-prizes-2024/nobel-peace-prize-torchlight-procession-oslo-04_2024.jpg';
 import oslo06 from '../gallery/photos/events/nobel-prizes-2024/nobel-peace-prize-torchlight-procession-oslo-06_2024.jpg';
 import oslo15 from '../gallery/photos/events/nobel-prizes-2024/nobel-peace-prize-torchlight-procession-oslo-15_2024.jpg';
@@ -100,7 +107,21 @@ const photographs = [
 		id: 'stockholm-photographer',
 		src: stockholmPhotographer,
 		alt: 'A photographer beneath illuminated arches in Stockholm',
-		caption: 'Photograph by John Sears · Stockholm',
+		caption: 'Covering the Nobel Prizes in Stockholm in the dead of winter. Photo by John Sears',
+		commons: undefined,
+	},
+	{
+		id: 'press-credentials',
+		src: pressCredentials,
+		alt: 'Nobel Peace Prize and WikiPortraits press credentials belonging to Jay Dixit',
+		caption: 'My press credentials for the Nobel Peace Prize Ceremony',
+		commons: undefined,
+	},
+	{
+		id: 'ceremony-program',
+		src: ceremonyProgram,
+		alt: 'Program for the 2024 Nobel Peace Prize Award Ceremony at Oslo City Hall',
+		caption: 'Program for the Nobel Peace Prize Award Ceremony at Oslo City Hall',
 		commons: undefined,
 	},
 	{
@@ -111,6 +132,41 @@ const photographs = [
 			'Jørgen Watne Frydnes presents the Nobel Peace Prize to Terumi Tanaka, Shigemitsu Tanaka, and Toshiyuki Mimaki · Oslo City Hall',
 		commons:
 			'https://commons.wikimedia.org/wiki/File:J%C3%B8rgen_Watne_Frydnes_awarding_Terumi_Tanaka,_Shigemitsu_Tanaka,_and_Toshiyuki_Mimaki_at_2024_Nobel_Peace_Prize_Ceremony_4_(cropped).jpg',
+	},
+	{
+		id: 'peace-prize-ceremony-high-angle',
+		src: peacePrizeCeremonyHighAngle,
+		alt: 'A high-angle view of the 2024 Nobel Peace Prize Ceremony inside Oslo City Hall',
+		caption: 'The Nobel Peace Prize Ceremony in Oslo',
+		commons: undefined,
+	},
+	{
+		id: 'peace-prize-ceremony-01',
+		src: peacePrizeCeremony01,
+		alt: 'People standing onstage at the 2024 Nobel Peace Prize Ceremony in Oslo',
+		caption: 'The Nobel Peace Prize Ceremony in Oslo',
+		commons: undefined,
+	},
+	{
+		id: 'peace-prize-ceremony-02',
+		src: peacePrizeCeremony02,
+		alt: 'A Nobel Peace Prize recipient speaking at a podium during the 2024 ceremony in Oslo',
+		caption: 'The Nobel Peace Prize Ceremony in Oslo',
+		commons: undefined,
+	},
+	{
+		id: 'peace-prize-ceremony-03',
+		src: peacePrizeCeremony03,
+		alt: 'Ceremonial guards inside Oslo City Hall during the 2024 Nobel Peace Prize Ceremony',
+		caption: 'The Nobel Peace Prize Ceremony in Oslo',
+		commons: undefined,
+	},
+	{
+		id: 'peace-prize-ceremony-04',
+		src: peacePrizeCeremony04,
+		alt: 'Journalists and photographers inside Oslo City Hall during the 2024 Nobel Peace Prize Ceremony',
+		caption: 'The Nobel Peace Prize Ceremony in Oslo',
+		commons: undefined,
 	},
 	{
 		id: 'peace-campaigners',
@@ -228,7 +284,11 @@ const structuredData = {
 				the press conference. In Stockholm, I covered the Nobel Lectures, where each laureate gets
 				an hour on stage to present their life’s work.
 			</p>
-			<NobelPhoto photo={photo('stockholm-photographer')} className="intro-photo" />
+			<div class="intro-photo-composite">
+				<NobelPhoto photo={photo('stockholm-photographer')} className="intro-photo" />
+				<NobelPhoto photo={photo('press-credentials')} className="credentials-overlay" />
+				<NobelPhoto photo={photo('ceremony-program')} className="ceremony-program-overlay" />
+			</div>
 		</section>
 
 		<section class="story-section" aria-labelledby="physics-title">
@@ -295,7 +355,23 @@ const structuredData = {
 			</div>
 			<div class="oslo-subsection oslo-ceremony">
 				<h3>The ceremony</h3>
-				<NobelPhoto photo={photo('peace-prize-presentation')} />
+				<div class="ceremony-grid">
+					<NobelPhoto photo={photo('peace-prize-presentation')} />
+					<div class="ceremony-feature">
+						<NobelPhoto
+							photo={photo('peace-prize-ceremony-high-angle')}
+							className="ceremony-tall"
+						/>
+						<div class="ceremony-stack">
+							<NobelPhoto photo={photo('peace-prize-ceremony-02')} />
+							<NobelPhoto photo={photo('peace-prize-ceremony-01')} />
+						</div>
+					</div>
+					<div class="ceremony-row">
+						<NobelPhoto photo={photo('peace-prize-ceremony-03')} />
+						<NobelPhoto photo={photo('peace-prize-ceremony-04')} />
+					</div>
+				</div>
 			</div>
 			<div class="oslo-subsection">
 				<h3>The Torchlight Procession</h3>
@@ -463,9 +539,56 @@ const structuredData = {
 		margin: 2.5rem 0 0;
 	}
 
-	:global(.intro-photo) {
+	.intro-photo-composite {
+		position: relative;
 		grid-column: 1 / -1;
 		margin-top: clamp(3rem, 6vw, 6rem);
+	}
+
+	.intro-photo-composite :global(.credentials-overlay) {
+		position: absolute;
+		top: 50%;
+		left: 2.5%;
+		width: 28.8%;
+		padding: clamp(0.35rem, 0.7vw, 0.7rem);
+		background: var(--paper);
+		box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.38);
+		transform: translateY(-48%) rotate(-1deg);
+		z-index: 1;
+	}
+
+	.intro-photo-composite :global(.ceremony-program-overlay) {
+		position: absolute;
+		top: 50%;
+		right: 5%;
+		width: 21.6%;
+		padding: clamp(0.35rem, 0.7vw, 0.7rem);
+		background: var(--paper);
+		box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.38);
+		transform: translateY(-48%) rotate(1deg);
+		z-index: 1;
+	}
+
+	.intro-photo-composite :global(.credentials-overlay > a) {
+		aspect-ratio: 0.98;
+	}
+
+	.intro-photo-composite :global(.credentials-overlay > a img) {
+		height: 100%;
+		object-fit: cover;
+		object-position: center top;
+	}
+
+	.intro-photo-composite :global(.credentials-overlay figcaption) {
+		padding-top: 0.5rem;
+		font-size: clamp(0.48rem, 0.55vw, 0.62rem);
+		line-height: 1.35;
+	}
+
+	.intro-photo-composite :global(.ceremony-program-overlay figcaption) {
+		padding-top: 0.5rem;
+		font-size: clamp(0.48rem, 0.55vw, 0.62rem);
+		line-height: 1.35;
 	}
 
 	.story-section {
@@ -581,6 +704,45 @@ const structuredData = {
 		margin: 0 auto;
 	}
 
+	.ceremony-grid {
+		display: grid;
+		gap: clamp(2.5rem, 5vw, 6rem);
+	}
+
+	.ceremony-row {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: clamp(1rem, 2vw, 2rem);
+		align-items: start;
+	}
+
+	.ceremony-feature {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: clamp(1rem, 2vw, 2rem);
+		align-items: stretch;
+	}
+
+	.ceremony-stack {
+		display: grid;
+		gap: clamp(1rem, 2vw, 2rem);
+	}
+
+	.ceremony-feature :global(.ceremony-tall) {
+		display: grid;
+		grid-template-rows: minmax(0, 1fr) auto;
+		height: 100%;
+	}
+
+	.ceremony-feature :global(.ceremony-tall > a),
+	.ceremony-feature :global(.ceremony-tall img) {
+		height: 100%;
+	}
+
+	.ceremony-feature :global(.ceremony-tall img) {
+		object-fit: cover;
+	}
+
 	.oslo-grid {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -667,8 +829,16 @@ const structuredData = {
 		.photo-trio,
 		.chemistry-grid,
 		.economics-grid,
+		.ceremony-feature,
+		.ceremony-row,
 		.oslo-grid {
 			grid-template-columns: 1fr;
+		}
+
+		.ceremony-feature :global(.ceremony-tall),
+		.ceremony-feature :global(.ceremony-tall > a),
+		.ceremony-feature :global(.ceremony-tall img) {
+			height: auto;
 		}
 
 		.chemistry-grid {
@@ -684,6 +854,32 @@ const structuredData = {
 		:global(.nobel-photo figcaption) {
 			align-items: flex-start;
 			flex-direction: column;
+		}
+
+		.intro-photo-composite :global(.credentials-overlay) {
+			left: 2%;
+			width: 30.4%;
+			padding: 0.25rem;
+			box-shadow: 0 0.8rem 2rem rgba(0, 0, 0, 0.42);
+		}
+
+		.intro-photo-composite :global(.ceremony-program-overlay) {
+			right: 5%;
+			width: 22.8%;
+			padding: 0.25rem;
+			box-shadow: 0 0.8rem 2rem rgba(0, 0, 0, 0.42);
+		}
+
+		.intro-photo-composite :global(.credentials-overlay figcaption) {
+			padding-top: 0.35rem;
+			font-size: 0.45rem;
+			letter-spacing: 0.05em;
+		}
+
+		.intro-photo-composite :global(.ceremony-program-overlay figcaption) {
+			padding-top: 0.35rem;
+			font-size: 0.45rem;
+			letter-spacing: 0.05em;
 		}
 	}
 
