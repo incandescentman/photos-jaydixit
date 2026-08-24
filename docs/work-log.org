@@ -2244,3 +2244,42 @@ imagesLoaded(container).on('progress', function(instance, image) {
 * 2026-08-22 - Make Prettier and Git whitespace checks agree for MDX
 
 - Added a narrow ~*.mdx whitespace=-space-before-tab~ rule to [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/.gitattributes][.gitattributes]]. Prettier’s MDX printer emits Markdown indentation followed by JSX tabs and still reports that output as correctly formatted; Git now accepts that formatter-owned indentation without weakening whitespace checks for other source files.
+
+* 2026-08-23 - Add the private reviewed photo publisher
+
+** Workflow
+- Added [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/scripts/photo-publish.js][📄 /Users/jay/Dropbox/github/photos-jaydixit/scripts/photo-publish.js]], an agent-facing planner and resumable executor for Lightroom exports.
+- Kept quality, favorite status, and publication destinations independent. Quality is ~unreviewed~, ~reject~, ~fine~, or ~great~; favorite is a separate boolean and is valid only for a ~great~ photograph.
+- Default plans include a local portfolio copy, Wikimedia Commons, and Cloudinary. Public execution requires an approved manifest plus the literal ~--confirm PUBLISH~ gate.
+- Added the noninteractive Pywikibot ~UploadRobot~ adapter at [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/scripts/commons-upload.py][📄 /Users/jay/Dropbox/github/photos-jaydixit/scripts/commons-upload.py]]. Upload warnings abort rather than being silently ignored.
+- Added local gallery metadata and person-index wiring, including an explicit exclusion for group or unresolved-person photographs so they do not masquerade as solo portraits on the red-carpet index.
+- Made the batch gallery a per-photo review default rather than a fixed execution path. Mixed exports can override each photograph’s gallery, and execution rebuilds its local path and default Cloudinary public ID from that reviewed value.
+- Added resumable destination receipts and updates to [[file+emacs:/Users/jay/Dropbox/roam/photography/20260823235900-celebrity-photograph-inventory.org][📄 Celebrity Photograph Inventory]].
+
+** Safety
+- Planning reads metadata and hashes only; it does not copy or upload photographs.
+- Execution verifies source hashes and destination preconditions, refuses overwrites with different contents, and never commits, pushes, deploys, or selects homepage highlights.
+- Commons Gallery albums remain a second authenticated browser step after the Commons upload and require action-time approval.
+
+** Verification
+- The planner inventoried all eight current TIFF export JPEGs without modifying them. Six have the five required editorial fields; two are missing all five. With Commons enabled and no approved category supplied, all eight correctly remain blocked.
+- A destination-disabled reviewed reject was written to a temporary Org inventory twice without duplication or Org ID churn. A ~favorite: true~ photograph with ~quality: fine~ was correctly rejected before any write.
+- The publication command, Pywikibot adapter help surface, and Exwalker handoff passed syntax and help checks. All 21 Vitest tests, lint, and the 128-page production build passed. No upload or shared-state action was attempted.
+
+* 2026-08-23 - Add reviewed Commons new-version replacements
+
+** Workflow
+- Added an explicit ~new-version~ Commons mode that requires the exact existing filename and a replacement comment.
+- Added a read-only ~preview~ command that verifies the unchanged local source, reports local dimensions, resolves the live Commons target, and reports the current Commons revision checksum, dimensions, timestamp, and uploader.
+- Kept new-version uploads separate from new-file uploads. A replacement uses Pywikibot's existing ~FilePage~, preserves the description page and categories, ignores only the expected ~exists~ warning, and verifies that Commons created a new binary revision afterward.
+- Prepared a local-only Willem Dafoe replacement plan for [[https://commons.wikimedia.org/wiki/File:Willem_Dafoe_at_the_2024_Toronto_International_Film_Festival_02.jpg][the existing TIFF 2024 Commons file]]. The current revision is ~2898x3623~; Jay's corrected export is ~2400x3000~. No upload occurred.
+
+** Verification
+- Prettier, Node syntax checking, ESLint, all 21 Vitest tests, the Pywikibot adapter help surface, and the read-only live Commons preview passed.
+- The replacement executor still requires an approved manifest and the literal ~--confirm PUBLISH~ action-time gate.
+
+** First completed replacement
+- After Jay's explicit approval, uploaded the corrected Willem Dafoe export as the current revision of [[https://commons.wikimedia.org/wiki/File:Willem_Dafoe_at_the_2024_Toronto_International_Film_Festival_02.jpg][the existing Commons file]] through his authenticated ~Jaydixit~ browser session.
+- Verified the live revision at ~2400x3000~, timestamped ~2026-08-23T07:04:02Z~, with the approved color-correction and slightly-tighter-crop comment. The prior ~2898x3623~ revision remains in file history.
+- Commons' global-usage API currently returns no transclusions for this exact file, so no Wikipedia page changed from this particular replacement.
+- Pywikibot could not complete noninteractively because ~site.login()~ waited for an interactive credential. Added ignored stdin and a 60-second timeout so a future missing credential fails instead of hanging; the authenticated browser is the verified fallback.

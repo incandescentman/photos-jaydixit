@@ -463,3 +463,36 @@ After dotenv has populated the environment, call ~cloudinary.config(true)~ to ma
 Prettier’s MDX printer can combine Markdown’s space indentation with tabs used for embedded JSX. This still happens with ~useTabs: false~ and passes ~prettier --check~, but Git reports “space before tab in indent.” Post-processing the tabs makes Git happy but causes Prettier to reject the file.
 
 Keep Prettier’s canonical output and add ~*.mdx whitespace=-space-before-tab~ to ~.gitattributes~. This disables only that incompatible Git check for MDX while leaving every other whitespace check active.
+
+* 2026-08-23 - Commons Gallery Albums Reference Wikimedia Commons Files
+
+** Trigger
+An album URL looks like a direct photo-upload destination, but its editor operates on existing Wikimedia Commons files.
+
+** Mechanism
+Commons Gallery does not host a separate media copy. An editor adds media by Commons filename after the file exists on Wikimedia Commons, then controls album ordering and album-specific captions.
+
+** Actionable insight
+Treat a Commons Gallery destination as a two-stage publication: upload and verify the file on Wikimedia Commons first, then use the authenticated album editor’s ~Manage Media~ → ~Add by Filename~ flow. Preserve the album URL and Commons filename in the publication receipt so the browser step is resumable.
+
+* 2026-08-23 - A Commons New Version Is Not A New Upload With A Reused Name
+
+** Trigger
+A corrected photograph should replace the current binary revision while keeping its established Commons page, categories, history, and transclusions.
+
+** Mechanism
+Pywikibot's ~UploadRobot~ is oriented around creating a file and assigning description text. For a replacement, use the exact existing ~FilePage~ and upload the new binary with an edit comment while allowing only the expected ~exists~ warning. Query the live revision before and after; filename existence alone cannot prove that the replacement happened.
+
+** Actionable insight
+Model ~new~ and ~new-version~ as distinct publication modes. A replacement must preflight an existing exact target, leave page text alone, record the previous revision checksum, and succeed only when the verified live checksum changes.
+
+* 2026-08-23 - Pywikibot Login Can Block Invisibly Under A Capturing Parent
+
+** Trigger
+The approved Commons executor appeared silent for more than two minutes after launching Pywikibot.
+
+** Mechanism
+The Pywikibot process had completed its network request and was blocked reading interactive login input. Execa was capturing its output, so the credential prompt was not visible. The Commons API confirmed that no new revision had been created.
+
+** Actionable insight
+Run the Pywikibot adapter with stdin ignored and a finite timeout. If no noninteractive credential is configured, fail closed and use Jay's authenticated Commons browser session after the same reviewed plan and action-time approval; never start a second upload while the first process is still alive.

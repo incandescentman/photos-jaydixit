@@ -10,6 +10,58 @@ This guide walks you through uploading photos to Cloudinary with proper metadata
 
 The publication workflow has two separate jobs: establish truthful portable metadata, then wire each photograph into the intended site surface. A Cloudinary upload by itself does not make a photograph visible on this site.
 
+** Agent-fronted private batch workflow
+
+The private publisher turns a Lightroom export into a reviewable, resumable manifest. Planning is read-only:
+
+#+begin_src bash
+cd /Users/jay/Dropbox/github/photos-jaydixit
+pnpm photo:publish plan /path/to/lightroom-export \
+  --gallery red-carpet/tiff-2025 \
+  --output /path/to/publication-plan.json \
+  --commons-category "Approved existing Commons category" \
+  --commons-gallery "https://commons.gallery/@account/album"
+#+end_src
+
+Repeat ~--commons-category~ and ~--commons-gallery~ for multiple values. A planned photograph defaults to the local portfolio, Wikimedia Commons, and Cloudinary; any destination can be disabled in the reviewed manifest. Planning never copies or uploads a file.
+
+For a minor correction to the same photograph already on Commons, plan an explicit new-version replacement. Use the existing Commons filename exactly; this preserves the file page, categories, history, and every Wikimedia use of that filename.
+
+#+begin_src sh
+pnpm photo:publish plan /path/to/corrected-photo.jpg \
+  --gallery red-carpet \
+  --output /path/to/replacement-plan.json \
+  --no-portfolio \
+  --cloudinary none \
+  --commons-mode new-version \
+  --commons-existing-filename "Existing_Commons_filename.jpg" \
+  --commons-replacement-comment "Minor color correction from the photographer's original RAW file."
+
+pnpm photo:publish preview /path/to/replacement-plan.json
+#+end_src
+
+The read-only preview verifies the source checksum, local dimensions, exact live Commons target, current revision checksum and dimensions, and proposed replacement comment. New-version execution refuses a missing target, does not rewrite the Commons description page, and verifies that the live file checksum changed after upload.
+
+The batch gallery is only a planning default. For a mixed export, the agent changes ~destinations.portfolio.gallery~ per photograph after the event is established. Execution rebuilds the local destination path and, by default, the Cloudinary public ID from that reviewed per-photo gallery instead of trusting a stale generated path.
+
+For each photograph, the agent asks only for missing facts and judgments. The three independent review dimensions are:
+
+- Quality :: ~unreviewed~, ~reject~, ~fine~, or ~great~
+- Favorite :: ~true~ or ~false~; a favorite must also be ~great~
+- Publication destinations :: local portfolio, Wikimedia Commons, Cloudinary, and any Commons Gallery albums
+
+Catalog presence, valid metadata, technical sharpness, celebrity, and agent preference do not establish quality or favorite status. Only Jay assigns those judgments after visual review. Confirmed names go in the embedded people field; an unknown person remains a descriptive unresolved identity in the manifest.
+
+After Jay has approved the complete preview, the agent records ~approved_at~, marks each reviewed photograph ~approved~, and runs:
+
+#+begin_src bash
+pnpm photo:publish execute /path/to/publication-plan.json --confirm PUBLISH
+#+end_src
+
+Execution rechecks source hashes, existing Commons categories, and destination configuration before copying or uploading. It never overwrites a different local asset or Cloudinary public ID. It saves receipts after each completed destination so a failed batch can resume. It updates [[file+emacs:/Users/jay/Dropbox/roam/photography/20260823235900-celebrity-photograph-inventory.org][📄 Celebrity Photograph Inventory]] and keeps all portfolio changes local; it never commits, pushes, deploys, or adds a photograph to the homepage.
+
+A Commons Gallery album does not host the media itself. The agent first uploads the reviewed file to Wikimedia Commons, then uses the authenticated album editor’s ~Manage Media~ → ~Add by Filename~ flow to add the resulting Commons filename, reorder it, and set the album caption. That browser change requires Jay’s action-time approval just like the uploads.
+
 ** 1. Preflight The Lightroom Export With Exwalker
 
 Use [[file+emacs:/Users/jay/Dropbox/github/exwalker][📁 /Users/jay/Dropbox/github/exwalker/]] before copying or uploading new exports:
@@ -40,6 +92,7 @@ Use ~subject_event_year.jpg~ for solo photographs. Use an unambiguous hyphenated
 - The folder becomes a public ~/gallery/.../~ route. For TIFF, [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/gallery/photos/red-carpet/tiff][📁 /Users/jay/Dropbox/github/photos-jaydixit/src/gallery/photos/red-carpet/tiff/]] renders at [[https://photos.jaydixit.com/gallery/red-carpet/tiff/][photos.jaydixit.com/gallery/red-carpet/tiff/]].
 - Keep factual public captions and tags in that folder’s ~tags.json~. Both the legacy flat filename-to-tags format and the structured ~defaults~ / ~captions~ / ~overrides~ format are supported.
 - A Cloudinary upload is not required for filesystem galleries. Astro processes the local assets during the Vercel build.
+- The private publisher can additionally create an explicit Cloudinary mirror for a reviewed batch. That mirror remains separate from public gallery routing and homepage selection.
 
 *** Red-carpet person pages
 

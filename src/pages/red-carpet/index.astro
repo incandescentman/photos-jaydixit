@@ -10,6 +10,7 @@ interface Person {
 	name: string;
 	match: string[];
 	photoSlugs?: string[];
+	indexExcludedPhotoSlugs?: string[];
 	bio?: string;
 	wikipedia?: string;
 }
@@ -65,6 +66,8 @@ const allMatchPatterns = people.flatMap((p) => p.match.map(normalizeMatchValue))
 
 function isMultiPersonPhoto(photoSlug: string, currentPerson: Person): boolean {
 	const normalizedSlug = normalizeMatchValue(photoSlug);
+	const excluded = new Set((currentPerson.indexExcludedPhotoSlugs ?? []).map(normalizeMatchValue));
+	if (excluded.has(normalizedSlug)) return true;
 	const ownPatterns = new Set(currentPerson.match.map(normalizeMatchValue));
 	return allMatchPatterns.some(
 		(pattern) => !ownPatterns.has(pattern) && normalizedSlug.includes(pattern),

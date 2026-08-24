@@ -17,6 +17,7 @@ The root **CLAUDE.md** file contains legacy documentation. This file (docs/CLAUD
 
 * Recent Updates
 - 2026-08-22: Added Stephen Root from SXSW 2024, Ella Hunt from TIFF 2024, Demis Hassabis from the 2024 Nobel Lectures, and two separate Oslo Nobel Peace Prize torchlight-procession photographs to the homepage photo wall; the wall now contains 23 desktop cards and 17 non-duplicated mobile cards; also repaired the Nobel lecture intro width after the reading-face max-width rule constrained the entire grid
+- 2026-08-23: Added a private agent-fronted publication manifest for reviewed Lightroom exports, with independent quality/favorite/destination judgments, local portfolio wiring, optional Cloudinary and Wikimedia Commons mirrors, safe new-version replacement of existing Commons files, Commons Gallery handoff, resumable receipts, and Org inventory updates
 - 2026-08-22: Renamed the canonical comparison route to ~/before-and-after/~ with a permanent redirect from ~/before-after/~; expanded it to eight comparisons ending with Fondazione Prada, Milan; added an eight-item responsive jump index; and removed leading zeroes from every visitor-facing counter across the site
 - 2026-08-19: Upgraded the portfolio to Astro 7.2.3, MDX 7.0.6, Tailwind CSS 4.3.3, and Lucide Astro 1.32.0; preserved Astro 6 HTML whitespace behavior, migrated legacy ~<script hoist>~ blocks so gallery interactions remain bundled, and kept Playwright's Astro preview process attached in agent environments
 - 2026-08-11: Made ~/red-carpets/~ the canonical destination for every “Red Carpets Around the World” menu and hero-action link; the homepage section anchor is no longer used as the navigation target
@@ -233,6 +234,7 @@ Documentation structure:
 - The canonical ingest workflow is: Lightroom export → human review with [[file+emacs:/Users/jay/Dropbox/github/exwalker][Exwalker]] → Exwalker readiness audit → semantic publication filename → local gallery/person/highlight wiring → portfolio validation and rendered preview
 - Embedded EXIF/IPTC/XMP is the portable source record, but live gallery captions and public person routing come from filenames, ~tags.json~, and ~src/data/people.json~
 - ~scripts/photo-cli.js~ validates merged EXIF/IPTC/XMP plus ~tags.json~ and supports intentional Cloudinary album uploads; validator success proves field presence, not factual identity or caption truth
+- ~scripts/photo-publish.js~ plans reviewed multi-destination batches and requires both manifest approval and the literal ~--confirm PUBLISH~ execution gate; it never commits, pushes, deploys, or selects homepage highlights
 - Never modify photo organization to fix code issues
 
 *** Cloudinary Integration (Homepage)

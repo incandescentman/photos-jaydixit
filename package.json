@@ -23,6 +23,7 @@
 		"photo:init": "node scripts/photo-cli.js init",
 		"photo:upload": "node scripts/photo-cli.js upload",
 		"photo:validate": "node scripts/photo-cli.js validate",
+		"photo:publish": "node scripts/photo-publish.js",
 		"generate-metadata": "node scripts/generate-image-metadata.js"
 	},
 	"devDependencies": {
