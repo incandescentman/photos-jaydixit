@@ -7,11 +7,25 @@ export interface Props {
 		media: string;
 		selector: string;
 	};
+	responsiveExcludes?: Array<{
+		media: string;
+		selector: string;
+	}>;
 	options?: Record<string, unknown>;
 }
 
-const { gallerySelector, childrenSelector = 'a', responsiveExclude, options = {} } = Astro.props;
+const {
+	gallerySelector,
+	childrenSelector = 'a',
+	responsiveExclude,
+	responsiveExcludes = [],
+	options = {},
+} = Astro.props;
 const serializedOptions = JSON.stringify(options);
+const serializedResponsiveExcludes = JSON.stringify([
+	...(responsiveExclude ? [responsiveExclude] : []),
+	...responsiveExcludes,
+]);
 ---
 
 <div
@@ -19,8 +33,7 @@ const serializedOptions = JSON.stringify(options);
 	data-photo-pswp-config="true"
 	data-gallery-selector={gallerySelector}
 	data-children-selector={childrenSelector}
-	data-responsive-exclude-media={responsiveExclude?.media}
-	data-responsive-exclude-selector={responsiveExclude?.selector}
+	data-responsive-excludes={serializedResponsiveExcludes}
 	data-options={serializedOptions}
 >
 </div>
@@ -82,38 +95,53 @@ const serializedOptions = JSON.stringify(options);
 
 			const selector = configNode.dataset.gallerySelector;
 			const children = configNode.dataset.childrenSelector || 'a';
-			const responsiveExcludeMedia = configNode.dataset.responsiveExcludeMedia;
-			const responsiveExcludeSelector = configNode.dataset.responsiveExcludeSelector;
+			const responsiveExcludes = parseOptions(configNode.dataset.responsiveExcludes);
 			const parsedOptions = parseOptions(configNode.dataset.options);
 			const galleryElement = selector ? document.querySelector(selector) : null;
 			if (!selector || !(galleryElement instanceof HTMLElement)) return;
 
-			const responsiveMedia =
-				responsiveExcludeMedia && responsiveExcludeSelector
-					? window.matchMedia(responsiveExcludeMedia)
-					: null;
+			const responsiveRules = Array.isArray(responsiveExcludes)
+				? responsiveExcludes
+						.filter((rule) => rule?.media && rule?.selector)
+						.map((rule) => ({ ...rule, mediaQuery: window.matchMedia(rule.media) }))
+				: [];
 			const responsiveChildren = () => {
 				const elements = Array.from(galleryElement.querySelectorAll(children));
-				if (!responsiveMedia?.matches || !responsiveExcludeSelector) return elements;
-				return elements.filter((element) => !element.matches(responsiveExcludeSelector));
+				return elements
+					.filter(
+						(element) =>
+							!responsiveRules.some(
+								(rule) => rule.mediaQuery.matches && element.matches(rule.selector),
+							),
+					)
+					.sort(
+						(a, b) =>
+							Number.parseInt(getComputedStyle(a).order, 10) -
+							Number.parseInt(getComputedStyle(b).order, 10),
+					);
 			};
 
 			const lightbox = new PhotoSwipeLightbox({
 				...DEFAULT_OPTIONS,
 				...parsedOptions,
 				gallery: selector,
-				children: responsiveMedia ? responsiveChildren() : children,
+				children: responsiveRules.length ? responsiveChildren() : children,
 				pswpModule: () => import('photoswipe'),
 			});
 
-			if (responsiveMedia) {
+			if (responsiveRules.length) {
 				const syncResponsiveChildren = () => {
 					lightbox.options.children = responsiveChildren();
 				};
-				responsiveMedia.addEventListener('change', syncResponsiveChildren);
+				responsiveRules.forEach((rule) =>
+					rule.mediaQuery.addEventListener('change', syncResponsiveChildren),
+				);
 				window.addEventListener(
 					'pagehide',
-					() => responsiveMedia.removeEventListener('change', syncResponsiveChildren),
+					() =>
+						responsiveRules.forEach((rule) =>
+							rule.mediaQuery.removeEventListener('change', syncResponsiveChildren),
+						),
 					{ once: true },
 				);
 			}
