@@ -12,19 +12,28 @@ from pywikibot.specialbots import UploadRobot
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("source")
-    parser.add_argument("--filename", required=True)
+    parser.add_argument("source", nargs="?")
+    parser.add_argument("--filename")
     parser.add_argument("--mode", choices=("new", "new-version"), default="new")
     parser.add_argument("--description-file")
     parser.add_argument("--replacement-comment")
+    parser.add_argument("--check-login", action="store_true")
     args = parser.parse_args()
-
-    source = Path(args.source).expanduser().resolve()
-    if not source.is_file():
-        raise SystemExit(f"Source photograph does not exist: {source}")
 
     site = pywikibot.Site("commons", "commons")
     site.login()
+
+    if args.check_login:
+        print(f"Authenticated Wikimedia Commons account: {site.user()}")
+        return
+
+    if not args.source:
+        raise SystemExit("source is required for an upload")
+    if not args.filename:
+        raise SystemExit("--filename is required for an upload")
+    source = Path(args.source).expanduser().resolve()
+    if not source.is_file():
+        raise SystemExit(f"Source photograph does not exist: {source}")
 
     if args.mode == "new-version":
         if not args.replacement_comment:

@@ -74,13 +74,28 @@ function chunk(values, size) {
 
 async function fetchCurrentFiles(pageIds) {
 	const pages = new Map();
-	for (const ids of chunk(pageIds, 50)) {
-		const payload = await apiRequest({
-			pageids: ids.join('|'),
-			prop: 'imageinfo',
-			iiprop: 'url|timestamp|user|sha1|size|extmetadata',
-		});
-		for (const page of payload.query?.pages || []) pages.set(String(page.pageid), page);
+	for (const ids of chunk(pageIds, 25)) {
+		let continuation = {};
+		do {
+			const payload = await apiRequest({
+				pageids: ids.join('|'),
+				prop: 'imageinfo|categories',
+				iiprop: 'url|timestamp|user|sha1|size|extmetadata',
+				cllimit: 'max',
+				clshow: '!hidden',
+				...continuation,
+			});
+			for (const page of payload.query?.pages || []) {
+				const key = String(page.pageid);
+				const existing = pages.get(key);
+				pages.set(key, {
+					...existing,
+					...page,
+					categories: [...(existing?.categories || []), ...(page.categories || [])],
+				});
+			}
+			continuation = payload.continue || null;
+		} while (continuation);
 		await sleep(250);
 	}
 	return pages;
@@ -133,7 +148,9 @@ function renderEntry(group, currentPage, refreshedAt) {
 	const status =
 		currentPage && !currentPage.missing && imageInfo.url ? 'current' : 'missing-or-deleted';
 	const description = decodeHtml(ext.ImageDescription?.value || ext.ObjectName?.value);
-	const categories = decodeHtml(ext.Categories?.value);
+	const categories = (currentPage?.categories || [])
+		.map((category) => category.title.replace(/^Category:/, ''))
+		.join('|');
 	const dimensions =
 		imageInfo.width && imageInfo.height ? `${imageInfo.width}x${imageInfo.height}` : '';
 	return `** ${orgSafe(title)}

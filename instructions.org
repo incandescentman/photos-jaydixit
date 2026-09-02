@@ -44,13 +44,15 @@ The read-only preview verifies the source checksum, local dimensions, exact live
 
 The batch gallery is only a planning default. For a mixed export, the agent changes ~destinations.portfolio.gallery~ per photograph after the event is established. Execution rebuilds the local destination path and, by default, the Cloudinary public ID from that reviewed per-photo gallery instead of trusting a stale generated path.
 
+The manifest keeps ~metadata.capture_date~ from EXIF separate from the approved event-local ~metadata.event_date~ used on Commons and in publication metadata. When they differ, the preview shows both and execution requires ~review.event_date_approved: true~. Never silently treat the camera calendar date as the event-local date across midnight or time-zone differences.
+
 For each photograph, the agent asks only for missing facts and judgments. The three independent review dimensions are:
 
 - Quality :: ~unreviewed~, ~reject~, ~fine~, or ~great~
 - Favorite :: ~true~ or ~false~; a favorite must also be ~great~
-- Publication destinations :: local portfolio, Wikimedia Commons, Cloudinary, and any Commons Gallery albums
+- Publication destinations :: local portfolio, Wikimedia Commons, Cloudinary, homepage highlight, and any Commons Gallery albums
 
-Catalog presence, valid metadata, technical sharpness, celebrity, and agent preference do not establish quality or favorite status. Only Jay assigns those judgments after visual review. Confirmed names go in the embedded people field; an unknown person remains a descriptive unresolved identity in the manifest.
+Catalog presence, valid metadata, technical sharpness, celebrity, and agent preference do not establish quality or favorite status. Only Jay assigns those judgments after visual review. Confirmed names go in the embedded people field; an unknown person remains a descriptive unresolved identity in the manifest. Favorite status does not imply homepage publication: ~destinations.homepage.enabled~ is a separate explicit decision and is valid only for a ~great~ favorite.
 
 After Jay has approved the complete preview, the agent records ~approved_at~, marks each reviewed photograph ~approved~, and runs:
 
@@ -58,7 +60,9 @@ After Jay has approved the complete preview, the agent records ~approved_at~, ma
 pnpm photo:publish execute /path/to/publication-plan.json --confirm PUBLISH
 #+end_src
 
-Execution rechecks source hashes, existing Commons categories, and destination configuration before copying or uploading. It never overwrites a different local asset or Cloudinary public ID. It saves receipts after each completed destination so a failed batch can resume. It updates [[file+emacs:/Users/jay/Dropbox/roam/photography/20260823235900-celebrity-photograph-inventory.org][📄 Celebrity Photograph Inventory]] and keeps all portfolio changes local; it never commits, pushes, deploys, or adds a photograph to the homepage.
+Execution begins with a read-only gate that rechecks source hashes, existing Commons categories, ignored owner-only Pywikibot credential storage, noninteractive Wikimedia login, and Cloudinary authentication before any portfolio copy or upload. It never overwrites a different local asset or Cloudinary public ID. It persists and prints the phases ~preflight~, ~portfolio~, ~commons~, ~cloudinary~, ~homepage~, ~commons-gallery~, ~inventory-commons~, and ~inventory-site~, saving destination receipts and phase status so an interrupted batch can be diagnosed and resumed from the manifest alone. An explicitly enabled homepage destination creates or verifies the local highlight, its ~highlights/~ Cloudinary asset, homepage configuration entry, exact image dimensions, and receipt. Execution keeps portfolio changes local and never commits, pushes, or deploys.
+
+Pywikibot authentication uses the ignored owner-only ~.passwd~ file referenced by ignored ~user-config.py~; account-specific ~pywikibot-*.lwp~ cookies are ignored too. Do not duplicate the BotPassword in ~.env~. Credential diagnostics may report only presence, ignore status, permissions, format, length, or a sanitized HTTP status; never print a secret-bearing line, clipboard value, complete SDK error object, or request options. Cloudinary Admin API error objects can contain the Basic-auth credential under ~request_options.auth~, so catch and replace them with a sanitized error before any console output.
 
 The canonical cross-destination record is [[file+emacs:/Users/jay/Dropbox/roam/photography/20260902015339-photo_publication_inventory.org][📄 Photo Publication Inventory]]. For “Have I uploaded this person or photograph before?” or “Is this photograph on my site?”, search that file first. It keeps the portfolio repository source, verified-live ~photos.jaydixit.com~ state, Cloudinary configuration, and Wikimedia Commons upload history distinct. Run ~pnpm photo:inventory freshness~; only run ~pnpm photo:inventory sync~ when the registry is missing or stale. The publication executor refreshes it automatically after a completed publication batch.
 
@@ -67,6 +71,8 @@ The canonical cross-destination record is [[file+emacs:/Users/jay/Dropbox/roam/p
 A Commons Gallery album does not host the media itself. The agent first uploads the reviewed file to Wikimedia Commons, then uses the authenticated album editor’s ~Manage Media~ → ~Add by Filename~ flow to add the resulting Commons filename, reorder it, and set the album caption. That browser change requires Jay’s action-time approval just like the uploads.
 
 ** 1. Preflight The Lightroom Export With Exwalker
+
+When Jay supplies filenames for new photographs without a directory, check [[file+emacs:/Users/jay/Downloads][📁 /Users/jay/Downloads]] first before searching elsewhere or asking for the path.
 
 Use [[file+emacs:/Users/jay/Dropbox/github/exwalker][📁 /Users/jay/Dropbox/github/exwalker/]] before copying or uploading new exports:
 
@@ -108,6 +114,7 @@ Use ~subject_event_year.jpg~ for solo photographs. Use an unambiguous hyphenated
 *** Main Packery highlights page
 
 - Only Jay-selected favorites belong in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/gallery/highlights][📁 /Users/jay/Dropbox/github/photos-jaydixit/src/gallery/highlights/]]. When Jay asks to choose among candidates, open each original file individually in Preview, ask for an explicit yes/no decision through Spokenly, and record the selection before showing the next file.
+- In a reviewed publication manifest, set ~destinations.homepage.enabled: true~ only after Jay explicitly chooses that photograph for the homepage. The executor then handles the local highlight copy, ~highlights/~ Cloudinary upload, homepage entry, exact dimensions, and resumable receipt as one destination phase.
 - Copy only approved files into the highlights directory. Stage only that approved subset for the Cloudinary uploader and publish it under ~highlights/<public-id>~; do not aim the uploader at a complete source gallery.
 - Add each selection to [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/homepage-images.js][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/data/homepage-images.js]]. Use ~cloudinaryPublicId~ when the remote ID differs from the local filename. Without an explicit resequencing request, new entries that are absent from ~src/data/saved-order.json~ append after the saved homepage sequence.
 - Measure approved files directly and add their exact ~highlights/<filename>~ dimensions to ~src/data/image-metadata.json~. Do not run ~scripts/generate-image-metadata.js~ for current highlights: that legacy script scans only ~public/~, rewrites the complete metadata file, and generates unrelated WebP siblings while omitting ~src/gallery/highlights/~.

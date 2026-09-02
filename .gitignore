@@ -17,6 +17,9 @@ src/assets/highlights/
 
 # Pywikibot
 user-config.py
+.passwd
+pywikibot-*.lwp
+__pycache__/
 apicache/
 logs/
 throttle.ctrl

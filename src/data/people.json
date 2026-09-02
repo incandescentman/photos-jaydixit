@@ -68,6 +68,11 @@
 		"wikipedia": "https://en.wikipedia.org/wiki/Himesh_Patel"
 	},
 	{
+		"slug": "jack-johnson",
+		"name": "Jack Johnson",
+		"match": ["jack-johnson"]
+	},
+	{
 		"slug": "jason-bateman",
 		"name": "Jason Bateman",
 		"match": ["jason-bateman"],
@@ -166,6 +171,12 @@
 		"wikipedia": "https://en.wikipedia.org/wiki/Sebastian_Stan"
 	},
 	{
+		"slug": "steven-yeun",
+		"name": "Steven Yeun",
+		"match": ["steven-yeun"],
+		"wikipedia": "https://en.wikipedia.org/wiki/Steven_Yeun"
+	},
+	{
 		"slug": "sydney-sweeney",
 		"name": "Sydney Sweeney",
 		"match": ["sydney-sweeney"],
@@ -180,12 +191,6 @@
 		"sourceCredit": "Jay Dixit",
 		"license": "CC BY-SA 4.0",
 		"licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
-	},
-	{
-		"slug": "steven-yeun",
-		"name": "Steven Yeun",
-		"match": ["steven-yeun"],
-		"wikipedia": "https://en.wikipedia.org/wiki/Steven_Yeun"
 	},
 	{
 		"slug": "vanessa-kirby",

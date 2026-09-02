@@ -235,7 +235,7 @@ Documentation structure:
 - The canonical ingest workflow is: Lightroom export → human review with [[file+emacs:/Users/jay/Dropbox/github/exwalker][Exwalker]] → Exwalker readiness audit → semantic publication filename → local gallery/person/highlight wiring → portfolio validation and rendered preview
 - Embedded EXIF/IPTC/XMP is the portable source record, but live gallery captions and public person routing come from filenames, ~tags.json~, and ~src/data/people.json~
 - ~scripts/photo-cli.js~ validates merged EXIF/IPTC/XMP plus ~tags.json~ and supports intentional Cloudinary album uploads; validator success proves field presence, not factual identity or caption truth
-- ~scripts/photo-publish.js~ plans reviewed multi-destination batches and requires both manifest approval and the literal ~--confirm PUBLISH~ execution gate; it never commits, pushes, deploys, or selects homepage highlights
+- ~scripts/photo-publish.js~ plans reviewed multi-destination batches and requires both manifest approval and the literal ~--confirm PUBLISH~ execution gate; homepage publication is an independent explicit manifest destination for a Jay-selected great favorite, and the executor never commits, pushes, or deploys
 - [[file+emacs:/Users/jay/Dropbox/roam/photography/20260902015339-photo_publication_inventory.org][📄 Photo Publication Inventory]] is the canonical cross-destination registry. Search it first for prior-upload and live-site questions; use ~pnpm photo:inventory freshness~ and refresh only when stale. Its generated sections keep local portfolio source, verified production state, Cloudinary configuration, and Commons history distinct.
 - Never modify photo organization to fix code issues
 

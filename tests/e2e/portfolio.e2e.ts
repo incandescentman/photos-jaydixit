@@ -182,43 +182,35 @@ test('mobile homepage does not repeat hero photographs in the wall', async ({ pa
 	const mobileWallLinks = page.locator(
 		'[data-wall-card]:not([data-mobile-duplicate="true"]) a[data-pswp-item]',
 	);
+	const mobileWallCards = page.locator('[data-wall-card]:not([data-mobile-duplicate="true"])');
 	const wallSources = await mobileWallLinks.evaluateAll((links) =>
 		links.map((link) => link.getAttribute('data-full-src')),
 	);
 
-	await expect(mobileWallLinks).toHaveCount(17);
+	await expect(mobileWallLinks).toHaveCount(14);
 	expect(
 		await page
 			.locator('[data-wall-card][data-mobile-duplicate="true"]')
 			.evaluateAll((cards) => cards.map((card) => getComputedStyle(card).display)),
-	).toEqual(Array(6).fill('none'));
+	).toEqual(Array(10).fill('none'));
 	expect(wallSources.filter((source) => heroSources.includes(source))).toEqual([]);
 	await expect(
 		page.locator('[data-wall-card]:not([data-mobile-duplicate="true"]) .wall-number-mobile'),
-	).toHaveText([
-		'1',
-		'2',
-		'3',
-		'4',
-		'5',
-		'6',
-		'7',
-		'8',
-		'9',
-		'10',
-		'11',
-		'12',
-		'13',
-		'14',
-		'15',
-		'16',
-		'17',
-	]);
+	).toHaveText(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14']);
+
+	for (const [index, caption] of [
+		[11, 'Jack Johnson at SXSW 2026'],
+		[12, 'Nobel Peace Prize Torchlight Procession in Oslo, 2024'],
+		[13, 'Nobel Peace Prize Torchlight Procession in Oslo, 2024'],
+	] as const) {
+		await expect(mobileWallCards.nth(index)).toHaveClass(/wall-full-landscape/);
+		await expect(mobileWallLinks.nth(index)).toHaveAttribute('data-pswp-caption', caption);
+	}
 
 	await mobileWallLinks.first().scrollIntoViewIfNeeded();
 	await expect(mobileWallLinks.first()).toBeVisible();
 	await mobileWallLinks.first().click();
-	await expect(page.locator('.pswp__counter')).toHaveText('1 / 17');
+	await expect(page.locator('.pswp__counter')).toHaveText('1 / 14');
 });
 
 for (const route of ['/', '/gallery/red-carpet/sundance/']) {

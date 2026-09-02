@@ -507,3 +507,47 @@ The MediaWiki ~allimages~ module with ~aiuser~ returns only files whose latest v
 
 ** Actionable insight
 Build the canonical local mirror from ~list=logevents~, ~letype=upload~, and ~leuser=Jaydixit~. Deduplicate by page ID, retain missing or deleted file records, enrich current pages separately, and gate every refresh by comparing the distinct source count with the number of generated Org entries.
+
+* 2026-09-02 - Pywikibot BotPasswords Belong In Its Password File
+
+** Trigger
+Current Pywikibot ignored a repository-local ~password~ variable, warned about the BotPassword login name, and stopped an otherwise approved upload at an interactive password prompt.
+
+** Mechanism
+Configure ~usernames['commons']['commons']~ with the main account name, point ~password_file~ at an ignored owner-readable file, and store ~('Jaydixit', BotPassword('pyuploadwiki', '...'))~ there. Pywikibot combines the main username and suffix itself. Its ~pywikibot-*.lwp~ login-cookie files are credentials too and must remain ignored.
+
+** Actionable insight
+Before a publication batch, verify noninteractive login with ~pwb login -site:commons:commons~. Keep ~.passwd~, ~pywikibot-*.lwp~, and ~user-config.py~ ignored; never duplicate the BotPassword in ~.env~ or a tracked configuration file.
+
+* 2026-09-02 - Fetch Commons Categories Through The Categories Property
+
+** Trigger
+Fresh Commons uploads had correct live categories, but the account inventory rendered ~Categories :: Not available~.
+
+** Mechanism
+~imageinfo~ extended metadata does not reliably include an ~extmetadata.Categories~ value. The MediaWiki ~categories~ page property is authoritative. Batch it with ~cllimit=max~, exclude hidden maintenance categories with ~clshow=!hidden~, and merge continuation pages before rendering.
+
+** Actionable insight
+Build inventory category lists from ~prop=imageinfo|categories~, not ~iiprop=extmetadata~ alone, and verify a newly uploaded file against live page categories after refreshing the mirror.
+
+* 2026-09-02 - Publication Manifests Must Separate Facts, Decisions, And Execution State
+
+** Trigger
+The Jack Johnson batch exposed three states that had been collapsed: EXIF's March 14 camera date versus the March 13 event-local date, Jay's favorite judgment versus the separate homepage-publication decision, and a completed batch versus the individual destination phase currently running or failed.
+
+** Mechanism
+Capture metadata, publication decisions, and execution state have different authority and failure modes. Reusing one field for both dates silently publishes the camera calendar date; treating ~favorite~ as homepage authorization hides a distribution decision; relying only on destination receipts makes interrupted work harder to diagnose. Authentication failures discovered after local copies are created also leave avoidable partial state.
+
+** Actionable insight
+Store ~capture_date~ and reviewed ~event_date~ separately and require explicit approval when they differ. Model the homepage as an independent destination valid only for a Jay-selected ~great~ favorite. Run a read-only authentication and source gate before mutation, then persist the named phase state and destination receipts after every transition so execution is both auditable and safely resumable.
+
+* 2026-09-02 - Cloudinary SDK Error Objects Can Contain Credentials
+
+** Trigger
+A failed standalone Admin API resource lookup printed the SDK's complete thrown object, including ~request_options.auth~, into the agent tool transcript.
+
+** Mechanism
+The Cloudinary Node SDK can attach the complete request options to an error object. Node's default unhandled-rejection rendering recursively prints that object, and the Basic-auth field contains the API key and secret even when application code never logs environment variables directly.
+
+** Actionable insight
+Never print or leave unhandled a Cloudinary SDK error object. Catch Admin and Upload API failures at the call boundary and replace them with a new error containing only the action and sanitized HTTP status. After any accidental rendering of ~request_options.auth~, treat the API secret as exposed and rotate the key pair.

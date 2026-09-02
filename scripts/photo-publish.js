@@ -12,6 +12,7 @@ import { v2 as cloudinary } from 'cloudinary';
 import { execa } from 'execa';
 import dotenv from 'dotenv';
 import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 import os from 'node:os';
 import fs from 'node:fs/promises';
 import { constants, createReadStream, existsSync } from 'node:fs';
@@ -27,9 +28,14 @@ const PUBLICATION_INVENTORY_SCRIPT = path.join(REPO_ROOT, 'scripts/publication-i
 const MANIFEST_VERSION = 1;
 const PORTFOLIO_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.gif']);
 const QUALITY_VALUES = new Set(['unreviewed', 'reject', 'fine', 'great']);
+const HOMEPAGE_SIZE_VALUES = new Set(['portrait', 'landscape', 'xlportrait']);
 
 function now() {
 	return new Date().toISOString();
+}
+
+function phaseMessage(name, status, detail = '') {
+	console.log(`[phase:${name}] ${status}${detail ? ` — ${detail}` : ''}`);
 }
 
 function collect(value, previous) {
@@ -127,7 +133,7 @@ function buildCommonsDescription(photo) {
 |Description={{en|1=${safeCommonsText(photo.metadata.caption)}}}
 |Source={{Own}}
 |Author=[[User:Jaydixit|Jay Dixit]]
-|Date=${photo.metadata.date || ''}
+|Date=${photo.metadata.event_date || photo.metadata.date || ''}
 |Permission=
 |other_versions=
 }}
@@ -149,15 +155,21 @@ function plannedSubjectSlug(metadata, review) {
 }
 
 function buildPlanRecord(record, options, digest) {
+	const captureDate = normalizeDate(record.capture_date);
+	const filenameDate = normalizeDate(path.basename(record.source).match(/^\d{4}-\d{2}-\d{2}/)?.[0]);
+	const eventDate = filenameDate || captureDate;
 	const metadata = {
 		...record.metadata,
-		date: normalizeDate(record.capture_date),
+		capture_date: captureDate,
+		event_date: eventDate,
+		date: eventDate,
 		camera: record.camera || {},
 	};
 	const review = {
 		approved: false,
 		quality: 'unreviewed',
 		favorite: false,
+		event_date_approved: captureDate === eventDate,
 		identity_notes: [],
 		unidentified_people: [],
 		publication_notes: '',
@@ -225,6 +237,14 @@ function buildPlanRecord(record, options, digest) {
 				enabled: options.cloudinary === 'all',
 				derive_public_id_from_portfolio: true,
 				public_id: `photos/${options.gallery}/${stem}`,
+			},
+			homepage: {
+				enabled: false,
+				derive_filename_from_portfolio: true,
+				filename: portfolioFilename,
+				size: record.dimensions?.width >= record.dimensions?.height ? 'landscape' : 'portrait',
+				caption: metadata.title || metadata.caption,
+				public_id: `highlights/${path.parse(portfolioFilename).name}`,
 			},
 		},
 		receipts: {},
@@ -400,6 +420,11 @@ function inventoryEntry(photo, inventoryId) {
 			`Cloudinary: [[${photo.receipts.cloudinary.secure_url}][${orgSafe(photo.receipts.cloudinary.public_id)}]]`,
 		);
 	}
+	if (photo.receipts.homepage?.secure_url) {
+		destinations.push(
+			`Homepage highlight: [[${photo.receipts.homepage.secure_url}][${orgSafe(photo.receipts.homepage.public_id)}]]`,
+		);
+	}
 	for (const receipt of photo.receipts.commons_gallery || []) {
 		destinations.push(`Commons Gallery pending: [[${receipt.url}][${receipt.url}]]`);
 	}
@@ -430,7 +455,8 @@ function inventoryEntry(photo, inventoryId) {
 :SOURCE_SHA256: ${photo.sha256}
 :QUALITY: ${photo.review.quality}
 :FAVORITE: ${photo.review.favorite ? 'yes' : 'no'}
-:CAPTURE_DATE: ${photo.metadata.date || ''}
+:CAPTURE_DATE: ${photo.metadata.capture_date || ''}
+:EVENT_DATE: ${photo.metadata.event_date || photo.metadata.date || ''}
 :EVENT: ${orgSafe(photo.metadata.event)}
 :SOURCE_PATH: ${photo.source}
 :END:
@@ -509,6 +535,85 @@ async function ensurePortfolioCopies(photos) {
 	}
 	await updateGalleryTags(photos);
 	await updatePeopleIndex(photos);
+}
+
+function singleQuoted(value) {
+	return `'${String(value).replaceAll('\\', '\\\\').replaceAll("'", "\\'")}'`;
+}
+
+async function ensureHomepageConfig(photo) {
+	const homepage = photo.destinations.homepage;
+	const configPath = path.join(REPO_ROOT, 'src/data/homepage-images.js');
+	let content = await fs.readFile(configPath, 'utf8');
+	const configUrl = `${pathToFileURL(configPath).href}?photo-publish=${Date.now()}`;
+	const currentImages = (await import(configUrl)).images;
+	const existingEntry = currentImages.find((image) => image.filename === homepage.filename);
+	const defaultPublicId = `highlights/${path.parse(homepage.filename).name}`;
+	if (existingEntry) {
+		const existingPublicId = existingEntry.cloudinaryPublicId || defaultPublicId;
+		if (
+			existingEntry.size !== homepage.size ||
+			existingEntry.caption !== homepage.caption ||
+			existingPublicId !== homepage.public_id
+		) {
+			throw new Error(
+				`Existing homepage entry differs from the reviewed manifest: ${homepage.filename}`,
+			);
+		}
+	}
+	const filenamePattern = new RegExp(
+		`filename:\\s*['"]${homepage.filename.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}['"]`,
+	);
+	if (!filenamePattern.test(content)) {
+		const marker = '\n];';
+		const markerIndex = content.lastIndexOf(marker);
+		if (markerIndex < 0) throw new Error('Homepage image configuration is missing its array end');
+		const cloudinaryLine =
+			homepage.public_id === defaultPublicId
+				? ''
+				: `\n\t\tcloudinaryPublicId: ${singleQuoted(homepage.public_id)},`;
+		const entry = `\n\t{\n\t\tfilename: ${singleQuoted(homepage.filename)},${cloudinaryLine}\n\t\tsize: ${singleQuoted(homepage.size)},\n\t\tcaption: ${singleQuoted(homepage.caption)},\n\t},`;
+		content = `${content.slice(0, markerIndex)}${entry}${content.slice(markerIndex)}`;
+		await fs.writeFile(configPath, content, 'utf8');
+	}
+
+	const metadataPath = path.join(REPO_ROOT, 'src/data/image-metadata.json');
+	const imageMetadata = JSON.parse(await fs.readFile(metadataPath, 'utf8'));
+	const dimensions = await localImageInfo(photo.source);
+	imageMetadata[`highlights/${homepage.filename}`] = dimensions;
+	await writeJsonAtomic(metadataPath, imageMetadata);
+	return { config_path: configPath, metadata_path: metadataPath, dimensions };
+}
+
+async function ensureHomepagePublication(photo) {
+	const homepage = photo.destinations.homepage;
+	const destination = path.join(REPO_ROOT, 'src/gallery/highlights', homepage.filename);
+	await fs.mkdir(path.dirname(destination), { recursive: true });
+	if (existsSync(destination)) {
+		const existingHash = await sha256(destination);
+		if (existingHash !== photo.sha256) {
+			throw new Error(`Homepage highlight exists with different contents: ${destination}`);
+		}
+	} else {
+		await fs.copyFile(photo.source, destination, constants.COPYFILE_EXCL);
+		if ((await sha256(destination)) !== photo.sha256) {
+			throw new Error(`Homepage highlight failed checksum verification: ${destination}`);
+		}
+	}
+	const config = await ensureHomepageConfig(photo);
+	const cloudinaryReceipt = await ensureCloudinaryAsset(
+		destination,
+		homepage.public_id,
+		photo.metadata,
+	);
+	return {
+		status: 'configured',
+		path: destination,
+		public_id: cloudinaryReceipt.public_id,
+		secure_url: cloudinaryReceipt.secure_url,
+		config,
+		verified_at: now(),
+	};
 }
 
 async function queryCommons(filename) {
@@ -631,6 +736,58 @@ function configureCloudinary() {
 	}
 }
 
+function safeCloudinaryError(action, error) {
+	const status = error?.error?.http_code || error?.http_code;
+	return new Error(`${action} failed${status ? ` (HTTP ${status})` : ''}`);
+}
+
+async function verifyIgnoredCredentialPath(relativePath) {
+	const result = await execa('git', ['check-ignore', '--quiet', '--no-index', relativePath], {
+		cwd: REPO_ROOT,
+		reject: false,
+	});
+	if (result.exitCode !== 0) {
+		throw new Error(`Credential path is not ignored by Git: ${relativePath}`);
+	}
+}
+
+async function verifyCredentialSafety() {
+	const passwordPath = path.join(REPO_ROOT, '.passwd');
+	if (!existsSync(passwordPath)) throw new Error('Pywikibot password file is missing');
+	const passwordStat = await fs.stat(passwordPath);
+	if ((passwordStat.mode & 0o077) !== 0) {
+		throw new Error('Pywikibot password file must be readable only by its owner');
+	}
+	await verifyIgnoredCredentialPath('.passwd');
+	await verifyIgnoredCredentialPath('user-config.py');
+	await verifyIgnoredCredentialPath('pywikibot-CREDENTIAL-CHECK.lwp');
+}
+
+async function verifyCommonsAuthentication() {
+	const result = await execa(
+		'pwb',
+		[path.join(REPO_ROOT, 'scripts/commons-upload.py'), '--check-login'],
+		{
+			cwd: REPO_ROOT,
+			reject: false,
+			stdin: 'ignore',
+			timeout: 30_000,
+		},
+	);
+	if (result.exitCode !== 0) {
+		throw new Error('Wikimedia Commons authentication failed; inspect Pywikibot diagnostics');
+	}
+}
+
+async function verifyCloudinaryAuthentication() {
+	configureCloudinary();
+	try {
+		await cloudinary.api.ping();
+	} catch (error) {
+		throw safeCloudinaryError('Cloudinary authentication', error);
+	}
+}
+
 async function verifyCommonsCategories(manifest) {
 	const categories = [
 		...new Set(
@@ -665,12 +822,26 @@ async function verifyCommonsCategories(manifest) {
 	if (missing.length > 0) throw new Error(`Commons categories do not exist: ${missing.join(', ')}`);
 }
 
-async function uploadToCloudinary(photo) {
+function cloudinaryMetadataOptions(metadata) {
+	return {
+		tags: metadata.keywords || [],
+		context: cleanObject({
+			title: metadata.title,
+			caption: metadata.caption,
+			people: (metadata.people || []).join(', '),
+			event: metadata.event,
+			date_taken: metadata.event_date || metadata.date,
+			credit: metadata.credit || 'Jay Dixit',
+		}),
+	};
+}
+
+async function ensureCloudinaryAsset(source, publicId, metadata) {
 	configureCloudinary();
-	const publicId = photo.destinations.cloudinary.public_id;
+	const metadataOptions = cloudinaryMetadataOptions(metadata);
 	const existing = await cloudinary.api.resource(publicId, { type: 'upload' }).catch((error) => {
 		if (error?.error?.http_code === 404 || error?.http_code === 404) return null;
-		throw error;
+		throw safeCloudinaryError('Cloudinary asset lookup', error);
 	});
 	if (existing) {
 		return {
@@ -681,28 +852,33 @@ async function uploadToCloudinary(photo) {
 		};
 	}
 
-	const result = await cloudinary.uploader.upload(photo.source, {
-		public_id: publicId,
-		unique_filename: false,
-		overwrite: false,
-		resource_type: 'image',
-		tags: photo.metadata.keywords || [],
-		context: cleanObject({
-			title: photo.metadata.title,
-			caption: photo.metadata.caption,
-			people: (photo.metadata.people || []).join(', '),
-			event: photo.metadata.event,
-			date_taken: photo.metadata.date,
-			credit: photo.metadata.credit || 'Jay Dixit',
-		}),
-		image_metadata: true,
-	});
+	let result;
+	try {
+		result = await cloudinary.uploader.upload(source, {
+			public_id: publicId,
+			unique_filename: false,
+			overwrite: false,
+			resource_type: 'image',
+			...metadataOptions,
+			image_metadata: true,
+		});
+	} catch (error) {
+		throw safeCloudinaryError('Cloudinary upload', error);
+	}
 	return {
 		status: 'uploaded',
 		public_id: result.public_id,
 		secure_url: result.secure_url,
 		verified_at: now(),
 	};
+}
+
+async function uploadToCloudinary(photo) {
+	return ensureCloudinaryAsset(
+		photo.source,
+		photo.destinations.cloudinary.public_id,
+		photo.metadata,
+	);
 }
 
 function validateExecutionManifest(manifest) {
@@ -726,6 +902,12 @@ function validateExecutionManifest(manifest) {
 		}
 		if (photo.review.favorite && photo.review.quality !== 'great') {
 			throw new Error(`Only a great photograph can also be a favorite: ${photo.source}`);
+		}
+		if (
+			photo.metadata.capture_date !== photo.metadata.event_date &&
+			photo.review.event_date_approved !== true
+		) {
+			throw new Error(`Capture date and event-local date differ without approval: ${photo.source}`);
 		}
 		if (photo.review.quality === 'reject' && hasDestination) {
 			throw new Error(`Rejected photograph still has a publication destination: ${photo.source}`);
@@ -752,11 +934,35 @@ function validateExecutionManifest(manifest) {
 		if (!photo.destinations.commons.enabled && photo.destinations.commons.gallery_urls.length > 0) {
 			throw new Error(`Commons Gallery requires a Commons upload destination: ${photo.source}`);
 		}
+		const homepage = photo.destinations.homepage;
+		if (homepage.enabled) {
+			if (!photo.review.favorite || photo.review.quality !== 'great') {
+				throw new Error(`Homepage publication requires a great favorite: ${photo.source}`);
+			}
+			if (!photo.destinations.portfolio.enabled) {
+				throw new Error(`Homepage publication requires a portfolio destination: ${photo.source}`);
+			}
+			if (!HOMEPAGE_SIZE_VALUES.has(homepage.size)) {
+				throw new Error(`Unknown homepage size for ${photo.source}: ${homepage.size}`);
+			}
+			if (!homepage.filename || path.basename(homepage.filename) !== homepage.filename) {
+				throw new Error(`Homepage filename is missing or contains a path: ${photo.source}`);
+			}
+			if (!homepage.public_id?.startsWith('highlights/')) {
+				throw new Error(
+					`Homepage Cloudinary public ID must begin with highlights/: ${photo.source}`,
+				);
+			}
+		}
 	}
 }
 
 function refreshDerivedDestinations(manifest) {
 	for (const photo of manifest.photos) {
+		photo.metadata.capture_date ||= photo.metadata.date || null;
+		photo.metadata.event_date ||= photo.metadata.date || photo.metadata.capture_date || null;
+		photo.metadata.date = photo.metadata.event_date;
+		photo.review.event_date_approved ??= photo.metadata.capture_date === photo.metadata.event_date;
 		const portfolio = photo.destinations.portfolio;
 		if (portfolio?.gallery) {
 			portfolio.gallery = normalizedGallery(portfolio.gallery);
@@ -780,6 +986,26 @@ function refreshDerivedDestinations(manifest) {
 			}
 			cloudinaryDestination.public_id = `photos/${portfolio.gallery}/${path.parse(portfolio.filename).name}`;
 		}
+
+		photo.destinations.homepage ||= {
+			enabled: false,
+			derive_filename_from_portfolio: true,
+			filename: portfolio?.filename || path.basename(photo.source),
+			size: 'landscape',
+			caption: photo.metadata.title || photo.metadata.caption,
+			public_id: '',
+		};
+		const homepage = photo.destinations.homepage;
+		if (homepage.derive_filename_from_portfolio) {
+			if (!portfolio?.filename) {
+				throw new Error(
+					`Homepage filename cannot be derived without a portfolio filename: ${photo.source}`,
+				);
+			}
+			homepage.filename = portfolio.filename;
+		}
+		homepage.public_id ||= `highlights/${path.parse(homepage.filename).name}`;
+		homepage.caption ||= photo.metadata.title || photo.metadata.caption;
 	}
 }
 
@@ -818,10 +1044,17 @@ async function previewCommand(manifestPath) {
 			asset_id: photo.asset_id,
 			source_sha256: currentHash,
 			local_image: await localImageInfo(photo.source),
+			date_review: {
+				capture_date: photo.metadata.capture_date,
+				event_date: photo.metadata.event_date,
+				mismatch: photo.metadata.capture_date !== photo.metadata.event_date,
+				event_date_approved: photo.review.event_date_approved,
+			},
 			review: photo.review,
 			destinations: {
 				portfolio: photo.destinations.portfolio,
 				cloudinary: photo.destinations.cloudinary,
+				homepage: photo.destinations.homepage,
 				commons: commons.enabled
 					? {
 							mode: commons.mode || 'new',
@@ -849,6 +1082,40 @@ async function previewCommand(manifestPath) {
 	);
 }
 
+async function runExecutionPhase(manifest, manifestPath, name, enabled, callback) {
+	manifest.execution ||= { phases: {} };
+	if (!enabled) {
+		manifest.execution.phases[name] = { status: 'skipped', completed_at: now() };
+		await writeJsonAtomic(manifestPath, manifest);
+		phaseMessage(name, 'skipped');
+		return;
+	}
+	manifest.execution.current_phase = name;
+	manifest.execution.phases[name] = { status: 'running', started_at: now() };
+	await writeJsonAtomic(manifestPath, manifest);
+	phaseMessage(name, 'started');
+	try {
+		await callback();
+		manifest.execution.phases[name] = {
+			...manifest.execution.phases[name],
+			status: 'complete',
+			completed_at: now(),
+		};
+		phaseMessage(name, 'complete');
+	} catch (error) {
+		manifest.execution.phases[name] = {
+			...manifest.execution.phases[name],
+			status: 'failed',
+			failed_at: now(),
+			error: 'See command diagnostics; secret values are never persisted in the manifest.',
+		};
+		phaseMessage(name, 'failed');
+		throw error;
+	} finally {
+		await writeJsonAtomic(manifestPath, manifest);
+	}
+}
+
 async function executeCommand(manifestPath, options) {
 	if (options.confirm !== 'PUBLISH') {
 		throw new Error(
@@ -859,52 +1126,102 @@ async function executeCommand(manifestPath, options) {
 	const manifest = JSON.parse(await fs.readFile(resolvedManifest, 'utf8'));
 	refreshDerivedDestinations(manifest);
 	validateExecutionManifest(manifest);
+	const hasCommons = manifest.photos.some((photo) => photo.destinations.commons.enabled);
+	const hasCloudinary = manifest.photos.some(
+		(photo) => photo.destinations.cloudinary.enabled || photo.destinations.homepage.enabled,
+	);
+	const hasPortfolio = manifest.photos.some((photo) => photo.destinations.portfolio.enabled);
+	const hasHomepage = manifest.photos.some((photo) => photo.destinations.homepage.enabled);
+	const hasCommonsGallery = manifest.photos.some(
+		(photo) => photo.destinations.commons.gallery_urls.length > 0,
+	);
 
-	for (const photo of manifest.photos) {
-		const currentHash = await sha256(photo.source);
-		if (currentHash !== photo.sha256)
-			throw new Error(`Source changed after planning: ${photo.source}`);
-	}
-	await verifyCommonsCategories(manifest);
-	if (manifest.photos.some((photo) => photo.destinations.cloudinary.enabled)) configureCloudinary();
+	await runExecutionPhase(manifest, resolvedManifest, 'preflight', true, async () => {
+		for (const photo of manifest.photos) {
+			const currentHash = await sha256(photo.source);
+			if (currentHash !== photo.sha256)
+				throw new Error(`Source changed after planning: ${photo.source}`);
+		}
+		if (hasCommons) {
+			await verifyCredentialSafety();
+			await verifyCommonsAuthentication();
+			await verifyCommonsCategories(manifest);
+		}
+		if (hasCloudinary) await verifyCloudinaryAuthentication();
+	});
 
-	await ensurePortfolioCopies(manifest.photos);
-	await updateOrgInventory(manifest);
-	await writeJsonAtomic(resolvedManifest, manifest);
+	await runExecutionPhase(manifest, resolvedManifest, 'portfolio', hasPortfolio, async () => {
+		await ensurePortfolioCopies(manifest.photos);
+		await updateOrgInventory(manifest);
+	});
 
-	for (const photo of manifest.photos) {
-		if (photo.destinations.commons.enabled && !photo.receipts.commons?.verified_at) {
-			photo.destinations.commons.description = buildCommonsDescription(photo);
-			photo.receipts.commons = await uploadToCommons(photo);
-			await writeJsonAtomic(resolvedManifest, manifest);
-			await updateOrgInventory(manifest);
+	await runExecutionPhase(manifest, resolvedManifest, 'commons', hasCommons, async () => {
+		for (const photo of manifest.photos) {
+			if (photo.destinations.commons.enabled && !photo.receipts.commons?.verified_at) {
+				photo.destinations.commons.description = buildCommonsDescription(photo);
+				photo.receipts.commons = await uploadToCommons(photo);
+				await writeJsonAtomic(resolvedManifest, manifest);
+				await updateOrgInventory(manifest);
+			}
 		}
-		if (photo.destinations.cloudinary.enabled && !photo.receipts.cloudinary?.verified_at) {
-			photo.receipts.cloudinary = await uploadToCloudinary(photo);
-			await writeJsonAtomic(resolvedManifest, manifest);
-			await updateOrgInventory(manifest);
+	});
+
+	await runExecutionPhase(manifest, resolvedManifest, 'cloudinary', hasCloudinary, async () => {
+		for (const photo of manifest.photos) {
+			if (photo.destinations.cloudinary.enabled && !photo.receipts.cloudinary?.verified_at) {
+				photo.receipts.cloudinary = await uploadToCloudinary(photo);
+				await writeJsonAtomic(resolvedManifest, manifest);
+				await updateOrgInventory(manifest);
+			}
 		}
-		if (photo.destinations.commons.gallery_urls.length > 0) {
-			photo.receipts.commons_gallery = photo.destinations.commons.gallery_urls.map((url) => ({
-				url,
-				commons_filename: photo.destinations.commons.filename,
-				status: 'pending-agent-browser-add',
-			}));
-			await writeJsonAtomic(resolvedManifest, manifest);
-			await updateOrgInventory(manifest);
+	});
+
+	await runExecutionPhase(manifest, resolvedManifest, 'homepage', hasHomepage, async () => {
+		for (const photo of manifest.photos) {
+			if (photo.destinations.homepage.enabled) {
+				photo.receipts.homepage = await ensureHomepagePublication(photo);
+				await writeJsonAtomic(resolvedManifest, manifest);
+				await updateOrgInventory(manifest);
+			}
 		}
-	}
+	});
+
+	await runExecutionPhase(
+		manifest,
+		resolvedManifest,
+		'commons-gallery',
+		hasCommonsGallery,
+		async () => {
+			for (const photo of manifest.photos) {
+				if (photo.destinations.commons.gallery_urls.length > 0) {
+					photo.receipts.commons_gallery = photo.destinations.commons.gallery_urls.map((url) => ({
+						url,
+						commons_filename: photo.destinations.commons.filename,
+						status: 'pending-agent-browser-add',
+					}));
+				}
+			}
+			await updateOrgInventory(manifest);
+		},
+	);
+
+	await runExecutionPhase(manifest, resolvedManifest, 'inventory-commons', hasCommons, async () => {
+		await execa('node', [PUBLICATION_INVENTORY_SCRIPT, 'sync-commons'], {
+			cwd: REPO_ROOT,
+			stdio: 'inherit',
+		});
+	});
+	await runExecutionPhase(manifest, resolvedManifest, 'inventory-site', true, async () => {
+		await execa('node', [PUBLICATION_INVENTORY_SCRIPT, 'sync-site'], {
+			cwd: REPO_ROOT,
+			stdio: 'inherit',
+		});
+	});
 
 	manifest.completed_at = now();
+	manifest.execution.current_phase = null;
 	await updateOrgInventory(manifest);
 	await writeJsonAtomic(resolvedManifest, manifest);
-	const inventoryCommand = manifest.photos.some((photo) => photo.destinations.commons.enabled)
-		? 'sync'
-		: 'sync-site';
-	await execa('node', [PUBLICATION_INVENTORY_SCRIPT, inventoryCommand], {
-		cwd: REPO_ROOT,
-		stdio: 'inherit',
-	});
 	console.log(`Publication execution complete: ${resolvedManifest}`);
 	console.log('Portfolio changes are local only. Nothing was committed, pushed, or deployed.');
 	if (manifest.photos.some((photo) => photo.destinations.commons.gallery_urls.length > 0)) {

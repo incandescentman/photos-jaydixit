@@ -219,4 +219,10 @@ export const images = [
 		size: 'landscape',
 		caption: 'Nobel Peace Prize Torchlight Procession in Oslo, 2024',
 	},
+	{
+		filename: 'jack-johnson_sxsw_2026_03.jpg',
+		cloudinaryPublicId: 'highlights/jack-johnson_sxsw_2026_03',
+		size: 'landscape',
+		caption: 'Jack Johnson at SXSW 2026',
+	},
 ];
