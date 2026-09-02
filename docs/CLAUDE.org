@@ -236,6 +236,7 @@ Documentation structure:
 - Embedded EXIF/IPTC/XMP is the portable source record, but live gallery captions and public person routing come from filenames, ~tags.json~, and ~src/data/people.json~
 - ~scripts/photo-cli.js~ validates merged EXIF/IPTC/XMP plus ~tags.json~ and supports intentional Cloudinary album uploads; validator success proves field presence, not factual identity or caption truth
 - ~scripts/photo-publish.js~ plans reviewed multi-destination batches and requires both manifest approval and the literal ~--confirm PUBLISH~ execution gate; it never commits, pushes, deploys, or selects homepage highlights
+- [[file+emacs:/Users/jay/Dropbox/roam/photography/20260902015339-photo_publication_inventory.org][📄 Photo Publication Inventory]] is the canonical cross-destination registry. Search it first for prior-upload and live-site questions; use ~pnpm photo:inventory freshness~ and refresh only when stale. Its generated sections keep local portfolio source, verified production state, Cloudinary configuration, and Commons history distinct.
 - Never modify photo organization to fix code issues
 
 *** Cloudinary Integration (Homepage)

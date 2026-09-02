@@ -60,6 +60,10 @@ pnpm photo:publish execute /path/to/publication-plan.json --confirm PUBLISH
 
 Execution rechecks source hashes, existing Commons categories, and destination configuration before copying or uploading. It never overwrites a different local asset or Cloudinary public ID. It saves receipts after each completed destination so a failed batch can resume. It updates [[file+emacs:/Users/jay/Dropbox/roam/photography/20260823235900-celebrity-photograph-inventory.org][📄 Celebrity Photograph Inventory]] and keeps all portfolio changes local; it never commits, pushes, deploys, or adds a photograph to the homepage.
 
+The canonical cross-destination record is [[file+emacs:/Users/jay/Dropbox/roam/photography/20260902015339-photo_publication_inventory.org][📄 Photo Publication Inventory]]. For “Have I uploaded this person or photograph before?” or “Is this photograph on my site?”, search that file first. It keeps the portfolio repository source, verified-live ~photos.jaydixit.com~ state, Cloudinary configuration, and Wikimedia Commons upload history distinct. Run ~pnpm photo:inventory freshness~; only run ~pnpm photo:inventory sync~ when the registry is missing or stale. The publication executor refreshes it automatically after a completed publication batch.
+
+[[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/src/pages/photo-inventory.json.ts][📄 photo-inventory.json endpoint]] generates the deployed site manifest at ~https://photos.jaydixit.com/photo-inventory.json~. Until the endpoint reaches production through an explicitly authorized push and deployment, the inventory retains a one-time route-verified production snapshot; source presence must not be described as live deployment.
+
 A Commons Gallery album does not host the media itself. The agent first uploads the reviewed file to Wikimedia Commons, then uses the authenticated album editor’s ~Manage Media~ → ~Add by Filename~ flow to add the resulting Commons filename, reorder it, and set the album caption. That browser change requires Jay’s action-time approval just like the uploads.
 
 ** 1. Preflight The Lightroom Export With Exwalker

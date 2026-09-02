@@ -496,3 +496,14 @@ The Pywikibot process had completed its network request and was blocked reading 
 
 ** Actionable insight
 Run the Pywikibot adapter with stdin ignored and a finite timeout. If no noninteractive credential is configured, fail closed and use Jay's authenticated Commons browser session after the same reviewed plan and action-time approval; never start a second upload while the first process is still alive.
+
+* 2026-09-02 - Use The Commons Upload Log For A Durable Account Inventory
+
+** Trigger
+A subject search must answer whether Jay uploaded a photograph before without repeating a broad live Commons search in every agent session.
+
+** Mechanism
+The MediaWiki ~allimages~ module with ~aiuser~ returns only files whose latest version was uploaded by that user, so another contributor's later revision can make Jay's earlier upload disappear from that result. The account's ~upload~ log preserves Jay's upload events, including overwritten versions; current file metadata can then be joined by page ID.
+
+** Actionable insight
+Build the canonical local mirror from ~list=logevents~, ~letype=upload~, and ~leuser=Jaydixit~. Deduplicate by page ID, retain missing or deleted file records, enrich current pages separately, and gate every refresh by comparing the distinct source count with the number of generated Org entries.

@@ -1,6 +1,19 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-09-02 - Add the shared photo publication inventory
+
+** Changed
+- Added [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/scripts/publication-inventory.js][📄 Publication Inventory Sync]], which maintains [[file+emacs:/Users/jay/Dropbox/roam/photography/20260902015339-photo_publication_inventory.org][📄 Photo Publication Inventory]] as the shared cross-destination registry. It mirrors the complete ~Jaydixit~ Commons upload log and separately records the current portfolio source, verified-live site state, Cloudinary configuration, and public surfaces while preserving hand-written notes outside its generated boundaries.
+- Added [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/src/pages/photo-inventory.json.ts][📄 photo-inventory.json endpoint]], which will expose a build-generated production manifest after the next authorized deployment. Until then, the initial site snapshot verifies existing production routes directly.
+- The reviewed publisher refreshes the shared registry after every completed publication batch, and the canonical photography and Exwalker instructions route publication-history questions to it.
+
+** Verification
+- The live Commons source-contract gate imported 657 upload events as 652 distinct file entries; the generated Org entry count is 652 and the newest recorded upload log ID matches the live API.
+- The site source-contract gate found 67 distinct photograph records after merging nine byte-identical gallery/highlight copies; the one-time production pass verified 63 records on live site surfaces and kept four source-configured records explicitly marked ~not-found~.
+- Direct endpoint execution returned a valid 67-record JSON response with the expected content type and fingerprint and exposed no absolute local paths. Prettier and ESLint passed. The full Astro build reached static route generation, then failed in the unchanged ~exifr~ gallery code under Node 26 with ~ERR_INVALID_ARG_TYPE~ and a garbage-collected ~FileHandle~; the cause was not investigated in this inventory task.
+- A local search for ~Jack Johnson~ found no matching filename, description, category, or upload comment in the synchronized registry.
+
 * 2026-08-22 - Hang the homepage hero prints from varied clothespins
 
 ** Changed

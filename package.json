@@ -24,6 +24,7 @@
 		"photo:upload": "node scripts/photo-cli.js upload",
 		"photo:validate": "node scripts/photo-cli.js validate",
 		"photo:publish": "node scripts/photo-publish.js",
+		"photo:inventory": "node scripts/publication-inventory.js",
 		"generate-metadata": "node scripts/generate-image-metadata.js"
 	},
 	"devDependencies": {

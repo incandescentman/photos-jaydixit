@@ -207,6 +207,7 @@ manifest.
 - Validation proves required fields are present, not that inferred identities or captions are factually true
 
 - Filesystem galleries use local files under src/gallery/photos/ and do not require Cloudinary; only Jay-selected homepage/Packery highlights must be uploaded under Cloudinary highlights/
+- Publication-history questions route to [[file+emacs:/Users/jay/Dropbox/roam/photography/20260902015339-photo_publication_inventory.org][📄 Photo Publication Inventory]]; search it first and run ~pnpm photo:inventory freshness~ before any remote rescan
 
 
 ​**** scripts/generate-tags-json.js

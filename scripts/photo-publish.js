@@ -23,6 +23,7 @@ const REPO_ROOT = path.resolve(import.meta.dirname, '..');
 const DEFAULT_EXWALKER = '/Users/jay/Dropbox/github/exwalker/exwalker';
 const DEFAULT_INVENTORY =
 	'/Users/jay/Dropbox/roam/photography/20260823235900-celebrity-photograph-inventory.org';
+const PUBLICATION_INVENTORY_SCRIPT = path.join(REPO_ROOT, 'scripts/publication-inventory.js');
 const MANIFEST_VERSION = 1;
 const PORTFOLIO_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.gif']);
 const QUALITY_VALUES = new Set(['unreviewed', 'reject', 'fine', 'great']);
@@ -897,6 +898,13 @@ async function executeCommand(manifestPath, options) {
 	manifest.completed_at = now();
 	await updateOrgInventory(manifest);
 	await writeJsonAtomic(resolvedManifest, manifest);
+	const inventoryCommand = manifest.photos.some((photo) => photo.destinations.commons.enabled)
+		? 'sync'
+		: 'sync-site';
+	await execa('node', [PUBLICATION_INVENTORY_SCRIPT, inventoryCommand], {
+		cwd: REPO_ROOT,
+		stdio: 'inherit',
+	});
 	console.log(`Publication execution complete: ${resolvedManifest}`);
 	console.log('Portfolio changes are local only. Nothing was committed, pushed, or deployed.');
 	if (manifest.photos.some((photo) => photo.destinations.commons.gallery_urls.length > 0)) {
