@@ -1,6 +1,17 @@
 #+TITLE: Work Log - Jay Dixit Photography Portfolio
 #+DATE: 2025-10-12
 
+* 2026-09-06 - Keep contact-form senders on the page with an inline confirmation
+
+** Changed
+- The contact form in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/contact.astro][📄 contact.astro]] now submits to Formspree by ~fetch~ with an ~Accept: application/json~ header instead of a full-page POST, so a sender no longer lands on Formspree's generic page. The outcome appears in a ~role="status"~ line under the form; a failed send keeps the typed message and re-enables the button. Required fields, the honeypot, and the Formspree action are unchanged.
+- The behaviour comes from ~enhanceFormspreeForm~ in ~@jaydixit/astro-utils/utils/formspree~, the helper the Socratic AI contact form adopted on 2026-09-06. To make it importable here, ~@jaydixit/astro-utils 1.0.7~ was published to npm from the monorepo (as the ~jaydixit~ npm account, which owns the scope) and this app's dependency was raised from ~^1.0.6~ to ~^1.0.7~.
+- Status wording lives on the form's ~data-success-message~ and ~data-error-message~ attributes. The lines are Jay's own Socratic contact-form wording; on 2026-09-06 he chose to keep the same success line here (~Sent. I typically respond within 24 hours.~) over a shorter line assembled from the page intro.
+
+** Verification
+- Both contact Playwright tests pass against the production build (141 pages). Playwright's ~chromium-headless-shell v1228~ had to be installed for this repo's Playwright ~1.61~ before the suite could run at all.
+- A scripted check with Formspree intercepted, so nothing was actually sent, confirmed: an empty submit posts nothing; a 200 shows the confirmation, clears the form, and leaves the button disabled as Sent; a 500 shows the failure line with the typed message intact and the button restored. The request carries the honeypot and subject fields. Focus moves to the status line in both cases, with no page errors.
+
 * 2026-09-02 - Add the shared photo publication inventory
 
 ** Changed

@@ -59,7 +59,7 @@
 	"dependencies": {
 		"@astrojs/mdx": "^7.0.6",
 		"@astrojs/sitemap": "^3.7.3",
-		"@jaydixit/astro-utils": "^1.0.6",
+		"@jaydixit/astro-utils": "^1.0.7",
 		"@supabase/supabase-js": "^2.96.0",
 		"alpinejs": "^3.15.12",
 		"chalk": "^5.6.2",

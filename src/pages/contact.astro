@@ -13,7 +13,14 @@ import MainLayout from '../layouts/MainLayout.astro';
 				</p>
 			</header>
 
-			<form action="https://formspree.io/f/xeelzjpn" method="POST" class="contact-form">
+			<form
+				action="https://formspree.io/f/xeelzjpn"
+				method="POST"
+				class="contact-form"
+				data-formspree
+				data-success-message="Sent. I typically respond within 24 hours."
+				data-error-message="That didn’t go through. Your message is still here — try again in a moment."
+			>
 				<input
 					type="hidden"
 					name="_subject"
@@ -48,9 +55,28 @@ import MainLayout from '../layouts/MainLayout.astro';
 
 				<button type="submit">Send Message</button>
 			</form>
+			<p
+				class="contact-status"
+				data-formspree-status
+				role="status"
+				aria-live="polite"
+				tabindex="-1"
+			>
+			</p>
 		</div>
 	</section>
 </MainLayout>
+
+<script>
+	import { enhanceFormspreeForm } from '@jaydixit/astro-utils/utils/formspree';
+
+	// Same fetch-submit pattern as the Socratic AI contact form: the visitor
+	// stays on this page, the outcome shows inline, and a failed send keeps
+	// the typed message. Wording comes from the form's data attributes.
+	const form = document.querySelector<HTMLFormElement>('form[data-formspree]');
+	const status = document.querySelector<HTMLElement>('[data-formspree-status]');
+	if (form && status) enhanceFormspreeForm(form, status);
+</script>
 
 <style>
 	.contact-page {
@@ -171,6 +197,33 @@ import MainLayout from '../layouts/MainLayout.astro';
 		width: 1px;
 		height: 1px;
 		opacity: 0;
+	}
+
+	.contact-form button:disabled {
+		cursor: default;
+		opacity: 0.7;
+	}
+
+	.contact-form button:disabled:hover {
+		background: var(--ink);
+	}
+
+	.contact-status {
+		margin: 1.25rem 0 0;
+		font-family: var(--serif);
+		font-weight: 300;
+		font-style: italic;
+		font-size: 1.15rem;
+		line-height: 1.5;
+		color: #565049;
+	}
+
+	.contact-status:empty {
+		display: none;
+	}
+
+	.contact-status:focus {
+		outline: none;
 	}
 
 	@media (max-width: 640px) {

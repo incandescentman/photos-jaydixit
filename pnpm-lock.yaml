@@ -18,8 +18,8 @@ importers:
         specifier: ^3.7.3
         version: 3.7.3
       '@jaydixit/astro-utils':
-        specifier: ^1.0.6
-        version: 1.0.6(@astrojs/markdown-remark@7.2.3)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@22.19.11)(jiti@2.7.0)(react@19.2.4)(tsx@4.21.0)
+        specifier: ^1.0.7
+        version: 1.0.7(@astrojs/markdown-remark@7.2.3)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@22.19.11)(jiti@2.7.0)(react@19.2.4)(tsx@4.21.0)
       '@supabase/supabase-js':
         specifier: ^2.96.0
         version: 2.97.0
@@ -858,8 +858,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@jaydixit/astro-utils@1.0.6':
-    resolution: {integrity: sha512-qoeAa3bsyqYkjXUgnFKGNhu4vDyKO6yyyPg3Xo08M9ptMKhMK44xeVm8vT8KXInjZhG9ljTDOaG2HUwKdNM4sg==}
+  '@jaydixit/astro-utils@1.0.7':
+    resolution: {integrity: sha512-ZtFE/EbZQd7Or1Pic0ew09uYDQqoDmpIT0MQp7iZwCQET5TOKpxnLDIyVr5uNy6z4M9brPXUb9rQAPdcTvBHVQ==}
     peerDependencies:
       react: '>=18.0.0'
 
@@ -4108,7 +4108,7 @@ snapshots:
   '@img/sharp-win32-x64@0.34.5':
     optional: true
 
-  '@jaydixit/astro-utils@1.0.6(@astrojs/markdown-remark@7.2.3)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@22.19.11)(jiti@2.7.0)(react@19.2.4)(tsx@4.21.0)':
+  '@jaydixit/astro-utils@1.0.7(@astrojs/markdown-remark@7.2.3)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@22.19.11)(jiti@2.7.0)(react@19.2.4)(tsx@4.21.0)':
     dependencies:
       '@daviddarnes/link-peek': 1.1.0
       '@jaydixit/experimental-mode': 1.0.6(react@19.2.4)
