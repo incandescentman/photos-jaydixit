@@ -53,7 +53,7 @@ import MainLayout from '../layouts/MainLayout.astro';
 					<textarea id="message" name="message" rows={7} required></textarea>
 				</div>
 
-				<button type="submit">Send Message</button>
+				<button type="submit"><span class="submit-label">Send Message</span></button>
 			</form>
 			<p
 				class="contact-status"
@@ -184,11 +184,52 @@ import MainLayout from '../layouts/MainLayout.astro';
 		text-transform: uppercase;
 		white-space: nowrap;
 		cursor: pointer;
-		transition: background-color 0.25s ease;
+		position: relative;
+		transition: background-color 380ms ease;
 	}
 
-	.contact-form button:hover {
+	.contact-form button:hover,
+	.contact-form button:focus-visible {
 		background: #000;
+		transition-duration: 120ms;
+	}
+
+	/* Underline draw, ported from Storytelling.NYC (Jay, 2026-09-07): a cream hairline draws under the label from the left on hover and unwinds from the right on leave. */
+	.submit-label {
+		display: inline-block;
+		position: relative;
+	}
+
+	.submit-label::before {
+		background: rgb(232 223 207 / 0.9);
+		bottom: -0.28em;
+		content: '';
+		height: 1px;
+		left: 0;
+		pointer-events: none;
+		position: absolute;
+		right: 0;
+		transform: scaleX(0);
+		transform-origin: right center;
+		transition: transform 300ms cubic-bezier(0.2, 0.8, 0.2, 1);
+	}
+
+	.contact-form button:hover .submit-label::before,
+	.contact-form button:focus-visible .submit-label::before {
+		transform: scaleX(1);
+		transform-origin: left center;
+		transition-duration: 200ms;
+	}
+
+	.contact-form button:disabled .submit-label::before {
+		transform: scaleX(0);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.contact-form button,
+		.submit-label::before {
+			transition: none;
+		}
 	}
 
 	.hp-field {
