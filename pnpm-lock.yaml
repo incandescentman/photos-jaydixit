@@ -18,8 +18,8 @@ importers:
         specifier: ^3.7.3
         version: 3.7.3
       '@jaydixit/astro-utils':
-        specifier: ^1.0.7
-        version: 1.0.7(@astrojs/markdown-remark@7.2.3)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@22.19.11)(jiti@2.7.0)(react@19.2.4)(tsx@4.21.0)
+        specifier: ^1.0.8
+        version: 1.0.8(@astrojs/markdown-remark@7.2.3)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@22.19.11)(jiti@2.7.0)(react@19.2.4)(tsx@4.21.0)
       '@supabase/supabase-js':
         specifier: ^2.96.0
         version: 2.97.0
@@ -858,8 +858,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@jaydixit/astro-utils@1.0.7':
-    resolution: {integrity: sha512-ZtFE/EbZQd7Or1Pic0ew09uYDQqoDmpIT0MQp7iZwCQET5TOKpxnLDIyVr5uNy6z4M9brPXUb9rQAPdcTvBHVQ==}
+  '@jaydixit/astro-utils@1.0.8':
+    resolution: {integrity: sha512-WVUu4lw3iBor8BESn6+lLJSxSuJX7jFin00n+VrVtQltjtsbzZ5/F+4tW4Uv/EVa81bxKxZXY9dSs03WgkstTw==}
     peerDependencies:
       react: '>=18.0.0'
 
@@ -1345,6 +1345,9 @@ packages:
 
   '@types/hast@3.0.4':
     resolution: {integrity: sha512-WPs+bbQw5aCj+x6laNGWLH3wviHtoCv/P3+otBhbOhJgG8qtpdAMlTCxLtsTWA7LH1Oh/bFCHsBn0TPS5m30EQ==}
+
+  '@types/hast@3.0.5':
+    resolution: {integrity: sha512-rp/ezSWaD1m44dPKICGhiskI13nVr7qTloFwDa/IYkhhf5nzwP+zIQcIJh3WIFSBOy/H1PzB40jPjMDksN4F+g==}
 
   '@types/js-yaml@4.0.9':
     resolution: {integrity: sha512-k4MGaQl5TGo/iipqb2UDG2UwjXziSWkh0uysQelTlJpX1qGlpUZYm8PnO4DxG1qBomtJUdYJ6qR6xdIah10JLg==}
@@ -2148,8 +2151,8 @@ packages:
   hastscript@9.0.1:
     resolution: {integrity: sha512-g7df9rMFX/SPi34tyGCyUBREQoKkapwdY/T04Qn9TDWfHhAYt4/I0gMVirzK5wEzeUqIjEB+LXC/ypb7Aqno5w==}
 
-  hepburn@1.2.2:
-    resolution: {integrity: sha512-DeykBc4XmfAWsnN+Y1Svi9uaQnnz21Q/ARuGWvIBxP1iUFeMIWL41DfVkgTh7tU23LFIbmIBO2Bk17BTPu0kVA==}
+  hepburn@1.3.0:
+    resolution: {integrity: sha512-nw4REYP+1h+eIxCB8ddO85e0lc550CpTfrvC+V4Ooi4qOSsNGydaj45l1AXxCHkEbvTqraSu5IyQW4IjO7uapQ==}
     engines: {node: '>=4'}
 
   html-escaper@3.0.3:
@@ -2175,6 +2178,10 @@ packages:
 
   ignore@7.0.5:
     resolution: {integrity: sha512-Hs59xBNfUIunMFgWAbGX5cq6893IbWg4KnrjbYwX3tx0ztorVgTDA6B2sxf8ejHJ4wz8BqGUMYlnzNBer5NvGg==}
+    engines: {node: '>= 4'}
+
+  ignore@7.0.8:
+    resolution: {integrity: sha512-YYNsSlXBjMk92SKnkwvB5LOVSa6OznlFUGcsvrFgNJbJCd0M1XKeFVRc8ZByeCqz32FivYNHJVooLmdqrmvp/Q==}
     engines: {node: '>= 4'}
 
   imagesloaded@5.0.0:
@@ -2260,8 +2267,8 @@ packages:
   js-tokens@9.0.1:
     resolution: {integrity: sha512-mxa9E9ITFOt0ban3j6L5MpjwegGz6lBQmM1IJkWeBZGcMxto50+eWdjC/52xDbS2vy0k7vIMK0Fe2wfL9OQSpQ==}
 
-  js-yaml@3.14.2:
-    resolution: {integrity: sha512-PMSmkqxr106Xa156c2M265Z+FTrPl+oxd/rgOQy2tijQeK5TxQ43psO1ZCwhVOSdnn+RzkzlRz/eY4BgJBYVpg==}
+  js-yaml@3.15.2:
+    resolution: {integrity: sha512-6EuL879VkRA+1Cz578mKMiKvjPNEuk6+r1JaFzoSWejZmtf7xWbIyw1e3KkxlkzTIt9Taw6JBhEppG7utc1P+w==}
     hasBin: true
 
   js-yaml@4.1.1:
@@ -2287,8 +2294,8 @@ packages:
   justified-layout@4.1.0:
     resolution: {integrity: sha512-M5FimNMXgiOYerVRGsXZ2YK9YNCaTtwtYp7Hb2308U1Q9TXXHx5G0p08mcVR5O53qf8bWY4NJcPBxE6zuayXSg==}
 
-  katex@0.16.44:
-    resolution: {integrity: sha512-EkxoDTk8ufHqHlf9QxGwcxeLkWRR3iOuYfRpfORgYfqc8s13bgb+YtRY59NK5ZpRaCwq1kqA6a5lpX8C/eLphQ==}
+  katex@0.16.47:
+    resolution: {integrity: sha512-Eeo8Ys1doU1z+x8AZsPpQu+p/QcZBI5PeOo7QGQdy2x2m0MU/hYagBbGOmXwr5KVbEfVuWv9LpnQWeehogurjg==}
     hasBin: true
 
   keyv@4.5.4:
@@ -2450,8 +2457,8 @@ packages:
     resolution: {integrity: sha512-WkUDrojuJs0xkgGf2udWxa3yGBRxPtxUkB79i6aCZLRgc7PM8fZe9TosfPDcvEpQZbuFASnHYmRLBLUbmLOIIA==}
     engines: {node: '>= 12.0.0'}
 
-  limax@4.2.2:
-    resolution: {integrity: sha512-HhCTNSqrNHj2hZzFn2gNbdOukxSbsw7nSZ9cmn1TpvjvHvE1TuT523fgMpLTwzRdoNMujdyTeSNcs6TwiFa5aQ==}
+  limax@4.2.3:
+    resolution: {integrity: sha512-KJ41cc23/i9rGgFjpLpz4LVFuVHIVUoQX3zJs8qCY+Eo1KReIPD8QTahSErdWuO1Zt7CyjuLdo4vtsH60qau8Q==}
     engines: {node: '>=14'}
 
   locate-path@6.0.0:
@@ -2858,8 +2865,8 @@ packages:
     resolution: {integrity: sha512-RvwwcruNjI1ncT5xRakeyS9Lf8lcItv34KD+aif+VH9kduAyfYBipGh12274xtenIPZ119/R9BdTBa8gAwSh0A==}
     engines: {node: '>=12'}
 
-  pinyin-pro@3.28.0:
-    resolution: {integrity: sha512-mMRty6RisoyYNphJrTo3pnvp3w8OMZBrXm9YSWkxhAfxKj1KZk2y8T2PDIZlDDRsvZ0No+Hz6FI4sZpA6Ey25g==}
+  pinyin-pro@3.29.3:
+    resolution: {integrity: sha512-+UU9bx6vfDw8amOJGHm0TE0rdQl8VPylsDWviQ5OOQ3e+on1xRP4OqDbiDuMT5OISgvfl/Y6ez1BBRaIP80GLQ==}
 
   playwright-core@1.61.1:
     resolution: {integrity: sha512-h7Qlt6m4REp25qvIdvbDtVmD4LqVXfpRxhORv9L0jzETM05p4fuPJ3dKyuSXQxDSbXnmS79HAgi9589lGSpLkg==}
@@ -4108,7 +4115,7 @@ snapshots:
   '@img/sharp-win32-x64@0.34.5':
     optional: true
 
-  '@jaydixit/astro-utils@1.0.7(@astrojs/markdown-remark@7.2.3)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@22.19.11)(jiti@2.7.0)(react@19.2.4)(tsx@4.21.0)':
+  '@jaydixit/astro-utils@1.0.8(@astrojs/markdown-remark@7.2.3)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@22.19.11)(jiti@2.7.0)(react@19.2.4)(tsx@4.21.0)':
     dependencies:
       '@daviddarnes/link-peek': 1.1.0
       '@jaydixit/experimental-mode': 1.0.6(react@19.2.4)
@@ -4116,7 +4123,7 @@ snapshots:
       fountain-js: 1.2.4
       globby: 14.1.0
       gray-matter: 4.0.3
-      limax: 4.2.2
+      limax: 4.2.3
       mdast-util-math: 3.0.0
       mdast-util-to-string: 4.0.0
       micromark-extension-math: 3.1.0
@@ -4550,6 +4557,10 @@ snapshots:
   '@types/estree@1.0.8': {}
 
   '@types/hast@3.0.4':
+    dependencies:
+      '@types/unist': 3.0.3
+
+  '@types/hast@3.0.5':
     dependencies:
       '@types/unist': 3.0.3
 
@@ -5468,7 +5479,7 @@ snapshots:
     dependencies:
       '@sindresorhus/merge-streams': 2.3.0
       fast-glob: 3.3.3
-      ignore: 7.0.5
+      ignore: 7.0.8
       path-type: 6.0.0
       slash: 5.1.0
       unicorn-magic: 0.3.0
@@ -5477,7 +5488,7 @@ snapshots:
 
   gray-matter@4.0.3:
     dependencies:
-      js-yaml: 3.14.2
+      js-yaml: 3.15.2
       kind-of: 6.0.3
       section-matter: 1.0.0
       strip-bom-string: 1.0.0
@@ -5626,7 +5637,7 @@ snapshots:
       property-information: 7.1.0
       space-separated-tokens: 2.0.2
 
-  hepburn@1.2.2: {}
+  hepburn@1.3.0: {}
 
   html-escaper@3.0.3: {}
 
@@ -5641,6 +5652,8 @@ snapshots:
   ignore@5.3.2: {}
 
   ignore@7.0.5: {}
+
+  ignore@7.0.8: {}
 
   imagesloaded@5.0.0:
     dependencies:
@@ -5704,7 +5717,7 @@ snapshots:
 
   js-tokens@9.0.1: {}
 
-  js-yaml@3.14.2:
+  js-yaml@3.15.2:
     dependencies:
       argparse: 1.0.10
       esprima: 4.0.1
@@ -5727,7 +5740,7 @@ snapshots:
 
   justified-layout@4.1.0: {}
 
-  katex@0.16.44:
+  katex@0.16.47:
     dependencies:
       commander: 8.3.0
 
@@ -5840,10 +5853,10 @@ snapshots:
       lightningcss-win32-arm64-msvc: 1.33.0
       lightningcss-win32-x64-msvc: 1.33.0
 
-  limax@4.2.2:
+  limax@4.2.3:
     dependencies:
-      hepburn: 1.2.2
-      pinyin-pro: 3.28.0
+      hepburn: 1.3.0
+      pinyin-pro: 3.29.3
       speakingurl: 14.0.1
 
   locate-path@6.0.0:
@@ -5979,7 +5992,7 @@ snapshots:
 
   mdast-util-math@3.0.0:
     dependencies:
-      '@types/hast': 3.0.4
+      '@types/hast': 3.0.5
       '@types/mdast': 4.0.4
       devlop: 1.1.0
       longest-streak: 3.1.0
@@ -6158,7 +6171,7 @@ snapshots:
     dependencies:
       '@types/katex': 0.16.8
       devlop: 1.1.0
-      katex: 0.16.44
+      katex: 0.16.47
       micromark-factory-space: 2.0.1
       micromark-util-character: 2.1.1
       micromark-util-symbol: 2.0.1
@@ -6529,7 +6542,7 @@ snapshots:
 
   picomatch@4.0.5: {}
 
-  pinyin-pro@3.28.0: {}
+  pinyin-pro@3.29.3: {}
 
   playwright-core@1.61.1: {}
 

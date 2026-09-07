@@ -2,6 +2,7 @@
 @import 'tailwindcss';
 @plugin "@tailwindcss/typography";
 @import '@jaydixit/astro-utils/styles/blocks.css';
+@import '@jaydixit/astro-utils/styles/underline-draw.css';
 
 @config "../../tailwind.config";
 
