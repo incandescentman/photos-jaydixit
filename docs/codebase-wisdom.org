@@ -187,7 +187,7 @@ The promoted Kinetic homepage lightbox was visibly open and carried ~pswp--open~
 PhotoSwipe 5.4.4 deliberately waits for ~openingAnimationEnd~ before it dispatches ~bindEvents~; its keyboard module registers the document ~keydown~ listener only in response to that event. The root can therefore be visible and marked ~pswp--open~ while Escape is not yet bound. Calling ~pswp.close()~ during the opening transition does not solve this because PhotoSwipe's opener intentionally ignores close requests while ~isOpening~ is true.
 
 ** Fix
-The shared [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/PhotoSwipeLightbox.astro][📄 PhotoSwipe component]] listens for Escape during the opening window and queues one close for ~openingAnimationEnd~. Once the opening completes, PhotoSwipe's normal keyboard listener takes over. This preserves the full opening and closing motion while honoring an early dismissal request.
+The shared [[file+emacs:/Users/jay/Dropbox/github/astro-monorepo/packages/astro-utils/src/components/PhotoSwipeLightbox.astro][📄 PhotoSwipe component]] (in ~@jaydixit/astro-utils~ since 1.0.11; this site's local fork was retired 2026-09-07 once the port shipped) listens for Escape during the opening window and queues one close for ~openingAnimationEnd~. Once the opening completes, PhotoSwipe's normal keyboard listener takes over. This preserves the full opening and closing motion while honoring an early dismissal request.
 
 ** Rule of Thumb
 Do not infer keyboard readiness from visibility or the ~pswp--open~ class. For a PhotoSwipe interaction that must accept immediate dismissal, queue Escape across the opening transition instead of lengthening tests with an arbitrary sleep or forcing an abrupt destroy.

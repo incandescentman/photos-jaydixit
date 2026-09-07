@@ -90,7 +90,7 @@ Start with the before-and-after page because it is small, high-value, and now ha
 - Create [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/beforeAfter.ts][src/data/beforeAfter.ts]] for comparison entries.
 - Define a typed comparison shape with fields such as ~name~, ~article~, ~event~, ~beforeImage~, ~afterImage~, ~beforeSource~, ~afterSource~, and future Wikimedia fields.
 - Extract a reusable frame component, likely [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/EditorialPhotoFrame.astro][src/components/EditorialPhotoFrame.astro]], responsible for label, source, caption, image, and PhotoSwipe data attributes.
-- Keep [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/PhotoSwipeLightbox.astro][src/components/PhotoSwipeLightbox.astro]] as the shared lightbox initializer.
+- Keep one shared lightbox initializer. Superseded 2026-09-07: the local ~src/components/PhotoSwipeLightbox.astro~ was retired in favour of [[file+emacs:/Users/jay/Dropbox/github/astro-monorepo/packages/astro-utils/src/components/PhotoSwipeLightbox.astro][📄 the @jaydixit/astro-utils PhotoSwipe component]], imported as ~@jaydixit/astro-utils/components/PhotoSwipeLightbox.astro~ with ~options={{ escKey: true, tapAction: 'toggle-controls' }}~.
 - After the before-and-after extraction is stable, reuse the same frame/card language in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/PhotoGrid.astro][src/components/PhotoGrid.astro]] and gallery/person pages.
 
 ** Acceptance Criteria

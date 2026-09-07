@@ -3,7 +3,8 @@ export const prerender = true;
 
 import { Image, getImage } from 'astro:assets';
 import MainLayout from '../layouts/MainLayout.astro';
-import PhotoSwipeLightbox from '../components/PhotoSwipeLightbox.astro';
+import PhotoSwipeLightbox from '@jaydixit/astro-utils/components/PhotoSwipeLightbox.astro';
+import PortfolioHeader from '../components/PortfolioHeader.astro';
 import { comparisons } from '../data/beforeAfter';
 
 const comparisonSequence = [
@@ -56,23 +57,7 @@ const sequencedComparisons = await Promise.all(
 	description="Wikipedia portrait upgrades: see the difference professional photography makes"
 	showChrome={false}
 >
-	<header class="sequence-nav">
-		<a class="wordmark" href="/">
-			<img class="brand-seal" src="/brand/red-carpet-seal.svg" alt="" width="72" height="72" />
-			<span>Jay Dixit</span>
-			<small>Photos</small>
-		</a>
-		<nav aria-label="Primary navigation">
-			<a href="/before-and-after" aria-current="page">Before &amp; After</a>
-			<a href="/about">About Me</a>
-			<a href="/blog/wikiportraits-story">Why WikiPortraits</a>
-			<a href="/nobel-2024">Covering the Nobel Prizes</a>
-			<a class="nav-contact" href="/contact">Contact</a>
-			<a href="https://jaydixit.com" target="_blank" rel="noopener noreferrer"
-				>jaydixit.com <span aria-hidden="true">↗</span></a
-			>
-		</nav>
-	</header>
+	<PortfolioHeader mode="inner" />
 
 	<main>
 		<section class="finale" aria-labelledby="finale-title">
@@ -203,7 +188,7 @@ const sequencedComparisons = await Promise.all(
 		</section>
 	</main>
 
-	<PhotoSwipeLightbox gallerySelector=".comparison-list" childrenSelector="a[data-pswp-item]" />
+	<PhotoSwipeLightbox gallerySelector=".comparison-list" childrenSelector="a[data-pswp-item]" options={{ escKey: true, tapAction: 'toggle-controls' }} />
 
 	<script>
 		import { gsap } from 'gsap';
@@ -217,8 +202,7 @@ const sequencedComparisons = await Promise.all(
 			const context = gsap.context(() => {
 				gsap
 					.timeline()
-					.from('.sequence-nav', { y: -24, opacity: 0, duration: 0.7, ease: 'power3.out' })
-					.from('.kicker', { y: 18, opacity: 0, duration: 0.5 }, '-=0.3')
+					.from('.kicker', { y: 18, opacity: 0, duration: 0.5 })
 					.from('#finale-title', {
 						yPercent: 16,
 						opacity: 0,
@@ -272,74 +256,6 @@ const sequencedComparisons = await Promise.all(
 			var(--paper);
 		color: var(--ink);
 		font-family: 'Karla', system-ui, sans-serif;
-	}
-
-	.sequence-nav {
-		position: absolute;
-		z-index: 20;
-		top: 0;
-		left: 0;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		width: 100%;
-		padding: 1.5rem clamp(1.25rem, 4vw, 4.5rem);
-		border-bottom: 1px solid var(--rule);
-	}
-
-	.sequence-nav a {
-		color: inherit;
-		font-size: 0.82rem;
-		font-weight: 700;
-		letter-spacing: 0.1em;
-		text-decoration: none;
-		text-transform: uppercase;
-		white-space: nowrap;
-	}
-
-	.sequence-nav nav {
-		display: flex;
-		gap: clamp(1rem, 3vw, 2.8rem);
-	}
-
-	.sequence-nav a:hover,
-	.sequence-nav a:focus-visible {
-		color: var(--gold);
-		outline-offset: 0.35rem;
-	}
-
-	.wordmark {
-		display: inline-flex;
-		gap: 0.5rem;
-		align-items: center;
-		font-family: 'Cormorant Garamond', Georgia, serif;
-		font-size: 2.35rem !important;
-		font-weight: 500 !important;
-		line-height: 1 !important;
-		letter-spacing: 0.02em !important;
-		text-transform: none !important;
-	}
-
-	.wordmark small {
-		color: var(--gold);
-		font-family: 'Karla', system-ui, sans-serif;
-		font-size: 0.75rem;
-		font-weight: 600;
-		letter-spacing: 0.18em;
-		text-transform: uppercase;
-	}
-
-	.brand-seal {
-		display: block;
-		flex: none;
-		width: 4.5rem;
-		height: 4.5rem;
-		transition: transform 220ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-	}
-
-	.wordmark:hover .brand-seal,
-	.wordmark:focus-visible .brand-seal {
-		transform: rotate(-4deg) scale(1.06);
 	}
 
 	.kicker {
@@ -654,51 +570,7 @@ const sequencedComparisons = await Promise.all(
 		text-underline-offset: 0.35rem;
 	}
 
-	@media (max-width: 1420px) {
-		.sequence-nav {
-			padding-inline: clamp(1.25rem, 3vw, 2.5rem);
-		}
-
-		.sequence-nav nav {
-			gap: clamp(0.65rem, 1.25vw, 1.1rem);
-		}
-
-		.sequence-nav nav a {
-			font-size: 0.7rem;
-			letter-spacing: 0.075em;
-		}
-
-		.wordmark {
-			font-size: 2rem !important;
-		}
-
-		.brand-seal {
-			width: 3.75rem;
-			height: 3.75rem;
-		}
-	}
-
-	@media (max-width: 1050px) {
-		.sequence-nav nav a {
-			display: none;
-		}
-
-		.sequence-nav nav .nav-contact {
-			display: inline-flex;
-		}
-	}
-
 	@media (max-width: 700px) {
-		.wordmark {
-			gap: 0.6rem;
-			font-size: 1.68rem !important;
-		}
-
-		.brand-seal {
-			width: 3rem;
-			height: 3rem;
-		}
-
 		.finale h1 {
 			font-size: clamp(4rem, 20vw, 7rem);
 			line-height: 0.8;

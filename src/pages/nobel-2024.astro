@@ -4,7 +4,7 @@ export const prerender = true;
 import { getImage } from 'astro:assets';
 import MainLayout from '../layouts/MainLayout.astro';
 import NobelPhoto from '../components/NobelPhoto.astro';
-import PhotoSwipeLightbox from '../components/PhotoSwipeLightbox.astro';
+import PhotoSwipeLightbox from '@jaydixit/astro-utils/components/PhotoSwipeLightbox.astro';
 
 import peaceCampaigners from '../gallery/photos/events/nobel-prizes-2024/anti-nuclear-campaigners_nobel-peace-prize-torchlight-procession-oslo_2024.jpg';
 import pressCredentials from '../gallery/photos/events/nobel-prizes-2024/press-credentials_nobel-peace-prize-oslo_2024.jpg';
@@ -239,6 +239,15 @@ const structuredData = {
 	{description}
 	image={photo('hassabis').full.src}
 	imageAlt="Demis Hassabis at the 2024 Nobel Lectures in Stockholm"
+	ogImages={[
+		{
+			url: photo('hassabis').full.src,
+			alt: 'Demis Hassabis at the 2024 Nobel Lectures in Stockholm',
+			width: photo('hassabis').full.options.width,
+			height: photo('hassabis').full.options.height,
+			type: 'image/webp',
+		},
+	]}
 	keywords={[
 		'2024 Nobel Prize photographs',
 		'Nobel Lectures Stockholm',
@@ -392,7 +401,7 @@ const structuredData = {
 		</footer>
 	</main>
 
-	<PhotoSwipeLightbox gallerySelector=".nobel-page" childrenSelector="a[data-nobel-photo]" />
+	<PhotoSwipeLightbox gallerySelector=".nobel-page" childrenSelector="a[data-nobel-photo]" options={{ escKey: true, tapAction: 'toggle-controls' }} />
 </MainLayout>
 
 <style>

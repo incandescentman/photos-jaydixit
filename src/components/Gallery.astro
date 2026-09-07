@@ -1,6 +1,6 @@
 ---
 import { cldUrl, cldSrcset, cldSizes } from '../lib/cloudinary';
-import PhotoSwipeLightbox from './PhotoSwipeLightbox.astro';
+import PhotoSwipeLightbox from '@jaydixit/astro-utils/components/PhotoSwipeLightbox.astro';
 import type { CollectionEntry } from 'astro:content';
 
 interface PhotoItem {
@@ -75,7 +75,7 @@ function lightboxWidthsFor(width: number) {
 	</div>
 </section>
 
-<PhotoSwipeLightbox gallerySelector={`#${galleryId}`} childrenSelector="a[data-pswp-item]" />
+<PhotoSwipeLightbox gallerySelector={`#${galleryId}`} childrenSelector="a[data-pswp-item]" options={{ escKey: true, tapAction: 'toggle-controls' }} />
 
 <style>
 	/* Minimal masonry via CSS columns */
