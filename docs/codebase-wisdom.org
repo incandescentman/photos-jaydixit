@@ -584,3 +584,9 @@ The crop existed twice: explicit width and height with ~fit="cover"~ in Astro ge
 
 ** Actionable insight
 The [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/gallery/index.astro][gallery directory]] now specifies responsive widths without a forced height, and displays images at their intrinsic ratio with ~height: auto~. Hover emphasizes the border without scaling the photograph. The [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tests/e2e/portfolio.e2e.ts][existing gallery browser checks]] identify each actual source file and compare both the downloaded derivative and rendered image ratios against it, at desktop and phone widths. This catches either crop layer independently. References: [[https://docs.astro.build/en/reference/modules/astro-assets/][Astro image API]] and [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/object-fit][MDN object-fit]].
+
+* 2026-09-09 - An empty header grid row still contributes its gap
+
+The gallery title was clipped above 1500 pixels because [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/PortfolioHeader.astro][the shared header]] explicitly defines a second row for its expandable menu. Hiding the menu made that track zero pixels tall, but the base ~gap~ still added 60–78 pixels between the tracks. The fixed header therefore extended beyond the page’s 120-pixel clearance. The compact navigation rules already set ~row-gap: 0~, which is why checks at 1440 pixels and phone widths missed it.
+
+The inner-page header now sets ~row-gap: 0~ at all widths. The homepage header is separately positioned and retains its existing rules. When checking a fixed header, measure its rendered bottom against the first text and test both sides of its navigation breakpoint; visibility assertions alone do not detect text covered by another element. Reference: [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/row-gap][MDN row-gap]].

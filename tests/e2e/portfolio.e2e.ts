@@ -211,6 +211,35 @@ test('site nav renders redesigned desktop and mobile states', async ({ page }) =
 	await expect(mobileMenu).toBeHidden();
 });
 
+test('gallery heading clears the fixed header across navigation breakpoints', async ({ page }) => {
+	const errors: string[] = [];
+	page.on('pageerror', (error) => errors.push(error.message));
+	for (const width of [390, 820, 821, 1440, 1500, 1501, 1536, 1680, 2016, 2560]) {
+		await page.setViewportSize({ width, height: 1000 });
+		await page.goto('/gallery/');
+		await page.evaluate(() => document.fonts.ready);
+		const bounds = await page.evaluate(() => {
+			const header = document.querySelector('[data-portfolio-header]')!;
+			const kicker = document.querySelector('.gallery-kicker')!;
+			const title = document.createRange();
+			title.selectNodeContents(document.querySelector('h1')!);
+			return {
+				headerBottom: header.getBoundingClientRect().bottom,
+				kickerTop: kicker.getBoundingClientRect().top,
+				titleTop: title.getBoundingClientRect().top,
+			};
+		});
+		expect(
+			bounds.kickerTop - bounds.headerBottom,
+			`Eyebrow clearance at ${width}px`,
+		).toBeGreaterThan(16);
+		expect(bounds.titleTop - bounds.headerBottom, `Title clearance at ${width}px`).toBeGreaterThan(
+			16,
+		);
+	}
+	expect(errors).toEqual([]);
+});
+
 test('mobile homepage does not repeat hero photographs in the wall', async ({ page }) => {
 	await page.setViewportSize({ width: 390, height: 844 });
 	await page.goto('/');
