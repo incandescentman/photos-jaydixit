@@ -23,6 +23,18 @@ const imageModules = import.meta.glob<{ default: ImageMetadata }>(
 	{ eager: true },
 );
 
+// Positions belong to specific photographs, not folders that may get a new cover.
+const coverFocalPoints: Record<string, string> = {
+	'events/nobel/john-hopfield_nobel-physics_2024.jpg': '50% 0%',
+	'events/nobel-prizes-2024/anti-nuclear-campaigners_nobel-peace-prize-torchlight-procession-oslo_2024.jpg':
+		'50% 50%',
+	'events/sxsw-2026/jack-johnson_sxsw_2026_01.jpg': '50% 50%',
+	'portraits/studio/dave-franco_sundance_2025.jpg': '50% 0%',
+	'red-carpet/sundance/conan-obrien_sundance_2024.jpg': '50% 28%',
+	'red-carpet/sxsw/judd-apatow_sxsw_2024.jpg': '50% 0%',
+	'red-carpet/tiff/jason-bateman-jude-law-09836_tiff_2025.jpg': '40% 50%',
+};
+
 function formatWord(word: string) {
 	const normalized = word.toLowerCase();
 	const acronymMap: Record<string, string> = {
@@ -132,6 +144,7 @@ const galleryIndexStructuredData = {
 										<article class="gallery-cover">
 											<a
 												class="gallery-cover-photo"
+												style={`--cover-position: ${coverFocalPoints[`${gallery.name}/${gallery.sampleFilename}`] ?? '50% 50%'}`}
 												href={gallery.url}
 												aria-label={`View the ${gallery.displayName} gallery`}
 												data-gallery-cover-photo
@@ -150,12 +163,7 @@ const galleryIndexStructuredData = {
 											</a>
 
 											<h3>
-												<a href={gallery.url}>
-													{gallery.displayName}
-													<span class="gallery-enter">
-														View gallery <i aria-hidden="true">→</i>
-													</span>
-												</a>
+												<a href={gallery.url}>{gallery.displayName}</a>
 											</h3>
 										</article>
 									))}
@@ -258,6 +266,8 @@ const galleryIndexStructuredData = {
 
 	.gallery-cover-photo {
 		display: block;
+		aspect-ratio: 4 / 3;
+		overflow: hidden;
 		background: var(--paper-deep);
 		transition: box-shadow 180ms ease;
 	}
@@ -265,7 +275,9 @@ const galleryIndexStructuredData = {
 	.gallery-cover-photo img {
 		display: block;
 		width: 100%;
-		height: auto;
+		height: 100%;
+		object-fit: cover;
+		object-position: var(--cover-position, 50% 50%);
 	}
 
 	.gallery-cover-photo:hover,
@@ -279,10 +291,7 @@ const galleryIndexStructuredData = {
 	}
 
 	.gallery-cover h3 a {
-		display: flex;
-		gap: 1rem;
-		align-items: baseline;
-		justify-content: space-between;
+		display: block;
 		padding: 1rem 0 0.85rem;
 		color: var(--ink);
 		font-family: var(--serif);
@@ -291,19 +300,12 @@ const galleryIndexStructuredData = {
 		letter-spacing: -0.025em;
 		line-height: 1.05;
 		text-decoration: none;
+		transition: color 180ms ease;
 	}
 
-	.gallery-cover h3 a span {
+	.gallery-cover h3 a:hover,
+	.gallery-cover h3 a:focus-visible {
 		color: var(--accent);
-		font-family: var(--sans);
-		font-size: 0.72rem;
-		white-space: nowrap;
-		transition: transform 180ms ease;
-	}
-
-	.gallery-cover h3 a:hover span,
-	.gallery-cover h3 a:focus-visible span {
-		transform: translateX(0.25rem);
 	}
 
 	.gallery-empty {
@@ -334,11 +336,19 @@ const galleryIndexStructuredData = {
 		.gallery-cover-grid {
 			grid-template-columns: 1fr;
 		}
+
+		.gallery-cover-photo {
+			aspect-ratio: auto;
+		}
+
+		.gallery-cover-photo img {
+			height: auto;
+		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
 		.gallery-cover-photo,
-		.gallery-cover h3 a span {
+		.gallery-cover h3 a {
 			transition: none;
 		}
 	}

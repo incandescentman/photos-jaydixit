@@ -6,19 +6,25 @@
 
 You selected proposals 1 and 2, the homepage text/collage collision fix at laptop widths, and PhotoSwipe opening with a separate Details action on person pages. The existing intentional changes were documented and committed first as ~c6be648~. Proposals 1 and 2, the homepage spacing fix, and the person-page repair are committed locally in ~3d36e3d~. The subsequent wide-header clearance fix is committed in ~d8c5f04~. Neither checkpoint was pushed or deployed. Proposals 3–5 remain suggestions.
 
+* Final gallery directory direction — 2026-09-09
+
+Jay’s decision, relayed by Claude after reviewing desktop and phone captures: restore uniform desktop cover shapes with per-cover focal points; keep full photographs in the phone column; remove the small View gallery label beside each title. This supersedes the full-photograph desktop layout below. Both photographs and titles remain direct links into their collections.
+
+The current [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tmp/portfolio-upgrade-20260909/directory-final-framing-1440.png][desktop capture]] uses equal 4:3 frames and a focal point attached to each source photograph. The [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tmp/portfolio-upgrade-20260909/directory-final-framing-390.png][phone capture]] preserves complete photographs. The [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tmp/portfolio-upgrade-20260909/directory-final-red-carpet-1440.png][desktop portrait detail]] shows the preserved faces in the Sundance and SXSW covers. Derivatives stay uncropped; only desktop CSS selects the visible area.
+
 * Gallery cover correction — 2026-09-09
 
 Jay: “the gallery page cuts off people's faces because aspect ratios are wrong. it looks terrible.” Review URL: [[http://localhost:4336/gallery/][gallery directory]]. Status: rework requested; the forced 4:3 covers are corrected locally, with final visual approval not inferred.
 
-The original implementation cropped the generated asset to 960 × 720 and then cropped the displayed image with a fixed 4:3 frame. Both constraints are removed. Covers now preserve source proportions, including on hover; portrait covers take more vertical space.
+The original implementation cropped the generated asset to 960 × 720 and then cropped the displayed image with a fixed 4:3 frame. Both constraints are removed. At this stage, covers preserved source proportions on every device. The final direction above retains that treatment on phones and restores deliberate crops on desktop.
 
 * Gallery heading correction — 2026-09-09
 
-Jay: “the top of the title gets cut off”. The fixed inner-page header retained an empty grid-row gap above 1500 pixels and covered the gallery eyebrow and the top of the title. The gap is removed in ~d8c5f04~. The [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tmp/portfolio-upgrade-20260909/gallery-title-after-2016.png][current desktop capture]] and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tmp/portfolio-upgrade-20260909/gallery-title-after-390.png][current phone capture]] show the correction. Heading clearance passes at ten widths from 390 through 2560 pixels; desktop and phone navigation and gallery interactions also pass.
+Jay: “the top of the title gets cut off”. The fixed inner-page header retained an empty grid-row gap above 1500 pixels and covered the gallery eyebrow and the top of the title. The gap is removed in ~d8c5f04~. The [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tmp/portfolio-upgrade-20260909/gallery-title-after-2016.png][heading-fix desktop capture]] and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tmp/portfolio-upgrade-20260909/gallery-title-after-390.png][heading-fix phone capture]] show the correction. Heading clearance passes at ten widths from 390 through 2560 pixels; desktop and phone navigation and gallery interactions also pass.
 
 * Local review — 2026-09-09
 
-- [[http://localhost:4336/gallery/][Gallery directory]] — uncropped covers at each photograph’s original aspect ratio, warm paper, clean collection names, and direct navigation from each cover.
+- [[http://localhost:4336/gallery/][Gallery directory]] — uniform desktop covers with per-photograph focal points, full photographs on phones, and direct navigation from both the cover and the collection title.
 - [[http://localhost:4336/gallery/events/nobel-prizes-2024/][Nobel archive]] — the existing Packery layout with captions and separate Details actions, a compact desktop filter row, and collapsed phone filters.
 - [[http://localhost:4336/red-carpet/conan-obrien/][Conan portraits]] — all three photographs open the exhibition viewer, including both highlight-only photographs; gallery Details remains a separate link.
 - [[http://localhost:4336/][Updated homepage]] and [[http://localhost:4348/][checkpoint homepage]] — protected text and a smaller, jointly adjusted collage across the affected laptop range. The wider laptop treatment reduces the prints by 7%; the middle range uses 14%, and the narrowest desktop range uses 22%. The mobile layout remains separate.
@@ -26,7 +32,7 @@ Jay: “the top of the title gets cut off”. The fixed inner-page header retain
 
 The viewer keeps PhotoSwipe and the shared lightbox implementation. It adds a warm canvas, captions, an optional Info panel containing only known relationships to other pages, and at most seven small neighboring previews. The thumbnail strip starts hidden on phones and requests no thumbnail images until opened. A preview is omitted when a small source is unavailable; it never fetches an original to manufacture a thumbnail.
 
-The [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tmp/portfolio-upgrade-20260909/gallery-and-viewer-review.jpg][earlier gallery and viewer comparison sheet]] preserves the initial review. Its directory frames precede the crop and header fixes; use the current title captures above and the [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tmp/portfolio-upgrade-20260909/gallery-crop-after-1440.png][uncropped desktop covers]] or [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tmp/portfolio-upgrade-20260909/gallery-crop-after-390.png][uncropped phone covers]] when reviewing the directory. Its viewer panels also precede suppression of links back to the current page.
+The [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tmp/portfolio-upgrade-20260909/gallery-and-viewer-review.jpg][earlier gallery and viewer comparison sheet]] preserves the initial review. Its directory frames precede the crop and header fixes; use the final directory captures above. The [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tmp/portfolio-upgrade-20260909/gallery-crop-after-1440.png][full-photograph desktop trial]] and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tmp/portfolio-upgrade-20260909/gallery-crop-after-390.png][earlier phone cover capture]] remain historical comparisons. Its viewer panels also precede suppression of links back to the current page.
 
 The license check found explicit embedded usage terms in the three Jack Johnson gallery files and the matching highlight. The Before & After catalog contains license records, but its source images lack embedded license metadata, so those records supply context links without enabling Copy attribution. No metadata was written into photographs.
 

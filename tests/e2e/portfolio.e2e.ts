@@ -725,7 +725,7 @@ for (const width of [390, 1440]) {
 		});
 		await page.goto('/gallery/');
 		await waitForInitialImages(page);
-		// Compare every generated and displayed cover with its actual source image.
+		// Derivatives preserve originals; only desktop frames crop the display.
 		// A CSS-only check would miss a crop already baked into the derivative.
 		for (const link of await page.locator('[data-gallery-cover-photo]').all()) {
 			await link.scrollIntoViewIfNeeded();
@@ -750,15 +750,24 @@ for (const width of [390, 1440]) {
 				sourceRatio,
 				2,
 			);
-			expect(displayed.renderedRatio, `${folder} displays the entire source`).toBeCloseTo(
-				sourceRatio,
-				2,
-			);
+			expect(
+				displayed.renderedRatio,
+				`${folder} uses the requested responsive framing`,
+			).toBeCloseTo(width <= 700 ? sourceRatio : 4 / 3, 2);
 			await link.hover();
 			const bounds = await img.boundingBox();
 			const frame = await link.boundingBox();
 			expect(bounds!.width).toBeCloseTo(frame!.width, 0);
 			expect(bounds!.height).toBeCloseTo(frame!.height, 0);
+		}
+		await expect(page.locator('.gallery-enter')).toHaveCount(0);
+		const titles = await page.locator('.gallery-cover h3 a').allTextContents();
+		expect(titles.every((title) => !title.includes('View gallery'))).toBe(true);
+		for (const card of await page.locator('.gallery-cover').all()) {
+			await expect(card.locator('h3 a')).toHaveAttribute(
+				'href',
+				(await card.locator('[data-gallery-cover-photo]').getAttribute('href'))!,
+			);
 		}
 		await page.evaluate(() => window.scrollTo(0, 0));
 		await captureReview(page, `after-gallery-${width}`);
