@@ -1,0 +1,381 @@
+---
+import SocialIcon from './SocialIcon.astro';
+interface Props {
+	mode?: 'home' | 'inner';
+}
+interface NavLink {
+	href: string;
+	label: string;
+	external?: boolean;
+}
+const { mode = 'inner' } = Astro.props;
+const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const menuId = `portfolio-menu-${mode}`;
+export const navLinks: NavLink[] = [
+	{ href: '/before-and-after', label: 'Before & After' },
+	{ href: '/about', label: 'About Me' },
+	{ href: '/blog/wikiportraits-story', label: 'Why WikiPortraits' },
+	{ href: '/nobel-2024', label: 'Covering the Nobel Prizes' },
+	{ href: '/contact', label: 'Contact' },
+	{ href: 'https://jaydixit.com', label: 'jaydixit.com', external: true },
+];
+const socialLinks = [
+	{ name: 'Twitter', url: 'https://twitter.com/jaydixit' },
+	{ name: 'LinkedIn', url: 'https://linkedin.com/in/jaydixit' },
+	{ name: 'Instagram', url: 'https://instagram.com/jaydixit' },
+];
+const isActive = (href: string) => {
+	if (href.startsWith('http')) return false;
+	const normalizedHref = href.replace(/\/+$/, '') || '/';
+	return currentPath === normalizedHref || currentPath.startsWith(`${normalizedHref}/`);
+};
+---
+
+<header class:list={['portfolio-header', `portfolio-header--${mode}`]} data-portfolio-header>
+	<a class="portfolio-mark" href="/" aria-label="Jay Dixit Photos, homepage"
+		><img src="/brand/red-carpet-seal.svg" alt="" width="72" height="72" /><span>Jay Dixit</span
+		><small>Photos</small></a
+	>
+	<nav class="portfolio-nav-primary" aria-label="Primary navigation">
+		{
+			navLinks.map(({ href, label, external }) => (
+				<a
+					href={href}
+					target={external ? '_blank' : undefined}
+					rel={external ? 'noopener noreferrer' : undefined}
+					aria-current={isActive(href) ? 'page' : undefined}
+				>
+					{label} {external && <span aria-hidden="true">↗</span>}
+				</a>
+			))
+		}
+	</nav>
+	<a
+		class="portfolio-contact"
+		href="/contact"
+		aria-current={currentPath === '/contact' ? 'page' : undefined}
+		>Contact <span aria-hidden="true">↗</span></a
+	>
+	<button
+		class="portfolio-menu-toggle"
+		type="button"
+		data-portfolio-menu-toggle
+		aria-expanded="false"
+		aria-controls={menuId}
+		><span class="portfolio-menu-bars" aria-hidden="true"></span><span>Menu</span></button
+	>
+	<nav class="portfolio-menu" id={menuId} data-portfolio-menu-panel aria-label="Site menu" hidden>
+		{
+			navLinks.map(({ href, label, external }) => (
+				<a
+					href={href}
+					data-portfolio-menu-link
+					target={external ? '_blank' : undefined}
+					rel={external ? 'noopener noreferrer' : undefined}
+					aria-current={isActive(href) ? 'page' : undefined}
+				>
+					{label} <span aria-hidden="true">{external ? '↗' : '→'}</span>
+				</a>
+			))
+		}
+		<div class="portfolio-menu-social" aria-label="Social links">
+			{socialLinks.map((social) => <SocialIcon socialLink={social} frameSize={40} />)}
+		</div>
+	</nav>
+</header>
+<script>
+	document.querySelectorAll<HTMLElement>('[data-portfolio-header]').forEach((header) => {
+		if (header.dataset.menuReady === 'true') return;
+		header.dataset.menuReady = 'true';
+		const toggle = header.querySelector<HTMLButtonElement>('[data-portfolio-menu-toggle]');
+		const panel = header.querySelector<HTMLElement>('[data-portfolio-menu-panel]');
+		if (!toggle || !panel) return;
+		const setOpen = (open: boolean, restoreFocus = false) => {
+			toggle.setAttribute('aria-expanded', String(open));
+			panel.hidden = !open;
+			if (!open && restoreFocus) toggle.focus();
+		};
+		toggle.addEventListener('click', () =>
+			setOpen(toggle.getAttribute('aria-expanded') !== 'true'),
+		);
+		panel.addEventListener('click', (event) => {
+			if ((event.target as HTMLElement).closest('[data-portfolio-menu-link]')) setOpen(false);
+		});
+		document.addEventListener('keydown', (event) => {
+			if (event.key === 'Escape' && !panel.hidden) setOpen(false, true);
+		});
+		document.addEventListener('pointerdown', (event) => {
+			if (!panel.hidden && !header.contains(event.target as Node)) setOpen(false);
+		});
+		window.matchMedia('(min-width: 1501px)').addEventListener('change', (event) => {
+			if (event.matches) setOpen(false);
+		});
+	});
+</script>
+<style is:global>
+	:root {
+		--portfolio-header-clearance: 120px;
+		--nav-clearance: 10.5rem;
+	}
+	@media (max-width: 820px) {
+		:root {
+			--portfolio-header-clearance: 80px;
+		}
+	}
+	@media (max-width: 640px) {
+		:root {
+			--nav-clearance: 9.5rem;
+		}
+	}
+</style>
+<style>
+	.portfolio-header {
+		--portfolio-header-row-height: 120px;
+		--portfolio-header-accent: #a43f2e;
+		z-index: 50;
+		top: 0;
+		right: 0;
+		left: 0;
+		display: grid;
+		grid-template-columns: auto minmax(0, 1fr);
+		grid-template-rows: var(--portfolio-header-row-height) auto;
+		gap: clamp(36px, 4vw, 78px);
+		align-items: center;
+		min-height: var(--portfolio-header-row-height);
+		padding: 0;
+		margin: 0 clamp(20px, 3.2vw, 60px);
+		border-bottom: 1px solid var(--rule, rgb(22 18 15 / 22%));
+		color: var(--ink, #16120f);
+		font-family: var(--sans, 'Instrument Sans', system-ui, sans-serif);
+	}
+	.portfolio-header--home {
+		position: absolute;
+	}
+	.portfolio-header--home:has(.portfolio-menu-toggle[aria-expanded='true']) {
+		background: var(--paper, #f2eee5);
+	}
+	.portfolio-header--inner {
+		position: fixed;
+		margin: 0;
+		padding-inline: clamp(20px, 3.2vw, 60px);
+		background: var(--paper, #f2eee5);
+	}
+	.portfolio-mark {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		width: max-content;
+		color: inherit;
+		text-decoration: none;
+	}
+	.portfolio-mark img {
+		display: block;
+		flex: none;
+		width: 72px;
+		height: 72px;
+		transition: transform 220ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+	}
+	.portfolio-mark:hover img,
+	.portfolio-mark:focus-visible img {
+		transform: rotate(-4deg) scale(1.06);
+	}
+	.portfolio-mark span {
+		font-family: var(--serif, 'Newsreader', Georgia, serif);
+		font-size: 2.35rem;
+		font-weight: 500;
+		line-height: 1;
+		letter-spacing: -0.025em;
+	}
+	.portfolio-mark small {
+		color: var(--portfolio-header-accent);
+		font-size: 12px;
+		font-weight: 600;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+	}
+	.portfolio-nav-primary {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		gap: clamp(14px, 1.3vw, 25px);
+	}
+	.portfolio-nav-primary a,
+	.portfolio-contact {
+		position: relative;
+		color: inherit;
+		font-size: 0.76rem;
+		font-weight: 600;
+		letter-spacing: 0.085em;
+		text-decoration: none;
+		text-transform: uppercase;
+		white-space: nowrap;
+	}
+	.portfolio-nav-primary a span,
+	.portfolio-contact span,
+	.portfolio-menu a span {
+		color: var(--portfolio-header-accent);
+	}
+	.portfolio-nav-primary a::after,
+	.portfolio-contact::after {
+		position: absolute;
+		right: 100%;
+		bottom: -7px;
+		left: 0;
+		height: 1px;
+		background: var(--portfolio-header-accent);
+		content: '';
+		transition: right 220ms ease;
+	}
+	.portfolio-nav-primary a:hover::after,
+	.portfolio-nav-primary a:focus-visible::after,
+	.portfolio-contact:hover::after,
+	.portfolio-contact:focus-visible::after,
+	.portfolio-nav-primary a[aria-current='page']::after {
+		right: 0;
+	}
+	.portfolio-contact {
+		display: none;
+		align-items: center;
+		justify-self: end;
+		min-height: 44px;
+	}
+	.portfolio-menu-toggle {
+		display: none;
+		align-items: center;
+		gap: 9px;
+		justify-self: end;
+		min-height: 44px;
+		padding: 0 2px;
+		border: 0;
+		background: none;
+		color: inherit;
+		font: inherit;
+		font-size: 0.76rem;
+		font-weight: 600;
+		letter-spacing: 0.085em;
+		text-transform: uppercase;
+		cursor: pointer;
+	}
+	.portfolio-menu-bars {
+		position: relative;
+		width: 20px;
+		height: 9px;
+	}
+	.portfolio-menu-bars::before,
+	.portfolio-menu-bars::after {
+		position: absolute;
+		right: 0;
+		left: 0;
+		height: 1.5px;
+		background: currentColor;
+		content: '';
+		transition:
+			transform 240ms ease,
+			opacity 180ms ease;
+	}
+	.portfolio-menu-bars::before {
+		top: 0;
+	}
+	.portfolio-menu-bars::after {
+		bottom: 0;
+		left: 5px;
+	}
+	.portfolio-menu-toggle[aria-expanded='true'] .portfolio-menu-bars::before {
+		transform: translateY(3.75px) rotate(45deg);
+	}
+	.portfolio-menu-toggle[aria-expanded='true'] .portfolio-menu-bars::after {
+		left: 0;
+		transform: translateY(-3.75px) rotate(-45deg);
+	}
+	.portfolio-menu {
+		display: none;
+		grid-column: 1 / -1;
+		grid-row: 2;
+		max-height: calc(100svh - var(--portfolio-header-row-height));
+		padding-bottom: 12px;
+		overflow-y: auto;
+		overscroll-behavior: contain;
+		background: var(--paper, #f2eee5);
+		box-shadow: 0 12px 24px rgb(22 18 15 / 10%);
+	}
+	.portfolio-menu[hidden] {
+		display: none;
+	}
+	.portfolio-menu a {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 20px;
+		min-height: 52px;
+		border-top: 1px solid var(--rule, rgb(22 18 15 / 22%));
+		color: inherit;
+		font-family: var(--serif, 'Newsreader', Georgia, serif);
+		font-size: 19px;
+		font-weight: 400;
+		letter-spacing: -0.012em;
+		text-decoration: none;
+	}
+	.portfolio-menu-social {
+		display: flex;
+		gap: 0.5rem;
+		padding-top: 0.75rem;
+		border-top: 1px solid var(--rule, rgb(22 18 15 / 22%));
+	}
+	@media (max-width: 1500px) {
+		.portfolio-header {
+			grid-template-columns: minmax(0, 1fr) auto auto;
+			row-gap: 0;
+			column-gap: clamp(16px, 2.4vw, 34px);
+		}
+		.portfolio-nav-primary {
+			display: none;
+		}
+		.portfolio-contact,
+		.portfolio-menu-toggle {
+			display: inline-flex;
+		}
+		.portfolio-menu:not([hidden]) {
+			display: grid;
+		}
+	}
+	@media (max-width: 820px) {
+		.portfolio-header {
+			--portfolio-header-row-height: 80px;
+			row-gap: 0;
+			column-gap: 14px;
+			margin-inline: 18px;
+		}
+		.portfolio-header--inner {
+			margin: 0;
+			padding-inline: 18px;
+		}
+		.portfolio-mark img {
+			width: 48px;
+			height: 48px;
+		}
+		.portfolio-mark span {
+			font-size: 1.68rem;
+		}
+		.portfolio-mark small {
+			font-size: 10px;
+		}
+		.portfolio-contact {
+			display: none;
+		}
+	}
+	@media (max-width: 360px) {
+		.portfolio-header {
+			gap: 10px;
+		}
+		.portfolio-mark img {
+			width: 44px;
+			height: 44px;
+		}
+		.portfolio-mark span {
+			font-size: 1.32rem;
+		}
+		.portfolio-mark small {
+			display: none;
+		}
+	}
+</style>

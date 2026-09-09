@@ -263,7 +263,7 @@ manifest.
 
 ​**** Components
 
-- NavBar.astro → sticky header with Alpine.js mobile menu
+- NavBar.astro → compatibility wrapper for PortfolioHeader.astro; the shared header uses the red-carpet seal, one navigation list, and a native compact menu with Escape/outside dismissal (updated 2026-09-09).
 
 - Footer.astro → site footer
 
@@ -295,9 +295,9 @@ manifest.
 
 ​*** 🧭 Header and Branding
 
-- Sticky header with site title: Jay Dixit Photos
+- Shared PortfolioHeader with the red-carpet seal and Jay Dixit Photos wordmark (updated 2026-09-09)
 
-- Placeholder for logo (square image)
+- Fixed inner-page header and absolute homepage header; compact navigation through 1500px
 
 - Clean typography and minimalist layout
 
@@ -371,7 +371,7 @@ manifest.
 
 - *Hero clothespins are data, not decoration.* Each entry in ~heroPrintLayout~ in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][📄 index.astro]] carries a ~pins~ array (~pos~ left/right/centre, ~tilt~, optional ~inset~); the markup renders one ~.clothespin~ per pin, and each counter-rotates its print through ~--pin-rot~ so it hangs near vertical. Two traps: a print that bleeds past the hero's right edge (Bateman–Law, Sweeney) needs a viewport-proportional inset or its pin drifts off canvas on wide screens, and a pin can never paint above a higher-stacked neighbouring print, so a pin on a lapped corner sits at the visible end of the top edge. Moving any print's ~x~ or stacking order means re-checking both.
 
-- *The homepage header hides its inline nav below 1420px*, which is laptop territory and not only phones. The compact toggle plus ~[data-menu-panel]~ is the only navigation at those widths and must not be removed. Both the inline nav and the panel render from the single ~navLinks~ array in the frontmatter so they cannot drift, and ~.site-nav-primary~ scopes the inline-nav styling so it does not leak onto the panel.
+- *The shared portfolio header hides its inline nav through 1500px* (updated 2026-09-09), which includes laptops. The compact toggle plus ~[data-portfolio-menu-panel]~ provides navigation at those widths and must not be removed. Both menus render from the single ~navLinks~ array in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/PortfolioHeader.astro][PortfolioHeader.astro]]; ~.portfolio-nav-primary~ scopes the inline navigation.
 
 - *Homepage weight measurements must come from a production build.* ~npm run dev~ reports roughly ~886KB~ of homepage JavaScript; the built site ships about ~54KB~ gzipped and correctly excludes Three.js on mobile. See [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/codebase-wisdom.org][📄 codebase-wisdom.org]].
 

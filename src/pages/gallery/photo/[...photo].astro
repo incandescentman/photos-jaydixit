@@ -13,6 +13,7 @@ import {
 	formatPhrase,
 	type GalleryTagsFile,
 } from '../../../lib/galleryMetadata';
+import { ogImageFromAsset } from '../../../lib/seo';
 
 type TagsByFolder = Record<string, GalleryTagsFile>;
 
@@ -303,6 +304,7 @@ export const getStaticPaths = () => {
 	canonical={canonicalUrl}
 	image={currentPhoto.originalSrc}
 	imageAlt={currentPhoto.caption}
+	ogImages={[ogImageFromAsset(currentPhoto.metadata, currentPhoto.caption)]}
 	ogType="article"
 	structuredData={[photoStructuredData, breadcrumbStructuredData]}
 >

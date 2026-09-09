@@ -15,7 +15,7 @@ const routes: SmokeRoute[] = [
 		name: 'homepage',
 		path: '/',
 		title: /Red Carpet Photography for Wikipedia — Jay Dixit/,
-		heading: 'Jay Dixit: Red Carpet Photography for Wikipedia',
+		heading: 'Jay Dixit: Red Carpet Photographer',
 		minImages: 20,
 		minLightboxLinks: 7,
 		lightboxSelector: 'a[data-pswp-item]',
@@ -125,16 +125,18 @@ test.describe('portfolio smoke checks', () => {
 });
 
 test('site nav renders redesigned desktop and mobile states', async ({ page }) => {
+	await page.setViewportSize({ width: 1728, height: 1000 });
 	await page.goto('/about/');
 	await waitForInitialImages(page);
 
-	const nav = page.locator('nav.site-nav');
+	const header = page.locator('[data-portfolio-header]');
+	const nav = header.locator('.portfolio-nav-primary');
 	await expect(nav).toBeVisible();
-	await expect(nav.getByRole('link', { name: 'Jay Dixit Photos' })).toHaveAttribute('href', '/');
-	await expect(nav.getByRole('link', { name: 'Why I Shoot' })).toHaveAttribute(
-		'aria-current',
-		'page',
+	await expect(header.getByRole('link', { name: 'Jay Dixit Photos, homepage' })).toHaveAttribute(
+		'href',
+		'/',
 	);
+	await expect(nav.getByRole('link', { name: 'About Me' })).toHaveAttribute('aria-current', 'page');
 	await expect(nav.getByRole('link', { name: 'Covering the Nobel Prizes' })).toHaveAttribute(
 		'href',
 		'/nobel-2024',
@@ -148,18 +150,17 @@ test('site nav renders redesigned desktop and mobile states', async ({ page }) =
 	const externalLink = nav.getByRole('link', { name: 'jaydixit.com' });
 	await expect(externalLink).toHaveAttribute('target', '_blank');
 	await expect(externalLink).toHaveAttribute('rel', /noopener/);
-	await expect(nav.locator('.site-nav-social a')).toHaveCount(3);
 
 	await page.setViewportSize({ width: 390, height: 820 });
 	await page.goto('/about/');
 
-	const toggle = page.locator('nav.site-nav').getByRole('button', { name: 'Menu' });
+	const toggle = page.locator('[data-portfolio-menu-toggle]');
 	await expect(toggle).toBeVisible();
 	await toggle.click();
 
-	const mobileMenu = page.locator('#site-nav-mobile-menu');
+	const mobileMenu = page.locator('[data-portfolio-menu-panel]');
 	await expect(mobileMenu).toBeVisible();
-	await expect(mobileMenu.getByRole('link', { name: 'Why I Shoot' })).toHaveAttribute(
+	await expect(mobileMenu.getByRole('link', { name: 'About Me' })).toHaveAttribute(
 		'aria-current',
 		'page',
 	);
@@ -168,7 +169,13 @@ test('site nav renders redesigned desktop and mobile states', async ({ page }) =
 		'/nobel-2024',
 	);
 	await expect(mobileMenu.getByRole('link', { name: 'Red Carpet', exact: true })).toHaveCount(0);
-	await expect(mobileMenu.locator('.site-nav-mobile-social a')).toHaveCount(3);
+	await expect(mobileMenu.locator('.portfolio-menu-social a')).toHaveCount(3);
+	await page.keyboard.press('Escape');
+	await expect(mobileMenu).toBeHidden();
+	await expect(toggle).toBeFocused();
+	await toggle.click();
+	await page.mouse.click(8, 810);
+	await expect(mobileMenu).toBeHidden();
 });
 
 test('mobile homepage does not repeat hero photographs in the wall', async ({ page }) => {
@@ -239,7 +246,10 @@ test('photo wall is noindexed and internal promoted experiment URLs are absent',
 	request,
 }) => {
 	await page.goto('/photo-wall/');
-	await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, nofollow');
+	await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+		'content',
+		/^noindex,\s*nofollow$/,
+	);
 	await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
 		'href',
 		'https://photos.jaydixit.com/photo-wall/',
@@ -310,7 +320,8 @@ test('red-carpet index renders editorial person cards from generated data', asyn
 	await waitForInitialImages(page);
 
 	const cards = page.locator('.rc-card');
-	await expect(cards).toHaveCount(22);
+	await expect(cards).toHaveCount(23);
+	await expect(cards.filter({ hasText: 'Jack Johnson' })).toHaveCount(1);
 	await expect(page.locator('.rc-name').first()).toHaveText('Ana de Armas');
 	await expect(page.locator('.rc-count').first()).toContainText(/photo/i);
 
@@ -442,22 +453,25 @@ test('about page renders the approved editorial links and philosophy section', a
 test('before-after page renders source captions and loads comparison images after scroll', async ({
 	page,
 }) => {
+	await page.setViewportSize({ width: 1728, height: 1000 });
 	await page.goto('/before-and-after/');
 	await waitForInitialImages(page);
 
 	await expect(page).toHaveTitle(/Before & After/);
 	await expect(page.getByRole('heading', { name: 'Before & After' })).toBeVisible();
 	await expect(
-		page.locator('.sequence-nav').getByRole('link', { name: 'About Me' }),
+		page.locator('.portfolio-nav-primary').getByRole('link', { name: 'About Me' }),
 	).toHaveAttribute('href', '/about');
 	await expect(
-		page.locator('.sequence-nav').getByRole('link', { name: 'Covering the Nobel Prizes' }),
+		page.locator('.portfolio-nav-primary').getByRole('link', { name: 'Covering the Nobel Prizes' }),
 	).toHaveAttribute('href', '/nobel-2024');
 	await expect(
-		page.locator('.sequence-nav').getByRole('link', { name: 'Red Carpets Around the World' }),
+		page
+			.locator('.portfolio-nav-primary')
+			.getByRole('link', { name: 'Red Carpets Around the World' }),
 	).toHaveCount(0);
 	await expect(
-		page.locator('.sequence-nav').getByRole('link', { name: 'Red Carpet', exact: true }),
+		page.locator('.portfolio-nav-primary').getByRole('link', { name: 'Red Carpet', exact: true }),
 	).toHaveCount(0);
 
 	const comparisonCards = page.locator('.comparison-card');

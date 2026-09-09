@@ -70,7 +70,7 @@ Internal experiment URLs are disposable review surfaces. When an experiment is p
 
 The former Packery homepage is preserved for reference in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/photo-wall.astro][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/pages/photo-wall.astro]] at ~/photo-wall/~. It is noindexed and intentionally absent from public navigation.
 
-The abstract red-carpet mark from the business-card source is available as the reusable transparent website asset [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/brand/red-carpet-seal.svg][📄 /Users/jay/Dropbox/github/photos-jaydixit/public/brand/red-carpet-seal.svg]]. The canonical Before & After page uses it as a small editorial seal beside the text wordmark; it does not replace the current global photographic logo.
+The abstract red-carpet mark from the business-card source is available as the reusable transparent website asset [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/brand/red-carpet-seal.svg][📄 /Users/jay/Dropbox/github/photos-jaydixit/public/brand/red-carpet-seal.svg]]. As of 2026-09-09, the shared [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/PortfolioHeader.astro][PortfolioHeader]] uses this seal beside the wordmark throughout the site. Desktop and compact navigation share one link list; the opaque menu is available through 1500px and closes on Escape or an outside click.
 
 * Start Here
 
@@ -105,6 +105,14 @@ If you're new to this project, read these in order:
 - Root [[file:../photo-resequencing-guide.org][photo-resequencing-guide.org]] - Photo ordering guide
 - Root [[file:../image-configuration-guide.org][image-configuration-guide.org]] - Image configuration
 - [[file:wikimedia-commons-upload.org][wikimedia-commons-upload.org]] - Wikimedia Commons workflow
+
+** Wikipedia reach evidence — September 6, 2026
+
+Dated Credit Check scan completed September 6, 2026 in New York (2026-09-07T02:26:41Z): 210 credited, in-use photographs, 1,496 photo/article placements, 1,439 distinct Wikipedia articles, and 104 language editions. The completed pageview report records 10,385,448 article views in August 2026 and 167,430,080 across twelve months. All 1,439 articles were checked; four have no pageview data, with no failed or deferred requests. These are article views, not image impressions.
+
+- Report and sources: [[file+emacs:/Users/jay/Dropbox/github/credit-check/reports/2026-09-06/pageviews-serial-completion-20260907T030226Z/reach-report-pageviews-serial-completion.html][📄 HTML report]]; [[file+emacs:/Users/jay/Dropbox/github/credit-check/reports/2026-09-06/pageviews-serial-completion-20260907T030226Z/reach-report-pageviews-serial-completion.json][📄 JSON report and snapshot]]; [[file+emacs:/Users/jay/Dropbox/github/credit-check/reports/2026-09-06/pageviews-serial-completion-20260907T030226Z/reach-placements-pageviews-serial-completion.csv][📄 CSV article placements]]; [[file+emacs:/Users/jay/Dropbox/github/credit-check/reports/2026-09-06/pageviews-serial-completion-20260907T030226Z/.credit-check-all-photos.json][📄 Source gallery cache]]; [[file+emacs:/Users/jay/Dropbox/github/credit-check/reports/2026-09-06/pageviews-serial-completion-20260907T030226Z/.credit-check-views.json][📄 Source pageview cache]].
+- Project index: [[file+emacs:/Users/jay/Dropbox/roam/wikiportraits/20260706020202-wikiportraits_master_structure_index.org][📄 WikiPortraits Master Structure Index]].
+- Scope: local reference material for photography and credential work. The linked report is a dated snapshot in the Credit Check repository, not a public route or automatic import into this site.
 
 ** Archive & Reference
 - [[file:archive/][archive/]] - Historical documentation

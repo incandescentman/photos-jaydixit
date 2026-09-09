@@ -1,0 +1,3 @@
+#+title: Photography social-post candidates
+
+- 2026-09-09 — Idea from the [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/drafts/visual-design-review-2026-09-09.org][visual design review]], grounded in the existing [[https://photos.jaydixit.com/before-and-after][Before & After page]]. Framing suggestion: a few seconds on a red carpet can become someone's public face for years. Show a dated article portrait replacement beside the photograph; verify the selected example's dates and publication history before making a specific duration or current-use claim. Suggestion only; Jay decides what gets posted.

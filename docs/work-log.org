@@ -2416,3 +2416,17 @@ Jay approved porting the Storytelling.NYC button hover he chose today to the con
 - Replaced every import of ~src/components/PhotoSwipeLightbox.astro~ (Gallery, PhotoGrid, MasonryGallery, index, nobel-2024, before-and-after) with ~@jaydixit/astro-utils/components/PhotoSwipeLightbox.astro~, passing ~escKey: true~ and ~tapAction: 'toggle-controls'~ through ~options~; the homepage's kinetic-editorial options and rules are untouched. Deleted the fork. Dependency pinned to ~^1.0.12~; 141-page build passes.
 - Before, after, and fixed screenshots of /collections/, /albums/tiff-2024, /nobel-2024, and / at 1440×900 and 390×844, closed and open, were compared on a contact sheet; closed pages are pixel-identical, and with 1.0.12 the lightbox chrome differs from the fork only in the intentionally lighter counter. ~MasonryGallery.astro~ is dead code, referenced only by ~src/pages/gallery/_[folder].astro.backup~; left alone.
 - Not committed; the working tree also carries other sessions' Node 24 and SEO changes.
+
+
+* 2026-09-09 - Visual design and browsing review
+
+- Reviewed eight live portfolio routes at desktop width and four core surfaces at phone width; wrote and opened [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/drafts/visual-design-review-2026-09-09.org][the visual design review]] with five proposals and current observations. Source inspection distinguishes existing local header/mobile work from new suggestions.
+- Confirmed that the live homepage introduction overlaps the Skarsgård print at 1440 pixels, that the Nobel archive filters precede all photographs on the first phone screen, and that the first Conan person-page photograph does not open on click or tap. The person-page source renders highlight-only photographs as plain containers.
+- Recorded the publication-journey story idea in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/social-post-candidates.org][photography social-post candidates]]. Production code and source photographs were not edited; no commit, push, or deployment occurred.
+
+* 2026-09-09 - Checkpoint existing portfolio changes before the visual upgrade
+
+- Consolidated the existing shared header, social-preview metadata adapter, safe shared JSON-LD serialization, and Node 24 CI configuration. Updated the header documentation to match its shared seal, navigation, compact breakpoint, and dismissal behavior. Fixed blog print styling to hide the new fixed header.
+- Updated browser checks that still expected the former navigation, homepage heading, robots whitespace, and pre-Jack-Johnson directory roster. Verified 21 unit tests, lint, scoped formatting, the 141-page production build, and all 25 browser checks (23 passed in the main run; the two corrected navigation checks passed on rerun).
+- Included the visual review and social-post candidate documentation. Preserved the generated PDF under [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/output/][output]] and the [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/experiments/portfolio-refinements-review.html][existing experimental comparison]] outside the checkpoint.
+- The next authorized work is proposals 1 and 2 in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/drafts/visual-design-review-2026-09-09.org][the review]], protected homepage text at laptop widths, and photograph-first PhotoSwipe opening on person pages. No push or deployment is authorized.

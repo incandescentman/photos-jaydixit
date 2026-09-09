@@ -1,0 +1,74 @@
+#+title: Photography portfolio — visual improvements and new experiences
+#+date: 2026-09-09
+#+author: Codex
+
+* Implementation decision — 2026-09-09
+
+You selected proposals 1 and 2, the homepage text/collage collision fix at laptop widths, and PhotoSwipe opening with a separate Details action on person pages. The requested order is to document and commit the existing intentional changes first, then implement these improvements. Proposals 3–5 remain suggestions.
+
+* Recommendation
+
+Your homepage has a visual identity worth building on: enormous faces, physical prints, warm paper, and elegant type. The strongest opportunity is to carry that level of art direction into browsing, then add an experience that could only belong to your photography: following a portrait from the press line into the public record.
+
+I would start with the gallery presentation and exhibition viewer below. The Wikipedia journey is the most distinctive larger experiment. These are proposals for your review; the production site has not been changed.
+
+* 1. Give the gallery pages the presence of a photographic exhibition
+
+The live [[https://photos.jaydixit.com/gallery/][gallery directory]] uses small rounded cards, gray surroundings, and folder-derived labels such as Events → Nobel Prizes 2024. It feels much more ordinary than your homepage. On the [[https://photos.jaydixit.com/gallery/events/nobel-prizes-2024][Nobel archive]], filters occupy almost the entire first phone screen before any photograph appears.
+
+Give each gallery a substantial cover photograph, a clean title, and the warm paper and thin rules already used on [[https://photos.jaydixit.com/before-and-after][Before & After]]. Let the photographs sit directly on the page, with restrained captions beneath them. On individual galleries, bring the first photograph much closer to the title; put the existing filters behind a compact Filter control, with selected filters visible when active. Search stays immediately available.
+
+The gallery directory should still help visitors choose a destination quickly. Use a consistent family of generous covers; reserve the strongest asymmetry and changing image scale for the galleries themselves. Photo clicks open full size; a clearly separate gallery-title link opens the collection.
+
+Why this is first: it improves the experience of photographs you already have, and closes the largest visual gap I saw. The tradeoff is fewer gallery covers in one screen. Keep the existing Packery engine and source organization; this is presentation work. Reference the finished [[https://photos.jaydixit.com/nobel-2024][Nobel editorial page]] for photographic scale and pacing.
+
+* 2. Turn the lightbox into an exhibition viewer
+
+Imagine clicking a print and seeing it centered on the same warm canvas, with a discreet strip of neighboring photographs underneath. You can jump directly to an expression or composition that catches your eye, expand a short contextual note, or return to the exact place you were browsing. On phones, the photograph keeps the space; thumbnails and context can be opened on demand.
+
+PhotoSwipe, zoom, captions, and navigation already exist. The additions would be a thumbnail strip, useful links from the open photograph, and a consistent treatment across page types. A Story or Details panel could connect a portrait to its existing person page, event, Before & After comparison, or Commons source where those relationships are known. For photographs with verified license metadata, Copy attribution would be a useful companion to the existing copy-link feature.
+
+This would make exploration feel continuous. Keep the largest possible image area, keyboard controls, touch navigation, and immediate dismissal; show the panel only when requested. There is no need for another viewer dependency: [[https://photoswipe.com/adding-ui-elements/][PhotoSwipe documents custom controls and navigation UI]]. The thumbnail strip would be a custom extension of that supported interface.
+
+* 3. Show the portrait becoming part of Wikipedia
+
+Add an optional publication view to [[https://photos.jaydixit.com/before-and-after][Before & After]]. A large portrait moves into a dated Wikipedia article capture; the visitor switches between the earlier and later appearance of the article. The payoff is seeing how your photograph changes the page where people encounter that person.
+
+Keep the existing large photographic pairs as the main presentation. This additional view would explain the consequence of the replacement and give the page a visual moment particular to your work. Use actual, dated article captures or a clearly labeled reconstruction with verified source material. A historical replacement must not be presented as the current lead image without checking it.
+
+There is also a smaller phone improvement worth testing: an optional Before / After toggle that alternates the two complete photographs in one viewing area. Currently they are stacked, so comparing expressions requires scrolling and remembering the first image. Preserve the stacked view as an alternative. Because these are different photographs taken at different times, a toggle is more coherent than a wipe that splices two unrelated faces together.
+
+The tradeoff is additional publication evidence and presentation work. This is the strongest signature feature, rather than the fastest first change. A brief transition can reinforce the image's continuity; honor reduced-motion preferences and keep the static version complete. [[https://developer.chrome.com/docs/web-platform/view-transitions/][The View Transition API]] provides an existing mechanism to investigate for that optional motion.
+
+* 4. Let visitors see your photographic choices
+
+For a selected session, show a contact sheet of real neighboring frames, with the final selection enlarged. Clicking another frame brings it into the same viewing position; your own short explanation identifies what made the selected photograph work: the expression, gesture, background, or moment.
+
+The [[https://photos.jaydixit.com/red-carpet/conan-obrien][Conan page]] already demonstrates how compelling contrasting gestures can be. That does not establish that its photographs are one consecutive burst; this feature would begin with a session whose actual sequence and selection you can verify.
+
+This offers something a normal portfolio grid cannot: access to your eye. It also grows naturally from the physical-print language of the homepage. It needs your chosen frames and your explanation, so I would prototype one excellent example before creating a recurring format. Your rationale would come from you or an existing source, never from an invented account of what you were thinking.
+
+* 5. Let a visitor assemble a personal contact sheet
+
+An optional selection action could gather photographs into a private board. Opening the board would arrange the chosen images as a clean contact sheet; the visitor could change the order and copy a link to that selection. The visual reward is a collection they made while exploring your work.
+
+This differs from the existing public likes: it helps someone remember and discuss a specific group of photographs. It could also support conversations with editors or prospective clients by attaching a selection to an inquiry. That is a proposed use, not a claim about a service you currently offer.
+
+Keep selection controls quiet and separate from the main photo click. No account is necessary for a first version. This is useful if you want the portfolio to support active image selection; I rank it below the viewer and Wikipedia journey for pure visual impact.
+
+* Concrete refinements found during the review
+
+- At a 1440-pixel desktop viewport, the live [[https://photos.jaydixit.com/][homepage]] introduction and action rules cross into the Alexander Skarsgård print. Give the text a protected width and adjust the collage together in the affected laptop range. The tradeoff is some photographic scale at those widths; compare the result against the current composition before adopting it.
+- On the live [[https://photos.jaydixit.com/red-carpet/conan-obrien][Conan page]], clicking or tapping the first photograph does nothing. The current [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/red-carpet/[person].astro][person-page source]] renders highlight-only photographs inside plain containers and gallery-backed photographs as detail links. Make the photograph itself open PhotoSwipe in both cases, with Details as a separate action. This restores the site's required viewing behavior.
+- The live phone homepage places the introduction before the first photograph, and the inner pages use a different header from the homepage. The current checkout already contains the mobile photograph ordering and shared-header work in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][the homepage]], [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/PortfolioHeader.astro][PortfolioHeader]], and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/NavBar.astro][NavBar]]. Treat those as existing local work, not new ideas from this review.
+- [[https://photos.jaydixit.com/red-carpets][Red Carpets Around the World]] still displays temporary festival-image labels. The [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/work-log.org][August 24 work-log entry]] already records its pending copy revision and navigation decision. Its completion is an existing editorial task, rather than a new feature recommendation.
+
+* Review basis
+
+Reviewed the live homepage, Before & After, gallery directory, Nobel archive gallery, Nobel editorial story, Red Carpets Around the World, portrait directory, and Conan person page. Desktop inspection included 1440 × 900; phone inspection at 390 × 844 covered the homepage, Nobel archive, Before & After, and Conan page. This was a visual review with selected interaction checks, not an exhaustive browser test suite or a production performance measurement.
+
+The governing purpose comes from [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/the-photos-approach.org][The Photography Portfolio Approach]]: a professional showcase that prioritizes photographs, speed, and simple management. Current design rulings come from [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/CLAUDE.org][the project documentation]] and [[file+emacs:/Users/jay/Dropbox/github/socratic-video/references/look-and-feel/experiment-reactions.org][the visual reaction ledger]]. The large print composition and cinematic comparison pairs are established directions. Older recommendation documents contain superseded library and design assumptions, so the feature suggestions above were checked against current source.
+
+* Social-post opportunity
+
+The Wikipedia journey has a strong story beyond the website: a few seconds on a red carpet can become someone's public face for years. A dated before-and-after pair could make that idea visible immediately. Recorded in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/social-post-candidates.org][the photography social-post candidates]].

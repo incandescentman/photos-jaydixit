@@ -375,7 +375,7 @@ export function initKineticEditorial() {
 		const context = gsap.context(() => {
 			const intro = gsap.timeline({ defaults: { ease: 'power4.out' } });
 			intro
-				.from('.site-header', { y: -30, autoAlpha: 0, duration: 0.75 })
+				.from('[data-portfolio-header], .site-header', { y: -30, autoAlpha: 0, duration: 0.75 })
 				.from(
 					'.title-line > span',
 					{ yPercent: 112, rotate: 2.5, duration: 1.15, stagger: 0.08 },

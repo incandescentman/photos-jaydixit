@@ -4,12 +4,16 @@ import '../styles/photoswipe-custom.css';
 import siteConfig from '../../site.config.mts';
 import Footer from '../components/Footer.astro';
 import NavBar from '../components/NavBar.astro';
+import SeoTags from '@jaydixit/astro-utils/components/SeoTags.astro';
 import StructuredData from '../components/StructuredData.astro';
 import {
+	createSeoTagProps,
 	normalizeDateValue,
 	normalizeKeywords,
 	resolveCanonicalUrl,
 	resolveOgImage,
+	resolveOgImages,
+	type OgImage,
 } from '../lib/seo';
 
 type JsonLd = Record<string, unknown> | Array<Record<string, unknown>>;
@@ -20,6 +24,7 @@ type LayoutProps = {
 	canonical?: string;
 	image?: string;
 	imageAlt?: string;
+	ogImages?: OgImage[];
 	ogType?: string;
 	noindex?: boolean;
 	twitterCard?: string;
@@ -75,6 +80,32 @@ const modifiedTime = normalizeDateValue(
 		(frontmatter.updateDate as string | Date | undefined) ??
 		(frontmatter.publishDate as string | Date | undefined),
 );
+const suppliedOgImages = props.ogImages ?? (frontmatter.ogImages as OgImage[] | undefined);
+const ogImages = await resolveOgImages(
+	suppliedOgImages?.length
+		? suppliedOgImages
+		: [
+				{
+					url: ogImage,
+					alt: ogImageAlt,
+				},
+			],
+	siteUrl,
+);
+const seoTags = createSeoTagProps({
+	title: pageTitle,
+	description: pageDescription,
+	canonical: canonicalUrl,
+	noindex,
+	ogType,
+	ogImages,
+	locale: 'en_US',
+	siteName: siteConfig.title,
+	twitterCard,
+	twitterHandle,
+	publishedTime,
+	modifiedTime,
+});
 const structuredData = props.structuredData ?? (frontmatter.structuredData as JsonLd | undefined);
 const showChrome = props.showChrome ?? true;
 const arnoProRoutes = new Set(['/', '/about', '/before-and-after', '/nobel-2024', '/red-carpets']);
@@ -131,44 +162,15 @@ gtag('config', '${gaMeasurementId}', {
 
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
-		<title>{pageTitle}</title>
 		<meta name="author" content={owner} />
-		{pageDescription && <meta name="description" content={pageDescription} />}
 		{keywords && <meta name="keywords" content={keywords} />}
-		<link rel="canonical" href={canonicalUrl} />
+		<SeoTags {...seoTags} />
 		<link
 			rel="alternate"
 			type="application/rss+xml"
 			title={`${owner} RSS Feed`}
 			href={new URL('/feed.xml', siteUrl).toString()}
 		/>
-		<meta property="og:type" content={ogType} />
-		<meta property="og:site_name" content={siteConfig.title} />
-		<meta property="og:locale" content="en_US" />
-		<meta property="og:title" content={pageTitle} />
-		{pageDescription && <meta property="og:description" content={pageDescription} />}
-		<meta property="og:url" content={canonicalUrl} />
-		<meta property="og:image" content={ogImage} />
-		<meta property="og:image:alt" content={ogImageAlt} />
-		{
-			publishedTime && ogType === 'article' && (
-				<meta property="article:published_time" content={publishedTime} />
-			)
-		}
-		{
-			modifiedTime && ogType === 'article' && (
-				<meta property="article:modified_time" content={modifiedTime} />
-			)
-		}
-		<meta name="twitter:card" content={twitterCard} />
-		<meta name="twitter:title" content={pageTitle} />
-		{pageDescription && <meta name="twitter:description" content={pageDescription} />}
-		<meta name="twitter:url" content={canonicalUrl} />
-		<meta name="twitter:image" content={ogImage} />
-		<meta name="twitter:image:alt" content={ogImageAlt} />
-		{twitterHandle && <meta name="twitter:site" content={twitterHandle} />}
-		{twitterHandle && <meta name="twitter:creator" content={twitterHandle} />}
-		{noindex && <meta name="robots" content="noindex, nofollow" />}
 		<StructuredData data={websiteStructuredData} />
 		<StructuredData data={structuredData} />
 		{
