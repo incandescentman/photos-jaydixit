@@ -4,21 +4,43 @@
 
 * Implementation decision — 2026-09-09
 
-You selected proposals 1 and 2, the homepage text/collage collision fix at laptop widths, and PhotoSwipe opening with a separate Details action on person pages. The requested order is to document and commit the existing intentional changes first, then implement these improvements. Proposals 3–5 remain suggestions.
+You selected proposals 1 and 2, the homepage text/collage collision fix at laptop widths, and PhotoSwipe opening with a separate Details action on person pages. The existing intentional changes were documented and committed first as ~c6be648~. Proposals 1 and 2, the homepage spacing fix, and the person-page repair are now implemented locally. Proposals 3–5 remain suggestions.
+
+* Gallery cover correction — 2026-09-09
+
+Jay: “the gallery page cuts off people's faces because aspect ratios are wrong. it looks terrible.” Review URL: [[http://localhost:4336/gallery/][gallery directory]]. Status: rework requested; the forced 4:3 covers are corrected locally, with final visual approval not inferred.
+
+The original implementation cropped the generated asset to 960 × 720 and then cropped the displayed image with a fixed 4:3 frame. Both constraints are removed. Covers now preserve source proportions, including on hover; portrait covers take more vertical space.
+
+* Local review — 2026-09-09
+
+- [[http://localhost:4336/gallery/][Gallery directory]] — uncropped covers at each photograph’s original aspect ratio, warm paper, clean collection names, and direct navigation from each cover.
+- [[http://localhost:4336/gallery/events/nobel-prizes-2024/][Nobel archive]] — the existing Packery layout with captions and separate Details actions, a compact desktop filter row, and collapsed phone filters.
+- [[http://localhost:4336/red-carpet/conan-obrien/][Conan portraits]] — all three photographs open the exhibition viewer, including both highlight-only photographs; gallery Details remains a separate link.
+- [[http://localhost:4336/][Updated homepage]] and [[http://localhost:4348/][checkpoint homepage]] — protected text and a smaller, jointly adjusted collage across the affected laptop range. The wider laptop treatment reduces the prints by 7%; the middle range uses 14%, and the narrowest desktop range uses 22%. The mobile layout remains separate.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tmp/portfolio-upgrade-20260909/homepage-laptop-comparisons.jpg][Before-and-after comparison sheet]] — matching screenshots at 1280, 1366, 1440, 1536, and 1680 pixels. Pixel differences are saved beside the comparison. The clearer introduction and action links justify the reduction in print size; the portraits retain their dominant scale.
+
+The viewer keeps PhotoSwipe and the shared lightbox implementation. It adds a warm canvas, captions, an optional Info panel containing only known relationships to other pages, and at most seven small neighboring previews. The thumbnail strip starts hidden on phones and requests no thumbnail images until opened. A preview is omitted when a small source is unavailable; it never fetches an original to manufacture a thumbnail.
+
+The [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tmp/portfolio-upgrade-20260909/gallery-and-viewer-review.jpg][gallery and viewer comparison sheet]] shows the new presentation at desktop and phone widths.
+
+The license check found explicit embedded usage terms in the three Jack Johnson gallery files and the matching highlight. The Before & After catalog contains license records, but its source images lack embedded license metadata, so those records supply context links without enabling Copy attribution. No metadata was written into photographs.
+
+The build, 21 unit tests, lint, and 47 browser checks pass across the final run and targeted reruns. Two gallery tests isolate external services. The configured likes host currently fails DNS resolution and needs account-side diagnosis. The Giscus 404 was investigated: its repository and category configuration are valid, and ~Discussion not found~ is the normal state before the first comment, when Giscus creates the thread automatically. The photo UI passes. Full evidence and production JavaScript measurements are in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/work-log.org][the work log]].
 
 * Recommendation
 
 Your homepage has a visual identity worth building on: enormous faces, physical prints, warm paper, and elegant type. The strongest opportunity is to carry that level of art direction into browsing, then add an experience that could only belong to your photography: following a portrait from the press line into the public record.
 
-I would start with the gallery presentation and exhibition viewer below. The Wikipedia journey is the most distinctive larger experiment. These are proposals for your review; the production site has not been changed.
+I would start with the gallery presentation and exhibition viewer below. The Wikipedia journey is the most distinctive larger experiment. Proposals 1 and 2 are implemented in the local preview; the production site has not been changed.
 
 * 1. Give the gallery pages the presence of a photographic exhibition
 
 The live [[https://photos.jaydixit.com/gallery/][gallery directory]] uses small rounded cards, gray surroundings, and folder-derived labels such as Events → Nobel Prizes 2024. It feels much more ordinary than your homepage. On the [[https://photos.jaydixit.com/gallery/events/nobel-prizes-2024][Nobel archive]], filters occupy almost the entire first phone screen before any photograph appears.
 
-Give each gallery a substantial cover photograph, a clean title, and the warm paper and thin rules already used on [[https://photos.jaydixit.com/before-and-after][Before & After]]. Let the photographs sit directly on the page, with restrained captions beneath them. On individual galleries, bring the first photograph much closer to the title; put the existing filters behind a compact Filter control, with selected filters visible when active. Search stays immediately available.
+Give each gallery a substantial cover photograph, a clean title, and the warm paper and thin rules already used on [[https://photos.jaydixit.com/before-and-after][Before & After]]. Let the photographs sit directly on the page, with restrained captions beneath them. On individual galleries, bring the first photograph much closer to the title; keep one compact visible filter row on desktop and put filters behind a Filter control on phones, with selected filters visible when active. Search stays immediately available.
 
-The gallery directory should still help visitors choose a destination quickly. Use a consistent family of generous covers; reserve the strongest asymmetry and changing image scale for the galleries themselves. Photo clicks open full size; a clearly separate gallery-title link opens the collection.
+The gallery directory should still help visitors choose a destination quickly. Use a consistent family of generous covers; reserve the strongest asymmetry and changing image scale for the galleries themselves. Your decision on September 9: clicking a gallery directory cover opens its gallery. The title remains another route into the same collection. Directory covers are explicitly exempt from the PhotoSwipe requirement; photographs within galleries open the viewer.
 
 Why this is first: it improves the experience of photographs you already have, and closes the largest visual gap I saw. The tradeoff is fewer gallery covers in one screen. Keep the existing Packery engine and source organization; this is presentation work. Reference the finished [[https://photos.jaydixit.com/nobel-2024][Nobel editorial page]] for photographic scale and pacing.
 
@@ -26,7 +48,7 @@ Why this is first: it improves the experience of photographs you already have, a
 
 Imagine clicking a print and seeing it centered on the same warm canvas, with a discreet strip of neighboring photographs underneath. You can jump directly to an expression or composition that catches your eye, expand a short contextual note, or return to the exact place you were browsing. On phones, the photograph keeps the space; thumbnails and context can be opened on demand.
 
-PhotoSwipe, zoom, captions, and navigation already exist. The additions would be a thumbnail strip, useful links from the open photograph, and a consistent treatment across page types. A Story or Details panel could connect a portrait to its existing person page, event, Before & After comparison, or Commons source where those relationships are known. For photographs with verified license metadata, Copy attribution would be a useful companion to the existing copy-link feature.
+PhotoSwipe, zoom, captions, and navigation already exist. The additions would be a thumbnail strip, useful links from the open photograph, and a consistent treatment across page types. A Story or Details panel could connect a portrait to its existing person page, event, Before & After comparison, or Commons source where those relationships are known. Copy attribution is available only when the source image contains embedded license or usage terms and an embedded creator. A catalog or person-level license alone cannot enable it.
 
 This would make exploration feel continuous. Keep the largest possible image area, keyboard controls, touch navigation, and immediate dismissal; show the panel only when requested. There is no need for another viewer dependency: [[https://photoswipe.com/adding-ui-elements/][PhotoSwipe documents custom controls and navigation UI]]. The thumbnail strip would be a custom extension of that supported interface.
 

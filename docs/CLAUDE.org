@@ -16,6 +16,7 @@ Last Synced for AI Context: 2025-10-04
 The root **CLAUDE.md** file contains legacy documentation. This file (docs/CLAUDE.org) is the canonical documentation entry point. Both should be maintained during transition.
 
 * Recent Updates
+- 2026-09-09: Implemented the local gallery/exhibition upgrade and documented the [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/likes-and-comments.org][likes and comments diagnosis]]. Read that runbook before changing Supabase/Giscus configuration or interpreting their browser errors: the likes hostname fails DNS locally, while the verified Giscus 404 is an expected empty discussion.
 - 2026-08-24: Removed Red Carpets Around the World and Red Carpet from public navigation; promoted Covering the Nobel Prizes as the ~/nobel-2024/~ navigation label; preserved both removed routes and their non-navigation editorial links; added a compact standard-header regime so the longer Nobel label fits without clipping
 - 2026-08-22: Added Stephen Root from SXSW 2024, Ella Hunt from TIFF 2024, Demis Hassabis from the 2024 Nobel Lectures, and two separate Oslo Nobel Peace Prize torchlight-procession photographs to the homepage photo wall; the wall now contains 23 desktop cards and 17 non-duplicated mobile cards; also repaired the Nobel lecture intro width after the reading-face max-width rule constrained the entire grid
 - 2026-08-23: Added a private agent-fronted publication manifest for reviewed Lightroom exports, with independent quality/favorite/destination judgments, local portfolio wiring, optional Cloudinary and Wikimedia Commons mirrors, safe new-version replacement of existing Commons files, Commons Gallery handoff, resumable receipts, and Org inventory updates
@@ -90,6 +91,7 @@ If you're new to this project, read these in order:
 - Root [[file:../instructions.org][instructions.org]] - Operational guide and workflows
 
 ** Development Documentation
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/likes-and-comments.org][Likes and comments]] - Verified configuration, the Supabase repair path, expected Giscus 404 behavior, and the limits of mocked photo UI tests
 - [[file:codebase-wisdom.org][codebase-wisdom.org]] - Hard-won debugging insights
 - [[file:work-log.org][work-log.org]] - Session-based work tracking
 - [[file:debug/packery-cold-load-layout-race.org][debug/packery-cold-load-layout-race.org]] - Implemented cold-load Packery race report, fix, and verified Phase 3 ordering result
@@ -232,9 +234,18 @@ Documentation structure:
 
 *** PhotoSwipe Is Mandatory Site-Wide
 - *Every page that displays photographs must have working PhotoSwipe for every photograph.* This includes homepages, galleries, person pages, editorial and story pages, blog posts, About pages, comparison pages, and experimental routes.
+- 2026-09-09 — Gallery directory covers are navigation: clicking a cover opens its gallery, so directory covers are exempt from the every-photograph PhotoSwipe requirement (Jay’s explicit decision).
 - Never replace a PhotoSwipe-enabled photograph with a plain image or ordinary image link while changing copy, layout, or image sources.
 - A page change involving photographs is not complete until browser verification confirms that the first click opens the correct full-size image, navigation works when the page contains multiple photographs, and Escape closes the lightbox.
 - Verify PhotoSwipe at desktop and mobile widths and check for browser errors. A successful build alone does not prove that the lightbox works.
+
+*** Exhibition Viewer — Local Implementation, 2026-09-09
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/PortfolioLightbox.astro][PortfolioLightbox]] is a thin presentation wrapper around the installed shared PhotoSwipe component. It passes the [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/lib/exhibitionOptions.ts][exhibition options]] without duplicating initialization, exclusions, or the homepage transition.
+- [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/ExhibitionViewer.astro][ExhibitionViewer]] installs the [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/scripts/exhibitionViewer.ts][local viewer extension]] through MainLayout. Direct Packery and blog initializers use the same padding policy. The [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/styles/photoswipe-custom.css][viewer stylesheet]] supplies the warm canvas and controls.
+- The strip renders at most seven nearby previews, using 160-pixel derivatives or an already-loaded image reduced to a small canvas. It starts hidden below 701 pixels and assigns no thumbnail source while hidden. Unavailable small previews are omitted.
+- The Info action appears only when the selected photograph has a known relationship link to another page; links back to the current page are omitted, including alternate trailing slashes and fragments. Copy attribution uses only text returned by [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/lib/embeddedAttribution.ts][the embedded-metadata reader]] from the actual source image. Person-level and catalog licenses do not enable copying.
+- Gallery directory covers navigate into their galleries. Inside a gallery or person page, the photograph opens PhotoSwipe and Details is a separate action. Desktop filters remain visible in one compact row; phone filters open through a disclosure, with active selections outside it.
+- The homepage protection applies from 821 through 2048 pixels: 78% print scale through 1180, 86% through 1600, and 93% above that. The text and collage are adjusted together. Below 821 pixels, the existing six lead prints, four-print strip, and 14-card photo wall retain their separate layout and sequence.
 
 *** Content Organization
 - Photos organized in `src/gallery/photos/[gallery-name]/` folders

@@ -3,6 +3,7 @@ import '../styles/global.css';
 import '../styles/photoswipe-custom.css';
 import siteConfig from '../../site.config.mts';
 import Footer from '../components/Footer.astro';
+import ExhibitionViewer from '../components/ExhibitionViewer.astro';
 import NavBar from '../components/NavBar.astro';
 import SeoTags from '@jaydixit/astro-utils/components/SeoTags.astro';
 import StructuredData from '../components/StructuredData.astro';
@@ -198,5 +199,6 @@ gtag('config', '${gaMeasurementId}', {
 				<slot />
 			)
 		}
+		<ExhibitionViewer />
 	</body>
 </html>

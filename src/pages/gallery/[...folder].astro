@@ -6,6 +6,7 @@ import PhotoComments from '../../components/PhotoComments.astro';
 import SocialShare from '../../components/SocialShare.astro';
 import PhotoLikeButton from '../../components/PhotoLikeButton.astro';
 import siteConfig from '../../../site.config.mts';
+import { embeddedAttribution } from '../../lib/embeddedAttribution';
 import { buildCaptionAndTags, formatPhrase, type GalleryTagsFile } from '../../lib/galleryMetadata';
 
 const { folder } = Astro.params;
@@ -59,11 +60,21 @@ const groupedImageEntries = await Promise.all(
 		if (imageFolder !== folderPath) return null;
 
 		const { caption, tags } = buildCaptionAndTags(filename, imageFolder, tagsByFolder[imageFolder]);
-		const lightboxImage = await getImage({
-			src: metadata,
-			width: Math.min(metadata.width, 3000),
-			inferSize: true,
-		});
+		const detailHref = toPhotoHref(folderPath, filename);
+		const [lightboxImage, thumbnailImage, exhibitionAttribution] = await Promise.all([
+			getImage({
+				src: metadata,
+				width: Math.min(metadata.width, 3000),
+				inferSize: true,
+			}),
+			getImage({ src: metadata, width: 160, format: 'webp', inferSize: true }),
+			embeddedAttribution({
+				moduleKey: key,
+				pageFile: 'src/pages/gallery/[...folder].astro',
+				caption,
+				sourceDetailUrl: detailHref,
+			}),
+		]);
 
 		return {
 			metadata,
@@ -73,6 +84,8 @@ const groupedImageEntries = await Promise.all(
 			tags,
 			originalSrc: metadata.src,
 			lightboxSrc: lightboxImage.src,
+			exhibitionThumb: thumbnailImage.src,
+			exhibitionAttribution,
 		};
 	}),
 );
@@ -89,6 +102,8 @@ const groupedImages = groupedImageEntries
 			tags: string[];
 			originalSrc: string;
 			lightboxSrc: string;
+			exhibitionThumb: string;
+			exhibitionAttribution: string | undefined;
 		} => entry !== null,
 	)
 	.reduce<
@@ -102,6 +117,8 @@ const groupedImages = groupedImageEntries
 				tags: string[];
 				originalSrc: string;
 				lightboxSrc: string;
+				exhibitionThumb: string;
+				exhibitionAttribution: string | undefined;
 			}>
 		>
 	>((acc, entry) => {
@@ -130,13 +147,11 @@ if (images.length === 0) {
 // Get all unique tags for filtering
 const allTags = [...new Set(images.flatMap((img) => img.tags))];
 
-// Display name for the gallery
-const displayName = folderPath
-	.split('/')
-	.map((part) => formatPhrase(part))
-	.join(' → ');
+// Keep the taxonomy in the breadcrumb while presenting a clean collection title.
+const displayName = formatPhrase(folderPath.split('/').at(-1) ?? folderPath);
 
 const siteUrl = Astro.site?.origin ?? siteConfig.siteUrl ?? 'https://photos.jaydixit.com';
+const galleryUrl = `/gallery/${folderPath}`;
 const canonicalUrl = new URL(`/gallery/${folderPath}`, siteUrl).toString();
 const pageTitle = `${displayName} Gallery`;
 const pageDescription = `${images.length} ${images.length === 1 ? 'photo' : 'photos'} in the ${displayName} gallery by ${siteConfig.owner}.`;
@@ -215,20 +230,18 @@ export const getStaticPaths = () => {
 	imageAlt={images[0]?.caption}
 	structuredData={[galleryStructuredData, breadcrumbStructuredData]}
 >
-	<section class="py-16 pt-(--nav-clearance)">
-		<div class="container mx-auto px-4 max-w-7xl">
-			<nav aria-label="Breadcrumb" class="mb-6">
-				<ol class="flex flex-wrap items-center gap-2 text-sm text-gray-500">
+	<div class="gallery-page pt-(--nav-clearance)">
+		<div class="gallery-shell">
+			<nav aria-label="Breadcrumb" class="gallery-breadcrumb">
+				<ol>
 					{
 						breadcrumbs.map((crumb, index) => (
-							<li class="inline-flex items-center gap-2">
+							<li>
 								{index > 0 && <span aria-hidden="true">/</span>}
 								{index === breadcrumbs.length - 1 ? (
-									<span class="text-gray-700">{crumb.name}</span>
+									<span aria-current="page">{crumb.name}</span>
 								) : (
-									<a href={crumb.url} class="hover:text-gray-900 hover:underline">
-										{crumb.name}
-									</a>
+									<a href={crumb.url}>{crumb.name}</a>
 								)}
 							</li>
 						))
@@ -236,53 +249,69 @@ export const getStaticPaths = () => {
 				</ol>
 			</nav>
 
-			<!-- Gallery Header -->
-			<div class="mb-8 text-center">
-				<h1 class="text-3xl md:text-4xl font-bold mb-2">{displayName}</h1>
-				<p class="text-gray-600">{images.length} {images.length === 1 ? 'photo' : 'photos'}</p>
-			</div>
+			<header class="gallery-header">
+				<div>
+					<p class="gallery-kicker">Photography collection</p>
+					<h1>{displayName}</h1>
+				</div>
+				<SocialShare
+					className="gallery-share"
+					title={`${displayName} Gallery`}
+					text={`Explore ${displayName} photography by ${siteConfig.owner}`}
+				/>
+			</header>
 
-			<SocialShare
-				title={`${displayName} Gallery`}
-				text={`Explore ${displayName} photography by ${siteConfig.owner}`}
-			/>
+			<section class="gallery-tools" aria-label="Search and filter photographs">
+				<div class="gallery-tool-row">
+					<label class="gallery-search" for="search">
+						<span class="sr-only">Search photographs</span>
+						<input type="text" id="search" placeholder="Search photographs" autocomplete="off" />
+					</label>
 
-			<!-- Search and Filter -->
-			<div class="mb-8">
-				<div class="max-w-md mx-auto mb-6">
-					<input
-						type="text"
-						id="search"
-						placeholder="Search photos..."
-						class="w-full px-4 py-3 border rounded-xl text-sm shadow-sm hover:shadow-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2"
-						style="border-color: var(--neutral-200); background-color: white;"
-					/>
+					{
+						allTags.length > 0 && (
+							<details class="filter-disclosure">
+								<summary>Filter</summary>
+								<div class="filter-panel">
+									<button type="button" class="filter-close" data-close-filters>
+										Done
+									</button>
+									<div class="tag-options" role="group" aria-label="Filter by tags">
+										{allTags.map((tag) => (
+											<button type="button" class="tag-filter" data-tag={tag} aria-pressed="false">
+												{tag}
+											</button>
+										))}
+									</div>
+									<button type="button" class="filter-reset" data-reset-filters>
+										Reset filters
+									</button>
+								</div>
+							</details>
+						)
+					}
 				</div>
 
-				{
-					allTags.length > 0 && (
-						<div class="flex flex-wrap gap-2 justify-center mb-6">
-							<button
-								class="tag-filter-all inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-full border transition-all duration-200"
-								style="border-color: var(--neutral-200); color: var(--neutral-700); background: white;"
-							>
-								All
-							</button>
-							{allTags.map((tag) => (
+				<div class="selected-filters" data-selected-filters hidden>
+					<span>Selected</span>
+					<div>
+						{
+							allTags.map((tag) => (
 								<button
-									class="tag-filter inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-full border transition-all duration-200"
-									data-tag={tag}
-									style="border-color: var(--neutral-200); color: var(--neutral-700); background: white;"
+									type="button"
+									data-remove-tag={tag}
+									hidden
+									aria-label={`Remove ${tag} filter`}
 								>
 									{tag}
+									<span aria-hidden="true">×</span>
 								</button>
-							))}
-						</div>
-					)
-				}
-			</div>
+							))
+						}
+					</div>
+				</div>
+			</section>
 
-			<!-- Masonry Gallery -->
 			<div id="masonry" class="masonry-items" data-gutter="8px">
 				<div class="grid-sizer"></div>
 				{
@@ -335,6 +364,12 @@ export const getStaticPaths = () => {
 									data-pswp-height={image.metadata.height}
 									data-full-src={image.lightboxSrc}
 									data-cropped="true"
+									data-pswp-caption={image.caption}
+									data-exhibition-details={toPhotoHref(folderPath, image.filename)}
+									data-exhibition-gallery={galleryUrl}
+									data-exhibition-gallery-label={displayName}
+									data-exhibition-thumb={image.exhibitionThumb}
+									data-exhibition-attribution={image.exhibitionAttribution}
 								>
 									<Image
 										src={image.metadata}
@@ -348,47 +383,369 @@ export const getStaticPaths = () => {
 										data-natural-height={image.metadata.height}
 										data-caption={image.caption}
 									/>
-									<div class="caption-overlay">
-										<h3>{image.caption}</h3>
+								</a>
+								<footer class="gallery-photo-meta">
+									<p>{image.caption}</p>
+									<div class="gallery-photo-actions">
+										<a
+											class="photo-detail-link"
+											href={toPhotoHref(folderPath, image.filename)}
+											aria-label={`Open details for ${image.caption}`}
+										>
+											Details
+										</a>
+										<PhotoLikeButton
+											photoId={`${folderPath}/${image.filename.replace(/\.[^/.]+$/, '')}`}
+											className="photo-like-button"
+										/>
 									</div>
-								</a>
-								<a
-									class="photo-detail-link"
-									href={toPhotoHref(folderPath, image.filename)}
-									aria-label={`Open details for ${image.caption}`}
-								>
-									Details
-								</a>
-								<PhotoLikeButton
-									photoId={`${folderPath}/${image.filename.replace(/\.[^/.]+$/, '')}`}
-									className="photo-like-button"
-								/>
+								</footer>
 							</article>
 						);
 					})
 				}
 			</div>
 
-			<!-- Comments Section -->
+			<div class="gallery-no-results" data-gallery-no-results hidden>
+				<p>No photographs match this search and filter combination.</p>
+				<button type="button" data-reset-filters>Clear filters</button>
+			</div>
+
 			<PhotoComments galleryName={folderPath} />
 		</div>
-	</section>
+	</div>
 	<style>
+		:global(body) {
+			background: var(--paper);
+			color: var(--ink);
+		}
+
+		.gallery-page {
+			padding-top: var(--portfolio-header-clearance);
+			min-height: 100vh;
+			padding-bottom: clamp(5rem, 9vw, 8rem);
+			background:
+				radial-gradient(circle at 8% 8%, rgb(150 119 63 / 6%), transparent 28rem), var(--paper);
+		}
+
+		.gallery-shell {
+			width: min(100% - clamp(2rem, 6vw, 7rem), 96rem);
+			margin-inline: auto;
+		}
+
+		.gallery-breadcrumb {
+			padding-top: 1.5rem;
+		}
+
+		.gallery-breadcrumb ol {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.45rem;
+			align-items: center;
+			margin: 0;
+			padding: 0;
+			color: rgb(26 23 20 / 52%);
+			font-family: var(--sans);
+			font-size: 0.72rem;
+			letter-spacing: 0.04em;
+			list-style: none;
+		}
+
+		.gallery-breadcrumb li {
+			display: inline-flex;
+			gap: 0.45rem;
+			align-items: center;
+		}
+
+		.gallery-breadcrumb a {
+			color: inherit;
+			text-decoration-color: transparent;
+			text-underline-offset: 0.2em;
+		}
+
+		.gallery-breadcrumb a:hover,
+		.gallery-breadcrumb a:focus-visible {
+			color: var(--ink);
+			text-decoration-color: currentColor;
+		}
+
+		.gallery-breadcrumb [aria-current='page'] {
+			color: rgb(26 23 20 / 78%);
+		}
+
+		.gallery-header {
+			display: flex;
+			gap: 2rem;
+			align-items: end;
+			justify-content: space-between;
+			padding: 2rem 0;
+			border-bottom: 1px solid var(--ink);
+		}
+
+		.gallery-kicker {
+			margin: 0 0 0.9rem;
+			color: var(--accent);
+			font-family: var(--sans);
+			font-size: 0.67rem;
+			font-weight: 600;
+			letter-spacing: 0.16em;
+			text-transform: uppercase;
+		}
+
+		.gallery-header h1 {
+			max-width: 14ch;
+			margin: 0;
+			font-family: var(--serif);
+			font-size: clamp(3.2rem, 6.5vw, 6.5rem);
+			font-weight: 400;
+			letter-spacing: -0.055em;
+			line-height: 0.84;
+		}
+
+		:global(.gallery-share) {
+			flex: none;
+			margin: 0;
+		}
+
+		.gallery-tools {
+			padding: 1rem 0;
+			border-bottom: 1px solid var(--hairline);
+		}
+
+		.gallery-tool-row {
+			display: flex;
+			gap: 0.75rem;
+			align-items: stretch;
+		}
+
+		.gallery-search {
+			flex: 1;
+		}
+
+		.gallery-search input {
+			width: 100%;
+			height: 2.8rem;
+			padding: 0 0.1rem;
+			border: 0;
+			border-bottom: 1px solid rgb(26 23 20 / 26%);
+			border-radius: 0;
+			outline: 0;
+			background: transparent;
+			color: var(--ink);
+			font-family: var(--sans);
+			font-size: 0.92rem;
+		}
+
+		.gallery-search input::placeholder {
+			color: rgb(26 23 20 / 48%);
+		}
+
+		.gallery-search input:focus {
+			border-color: var(--accent);
+		}
+
+		.filter-disclosure {
+			position: relative;
+			flex: none;
+		}
+
+		.filter-disclosure summary {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			height: 2.8rem;
+			padding: 0 1rem;
+			border: 1px solid rgb(26 23 20 / 26%);
+			color: var(--ink);
+			font-family: var(--sans);
+			font-size: 0.75rem;
+			font-weight: 600;
+			letter-spacing: 0.1em;
+			text-transform: uppercase;
+			cursor: pointer;
+			list-style: none;
+		}
+
+		.filter-disclosure summary::-webkit-details-marker {
+			display: none;
+		}
+
+		.filter-disclosure summary::after {
+			content: '+';
+			margin-left: 0.65rem;
+			color: var(--accent);
+			font-size: 1rem;
+			font-weight: 400;
+		}
+
+		.filter-disclosure[open] summary::after {
+			content: '−';
+		}
+
+		.filter-panel {
+			position: absolute;
+			top: calc(100% + 0.5rem);
+			right: 0;
+			z-index: 20;
+			width: min(28rem, calc(100vw - 2rem));
+			padding: 1rem;
+			border: 1px solid var(--hairline);
+			background: #fbf8f1;
+			box-shadow: 0 1.5rem 4rem rgb(26 23 20 / 12%);
+		}
+
+		.tag-options {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.5rem;
+		}
+
+		.tag-filter,
+		.selected-filters button {
+			padding: 0.4rem 0.65rem;
+			border: 1px solid rgb(26 23 20 / 22%);
+			border-radius: 999px;
+			background: transparent;
+			color: rgb(26 23 20 / 72%);
+			font-family: var(--sans);
+			font-size: 0.76rem;
+			line-height: 1;
+			cursor: pointer;
+		}
+
+		.tag-filter:hover,
+		.tag-filter:focus-visible,
+		.tag-filter.is-active {
+			border-color: var(--ink) !important;
+			background: var(--ink) !important;
+			color: var(--paper) !important;
+		}
+
+		.filter-reset,
+		.gallery-no-results button {
+			margin-top: 1rem;
+			padding: 0;
+			border: 0;
+			border-bottom: 1px solid currentColor;
+			background: transparent;
+			color: rgb(26 23 20 / 68%);
+			font-family: var(--sans);
+			font-size: 0.74rem;
+			cursor: pointer;
+		}
+
+		.selected-filters {
+			display: flex;
+			gap: 0.75rem;
+			align-items: center;
+			padding-top: 0.85rem;
+		}
+
+		.selected-filters[hidden] {
+			display: none;
+		}
+
+		.selected-filters > span {
+			color: rgb(26 23 20 / 48%);
+			font-family: var(--sans);
+			font-size: 0.66rem;
+			font-weight: 600;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+		}
+
+		.selected-filters > div {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.45rem;
+		}
+
+		.selected-filters button span {
+			margin-left: 0.4rem;
+			color: var(--accent);
+		}
+
+		@media only screen and (min-width: 769px) {
+			.gallery-tool-row {
+				align-items: center;
+			}
+
+			.gallery-search {
+				flex: 0 1 24rem;
+			}
+
+			.filter-disclosure {
+				flex: 1;
+				min-width: 0;
+			}
+
+			.filter-disclosure summary {
+				display: none;
+			}
+
+			.filter-panel {
+				position: static;
+				display: flex;
+				gap: 0.75rem;
+				align-items: center;
+				width: auto;
+				padding: 0;
+				border: 0;
+				background: transparent;
+				box-shadow: none;
+			}
+
+			.tag-options {
+				flex: 1;
+				flex-wrap: nowrap;
+				min-width: 0;
+				padding: 0.2rem 0;
+				overflow-x: auto;
+				scrollbar-width: thin;
+			}
+
+			.tag-filter {
+				flex: none;
+			}
+
+			.filter-reset {
+				flex: none;
+				margin-top: 0;
+			}
+		}
+
 		.masonry-items {
 			position: relative;
 			width: 100%;
-			margin: 0 auto;
+			margin: clamp(1.75rem, 4vw, 3rem) auto 0;
 			padding: 0;
 			min-height: 400px;
+			overflow-x: hidden;
+			container-type: inline-size;
+			--gallery-unit: calc(20cqw - 6.4px);
+			--gallery-row: calc(30cqw - 9.6px);
 		}
 
 		.masonry-item {
 			box-sizing: border-box;
+			display: grid;
+			grid-template-rows: minmax(0, 1fr) auto;
+			height: var(--gallery-row);
 			padding: 0;
 			opacity: 0;
 			transform: translateY(12px);
 			position: absolute;
 			overflow: hidden;
+			background: #fbf8f1;
+		}
+
+		.masonry-item[hidden] {
+			display: none !important;
+		}
+
+		.portfolio-lightbox[hidden],
+		.selected-filters button[hidden] {
+			display: none !important;
 		}
 
 		.masonry-item.animated-in {
@@ -400,41 +757,40 @@ export const getStaticPaths = () => {
 		}
 
 		.grid-sizer {
-			width: 320px;
+			position: absolute;
+			width: var(--gallery-unit);
+			aspect-ratio: 2 / 3;
+			visibility: hidden;
 		}
 
 		.masonry-item.regular {
-			width: 320px;
+			width: var(--gallery-unit);
 		}
 
 		.masonry-item.wide,
 		.masonry-item.wide_tall {
-			width: 648px;
+			width: calc(var(--gallery-unit) + var(--gallery-unit) + 8px);
 		}
 
-		@media only screen and (max-width: 1300px) {
-			.grid-sizer,
-			.masonry-item.regular {
-				width: 25%;
+		.masonry-item.wide_tall {
+			height: calc(var(--gallery-row) + var(--gallery-row) + 8px);
+		}
+
+		@media only screen and (max-width: 1303px) {
+			.masonry-items {
+				--gallery-unit: calc(25cqw - 6px);
+				--gallery-row: calc(37.5cqw - 9px);
 			}
-			.masonry-item.wide,
-			.masonry-item.wide_tall {
-				width: 50%;
+		}
+
+		@media only screen and (max-width: 1099px) {
+			.masonry-items {
+				--gallery-unit: calc(33.333333cqw - 5.333333px);
+				--gallery-row: calc(50cqw - 8px);
 			}
 		}
 
 		@media only screen and (max-width: 768px) {
-			.grid-sizer,
-			.masonry-item.regular {
-				width: 50%;
-			}
-			.masonry-item.wide,
-			.masonry-item.wide_tall {
-				width: 100%;
-			}
-		}
-
-		@media only screen and (max-width: 480px) {
 			.masonry-items {
 				display: flex !important;
 				flex-direction: column !important;
@@ -447,6 +803,7 @@ export const getStaticPaths = () => {
 			}
 
 			.masonry-item {
+				display: block !important;
 				position: relative !important;
 				width: 100% !important;
 				height: auto !important;
@@ -460,6 +817,10 @@ export const getStaticPaths = () => {
 				width: 100% !important;
 				height: auto !important;
 			}
+
+			.masonry-item .masonry-link {
+				height: auto;
+			}
 		}
 
 		.masonry-item img {
@@ -467,150 +828,164 @@ export const getStaticPaths = () => {
 			width: 100%;
 			height: 100%;
 			object-fit: cover;
-			transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+			transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
 		}
 
 		.masonry-item .masonry-link {
 			display: block;
 			width: 100%;
 			height: 100%;
-			position: relative;
+			min-height: 0;
 			overflow: hidden;
 		}
 
-		.masonry-item .masonry-link::before {
-			content: '';
-			position: absolute;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			background: linear-gradient(
-				180deg,
-				rgba(0, 0, 0, 0) 0%,
-				rgba(0, 0, 0, 0.3) 40%,
-				rgba(0, 0, 0, 0.7) 100%
-			);
-			opacity: 0;
-			transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-			z-index: 1;
-			pointer-events: none;
+		.masonry-item .masonry-link:hover img,
+		.masonry-item .masonry-link:focus-visible img {
+			transform: scale(1.018);
 		}
 
-		.masonry-item:hover img {
-			transform: scale(1.03);
+		.gallery-photo-meta {
+			display: flex;
+			gap: 1rem;
+			align-items: flex-start;
+			justify-content: space-between;
+			min-height: 4.5rem;
+			padding: 0.75rem 0.85rem;
+			border-bottom: 1px solid var(--hairline);
+			background: #fbf8f1;
 		}
 
-		.masonry-item:hover .masonry-link::before {
-			opacity: 1;
-		}
-
-		.caption-overlay {
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			color: white;
-			text-align: center;
-			width: 85%;
-			max-width: 500px;
-			opacity: 0;
-			transition: opacity 0.3s ease;
-			pointer-events: none;
-			z-index: 2;
-			padding: 0 10px;
-		}
-
-		.caption-overlay h3 {
+		.gallery-photo-meta p {
 			margin: 0;
-			font-size: clamp(18px, 3vw, 24px);
-			font-weight: 500;
-			text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-			letter-spacing: -0.02em;
+			color: rgb(26 23 20 / 78%);
+			font-family: var(--serif);
+			font-size: clamp(0.96rem, 1.25vw, 1.15rem);
+			font-weight: 300;
 			line-height: 1.25;
 		}
 
-		.masonry-item:hover .caption-overlay {
-			opacity: 1;
+		.gallery-photo-actions {
+			display: flex;
+			flex: none;
+			gap: 0.65rem;
+			align-items: center;
 		}
 
 		.photo-detail-link {
-			position: absolute;
-			right: 0.75rem;
-			bottom: 0.75rem;
-			z-index: 3;
-			display: inline-flex;
-			align-items: center;
-			justify-content: center;
-			padding: 0.35rem 0.7rem;
-			border-radius: 9999px;
-			background: rgba(17, 24, 39, 0.78);
-			color: #fff;
-			font-size: 0.75rem;
+			position: static;
+			padding-bottom: 0.1rem;
+			border-bottom: 1px solid currentColor;
+			color: rgb(26 23 20 / 62%);
+			font-family: var(--sans);
+			font-size: 0.68rem;
 			font-weight: 600;
+			letter-spacing: 0.08em;
 			text-decoration: none;
-			border: 1px solid rgba(255, 255, 255, 0.25);
-			backdrop-filter: blur(4px);
-			opacity: 0;
-			transition:
-				opacity 0.2s ease,
-				background-color 0.2s ease;
+			text-transform: uppercase;
 		}
 
-		.photo-detail-link:hover {
-			background: rgba(17, 24, 39, 0.92);
+		.photo-detail-link:hover,
+		.photo-detail-link:focus-visible {
+			color: var(--accent);
 		}
 
-		.masonry-item:hover .photo-detail-link {
+		:global(.gallery-photo-actions .photo-like-button) {
+			position: static;
+			padding: 0;
+			border: 0;
+			border-radius: 0;
+			background: transparent;
+			color: rgb(26 23 20 / 62%);
+			backdrop-filter: none;
+			box-shadow: none;
 			opacity: 1;
+			transform: none;
+		}
+
+		:global(.gallery-photo-actions .photo-like-button:hover) {
+			background: transparent;
+			color: var(--accent);
+			box-shadow: none;
+			transform: none;
+		}
+
+		.gallery-no-results {
+			padding: clamp(4rem, 8vw, 7rem) 1rem;
+			text-align: center;
+		}
+
+		.gallery-no-results p {
+			margin: 0;
+			color: rgb(26 23 20 / 64%);
+			font-family: var(--serif);
+			font-size: clamp(1.3rem, 2vw, 1.75rem);
+			font-weight: 300;
 		}
 
 		@media only screen and (max-width: 768px) {
-			.photo-detail-link {
-				opacity: 1;
+			.gallery-shell {
+				width: min(100% - 2rem, 96rem);
+			}
+
+			.gallery-header {
+				align-items: flex-end;
+			}
+
+			.gallery-header h1 {
+				font-size: clamp(3.1rem, 14vw, 5rem);
+			}
+
+			.gallery-photo-meta {
+				min-height: 0;
 			}
 		}
 
-		.photo-like-button {
-			position: absolute;
-			left: 0.75rem;
-			bottom: 0.75rem;
-			z-index: 3;
-			backdrop-filter: blur(4px);
-			opacity: 0;
-			transition: opacity 0.2s ease;
-		}
+		@media only screen and (max-width: 560px) {
+			.gallery-header {
+				display: block;
+			}
 
-		.masonry-item:hover .photo-like-button {
-			opacity: 1;
-		}
+			:global(.gallery-share) {
+				margin-top: 1.5rem;
+			}
 
-		@media only screen and (max-width: 768px) {
-			.photo-like-button {
-				opacity: 1;
+			.gallery-tool-row {
+				align-items: flex-end;
+			}
+
+			.filter-panel {
+				position: fixed;
+				top: auto;
+				right: 1rem;
+				bottom: 1rem;
+				left: 1rem;
+				width: auto;
+				max-height: calc(100svh - 2rem);
+				overflow-y: auto;
+			}
+
+			.gallery-photo-meta {
+				padding-inline: 0.35rem;
 			}
 		}
 
-		.tag-filter:hover {
-			background-color: var(--neutral-50) !important;
-			border-color: var(--neutral-300) !important;
+		.filter-close {
+			display: none;
 		}
-
-		.tag-filter.active,
-		.tag-filter.is-active {
-			background: var(--neutral-900) !important;
-			color: #fff !important;
-			border-color: var(--neutral-900) !important;
+		@media (max-width: 768px) {
+			.filter-close {
+				display: block;
+				margin: 0 0 16px auto;
+				padding: 10px;
+				color: var(--accent);
+				font-size: 14px;
+			}
 		}
-
-		.tag-filter-all:hover {
-			background-color: var(--neutral-50) !important;
-		}
-
-		.tag-filter-all.is-active {
-			background: var(--neutral-900) !important;
-			color: #fff !important;
-			border-color: var(--neutral-900) !important;
+		@media (prefers-reduced-motion: reduce) {
+			.masonry-item,
+			.masonry-item img {
+				transition: none;
+			}
 		}
 	</style>
 
@@ -622,32 +997,91 @@ export const getStaticPaths = () => {
 			enableToolbar: false,
 		});
 
-		const activeTags = new Set();
+		const activeTags = new Set<string>();
 
 		document.addEventListener('DOMContentLoaded', () => {
-			const searchInput = document.getElementById('search');
-			const tagButtons = Array.from(document.querySelectorAll('.tag-filter'));
-			const allButton = document.querySelector('.tag-filter-all');
-			const items = Array.from(document.querySelectorAll('.masonry-item'));
+			const searchInput = document.querySelector<HTMLInputElement>('#search');
+			const filterDisclosure = document.querySelector<HTMLDetailsElement>('.filter-disclosure');
+			const tagButtons = Array.from(
+				document.querySelectorAll<HTMLButtonElement>('.tag-filter[data-tag]'),
+			);
+			const removeButtons = Array.from(
+				document.querySelectorAll<HTMLButtonElement>('[data-remove-tag]'),
+			);
+			const resetButtons = Array.from(
+				document.querySelectorAll<HTMLButtonElement>('[data-reset-filters]'),
+			);
+			const selectedFilters = document.querySelector<HTMLElement>('[data-selected-filters]');
+			const emptyState = document.querySelector<HTMLElement>('[data-gallery-no-results]');
+			const items = Array.from(document.querySelectorAll<HTMLElement>('.masonry-item'));
+			const desktopFilterQuery = window.matchMedia('(min-width: 769px)');
+
+			const syncFilterDisclosure = () => {
+				if (filterDisclosure) filterDisclosure.open = desktopFilterQuery.matches;
+			};
+
+			const closeFilters = () => {
+				if (!filterDisclosure || desktopFilterQuery.matches) return;
+				filterDisclosure.open = false;
+				filterDisclosure.querySelector('summary')?.focus();
+			};
+			document.querySelector('[data-close-filters]')?.addEventListener('click', closeFilters);
+			filterDisclosure?.addEventListener('keydown', (event) => {
+				if (event.key === 'Escape') closeFilters();
+			});
+			syncFilterDisclosure();
+			desktopFilterQuery.addEventListener('change', syncFilterDisclosure);
+			window.addEventListener(
+				'pagehide',
+				() => desktopFilterQuery.removeEventListener('change', syncFilterDisclosure),
+				{ once: true },
+			);
 
 			const applyFilters = () => {
-				const searchTerm =
-					searchInput && 'value' in searchInput ? searchInput.value.toLowerCase() : '';
+				const searchTerm = searchInput?.value.trim().toLowerCase() ?? '';
+				let visibleCount = 0;
 
 				items.forEach((item) => {
 					const caption = item.getAttribute('data-caption')?.toLowerCase() || '';
-					const tags = JSON.parse(item.getAttribute('data-tags') || '[]');
+					const filename = item.getAttribute('data-filename')?.toLowerCase() || '';
+					const tags = JSON.parse(item.getAttribute('data-tags') || '[]') as string[];
+					const searchableTags = tags.join(' ').toLowerCase();
 
-					const matchesSearch = !searchTerm || caption.includes(searchTerm);
+					const matchesSearch =
+						!searchTerm ||
+						caption.includes(searchTerm) ||
+						filename.includes(searchTerm) ||
+						searchableTags.includes(searchTerm);
 					const matchesTags =
 						activeTags.size === 0 || Array.from(activeTags).every((tag) => tags.includes(tag));
+					const isVisible = matchesSearch && matchesTags;
+					const lightboxLink = item.querySelector<HTMLAnchorElement>('.portfolio-lightbox');
 
-					item.style.display = matchesSearch && matchesTags ? '' : 'none';
+					item.hidden = !isVisible;
+					item.style.removeProperty('display');
+					if (lightboxLink) lightboxLink.hidden = !isVisible;
+					if (isVisible) visibleCount += 1;
 				});
+
+				tagButtons.forEach((button) => {
+					const isActive = !!button.dataset.tag && activeTags.has(button.dataset.tag);
+					button.classList.toggle('is-active', isActive);
+					button.setAttribute('aria-pressed', String(isActive));
+				});
+
+				removeButtons.forEach((button) => {
+					button.hidden = !button.dataset.removeTag || !activeTags.has(button.dataset.removeTag);
+				});
+
+				if (selectedFilters) selectedFilters.hidden = activeTags.size === 0;
+				if (emptyState) emptyState.hidden = visibleCount > 0;
 
 				const packery = window.pckry;
 				if (packery) {
 					try {
+						if (typeof (packery as any).reloadItems === 'function') {
+							(packery as any).reloadItems();
+						}
 						packery.layout();
 						if (typeof (packery as any).shiftLayout === 'function') {
 							(packery as any).shiftLayout();
@@ -667,25 +1101,31 @@ export const getStaticPaths = () => {
 
 					if (activeTags.has(tag)) {
 						activeTags.delete(tag);
-						button.classList.remove('is-active');
 					} else {
 						activeTags.add(tag);
-						button.classList.add('is-active');
 					}
 
-					if (allButton) allButton.classList.remove('is-active');
 					applyFilters();
 				});
 			});
 
-			allButton?.addEventListener('click', () => {
-				activeTags.clear();
-				tagButtons.forEach((btn) => btn.classList.remove('is-active'));
-				allButton.classList.add('is-active');
-				applyFilters();
+			removeButtons.forEach((button) => {
+				button.addEventListener('click', () => {
+					const tag = button.dataset.removeTag;
+					if (!tag) return;
+					activeTags.delete(tag);
+					applyFilters();
+				});
 			});
 
-			allButton?.classList.add('is-active');
+			resetButtons.forEach((button) => {
+				button.addEventListener('click', () => {
+					activeTags.clear();
+					if (searchInput) searchInput.value = '';
+					applyFilters();
+				});
+			});
+
 			applyFilters();
 		});
 	</script>

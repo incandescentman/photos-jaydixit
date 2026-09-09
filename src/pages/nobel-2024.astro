@@ -4,7 +4,7 @@ export const prerender = true;
 import { getImage } from 'astro:assets';
 import MainLayout from '../layouts/MainLayout.astro';
 import NobelPhoto from '../components/NobelPhoto.astro';
-import PhotoSwipeLightbox from '@jaydixit/astro-utils/components/PhotoSwipeLightbox.astro';
+import PhotoSwipeLightbox from '../components/PortfolioLightbox.astro';
 
 import peaceCampaigners from '../gallery/photos/events/nobel-prizes-2024/anti-nuclear-campaigners_nobel-peace-prize-torchlight-procession-oslo_2024.jpg';
 import pressCredentials from '../gallery/photos/events/nobel-prizes-2024/press-credentials_nobel-peace-prize-oslo_2024.jpg';
@@ -401,7 +401,11 @@ const structuredData = {
 		</footer>
 	</main>
 
-	<PhotoSwipeLightbox gallerySelector=".nobel-page" childrenSelector="a[data-nobel-photo]" options={{ escKey: true, tapAction: 'toggle-controls' }} />
+	<PhotoSwipeLightbox
+		gallerySelector=".nobel-page"
+		childrenSelector="a[data-nobel-photo]"
+		options={{ escKey: true, tapAction: 'toggle-controls' }}
+	/>
 </MainLayout>
 
 <style>

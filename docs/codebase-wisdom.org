@@ -551,3 +551,36 @@ The Cloudinary Node SDK can attach the complete request options to an error obje
 
 ** Actionable insight
 Never print or leave unhandled a Cloudinary SDK error object. Catch Admin and Upload API failures at the call boundary and replace them with a new error containing only the action and sanitized HTTP status. After any accidental rendering of ~request_options.auth~, treat the API secret as exposed and rotate the key pair.
+
+* 2026-09-09 - Catalog licenses and embedded image licenses are different evidence
+
+** Trigger
+The Before & After catalog explicitly records Commons licenses, but the corresponding image files did not contain embedded license metadata. Using the catalog alone would have enabled Copy attribution despite the requirement to read the source file's metadata.
+
+** Mechanism
+The installed [[https://github.com/MikeKovarik/exifr][exifr parser]] can read a Node Buffer with XMP enabled and ~mergeOutput: false~. Namespaces remain separate: actual Jack Johnson files returned ~dc.creator~ as a string and ~xmpRights.UsageTerms~ as a language alternative object containing ~lang~ and ~value~. Generic copyright text and a photographer's website are not themselves a license. Optimized display derivatives and person-level records do not establish what is embedded in the original file.
+
+** Actionable insight
+Use [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/lib/embeddedAttribution.ts][the server-side embedded attribution helper]] with the original import path, normalize language-alternative values, and require an embedded creator plus explicit usage or license text. Pass the resulting text to the viewer; do not reconstruct permission from catalog labels in client code. Verify against actual licensed and unlicensed source files, without modifying metadata to make a UI check pass.
+
+* 2026-09-09 - A Giscus discussion 404 can be an expected empty state
+
+** Trigger
+A console-clean gallery test treated Giscus's HTTP 404 as a broken comments integration.
+
+** Mechanism
+The actual response was ~{"error":"Discussion not found"}~. The Giscus categories endpoint returned HTTP 200 with the configured repository and General category IDs, and GitHub confirmed public visibility and enabled Discussions. [[https://github.com/giscus/giscus/blob/main/pages/api/discussions/index.ts][Giscus's API]] deliberately returns 404 when the search finds no thread; [[https://giscus.app/][the documented behavior]] is to create it after the first comment or reaction.
+
+** Actionable insight
+Read the response body and verify the repository/category before calling comments broken. Distinguish this expected empty state from 403 installation/access failures or other server errors. Do not create a public test discussion merely to eliminate an expected 404.
+
+* 2026-09-09 - Check image derivatives as well as CSS when a cover crops faces
+
+** Trigger
+Jay found faces cut off on the gallery directory after its presentation upgrade. All seven generated covers were 960 × 720, including portrait originals.
+
+** Mechanism
+The crop existed twice: explicit width and height with ~fit="cover"~ in Astro generated a cropped asset, and the CSS used a fixed 4:3 frame with ~object-fit: cover~. Changing CSS alone could not recover image content already absent from the derivative.
+
+** Actionable insight
+The [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/gallery/index.astro][gallery directory]] now specifies responsive widths without a forced height, and displays images at their intrinsic ratio with ~height: auto~. Hover emphasizes the border without scaling the photograph. The [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tests/e2e/portfolio.e2e.ts][existing gallery browser checks]] identify each actual source file and compare both the downloaded derivative and rendered image ratios against it, at desktop and phone widths. This catches either crop layer independently. References: [[https://docs.astro.build/en/reference/modules/astro-assets/][Astro image API]] and [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/object-fit][MDN object-fit]].

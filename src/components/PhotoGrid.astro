@@ -1,6 +1,6 @@
 ---
 import { Image, getImage } from 'astro:assets';
-import PhotoSwipeLightbox from '@jaydixit/astro-utils/components/PhotoSwipeLightbox.astro';
+import PhotoSwipeLightbox from './PortfolioLightbox.astro';
 import type { Image as ImageType } from '../data/galleryData';
 
 interface Props {
@@ -20,6 +20,7 @@ const imagesWithLightbox = await Promise.all(
 		return {
 			...image,
 			lightboxHref: lightboxImage.src,
+			thumbnailSrc: (await getImage({ src: image.src, width: 160, format: 'webp' })).src,
 			lightboxWidth: image.src.width,
 			lightboxHeight: image.src.height,
 			lightboxCaption: image.description || image.title,
@@ -35,6 +36,7 @@ const imagesWithLightbox = await Promise.all(
 				href={image.lightboxHref}
 				class="photo-item portfolio-lightbox absolute transition-transform hover:scale-[1.02] hover:z-10"
 				data-pswp-item="true"
+				data-exhibition-thumb={image.thumbnailSrc}
 				data-pswp-width={image.lightboxWidth}
 				data-pswp-height={image.lightboxHeight}
 				data-pswp-caption={image.lightboxCaption}
@@ -54,7 +56,11 @@ const imagesWithLightbox = await Promise.all(
 	}
 </section>
 
-<PhotoSwipeLightbox gallerySelector="#photo-grid" childrenSelector="a[data-pswp-item]" options={{ escKey: true, tapAction: 'toggle-controls' }} />
+<PhotoSwipeLightbox
+	gallerySelector="#photo-grid"
+	childrenSelector="a[data-pswp-item]"
+	options={{ escKey: true, tapAction: 'toggle-controls' }}
+/>
 
 <script>
 	import '../scripts/photo-grid';

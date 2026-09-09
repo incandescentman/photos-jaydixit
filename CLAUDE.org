@@ -50,6 +50,7 @@ manifest.
 ​*** 💡 Lightbox Viewer
 
 - *Every page that displays photographs must have working PhotoSwipe for every photograph.* This is a site-wide requirement, including homepages, galleries, person pages, editorial and story pages, blog posts, About pages, comparison pages, and experimental routes.
+- 2026-09-09 — Gallery directory covers are navigation: clicking a cover opens its gallery, so directory covers are exempt from the every-photograph PhotoSwipe requirement (Jay’s explicit decision).
 
 - Never replace a PhotoSwipe-enabled photograph with a plain image or ordinary image link while changing copy, layout, or image sources.
 
@@ -170,7 +171,7 @@ manifest.
 
 - Enabled with Discussions on GitHub repo:
 
-  incandescentman/jaydixit-photos
+  incandescentman/photos-jaydixit (verified 2026-09-09)
 
 
 
@@ -315,7 +316,9 @@ manifest.
 
 ​** Supabase Setup (Likes)
 
-- Create a Supabase project: jaydixit-photos
+- Before repairing likes or comments, read [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/likes-and-comments.org][the likes and comments runbook]]. It records the current local DNS failure, the recovery decision, and the expected Giscus missing-discussion 404.
+
+- Historical setup name: jaydixit-photos. The existing project reference is ~jeywjbrwdfudngewmeak~; its dashboard status and live policies are not yet verified. The schema notes below describe the intended application contract, not a direction to recreate the project or apply broad policies to it.
 
 - Enable table: photo_user_likes
 
@@ -373,7 +376,7 @@ manifest.
 
 - *The shared portfolio header hides its inline nav through 1500px* (updated 2026-09-09), which includes laptops. The compact toggle plus ~[data-portfolio-menu-panel]~ provides navigation at those widths and must not be removed. Both menus render from the single ~navLinks~ array in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/PortfolioHeader.astro][PortfolioHeader.astro]]; ~.portfolio-nav-primary~ scopes the inline navigation.
 
-- *Homepage weight measurements must come from a production build.* ~npm run dev~ reports roughly ~886KB~ of homepage JavaScript; the built site ships about ~54KB~ gzipped and correctly excludes Three.js on mobile. See [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/codebase-wisdom.org][📄 codebase-wisdom.org]].
+- *Homepage weight measurements must come from a production build.* ~npm run dev~ reports roughly ~886KB~ of homepage JavaScript; the 2026-09-09 build requested ~56,936 bytes~ gzipped on mobile and ~240,179 bytes~ on desktop, including the existing desktop Three.js atmosphere. Three.js remains excluded on mobile. See [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/codebase-wisdom.org][📄 codebase-wisdom.org]].
 
 - *The Google Fonts request asks for Newsreader italic at weight 300 only.* Requesting a single italic weight makes Google serve a static instance (~63KB~) rather than a variable font (~147KB~). Every italic in the built site computes to weight 300, so restoring italic 400 costs ~84KB~ on every page for no rendering gain. Verify with a computed-style check before changing it.
 

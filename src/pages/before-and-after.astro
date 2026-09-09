@@ -3,7 +3,7 @@ export const prerender = true;
 
 import { Image, getImage } from 'astro:assets';
 import MainLayout from '../layouts/MainLayout.astro';
-import PhotoSwipeLightbox from '@jaydixit/astro-utils/components/PhotoSwipeLightbox.astro';
+import PhotoSwipeLightbox from '../components/PortfolioLightbox.astro';
 import PortfolioHeader from '../components/PortfolioHeader.astro';
 import { comparisons } from '../data/beforeAfter';
 
@@ -46,7 +46,11 @@ const sequencedComparisons = await Promise.all(
 			...comparison,
 			anchor: comparisonAnchor(comparison.name),
 			beforeLightboxSrc: beforeLightbox.src,
+			beforeThumbnail: (await getImage({ src: comparison.beforeImage, width: 160, format: 'webp' }))
+				.src,
 			afterLightboxSrc: afterLightbox.src,
+			afterThumbnail: (await getImage({ src: comparison.afterImage, width: 160, format: 'webp' }))
+				.src,
 		};
 	}),
 );
@@ -114,10 +118,13 @@ const sequencedComparisons = await Promise.all(
 									<a
 										class="comparison-frame portfolio-lightbox"
 										href={comparison.beforeLightboxSrc}
+										data-exhibition-thumb={comparison.beforeThumbnail}
 										data-pswp-item="true"
 										data-pswp-width={comparison.beforeImage.width}
 										data-pswp-height={comparison.beforeImage.height}
 										data-pswp-caption={`${comparison.name} — ${comparison.beforeSource}`}
+										data-exhibition-story={`/before-and-after/#${comparison.anchor}`}
+										data-exhibition-story-label="View the comparison"
 										data-cropped="true"
 										aria-label={`${comparison.name} before photograph — view full size`}
 									>
@@ -153,10 +160,17 @@ const sequencedComparisons = await Promise.all(
 									<a
 										class="comparison-frame portfolio-lightbox"
 										href={comparison.afterLightboxSrc}
+										data-exhibition-thumb={comparison.afterThumbnail}
 										data-pswp-item="true"
 										data-pswp-width={comparison.afterImage.width}
 										data-pswp-height={comparison.afterImage.height}
 										data-pswp-caption={`${comparison.name} — ${comparison.afterSource}`}
+										data-exhibition-story={`/before-and-after/#${comparison.anchor}`}
+										data-exhibition-story-label="View the comparison"
+										data-exhibition-commons={comparison.commonsUrl}
+										data-exhibition-license={comparison.license}
+										data-exhibition-license-url={comparison.licenseUrl}
+										data-exhibition-credit={comparison.sourceCredit}
 										data-cropped="true"
 										aria-label={`${comparison.name} photograph by Jay Dixit — view full size`}
 									>
@@ -188,7 +202,11 @@ const sequencedComparisons = await Promise.all(
 		</section>
 	</main>
 
-	<PhotoSwipeLightbox gallerySelector=".comparison-list" childrenSelector="a[data-pswp-item]" options={{ escKey: true, tapAction: 'toggle-controls' }} />
+	<PhotoSwipeLightbox
+		gallerySelector=".comparison-list"
+		childrenSelector="a[data-pswp-item]"
+		options={{ escKey: true, tapAction: 'toggle-controls' }}
+	/>
 
 	<script>
 		import { gsap } from 'gsap';

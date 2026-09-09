@@ -2,9 +2,10 @@
 export const prerender = true;
 
 import { images } from '../data/homepage-images.js';
+import people from '../data/people.json';
 import rawImageMetadata from '../data/image-metadata.json';
 import { cldSizes, cldSrcset, cldUrl } from '../lib/cloudinary';
-import PhotoSwipeLightbox from '@jaydixit/astro-utils/components/PhotoSwipeLightbox.astro';
+import PhotoSwipeLightbox from '../components/PortfolioLightbox.astro';
 import siteConfig from '../../site.config.mts';
 import MainLayout from '../layouts/MainLayout.astro';
 import PortfolioHeader from '../components/PortfolioHeader.astro';
@@ -22,6 +23,27 @@ const imageMetadata = rawImageMetadata as Record<string, ImageDimensions>;
 const publicIdFor = (image: HomepageImage) =>
 	image.cloudinaryPublicId ?? `highlights/${image.filename.replace(/\.[^.]+$/, '')}`;
 
+const localPhotoNames = new Set(
+	Object.keys(import.meta.glob('../gallery/{photos,highlights}/**/*.{jpg,jpeg,png,webp,gif}')).map(
+		(path) => path.split('/').pop(),
+	),
+);
+const personForPhoto = (filename: string) => {
+	if (!localPhotoNames.has(filename)) return undefined;
+	const slug = filename.replace(/\.[^.]+$/, '').toLowerCase();
+	const subject = slug.split('_')[0];
+	const matches = people.filter(
+		(person) =>
+			person.photoSlugs?.some((value) => value.toLowerCase() === slug) ||
+			person.match.some(
+				(pattern) =>
+					subject === pattern ||
+					(subject.startsWith(`${pattern}-`) && /^\d+$/.test(subject.slice(pattern.length + 1))),
+			),
+	);
+	return matches.length === 1 ? matches[0] : undefined;
+};
+
 const imageData = (index: number) => {
 	const image = images[index] as HomepageImage;
 	const publicId = publicIdFor(image);
@@ -32,9 +54,13 @@ const imageData = (index: number) => {
 			? 3 / 2
 			: 2 / 3;
 	const lightboxWidth = 2400;
+	const person = personForPhoto(image.filename);
 	return {
 		...image,
 		publicId,
+		personHref: person ? `/red-carpet/${person.slug}` : undefined,
+		personLabel: person?.name,
+		thumbnailSrc: cldUrl(publicId, 160),
 		src: cldUrl(publicId, 1000),
 		srcset: cldSrcset(publicId, [480, 760, 1000, 1400, 1800]),
 		fullSrc: cldUrl(publicId, 2400),
@@ -345,6 +371,9 @@ const description =
 									data-pswp-width={photo.lightboxWidth}
 									data-pswp-height={photo.lightboxHeight}
 									data-pswp-caption={photo.caption}
+									data-exhibition-thumb={photo.thumbnailSrc}
+									data-exhibition-person={photo.personHref}
+									data-exhibition-person-label={photo.personLabel}
 									data-cropped="true"
 									href={photo.fullSrc}
 									style={`--print-x:${x}%;--print-y:${y}%;--print-width:${width}%;--print-rotation:${rotation}deg;--print-z:${z};--mobile-order:${mobileOrder}`}
@@ -474,6 +503,9 @@ const description =
 								data-pswp-width={photo.lightboxWidth}
 								data-pswp-height={photo.lightboxHeight}
 								data-pswp-caption={photo.caption}
+								data-exhibition-thumb={photo.thumbnailSrc}
+								data-exhibition-person={photo.personHref}
+								data-exhibition-person-label={photo.personLabel}
 								data-cropped="true"
 								href={photo.fullSrc}
 								aria-label={`${photo.caption} — view full size`}
@@ -1609,6 +1641,41 @@ const description =
 		.wall-card.wall-feature,
 		.wall-card.wall-landscape {
 			grid-column: span 6;
+		}
+	}
+
+	/* Keep the laptop text column clear while moving the entire print composition together. */
+	@media (min-width: 821px) and (max-width: 2048px) {
+		.hero-copy {
+			width: 32vw;
+		}
+		.hero-lede,
+		.hero-actions {
+			width: 100%;
+			max-width: 100%;
+		}
+		.hero-lede-break {
+			display: none;
+		}
+		.hero-stage {
+			transform: scale(0.86);
+			transform-origin: right top;
+		}
+	}
+	@media (min-width: 1601px) and (max-width: 2048px) {
+		.hero-copy {
+			width: 480px;
+		}
+		.hero-stage {
+			transform: scale(0.93);
+		}
+	}
+	@media (min-width: 821px) and (max-width: 1180px) {
+		.hero-copy {
+			width: min(36vw, 400px);
+		}
+		.hero-stage {
+			transform: scale(0.78);
 		}
 	}
 

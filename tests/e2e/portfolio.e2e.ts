@@ -1,4 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
+import { readdirSync } from 'node:fs';
+import path from 'node:path';
+import sharp from 'sharp';
 
 type SmokeRoute = {
 	name: string;
@@ -44,8 +47,8 @@ const routes: SmokeRoute[] = [
 	{
 		name: 'Sundance gallery',
 		path: '/gallery/red-carpet/sundance/',
-		title: /Red Carpet → Sundance Gallery — Jay Dixit/,
-		heading: 'Red Carpet → Sundance',
+		title: /Sundance Gallery — Jay Dixit/,
+		heading: 'Sundance',
 		minImages: 1,
 		minLightboxLinks: 1,
 	},
@@ -82,6 +85,36 @@ const routes: SmokeRoute[] = [
 async function waitForInitialImages(page: Page) {
 	await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {});
 	await page.waitForTimeout(500);
+}
+
+async function captureReview(page: Page, name: string) {
+	const directory = process.env.PHOTOS_REVIEW_SCREENSHOTS;
+	if (!directory) return;
+	if (await page.locator('.pswp[data-exhibition-viewer]').isVisible()) {
+		await expect
+			.poll(() =>
+				page.evaluate(() => {
+					const image = window.pswp?.currSlide?.content.element;
+					if (!(image instanceof HTMLImageElement) || !image.complete || !image.naturalWidth)
+						return false;
+					const bounds = image.getBoundingClientRect();
+					return Math.abs(bounds.left + bounds.width / 2 - innerWidth / 2) < 2;
+				}),
+			)
+			.toBe(true);
+		await expect
+			.poll(() =>
+				page
+					.locator('.exhibition-thumbnails:not([hidden]) img')
+					.evaluateAll((images: HTMLImageElement[]) =>
+						images.every((image) => image.complete && image.naturalWidth > 0),
+					),
+			)
+			.toBe(true);
+	}
+	const { mkdir } = await import('node:fs/promises');
+	await mkdir(directory, { recursive: true });
+	await page.screenshot({ path: `${directory}/${name}.png` });
 }
 
 async function getBrokenCompletedImages(page: Page) {
@@ -536,4 +569,425 @@ test('before-after page renders source captions and loads comparison images afte
 	}
 
 	expect(await getBrokenCompletedImages(page)).toEqual([]);
+});
+
+for (const width of [390, 1440]) {
+	test(`exhibition viewer opens highlights and gallery originals at ${width}px`, async ({
+		page,
+	}) => {
+		await page.setViewportSize({ width, height: 900 });
+		const errors: string[] = [];
+		page.on('pageerror', (error) => errors.push(error.message));
+		page.on('console', (message) => {
+			if (message.type() === 'error') errors.push(message.text());
+		});
+		await page.goto('/red-carpet/conan-obrien/');
+		const photos = page.locator('[data-person-photo-gallery] a[data-pswp-item]');
+		await expect(photos).toHaveCount(3);
+		const firstSource = await photos.first().getAttribute('href');
+		await photos.first().click();
+		const viewer = page.locator('.pswp[data-exhibition-viewer]');
+		await expect(viewer).toBeVisible();
+		await expect.poll(() => page.evaluate(() => window.pswp?.opener.isOpen)).toBe(true);
+		await expect
+			.poll(() => page.evaluate(() => window.pswp?.currSlide?.data.src))
+			.toBe(firstSource);
+		await expect(viewer.locator('.exhibition-caption')).toHaveText(
+			'Conan O’Brien at SXSW Office Space Event',
+		);
+		await expect(
+			viewer.getByRole('button', { name: 'About this photograph', exact: true }),
+		).toBeHidden();
+		const thumbs = viewer.locator('.exhibition-thumbnails');
+		if (width === 390) {
+			await expect(thumbs).toBeHidden();
+			await expect(thumbs.locator('img[src]')).toHaveCount(0);
+			await viewer.getByRole('button', { name: 'Show or hide neighboring photographs' }).click();
+		}
+		await expect(thumbs).toBeVisible();
+		await expect
+			.poll(() =>
+				thumbs
+					.locator('img')
+					.evaluateAll((images: HTMLImageElement[]) =>
+						images.every((image) => image.complete && image.naturalWidth > 0),
+					),
+			)
+			.toBe(true);
+		await captureReview(page, `exhibition-conan-${width}`);
+		await thumbs.getByRole('button', { name: 'View Conan O’Brien at Sundance 2024' }).click();
+		await expect.poll(() => page.evaluate(() => window.pswp?.currIndex)).toBe(2);
+		await expect
+			.poll(() => page.evaluate(() => window.pswp?.currSlide?.data.src))
+			.toBe(await photos.nth(2).getAttribute('href'));
+		await viewer.getByRole('button', { name: 'About this photograph', exact: true }).click();
+		await expect(viewer.getByRole('link', { name: 'Photo details', exact: true })).toHaveAttribute(
+			'href',
+			/\/gallery\/photo\/red-carpet\/sundance\/conan-obrien_sundance_2024$/,
+		);
+		await expect(viewer.getByRole('link', { name: 'View gallery', exact: true })).toHaveAttribute(
+			'href',
+			/\/gallery\/red-carpet\/sundance$/,
+		);
+		await expect(viewer.getByRole('button', { name: 'Copy attribution' })).toHaveCount(0);
+		await expect(
+			viewer.locator('.exhibition-links a[href*="/red-carpet/conan-obrien"]'),
+		).toHaveCount(0);
+		await captureReview(page, `exhibition-conan-info-${width}`);
+		await page.keyboard.press('ArrowLeft');
+		await expect.poll(() => page.evaluate(() => window.pswp?.currIndex)).toBe(1);
+		await expect(viewer.getByRole('link', { name: 'Photo details', exact: true })).toHaveCount(0);
+		await expect(
+			viewer.getByRole('button', { name: 'About this photograph', exact: true }),
+		).toBeHidden();
+		await expect(viewer.locator('.exhibition-context')).toBeHidden();
+		const initialZoom = await page.evaluate(() => window.pswp?.currSlide?.currZoomLevel);
+		await viewer.getByRole('button', { name: 'Zoom', exact: true }).click();
+		await expect
+			.poll(() => page.evaluate(() => window.pswp?.currSlide?.currZoomLevel))
+			.toBeGreaterThan(initialZoom!);
+		await page.keyboard.press('Escape');
+		await expect(viewer).toBeHidden();
+		await expect(photos.first()).toBeFocused();
+		await photos.nth(2).click();
+		await expect(viewer).toBeVisible();
+		await expect.poll(() => page.evaluate(() => window.pswp?.opener.isOpen)).toBe(true);
+		await expect.poll(() => page.evaluate(() => window.pswp?.currIndex)).toBe(2);
+		await page.keyboard.press('Escape');
+		await expect(viewer).toBeHidden();
+		expect(errors).toEqual([]);
+	});
+
+	test(`gallery discovery and filtered viewing work at ${width}px`, async ({ page }) => {
+		await page.setViewportSize({ width, height: 900 });
+		const errors: string[] = [];
+		// These checks exercise photo discovery, not the external likes/comment services.
+		// PHOTOS_NETWORK_DIAGNOSTICS=1 retains the real integrations for a separate audit.
+		if (!process.env.PHOTOS_NETWORK_DIAGNOSTICS) {
+			await page.route('https://*.supabase.co/rest/v1/photo_user_likes*', async (route) => {
+				expect(['GET', 'HEAD']).toContain(route.request().method());
+				await route.fulfill({
+					status: 200,
+					contentType: 'application/json',
+					headers: { 'content-range': '*/0' },
+					body: route.request().method() === 'HEAD' ? '' : '[]',
+				});
+			});
+			await page.route('https://giscus.app/client.js', (route) =>
+				route.fulfill({ status: 200, contentType: 'text/javascript', body: '' }),
+			);
+		}
+		if (process.env.PHOTOS_NETWORK_DIAGNOSTICS) {
+			const resource = (url: string) => {
+				const parsed = new URL(url);
+				return parsed.origin + parsed.pathname;
+			};
+			page.on('requestfailed', (request) =>
+				console.log('Request failed:', resource(request.url()), request.failure()?.errorText),
+			);
+			page.on('response', (response) => {
+				if (response.status() >= 400)
+					console.log('HTTP error:', response.status(), resource(response.url()));
+			});
+		}
+		page.on('pageerror', (error) => errors.push(error.message));
+		page.on('console', (message) => {
+			if (message.type() === 'error') errors.push(message.text());
+		});
+		await page.goto('/gallery/');
+		await waitForInitialImages(page);
+		// Compare every generated and displayed cover with its actual source image.
+		// A CSS-only check would miss a crop already baked into the derivative.
+		for (const link of await page.locator('[data-gallery-cover-photo]').all()) {
+			await link.scrollIntoViewIfNeeded();
+			const img = link.locator('img');
+			await img.evaluate((image: HTMLImageElement) => image.decode());
+			const folder = (await link.getAttribute('href'))!.replace('/gallery/', '');
+			const sourceFolder = path.resolve('src/gallery/photos', folder);
+			const displayed = await img.evaluate((image: HTMLImageElement) => ({
+				filename: decodeURIComponent(new URL(image.currentSrc).pathname.split('/').at(-1)!),
+				naturalRatio: image.naturalWidth / image.naturalHeight,
+				renderedRatio: image.getBoundingClientRect().width / image.getBoundingClientRect().height,
+			}));
+			const sourceFile = readdirSync(sourceFolder).find(
+				(filename) =>
+					/\.(jpe?g|png|gif)$/i.test(filename) &&
+					displayed.filename.startsWith(`${path.parse(filename).name}.`),
+			);
+			expect(sourceFile, `Original source for ${folder}`).toBeTruthy();
+			const original = await sharp(path.join(sourceFolder, sourceFile!)).metadata();
+			const sourceRatio = original.autoOrient.width / original.autoOrient.height;
+			expect(displayed.naturalRatio, `${folder} derivative preserves the source`).toBeCloseTo(
+				sourceRatio,
+				2,
+			);
+			expect(displayed.renderedRatio, `${folder} displays the entire source`).toBeCloseTo(
+				sourceRatio,
+				2,
+			);
+			await link.hover();
+			const bounds = await img.boundingBox();
+			const frame = await link.boundingBox();
+			expect(bounds!.width).toBeCloseTo(frame!.width, 0);
+			expect(bounds!.height).toBeCloseTo(frame!.height, 0);
+		}
+		await page.evaluate(() => window.scrollTo(0, 0));
+		await captureReview(page, `after-gallery-${width}`);
+		const cover = page.locator('[data-gallery-cover-photo]').first();
+		const destination = await cover.getAttribute('href');
+		await cover.click();
+		await expect(page).toHaveURL(new RegExp(`${destination}/?$`));
+		await expect(page.locator('.pswp')).toHaveCount(0);
+		await page.goto('/gallery/events/nobel-prizes-2024/');
+		await waitForInitialImages(page);
+		await captureReview(page, `after-nobel-gallery-${width}`);
+		const disclosure = page.locator('.filter-disclosure');
+		if (width === 390) await expect(disclosure).not.toHaveAttribute('open', '');
+		else await expect(disclosure).toHaveAttribute('open', '');
+		await page.locator('#search').fill('Hassabis');
+		const visiblePhotos = page.locator('.masonry-item:not([hidden])');
+		await expect(visiblePhotos).toHaveCount(2);
+		await visiblePhotos.first().locator('.portfolio-lightbox').click();
+		await expect.poll(() => page.evaluate(() => window.pswp?.getNumItems())).toBe(2);
+		await expect.poll(() => page.evaluate(() => window.pswp?.opener.isOpen)).toBe(true);
+		await expect(page.locator('.exhibition-caption')).toContainText('Hassabis');
+		await page.getByRole('button', { name: 'About this photograph', exact: true }).click();
+		await expect(page.locator('.exhibition-links a')).toHaveCount(1);
+		await expect(page.locator('.exhibition-links a')).toHaveAttribute('href', /\/gallery\/photo\//);
+		await page.getByRole('button', { name: 'Close info' }).click();
+		await page.keyboard.press('ArrowRight');
+		await expect(page.locator('.exhibition-caption')).toContainText('Hassabis');
+		await expect.poll(() => page.evaluate(() => window.pswp?.currIndex)).toBe(1);
+		await page.keyboard.press('Escape');
+		await expect(page.locator('.pswp')).toBeHidden();
+		await page.locator('#search').fill('no-matching-photograph');
+		await expect(page.locator('[data-gallery-no-results]')).toBeVisible();
+		await page.locator('[data-gallery-no-results] [data-reset-filters]').click();
+		await expect(visiblePhotos).toHaveCount(24);
+		if (width === 390) await disclosure.locator('summary').click();
+		const selectedTag = disclosure.locator('.tag-filter').first();
+		const tag = await selectedTag.getAttribute('data-tag');
+		await selectedTag.click();
+		await expect(page.locator('[data-selected-filters]')).toBeVisible();
+		await expect.poll(() => visiblePhotos.count()).toBeGreaterThan(0);
+		const tags = await visiblePhotos.evaluateAll((items) =>
+			items.map((item) => JSON.parse(item.getAttribute('data-tags') || '[]')),
+		);
+		expect(tags.every((itemTags) => itemTags.includes(tag))).toBe(true);
+		if (width === 390) await page.locator('[data-close-filters]').click();
+		await page.locator('[data-remove-tag]:not([hidden])').click();
+		await expect(visiblePhotos).toHaveCount(24);
+		expect(errors).toEqual([]);
+	});
+}
+
+test('exhibition attribution requires embedded image licensing', async ({ page, context }) => {
+	await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+	await page.goto('/before-and-after/');
+	const photos = page.locator('.comparison-list a[data-pswp-item]');
+	await photos.nth(2).click();
+	await expect.poll(() => page.evaluate(() => window.pswp?.opener.isOpen)).toBe(true);
+	await expect(
+		page.getByRole('button', { name: 'About this photograph', exact: true }),
+	).toBeHidden();
+	await expect(page.getByRole('button', { name: 'Copy attribution' })).toHaveCount(0);
+	await page.keyboard.press('ArrowRight');
+	await page.getByRole('button', { name: 'About this photograph', exact: true }).click();
+	const source = page
+		.locator('.exhibition-context')
+		.getByRole('link', { name: 'View on Wikimedia Commons' });
+	await expect(source).toHaveAttribute('href', /File:Vanessa_Kirby/);
+	await expect(page.getByRole('button', { name: 'Copy attribution' })).toHaveCount(0);
+	await page.keyboard.press('Escape');
+	await expect(page.locator('.pswp')).toBeHidden();
+	for (const width of [390, 1440]) {
+		await page.setViewportSize({ width, height: 900 });
+		await page.goto('/gallery/events/sxsw-2026/');
+		const licensedPhotos = page.locator('a[data-exhibition-attribution]');
+		await expect(licensedPhotos).toHaveCount(3);
+		await licensedPhotos.first().click();
+		await expect.poll(() => page.evaluate(() => window.pswp?.opener.isOpen)).toBe(true);
+		await page.getByRole('button', { name: 'About this photograph', exact: true }).click();
+		await page.getByRole('button', { name: 'Copy attribution' }).click();
+		await expect(page.getByRole('status')).toHaveText('Attribution copied');
+		const attribution = await page.evaluate(() => navigator.clipboard.readText());
+		expect(attribution).toContain('Jay Dixit');
+		expect(attribution).toContain('Attribution-ShareAlike 4.0');
+		expect(attribution).toContain('jack-johnson_sxsw_2026_01');
+		await page.keyboard.press('Escape');
+		await expect(page.locator('.pswp')).toBeHidden();
+	}
+});
+
+test('laptop introduction and actions have clear space beside every print', async ({ page }) => {
+	await page.emulateMedia({ reducedMotion: 'reduce' });
+	for (const width of [
+		821, 1024, 1180, 1181, 1265, 1280, 1366, 1440, 1500, 1536, 1600, 1601, 1680, 1728, 1920, 2048,
+		2049, 2560,
+	]) {
+		await page.setViewportSize({ width, height: 1000 });
+		const compare =
+			process.env.PHOTOS_REVIEW_BASELINE && [1280, 1366, 1440, 1536, 1680].includes(width);
+		if (compare) {
+			await page.goto(process.env.PHOTOS_REVIEW_BASELINE!);
+			await waitForInitialImages(page);
+			await captureReview(page, `before-home-${width}`);
+		}
+		await page.goto('/');
+		await page.evaluate(() => document.fonts.ready);
+		if (compare) {
+			await waitForInitialImages(page);
+			await captureReview(page, `after-home-${width}`);
+		}
+		const overlaps = await page.evaluate(() => {
+			const prints = Array.from(document.querySelectorAll('.hero-print')).filter(
+				(print) => getComputedStyle(print).display !== 'none',
+			);
+			return ['.hero-lede', '.hero-actions'].flatMap((selector) => {
+				const text = document.querySelector(selector)!.getBoundingClientRect();
+				return prints
+					.filter((print) => {
+						const r = print.getBoundingClientRect();
+						return (
+							text.left < r.right &&
+							text.right + 12 > r.left &&
+							text.top < r.bottom &&
+							text.bottom > r.top
+						);
+					})
+					.map((print) => `${selector}: ${print.getAttribute('data-pswp-caption')}`);
+			});
+		});
+		expect(overlaps, `Text/photo clearance at ${width}px`).toEqual([]);
+	}
+});
+
+for (const width of [390, 1440]) {
+	for (const route of [
+		{ path: '/', selector: '#hero-print-gallery a[data-pswp-item]:visible' },
+		{ path: '/before-and-after/', selector: '.comparison-list a[data-pswp-item]' },
+		{ path: '/nobel-2024/', selector: 'a[data-nobel-photo]' },
+		{ path: '/photo-wall/', selector: '.portfolio-lightbox' },
+		{ path: '/blog/wikiportraits-story/', selector: '#blog-lightbox-gallery .portfolio-lightbox' },
+		{ path: '/collections/', selector: '#photo-grid a[data-pswp-item]' },
+		{ path: '/albums/tiff-2024/', selector: '#cld-gallery a[data-pswp-item]' },
+	]) {
+		test(`shared exhibition behavior on ${route.path} at ${width}px`, async ({ page }) => {
+			await page.setViewportSize({ width, height: 900 });
+			const errors: string[] = [];
+			page.on('pageerror', (error) => errors.push(error.message));
+			page.on('console', (message) => {
+				if (message.type() === 'error') errors.push(message.text());
+			});
+			await page.goto(route.path);
+			const first = page.locator(route.selector).first();
+			const source =
+				(await first.getAttribute('data-full-src')) || (await first.getAttribute('href'));
+			await first.click();
+			const viewer = page.locator('.pswp[data-exhibition-viewer]');
+			await expect(viewer).toBeVisible();
+			await expect.poll(() => page.evaluate(() => window.pswp?.opener.isOpen)).toBe(true);
+			await expect.poll(() => page.evaluate(() => window.pswp?.currSlide?.data.src)).toBe(source);
+			if (route.path === '/') {
+				await expect(viewer).toHaveClass(/pswp--kinetic-editorial/);
+				const transition = await page.evaluate(() => {
+					const pswp = window.pswp!;
+					const image = pswp.currSlide!.content.element!.getBoundingClientRect();
+					return {
+						animation: pswp.options.showHideAnimationType,
+						duration: pswp.options.showAnimationDuration,
+						centerX: image.left + image.width / 2,
+						centerY: image.top + image.height / 2,
+						viewportWidth: innerWidth,
+						viewportHeight: innerHeight,
+					};
+				});
+				expect(transition.animation).toBe('zoom');
+				expect(transition.duration).toBeGreaterThan(0);
+				expect(Math.abs(transition.centerX - transition.viewportWidth / 2)).toBeLessThan(2);
+				expect(Math.abs(transition.centerY - (transition.viewportHeight - 64) / 2)).toBeLessThan(2);
+			}
+			const count = await page.evaluate(() => window.pswp?.getNumItems());
+			if (count! > 1) {
+				await page.keyboard.press('ArrowRight');
+				await expect.poll(() => page.evaluate(() => window.pswp?.currIndex)).toBe(1);
+			}
+			await page.keyboard.press('Escape');
+			await expect(viewer).toBeHidden();
+			await expect(first).toBeFocused();
+			expect(errors).toEqual([]);
+		});
+	}
+}
+
+test('gallery prints retain their Packery geometry across responsive widths', async ({ page }) => {
+	await page.goto('/gallery/events/nobel-prizes-2024/');
+	await waitForInitialImages(page);
+	for (const width of [769, 1024, 1099, 1100, 1303, 1304, 1440, 1680, 1920, 2560, 3840, 7680]) {
+		await page.setViewportSize({ width, height: 1000 });
+		await expect
+			.poll(
+				() =>
+					page.evaluate(() => {
+						const container = document.querySelector('#masonry')!.getBoundingClientRect();
+						const cards = Array.from(document.querySelectorAll('.masonry-item:not([hidden])')).map(
+							(card) => ({
+								name: card.getAttribute('data-filename'),
+								rect: card.getBoundingClientRect(),
+							}),
+						);
+						const problems: string[] = [];
+						cards.forEach((card, index) => {
+							if (card.rect.left < container.left - 2 || card.rect.right > container.right + 2)
+								problems.push(`Outside gallery: ${card.name}`);
+							cards.slice(index + 1).forEach((other) => {
+								if (
+									card.rect.left + 2 < other.rect.right &&
+									card.rect.right - 2 > other.rect.left &&
+									card.rect.top + 2 < other.rect.bottom &&
+									card.rect.bottom - 2 > other.rect.top
+								)
+									problems.push(`Overlapping prints: ${card.name}, ${other.name}`);
+							});
+						});
+						return problems;
+					}),
+				{ message: `Gallery geometry at ${width}px`, timeout: 5000 },
+			)
+			.toEqual([]);
+	}
+});
+
+test('report homepage production JavaScript requests at phone and desktop widths', async ({
+	page,
+}, testInfo) => {
+	const { readFile } = await import('node:fs/promises');
+	const { gzipSync } = await import('node:zlib');
+	const reports = [];
+	for (const width of [390, 1440]) {
+		await page.setViewportSize({ width, height: 900 });
+		await page.goto('/');
+		await waitForInitialImages(page);
+		const urls = await page.evaluate(() =>
+			performance
+				.getEntriesByType('resource')
+				.map((entry) => entry.name)
+				.filter(
+					(name) =>
+						new URL(name).origin === location.origin && /\/_astro\/.*\.js(?:\?|$)/.test(name),
+				),
+		);
+		const files = [...new Set(urls.map((url) => new URL(url).pathname))];
+		let gzippedBytes = 0;
+		for (const file of files) gzippedBytes += gzipSync(await readFile(`dist${file}`)).length;
+		reports.push({ width, gzippedBytes, files });
+	}
+	await testInfo.attach('production-javascript-requests', {
+		body: JSON.stringify(reports, null, 2),
+		contentType: 'application/json',
+	});
+	console.log(
+		'Homepage production JavaScript gzip totals:',
+		reports.map(({ width, gzippedBytes }) => ({ width, gzippedBytes })),
+	);
 });

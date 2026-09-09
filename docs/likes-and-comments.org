@@ -1,0 +1,69 @@
+#+title: Likes and comments — configuration and troubleshooting
+#+date: 2026-09-09
+#+author: Codex
+
+* Current findings — September 9, 2026
+
+The local production preview has a real likes-backend connection failure. The Giscus discussion 404 is an expected empty state, not a broken comments configuration. The visual upgrade itself is implemented locally; neither these notes nor its successful photo UI tests establish that the likes backend has been repaired.
+
+* Likes: what exists and what failed
+
+[[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/PhotoLikeButton.astro][PhotoLikeButton]] uses Supabase's ~photo_user_likes~ table. [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/popular.astro][The Popular page]] reads the same table. The expected columns are ~photo_id~, ~visitor_id~, and ~created_at~, with a unique ~photo_id, visitor_id~ pair. This is the application's expected contract; the live table and its policies were not inspected in this investigation.
+
+The ignored [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/.env][local environment file]] configures ~PUBLIC_SUPABASE_URL~ and ~PUBLIC_SUPABASE_ANON_KEY~. Its project host, ~jeywjbrwdfudngewmeak.supabase.co~, failed DNS resolution in the browser and in a direct system lookup. The browser therefore cannot reach the likes API. This does not establish whether the project is paused, deleted, or represented by obsolete configuration; its account-side state remains unknown.
+
+These failures were observed in [[http://localhost:4336/gallery/events/nobel-prizes-2024/][the local production preview]], which uses the checkout's environment at build time. Current Vercel environment values were not inspected. The [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/vercel-incident-audit-2026-04-20.org][April 20 Vercel audit]] found no Supabase variables then; that historical observation must not be treated as the current production configuration.
+
+The component can display cached browser-local counts when the backend read fails. Those counts are not evidence of a working shared database. With a configured but unreachable backend, a failed like/unlike write is reverted; displaying a heart or a zero is not proof that persistence works.
+
+* Repair the likes connection
+
+1. Inspect [[https://supabase.com/dashboard/project/jeywjbrwdfudngewmeak][the existing Supabase project]] in the authenticated account. Prefer restoring the existing project so its stored likes and configuration are preserved. DNS failure alone is not a reason to create an empty replacement.
+2. If it is paused and resumable, use the dashboard's Resume project action after obtaining the necessary authorization for that shared-state change. Supabase documents that resuming restores the project's data and configuration. Check any account cost or quota consequence before proceeding.
+3. If the project is active, verify its actual project URL and browser-appropriate API key against the local environment and Vercel's production/preview environment settings. If the saved URL or key is obsolete, correct the matching values. Keep credentials out of Git and reports; the client must not receive a privileged server key.
+4. If the project is unavailable or no longer resumable, establish what backups exist before proposing a replacement. Preserve the backup and existing records; prepare an exact recovery or migration plan for approval. This investigation did not create a replacement or inspect a backup.
+5. Verify that the project host resolves, then inspect the actual ~photo_user_likes~ table, unique constraint, and row-level-security policies against the application's read/write behavior. Historical schema notes in the root instructions are not a verified description of the live policies.
+6. If environment values changed, rebuild the static Astro site and verify the resulting configuration locally. Production needs a separately authorized deployment because Astro embeds public environment values at build time. Resuming an unchanged project may restore an already-correct deployment without a rebuild.
+7. Verify a real read, one authorized like/unlike cycle, and persistence after reloading. Check the photo-detail surface and Popular page as well as the gallery. A mocked test response does not verify Supabase persistence.
+
+An authenticated Supabase management session was not available to this investigation: no Supabase connector or management token was exposed, and the review browser had disconnected. Public client configuration cannot establish the project's account-side status.
+
+* Comments: verified configuration
+
+[[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/PhotoComments.astro][PhotoComments]] is the source of the active Giscus configuration:
+
+- Repository: [[https://github.com/incandescentman/photos-jaydixit][incandescentman/photos-jaydixit]], ID ~R_kgDOPg12Gg~.
+- Category: General, ID ~DIC_kwDOPg12Gs4C2qOO~.
+- Mapping: ~specific~, with the folder path as the gallery term and ~folder-path-photo-slug~ as the photo-detail term. The gallery's cleaned display title is not the discussion key.
+- GitHub confirmed that the repository is public and Discussions is enabled. Giscus's categories endpoint returned HTTP 200 with these exact IDs, establishing app access for the lookup.
+- The repository had one welcome thread in Announcements and no matching General discussion for the Nobel gallery. The actual discussion response was ~{"error":"Discussion not found"}~ with HTTP 404.
+
+That 404 requires no configuration repair. Giscus deliberately returns it when no matching thread exists, and creates the discussion automatically when a visitor first comments or reacts. No public comment or discussion was created as a test.
+
+For a future report, inspect the response body first. Check the repository, category, public visibility, Discussions setting, and app installation before changing IDs. A 403 installation/access failure is different from the expected missing-discussion 404. Preserve the current specific-term mapping so existing conversations stay attached to their pages.
+
+* Photo UI tests and external integration checks
+
+[[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tests/e2e/portfolio.e2e.ts][The browser suite]] tests the visual upgrade against the production build. Its two gallery-discovery tests mock read-only Supabase responses and omit the Giscus script, keeping photo filtering, navigation, and lightbox behavior independent of external services. Other covered photo surfaces use their actual production image assets.
+
+Set ~PHOTOS_NETWORK_DIAGNOSTICS=1~ to run those two checks with real likes/comments services. The diagnostic output prints resource origins and paths without query strings or credentials. It is intentionally possible for the strict console check to fail on Giscus's expected 404; interpret the response, rather than treating every HTTP failure as a product defect.
+
+With the existing preview server at port 4336, run from [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit][the repository]]:
+
+#+begin_src sh
+source /Users/jay/.nvm/nvm.sh
+nvm use 24
+PHOTOS_NETWORK_DIAGNOSTICS=1 PLAYWRIGHT_BASE_URL=http://127.0.0.1:4336 pnpm exec playwright test tests/e2e/portfolio.e2e.ts --grep 'gallery discovery' --workers=1
+#+end_src
+
+The September 9 visual build passed 141 pages, 21 unit tests, lint, and all 47 browser checks across the final run and targeted reruns. Those results validate the photo UI under the stated test conditions, not a repaired likes backend or a public comment submission.
+
+* Sources
+
+- [[https://supabase.com/docs/guides/platform/free-project-pausing][Supabase: project pausing and restoration]]. The dashboard's current project status governs the available recovery route.
+- [[https://supabase.com/docs/guides/troubleshooting/restore-project-after-90-days-pause][Supabase: recovery when a project is beyond its restore window]]. Read the current document; the older URL naming does not establish the current retention window.
+- [[https://supabase.com/docs/guides/api/api-keys][Supabase: API key roles]]. Use a browser-appropriate key with row-level security, not a privileged server key.
+- [[https://docs.astro.build/en/guides/environment-variables/][Astro: environment variables]]. Public client variables are statically substituted at build time.
+- [[https://giscus.app/][Giscus: how discussions are created and configuration requirements]].
+- [[https://github.com/giscus/giscus/blob/main/pages/api/discussions/index.ts][Giscus's discussion API implementation]], including its explicit missing-discussion 404 branch.
+- [[https://giscus.app/api/discussions/categories?repo=incandescentman%2Fphotos-jaydixit][Read-only Giscus category lookup for this repository]].

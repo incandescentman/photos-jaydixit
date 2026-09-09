@@ -1,3 +1,4 @@
+import { exhibitionOptions } from '../lib/exhibitionOptions';
 import Packery from 'packery';
 import imagesLoaded from 'imagesloaded';
 
@@ -969,9 +970,9 @@ function setupPhotoSwipe({ container, isAdminMode }: PhotoSwipeOptions) {
 			const PhotoSwipeLightbox = await loadPhotoSwipeLightbox();
 			const nextLightbox = new PhotoSwipeLightbox({
 				gallery: '.masonry-items',
-				children: '.portfolio-lightbox',
+				children: '.portfolio-lightbox:not([hidden])',
 				pswpModule: () => import('photoswipe'),
-				padding: { top: 20, bottom: 80, left: 20, right: 20 },
+				...exhibitionOptions,
 				wheelToZoom: true,
 				escKey: true,
 				imageClickAction: 'close',
@@ -1127,7 +1128,9 @@ function setupPhotoSwipe({ container, isAdminMode }: PhotoSwipeOptions) {
 	};
 
 	const openFromInitialEvent = (event: MouseEvent | KeyboardEvent, anchor: HTMLElement) => {
-		const links = Array.from(container.querySelectorAll<HTMLElement>('.portfolio-lightbox'));
+		const links = Array.from(
+			container.querySelectorAll<HTMLElement>('.portfolio-lightbox:not([hidden])'),
+		).filter((link) => !link.closest('[hidden]'));
 		const index = links.findIndex((link) => link === anchor || link.contains(anchor));
 		if (index < 0) return;
 
@@ -1137,7 +1140,11 @@ function setupPhotoSwipe({ container, isAdminMode }: PhotoSwipeOptions) {
 		initializeLightbox()
 			.then((readyLightbox) => {
 				cleanupInitialHandlers();
-				readyLightbox.loadAndOpen(index, { gallery: container }, getInitialPoint(event));
+				readyLightbox.loadAndOpen(
+					index,
+					{ gallery: container, items: links },
+					getInitialPoint(event),
+				);
 			})
 			.catch((error) => {
 				console.error('Failed to initialize PhotoSwipe', error);

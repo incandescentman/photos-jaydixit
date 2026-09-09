@@ -1,10 +1,12 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro:assets';
 import MainLayout from '../../layouts/MainLayout.astro';
+import PortfolioLightbox from '../../components/PortfolioLightbox.astro';
 import siteConfig from '../../../site.config.mts';
 import rawPeople from '../../data/people.json';
 import { images as homepageImages } from '../../data/homepage-images.js';
+import { embeddedAttribution } from '../../lib/embeddedAttribution';
 import { buildCaptionAndTags, formatPhrase, type GalleryTagsFile } from '../../lib/galleryMetadata';
 
 interface Person {
@@ -113,6 +115,7 @@ type PhotoEntry = {
 	slug: string;
 	caption: string;
 	galleryName: string;
+	moduleKey: string;
 	originalSrc: string;
 	detailHref: string | null;
 	source: keyof typeof sourcePriority;
@@ -162,6 +165,7 @@ function collectMatchingPhotos(
 				slug,
 				caption,
 				galleryName,
+				moduleKey: key,
 				originalSrc: metadata.src,
 				detailHref: source === 'gallery' ? toPhotoHref(folder, filename) : null,
 				source,
@@ -187,7 +191,7 @@ const grouped = allMatches.reduce<Record<string, PhotoEntry[]>>((acc, photo) => 
 	return acc;
 }, {});
 
-const photos = Object.values(grouped)
+const matchedPhotos = Object.values(grouped)
 	.map(
 		(variants) =>
 			variants.slice().sort((a, b) => {
@@ -197,6 +201,26 @@ const photos = Object.values(grouped)
 			})[0],
 	)
 	.sort((a, b) => a.filename.localeCompare(b.filename));
+
+const photos = await Promise.all(
+	matchedPhotos.map(async (photo) => {
+		const [thumbnail, exhibitionAttribution] = await Promise.all([
+			getImage({ src: photo.metadata, width: 160, format: 'webp' }),
+			embeddedAttribution({
+				moduleKey: photo.moduleKey,
+				pageFile: 'src/pages/red-carpet/[person].astro',
+				caption: photo.caption,
+				sourceDetailUrl: photo.detailHref,
+			}),
+		]);
+
+		return {
+			...photo,
+			thumbnailSrc: thumbnail.src,
+			exhibitionAttribution,
+		};
+	}),
+);
 
 if (photos.length === 0) {
 	return Astro.redirect('/404');
@@ -345,11 +369,30 @@ export function getStaticPaths() {
 				}
 			</header>
 
-			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" data-person-photo-gallery>
 				{
-					photos.map((photo) =>
-						photo.detailHref ? (
-							<a href={photo.detailHref} class="group block">
+					photos.map((photo) => (
+						<div class="group block">
+							<a
+								href={photo.originalSrc}
+								class="block"
+								data-pswp-item="true"
+								data-exhibition-thumb={photo.thumbnailSrc}
+								data-full-src={photo.originalSrc}
+								data-pswp-width={photo.metadata.width}
+								data-pswp-height={photo.metadata.height}
+								data-pswp-caption={photo.caption}
+								data-exhibition-details={photo.detailHref ?? undefined}
+								data-exhibition-person={canonicalUrl}
+								data-exhibition-person-label={personData.name}
+								data-exhibition-gallery={
+									photo.source === 'gallery' && photo.folder
+										? `/gallery/${photo.folder}`
+										: undefined
+								}
+								data-exhibition-attribution={photo.exhibitionAttribution}
+								aria-label={`${photo.caption} — view full size`}
+							>
 								<div class="aspect-[3/4] overflow-hidden rounded-xl bg-gray-100 shadow-sm">
 									<Image
 										src={photo.metadata}
@@ -362,36 +405,28 @@ export function getStaticPaths() {
 										class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
 									/>
 								</div>
-								<div class="mt-3 px-1">
-									<p class="text-base font-medium text-gray-800 group-hover:text-gray-900">
-										{photo.caption}
-									</p>
-									<p class="photo-credit mt-0.5">{photo.galleryName}</p>
-								</div>
 							</a>
-						) : (
-							<div class="group block">
-								<div class="aspect-[3/4] overflow-hidden rounded-xl bg-gray-100 shadow-sm">
-									<Image
-										src={photo.metadata}
-										alt={photo.caption}
-										width={480}
-										height={640}
-										fit="cover"
-										position="attention"
-										loading="lazy"
-										class="w-full h-full object-cover"
-									/>
-								</div>
-								<div class="mt-3 px-1">
-									<p class="text-base font-medium text-gray-800">{photo.caption}</p>
-									<p class="photo-credit mt-0.5">{photo.galleryName}</p>
-								</div>
+							<div class="mt-3 px-1">
+								<p class="text-base font-medium text-gray-800 group-hover:text-gray-900">
+									{photo.caption}
+								</p>
+								<p class="photo-credit mt-0.5">{photo.galleryName}</p>
+								{photo.detailHref && (
+									<a href={photo.detailHref} class="editorial-link mt-2 inline-block text-sm">
+										Details
+									</a>
+								)}
 							</div>
-						),
-					)
+						</div>
+					))
 				}
 			</div>
 		</div>
 	</section>
+
+	<PortfolioLightbox
+		gallerySelector="[data-person-photo-gallery]"
+		childrenSelector="a[data-pswp-item]"
+		options={{ escKey: true, tapAction: 'toggle-controls' }}
+	/>
 </MainLayout>

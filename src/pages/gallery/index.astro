@@ -4,11 +4,16 @@ import type { ImageMetadata } from 'astro:assets';
 import MainLayout from '../../layouts/MainLayout.astro';
 import siteConfig from '../../../site.config.mts';
 
+type GallerySourcePhoto = {
+	metadata: ImageMetadata;
+	filename: string;
+};
+
 type GalleryEntry = {
 	name: string;
 	displayName: string;
-	imageCount: number;
-	sampleImage?: ImageMetadata;
+	sampleImage: ImageMetadata;
+	sampleFilename: string;
 	url: string;
 	category: string;
 };
@@ -40,40 +45,42 @@ function formatPhrase(slug: string) {
 		.join(' ');
 }
 
-const grouped = new Map<string, ImageMetadata[]>();
+const grouped = new Map<string, GallerySourcePhoto[]>();
 
 Object.entries(imageModules).forEach(([key, module]) => {
 	const relativePath = key.replace('../../gallery/photos/', '');
 	const segments = relativePath.split('/');
-	segments.pop();
+	const filename = segments.pop();
 	const folder = segments.join('/');
-	if (!folder) return;
+	if (!folder || !filename) return;
 
 	if (!grouped.has(folder)) {
 		grouped.set(folder, []);
 	}
 
-	grouped.get(folder)?.push(module.default);
+	grouped.get(folder)?.push({ metadata: module.default, filename });
 });
 
-const galleries = Array.from(grouped.entries())
-	.map(([folder, images]) => {
-		if (images.length === 0) return null;
+const galleryEntries = await Promise.all(
+	Array.from(grouped.entries()).map(async ([folder, images]) => {
+		const sample = images[0];
+		if (!sample) return null;
 
-		const displayName = folder.split('/').map(formatPhrase).join(' → ');
-
+		const leafFolder = folder.split('/').at(-1) ?? folder;
 		const entry: GalleryEntry = {
 			name: folder,
-			displayName,
-			imageCount: images.length,
-			sampleImage: images[0],
+			displayName: formatPhrase(leafFolder),
+			sampleImage: sample.metadata,
+			sampleFilename: sample.filename,
 			url: `/gallery/${folder}`,
 			category: folder.split('/')[0] ?? 'other',
 		};
 
 		return entry;
-	})
-	.filter((entry): entry is GalleryEntry => entry !== null);
+	}),
+);
+
+const galleries = galleryEntries.filter((entry): entry is GalleryEntry => entry !== null);
 
 const categorizedGalleries = galleries.reduce<Record<string, GalleryEntry[]>>((acc, gallery) => {
 	const category = gallery.category;
@@ -105,73 +112,234 @@ const galleryIndexStructuredData = {
 	canonical={canonicalUrl}
 	structuredData={galleryIndexStructuredData}
 >
-	<section class="py-16 pt-(--nav-clearance)">
-		<div class="container mx-auto px-4 max-w-7xl">
-			<div class="mb-16 text-center">
-				<h1 class="text-4xl md:text-5xl font-bold mb-4">Photo Galleries</h1>
-				<p class="text-gray-600 max-w-xl mx-auto">
-					Browse my photography collections organized by theme and event
-				</p>
-			</div>
+	<div class="gallery-index pt-(--nav-clearance)">
+		<header class="gallery-index-header">
+			<p class="gallery-kicker">The archive</p>
+			<h1>Photo Galleries</h1>
+			<p>Browse my photography collections organized by theme and event</p>
+		</header>
 
-			{
-				Object.keys(categorizedGalleries).length > 0 ? (
-					Object.entries(categorizedGalleries).map(
+		{
+			Object.keys(categorizedGalleries).length > 0 ? (
+				<div id="gallery-directory" class="gallery-directory">
+					{Object.entries(categorizedGalleries).map(
 						([category, categoryGalleries], categoryIndex) => (
-							<div class="mb-12">
-								<h2 class="text-2xl font-bold mb-6 capitalize text-gray-800">
-									{category.split('-').join(' ')}
-								</h2>
+							<section class="gallery-category" aria-labelledby={`gallery-category-${category}`}>
+								<h2 id={`gallery-category-${category}`}>{formatPhrase(category)}</h2>
 
-								<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-									{categoryGalleries.map((gallery, i) => (
-										<a
-											href={gallery.url}
-											class="group block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
-										>
-											<div class="aspect-[4/3] bg-gray-200 overflow-hidden">
-												{gallery.sampleImage ? (
-													<Image
-														src={gallery.sampleImage}
-														alt={gallery.displayName}
-														width={640}
-														height={480}
-														fit="cover"
-														class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-														loading={categoryIndex === 0 && i < 4 ? 'eager' : 'lazy'}
-														fetchpriority={categoryIndex === 0 && i < 4 ? 'high' : undefined}
-													/>
-												) : (
-													<div class="w-full h-full bg-gray-200" />
-												)}
-											</div>
+								<div class="gallery-cover-grid">
+									{categoryGalleries.map((gallery, galleryIndex) => (
+										<article class="gallery-cover">
+											<a
+												class="gallery-cover-photo"
+												href={gallery.url}
+												aria-label={`View the ${gallery.displayName} gallery`}
+												data-gallery-cover-photo
+											>
+												<Image
+													src={gallery.sampleImage}
+													alt={gallery.displayName}
+													width={960}
+													widths={[480, 720, 960, 1440]}
+													sizes="(max-width: 700px) calc(100vw - 2rem), (max-width: 1670px) 45vw, 744px"
+													loading={categoryIndex === 0 && galleryIndex < 2 ? 'eager' : 'lazy'}
+													fetchpriority={
+														categoryIndex === 0 && galleryIndex < 2 ? 'high' : undefined
+													}
+												/>
+											</a>
 
-											<div class="p-4">
-												<h3 class="text-lg font-semibold mb-2 group-hover:text-brand transition-colors line-clamp-2">
+											<h3>
+												<a href={gallery.url}>
 													{gallery.displayName}
-												</h3>
-												<p class="photo-credit">
-													{gallery.imageCount} {gallery.imageCount === 1 ? 'photo' : 'photos'}
-												</p>
-											</div>
-										</a>
+													<span class="gallery-enter">
+														View gallery <i aria-hidden="true">→</i>
+													</span>
+												</a>
+											</h3>
+										</article>
 									))}
 								</div>
-							</div>
+							</section>
 						),
-					)
-				) : (
-					<div class="text-center py-16">
-						<div class="text-gray-500 mb-4">
-							<svg class="w-24 h-24 mx-auto" fill="currentColor" viewBox="0 0 24 24">
-								<path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" />
-							</svg>
-						</div>
-						<h3 class="text-xl font-semibold mb-2">No galleries found</h3>
-						<p class="text-gray-600">New galleries coming soon.</p>
-					</div>
-				)
-			}
-		</div>
-	</section>
+					)}
+				</div>
+			) : (
+				<div class="gallery-empty">
+					<h2>No galleries found</h2>
+					<p>New galleries coming soon.</p>
+				</div>
+			)
+		}
+	</div>
 </MainLayout>
+
+<style>
+	:global(body) {
+		background: var(--paper);
+		color: var(--ink);
+	}
+
+	.gallery-index {
+		padding-top: var(--portfolio-header-clearance);
+		min-height: 100vh;
+		padding-bottom: clamp(5rem, 10vw, 9rem);
+		background:
+			radial-gradient(circle at 8% 12%, rgb(150 119 63 / 7%), transparent 32rem), var(--paper);
+	}
+
+	.gallery-index-header,
+	.gallery-directory,
+	.gallery-empty {
+		width: min(100% - clamp(2rem, 8vw, 9rem), 96rem);
+		margin-inline: auto;
+	}
+
+	.gallery-index-header {
+		padding: clamp(1.5rem, 3vw, 3rem) 0 2rem;
+		border-bottom: 1px solid var(--ink);
+	}
+
+	.gallery-kicker {
+		margin: 0 0 1rem;
+		color: var(--accent);
+		font-family: var(--sans);
+		font-size: 0.68rem;
+		font-weight: 600;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+
+	.gallery-index-header h1 {
+		max-width: 12ch;
+		margin: 0;
+		font-family: var(--serif);
+		font-size: clamp(3.75rem, 6.5vw, 6.5rem);
+		font-weight: 400;
+		letter-spacing: -0.06em;
+		line-height: 0.82;
+	}
+
+	.gallery-index-header > p:last-child {
+		max-width: 40rem;
+		margin: clamp(1.5rem, 3vw, 2.5rem) 0 0;
+		color: rgb(26 23 20 / 68%);
+		font-family: var(--serif);
+		font-size: clamp(1.15rem, 1.7vw, 1.5rem);
+		font-weight: 300;
+		line-height: 1.35;
+	}
+
+	.gallery-category {
+		padding-top: clamp(1.75rem, 3vw, 2.5rem);
+	}
+
+	.gallery-category > h2 {
+		margin: 0 0 1.2rem;
+		padding-bottom: 0.75rem;
+		border-bottom: 1px solid var(--hairline);
+		color: rgb(26 23 20 / 62%);
+		font-family: var(--sans);
+		font-size: 0.7rem;
+		font-weight: 600;
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+	}
+
+	.gallery-cover-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: clamp(2.25rem, 5vw, 5.5rem) clamp(1.5rem, 3vw, 3rem);
+	}
+
+	.gallery-cover {
+		min-width: 0;
+	}
+
+	.gallery-cover-photo {
+		display: block;
+		background: var(--paper-deep);
+		transition: box-shadow 180ms ease;
+	}
+
+	.gallery-cover-photo img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	.gallery-cover-photo:hover,
+	.gallery-cover-photo:focus-visible {
+		box-shadow: 0 0 0 2px var(--accent);
+	}
+
+	.gallery-cover h3 {
+		margin: 0;
+		border-bottom: 1px solid var(--hairline);
+	}
+
+	.gallery-cover h3 a {
+		display: flex;
+		gap: 1rem;
+		align-items: baseline;
+		justify-content: space-between;
+		padding: 1rem 0 0.85rem;
+		color: var(--ink);
+		font-family: var(--serif);
+		font-size: clamp(1.45rem, 2.4vw, 2.2rem);
+		font-weight: 400;
+		letter-spacing: -0.025em;
+		line-height: 1.05;
+		text-decoration: none;
+	}
+
+	.gallery-cover h3 a span {
+		color: var(--accent);
+		font-family: var(--sans);
+		font-size: 0.72rem;
+		white-space: nowrap;
+		transition: transform 180ms ease;
+	}
+
+	.gallery-cover h3 a:hover span,
+	.gallery-cover h3 a:focus-visible span {
+		transform: translateX(0.25rem);
+	}
+
+	.gallery-empty {
+		padding-block: 6rem;
+		text-align: center;
+	}
+
+	.gallery-empty h2 {
+		font-family: var(--serif);
+		font-weight: 400;
+	}
+
+	.gallery-empty p {
+		color: rgb(26 23 20 / 62%);
+	}
+
+	@media (max-width: 700px) {
+		.gallery-index-header,
+		.gallery-directory,
+		.gallery-empty {
+			width: min(100% - 2rem, 96rem);
+		}
+
+		.gallery-index-header h1 {
+			font-size: clamp(3.25rem, 14vw, 5rem);
+		}
+
+		.gallery-cover-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.gallery-cover-photo,
+		.gallery-cover h3 a span {
+			transition: none;
+		}
+	}
+</style>

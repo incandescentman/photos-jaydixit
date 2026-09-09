@@ -1,5 +1,5 @@
 ---
-import PhotoSwipeLightbox from '@jaydixit/astro-utils/components/PhotoSwipeLightbox.astro';
+import PhotoSwipeLightbox from './PortfolioLightbox.astro';
 
 const { images } = Astro.props;
 ---
@@ -165,7 +165,11 @@ const { images } = Astro.props;
 	}
 </div>
 
-<PhotoSwipeLightbox gallerySelector=".gallery" childrenSelector="a[data-pswp-item]" options={{ escKey: true, tapAction: 'toggle-controls' }} />
+<PhotoSwipeLightbox
+	gallerySelector=".gallery"
+	childrenSelector="a[data-pswp-item]"
+	options={{ escKey: true, tapAction: 'toggle-controls' }}
+/>
 
 <script>
 	// Like button functionality (will be enhanced with Supabase later)

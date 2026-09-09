@@ -169,6 +169,7 @@ const blogStructuredData = {
 </MainLayout>
 
 <script>
+	import { exhibitionOptions } from '../../lib/exhibitionOptions';
 	import PhotoSwipeLightbox from 'photoswipe/lightbox';
 	import 'photoswipe/style.css';
 
@@ -234,7 +235,7 @@ const blogStructuredData = {
 			gallery: '#blog-lightbox-gallery',
 			children: '.portfolio-lightbox',
 			pswpModule: () => import('photoswipe'),
-			padding: { top: 20, bottom: 80, left: 20, right: 20 },
+			...exhibitionOptions,
 			wheelToZoom: true,
 			imageClickAction: 'close',
 			tapAction: 'toggle-controls',

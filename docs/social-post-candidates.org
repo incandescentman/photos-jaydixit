@@ -1,3 +1,5 @@
 #+title: Photography social-post candidates
 
 - 2026-09-09 — Idea from the [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/drafts/visual-design-review-2026-09-09.org][visual design review]], grounded in the existing [[https://photos.jaydixit.com/before-and-after][Before & After page]]. Framing suggestion: a few seconds on a red carpet can become someone's public face for years. Show a dated article portrait replacement beside the photograph; verify the selected example's dates and publication history before making a specific duration or current-use claim. Suggestion only; Jay decides what gets posted.
+
+- 2026-09-09 — Process idea from the [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tmp/portfolio-upgrade-20260909/homepage-laptop-comparisons.jpg][homepage composition comparison]] and the new [[http://localhost:4336/gallery/][gallery presentation]]. Framing suggestion: carrying the feeling of physical photographic prints from the homepage into the archive and the viewer. Show the gallery before and after, then a print opening on the warm canvas. Suggestion only; Jay decides what gets posted.

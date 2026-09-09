@@ -1,0 +1,10 @@
+---
+import SharedLightbox from '@jaydixit/astro-utils/components/PhotoSwipeLightbox.astro';
+import type { ComponentProps } from 'astro/types';
+import { exhibitionOptions } from '../lib/exhibitionOptions';
+
+type Props = ComponentProps<typeof SharedLightbox>;
+const { options = {}, ...props } = Astro.props;
+---
+
+<SharedLightbox {...props} options={{ ...options, ...exhibitionOptions }} />
