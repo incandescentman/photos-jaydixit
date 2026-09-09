@@ -300,6 +300,8 @@ manifest.
 
 - Fixed inner-page header and absolute homepage header; compact navigation through 1500px
 
+- Closed inner-page headers render at 121px on desktop and 81px through 820px, including the border; ~row-gap: 0~ prevents the hidden menu row from adding height above 1500px. The verified crop and header-clearance mechanisms are documented in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/codebase-wisdom.org][codebase wisdom]] (2026-09-09).
+
 - Clean typography and minimalist layout
 
 

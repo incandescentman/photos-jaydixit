@@ -4,13 +4,17 @@
 
 * Implementation decision — 2026-09-09
 
-You selected proposals 1 and 2, the homepage text/collage collision fix at laptop widths, and PhotoSwipe opening with a separate Details action on person pages. The existing intentional changes were documented and committed first as ~c6be648~. Proposals 1 and 2, the homepage spacing fix, and the person-page repair are now implemented locally. Proposals 3–5 remain suggestions.
+You selected proposals 1 and 2, the homepage text/collage collision fix at laptop widths, and PhotoSwipe opening with a separate Details action on person pages. The existing intentional changes were documented and committed first as ~c6be648~. Proposals 1 and 2, the homepage spacing fix, and the person-page repair are committed locally in ~3d36e3d~. The subsequent wide-header clearance fix is committed in ~d8c5f04~. Neither checkpoint was pushed or deployed. Proposals 3–5 remain suggestions.
 
 * Gallery cover correction — 2026-09-09
 
 Jay: “the gallery page cuts off people's faces because aspect ratios are wrong. it looks terrible.” Review URL: [[http://localhost:4336/gallery/][gallery directory]]. Status: rework requested; the forced 4:3 covers are corrected locally, with final visual approval not inferred.
 
 The original implementation cropped the generated asset to 960 × 720 and then cropped the displayed image with a fixed 4:3 frame. Both constraints are removed. Covers now preserve source proportions, including on hover; portrait covers take more vertical space.
+
+* Gallery heading correction — 2026-09-09
+
+Jay: “the top of the title gets cut off”. The fixed inner-page header retained an empty grid-row gap above 1500 pixels and covered the gallery eyebrow and the top of the title. The gap is removed in ~d8c5f04~. The [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tmp/portfolio-upgrade-20260909/gallery-title-after-2016.png][current desktop capture]] and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tmp/portfolio-upgrade-20260909/gallery-title-after-390.png][current phone capture]] show the correction. Heading clearance passes at ten widths from 390 through 2560 pixels; desktop and phone navigation and gallery interactions also pass.
 
 * Local review — 2026-09-09
 
@@ -22,11 +26,11 @@ The original implementation cropped the generated asset to 960 × 720 and then c
 
 The viewer keeps PhotoSwipe and the shared lightbox implementation. It adds a warm canvas, captions, an optional Info panel containing only known relationships to other pages, and at most seven small neighboring previews. The thumbnail strip starts hidden on phones and requests no thumbnail images until opened. A preview is omitted when a small source is unavailable; it never fetches an original to manufacture a thumbnail.
 
-The [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tmp/portfolio-upgrade-20260909/gallery-and-viewer-review.jpg][gallery and viewer comparison sheet]] shows the new presentation at desktop and phone widths.
+The [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tmp/portfolio-upgrade-20260909/gallery-and-viewer-review.jpg][earlier gallery and viewer comparison sheet]] preserves the initial review. Its directory frames precede the crop and header fixes; use the current title captures above and the [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tmp/portfolio-upgrade-20260909/gallery-crop-after-1440.png][uncropped desktop covers]] or [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/tmp/portfolio-upgrade-20260909/gallery-crop-after-390.png][uncropped phone covers]] when reviewing the directory. Its viewer panels also precede suppression of links back to the current page.
 
 The license check found explicit embedded usage terms in the three Jack Johnson gallery files and the matching highlight. The Before & After catalog contains license records, but its source images lack embedded license metadata, so those records supply context links without enabling Copy attribution. No metadata was written into photographs.
 
-The build, 21 unit tests, lint, and 47 browser checks pass across the final run and targeted reruns. Two gallery tests isolate external services. The configured likes host currently fails DNS resolution and needs account-side diagnosis. The Giscus 404 was investigated: its repository and category configuration are valid, and ~Discussion not found~ is the normal state before the first comment, when Giscus creates the thread automatically. The photo UI passes. Full evidence and production JavaScript measurements are in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/work-log.org][the work log]].
+The upgrade passed the build, 21 unit tests, lint, and 47 browser checks across the main run and targeted reruns. The later heading fix adds one regression check across ten widths; that check and three navigation/gallery checks passed against the rebuilt site. Two gallery tests isolate external services. The configured likes host currently fails DNS resolution and needs account-side diagnosis. The Giscus 404 was investigated: its repository and category configuration are valid, and ~Discussion not found~ is the normal state before the first comment, when Giscus creates the thread automatically. The photo UI passes. Full evidence and production JavaScript measurements are in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/work-log.org][the work log]].
 
 * Recommendation
 
