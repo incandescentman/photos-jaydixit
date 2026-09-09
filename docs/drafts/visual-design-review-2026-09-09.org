@@ -4,7 +4,7 @@
 
 * Implementation decision — 2026-09-09
 
-You selected proposals 1 and 2, the homepage text/collage collision fix at laptop widths, and PhotoSwipe opening with a separate Details action on person pages. The existing intentional changes were documented and committed first as ~c6be648~. Proposals 1 and 2, the homepage spacing fix, and the person-page repair are committed locally in ~3d36e3d~. The subsequent wide-header clearance fix is committed in ~d8c5f04~. Neither checkpoint was pushed or deployed. Proposals 3–5 remain suggestions.
+You selected proposals 1 and 2, the homepage text/collage collision fix at laptop widths, and PhotoSwipe opening with a separate Details action on person pages. The existing intentional changes were documented and committed first as ~c6be648~. Proposals 1 and 2, the homepage spacing fix, and the person-page repair are committed locally in ~3d36e3d~. The subsequent wide-header clearance fix is committed in ~d8c5f04~. The final responsive directory treatment is committed in ~c2995e2~. Jay authorized pushing the accumulated implementation and documentation on September 9. These local validation records do not establish deployment success. Proposals 3–5 remain suggestions.
 
 * Final gallery directory direction — 2026-09-09
 
@@ -42,7 +42,7 @@ The upgrade passed the build, 21 unit tests, lint, and 47 browser checks across 
 
 Your homepage has a visual identity worth building on: enormous faces, physical prints, warm paper, and elegant type. The strongest opportunity is to carry that level of art direction into browsing, then add an experience that could only belong to your photography: following a portrait from the press line into the public record.
 
-I would start with the gallery presentation and exhibition viewer below. The Wikipedia journey is the most distinctive larger experiment. Proposals 1 and 2 are implemented in the local preview; the production site has not been changed.
+I would start with the gallery presentation and exhibition viewer below. The Wikipedia journey is the most distinctive larger experiment. Proposals 1 and 2 are implemented, and Jay authorized publishing the accumulated changes on September 9. The observations below describe the site at the initial review, before this upgrade.
 
 * 1. Give the gallery pages the presence of a photographic exhibition
 
