@@ -47,6 +47,7 @@ The root **CLAUDE.md** file contains legacy documentation. This file (docs/CLAUD
 - 2025-10-04: Organized existing documentation into structured /docs directory
 
 * TODO For Jay
+- [ ] Write the /red-carpets headline. The live one, "One camera. One press line. Six very different worlds.", is Codex's and never had Jay's approval; the replacement goes in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/red-carpets-copy-workbook.org][📄 Red Carpets Copy Workbook]] (added 2026-09-10)
 - [ ] Prepare source photographs for Russell Crowe, Rami Malek, Matt Damon, and Don Cheadle, then run them through Exwalker and the portfolio publication workflow
 - [ ] Add and upload more photos of famous people so additional named person pages can be generated from real local assets
 
