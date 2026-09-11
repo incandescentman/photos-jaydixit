@@ -51,6 +51,7 @@ manifest.
 
 - *Every page that displays photographs must have working PhotoSwipe for every photograph.* This is a site-wide requirement, including homepages, galleries, person pages, editorial and story pages, blog posts, About pages, comparison pages, and experimental routes.
 - 2026-09-09 — Gallery directory covers are navigation: clicking a cover opens its gallery, so directory covers are exempt from the every-photograph PhotoSwipe requirement (Jay’s explicit decision).
+- 2026-09-10 — The shared closing section's four prints (Red Carpet, Galleries, Before & After, Contact) are navigation covers, each opening its destination page, so they are exempt from the every-photograph PhotoSwipe requirement (Jay's explicit decision). Implementation: src/components/PortfolioClosing.astro, with HomepageClosing.astro preserving the homepage placement.
 
 - Never replace a PhotoSwipe-enabled photograph with a plain image or ordinary image link while changing copy, layout, or image sources.
 
@@ -266,7 +267,8 @@ manifest.
 
 - NavBar.astro → compatibility wrapper for PortfolioHeader.astro; the shared header uses the red-carpet seal, one navigation list, and a native compact menu with Escape/outside dismissal (updated 2026-09-09).
 
-- Footer.astro → site footer
+- Footer.astro → compact footer for Contact and utility pages
+- PortfolioClosing.astro → shared closing section: wordmark and four 3:2 navigation prints (Red Carpet, Galleries, Before & After, Contact), with Contact in red; used on the homepage and main browsing pages. MainLayout opts browsing pages in with ~photoFooter~, preserving their page-specific conclusions and adding Website/Instagram beside copyright. HomepageClosing.astro is the homepage placement wrapper; approved 2026-09-10.
 
 - Gallery.astro → CSS columns gallery with PhotoSwipe lightbox
 
@@ -299,6 +301,7 @@ manifest.
 - Shared PortfolioHeader with the red-carpet seal and Jay Dixit Photos wordmark (updated 2026-09-09)
 
 - Fixed inner-page header and absolute homepage header; compact navigation through 1500px
+- The homepage header above 1500px follows window height, not width (2026-09-10): ~--portfolio-header-row-height: clamp(48px, calc(12svh - 82px), 120px)~ in PortfolioHeader.astro, so the seal, wordmark, and nav shrink in a 1117px-tall laptop window (row height about 52px) and keep the full 120px masthead in a 1692px-tall 6K window. The reason: the top-row clothespins rise into the nav line at laptop heights. The home header has no bottom border, and its inline nav links carry a paper-colored text-shadow halo so letters stay legible over a pin.
 
 - Closed inner-page headers render at 121px on desktop and 81px through 820px, including the border; ~row-gap: 0~ prevents the hidden menu row from adding height above 1500px. The verified crop and header-clearance mechanisms are documented in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/codebase-wisdom.org][codebase wisdom]] (2026-09-09).
 

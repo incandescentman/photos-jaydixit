@@ -1,10 +1,11 @@
 ---
 import { Image } from 'astro:assets';
 import MainLayout from '../layouts/MainLayout.astro';
+import PhotoSwipeLightbox from '../components/PortfolioLightbox.astro';
 import quotePhoto from '../assets/images/about/jay-dixit_2024-10-04_telos_ryan-jina-jess_wong-kar-wai_05420.jpg';
 ---
 
-<MainLayout>
+<MainLayout photoFooter>
 	<div class="ed">
 		<!-- Hero -->
 		<section class="ed-hero">
@@ -14,11 +15,20 @@ import quotePhoto from '../assets/images/about/jay-dixit_2024-10-04_telos_ryan-j
 					<h1 class="ed-h1"><span>Why I Take</span><span>Photos</span></h1>
 				</header>
 				<div class="ed-hero-media">
-					<img
-						src="/images/jay-anisha-williamsburg_jay-dixit-photos_lighter.jpg"
-						alt="Jay Dixit"
-						class="ed-hero-img"
-					/>
+					<a
+						href="/images/jay-anisha-williamsburg_jay-dixit-photos_lighter.jpg"
+						data-about-photo
+						data-pswp-width="3000"
+						data-pswp-height="2000"
+						data-pswp-caption="Jay Dixit"
+						aria-label="Open larger photograph of Jay Dixit"
+					>
+						<img
+							src="/images/jay-anisha-williamsburg_jay-dixit-photos_lighter.jpg"
+							alt="Jay Dixit"
+							class="ed-hero-img"
+						/>
+					</a>
 				</div>
 				<div class="ed-lead">
 					<p>
@@ -118,13 +128,22 @@ import quotePhoto from '../assets/images/about/jay-dixit_2024-10-04_telos_ryan-j
 				<div class="ed-quote">
 					<figure class="ed-quote-photo">
 						<div class="ed-quote-photo-frame">
-							<Image
-								src={quotePhoto}
-								alt="A woman smiling in red light"
-								widths={[500, 900, 1200]}
-								sizes="(max-width: 900px) 100vw, 46vw"
-								loading="lazy"
-							/>
+							<a
+								href={quotePhoto.src}
+								data-about-photo
+								data-pswp-width={quotePhoto.width}
+								data-pswp-height={quotePhoto.height}
+								data-pswp-caption="Catching Jina in an unguarded moment at the Wong Kar-wai party in Bushwick"
+								aria-label="Open larger photograph of a woman smiling in red light"
+							>
+								<Image
+									src={quotePhoto}
+									alt="A woman smiling in red light"
+									widths={[500, 900, 1200]}
+									sizes="(max-width: 900px) 100vw, 46vw"
+									loading="lazy"
+								/>
+							</a>
 						</div>
 						<figcaption class="ed-quote-caption">
 							Catching Jina in an unguarded moment at the Wong Kar-wai party in Bushwick
@@ -181,6 +200,12 @@ import quotePhoto from '../assets/images/about/jay-dixit_2024-10-04_telos_ryan-j
 			</div>
 		</section>
 	</div>
+
+	<PhotoSwipeLightbox
+		gallerySelector=".ed"
+		childrenSelector="a[data-about-photo]"
+		options={{ escKey: true, tapAction: 'toggle-controls' }}
+	/>
 </MainLayout>
 
 <style>
@@ -262,6 +287,11 @@ import quotePhoto from '../assets/images/about/jay-dixit_2024-10-04_telos_ryan-j
 		display: block;
 		width: 100%;
 		height: auto;
+	}
+
+	.ed-hero-media > a,
+	.ed-quote-photo-frame > a {
+		display: block;
 	}
 
 	/* Sections */

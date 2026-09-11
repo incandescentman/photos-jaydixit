@@ -1,0 +1,85 @@
+#+TITLE: Homepage closing section — design recommendation
+#+DATE: 2026-09-10
+
+* Status and reference
+
+You approved landscape B on 2026-09-10: “approved”. Your final approval, relayed by Claude, substitutes the Ana de Armas, Sydney Sweeney, and Ron Howard group portrait for Red Carpet while keeping the Bateman comparison pair. That version is applied to the local homepage at [[http://localhost:4336/#footer-review][http://localhost:4336/#footer-review]] through [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/HomepageClosing.astro][HomepageClosing.astro]]. All earlier prototypes are preserved. Nothing was committed or pushed. Original screenshot: [[file:/var/folders/qh/sbkqsc3x3j32_nlkdcklf34r0000gn/T/codex-clipboard-gebxNh.png][your supplied closing-section screenshot]].
+
+Your reaction: “this bottom part still looks kind of blah, what do you suggest?”
+
+* Applied footer — final approval, 2026-09-10
+
+After reviewing the applied footer and final captures, you confirmed: “approved”. This is approval of the completed version with the Ana de Armas, Sydney Sweeney, and Ron Howard group portrait. It does not authorize a commit or push.
+
+The homepage now ends with the approved compact wordmark and four plain 3:2 landscape navigation prints. The Red Carpet group portrait uses a face-oriented focal point of 50% 25%; all three faces fit within the frame. Before & After retains the side-by-side Bateman pair, Contact remains red, and the phone layout retains two columns. The separate copyright strip is folded into the closing band. The component uses the existing Cloudinary highlights and local Astro image sources and derivatives, with lazy loading for the footer photographs; no new photograph or expressive copy was created.
+
+Rendered geometry matches the preserved approved prototype exactly at 1728 by 1117, 3008 by 1692, and 390 by 844, plus both sides of the 820- and 1180-pixel layout breakpoints. The other image sources, header and hero geometry, and content above the footer match the reference. The [[file+emacs:/Users/jay/Dropbox/screenshots/photos-home-header-20260910-d1CTsN/footer-final-comparison.json][comparison receipt]] records this; its pixel differences include the approved Red Carpet photograph replacement and are not a claim of pixel identity.
+
+All four image links reached their correct pages with HTTP 200 at the three requested sizes. Existing hero and wall photographs opened the correct PhotoSwipe source, advanced, and closed with Escape. No page errors or horizontal overflow were observed; see the [[file+emacs:/Users/jay/Dropbox/screenshots/photos-home-header-20260910-d1CTsN/footer-final-verification.json][interaction receipt]]. The 141-page production build and scoped ESLint, Prettier, and code whitespace checks passed.
+
+Final captures are open in Preview: [[file+emacs:/Users/jay/Dropbox/screenshots/photos-home-header-20260910-d1CTsN/footer-final-1728x1117.png][1728 by 1117]], [[file+emacs:/Users/jay/Dropbox/screenshots/photos-home-header-20260910-d1CTsN/footer-final-3008x1692.png][3008 by 1692]], and [[file+emacs:/Users/jay/Dropbox/screenshots/photos-home-header-20260910-d1CTsN/footer-final-390x844.png][390 by 844]]. The [[http://localhost:4336/experiments/footer-b-large.html#footer-review][approved layout prototype]] and all earlier experiment pages remain unchanged and preserved. The following sections describe the historical iterations.
+
+* Landscape B revision — 2026-09-10
+
+Claude relayed your decision: “all four prints are 3:2 landscape, not 4:5 portrait.” You also suggested: “maybe use the jude law and jason bateman one for red carpet?” The [[http://localhost:4336/experiments/footer-b-large.html#footer-review][main B prototype]] now implements that landscape direction and uses the existing hero photograph of Jason Bateman and Jude Law for Red Carpet. The exact previous 4:5 version is preserved at [[http://localhost:4336/experiments/footer-b-portrait.html#footer-review][the portrait reference]].
+
+All four image frames are 3:2 landscapes. Their widths match the larger portrait version at all three reviewed sizes: approximately 303 pixels at 1728, 380 pixels at 3008, and 161 pixels at 390. Before & After is side by side, with individual vertical focal positions preserving both faces. The other landscape photographs use centered focal points. Contact remains red, and the phone grid keeps two columns. The shallower image frames reduce the footer height to approximately 439, 491, and 647 pixels respectively.
+
+The [[file+emacs:/Users/jay/Dropbox/screenshots/photos-home-header-20260910-d1CTsN/footer-b-landscape.jpg][portrait-versus-landscape comparison sheet]] is open in Preview. It shows 1728 by 1117, 3008 by 1692, and 390 by 844 with the last wall photograph for context. The [[file+emacs:/Users/jay/Dropbox/screenshots/photos-home-header-20260910-d1CTsN/footer-b-landscape-geometry.json][geometry receipt]] confirms 3:2 frames, matching print widths, even rows, the horizontal pair, and Contact's red label. All four destination clicks and existing hero/wall PhotoSwipe first-image, next, and Escape checks passed at all three sizes without page errors or horizontal overflow; see the [[file+emacs:/Users/jay/Dropbox/screenshots/photos-home-header-20260910-d1CTsN/footer-b-landscape-verification.json][interaction receipt]]. Prototype only; no production footer changes, commit, push, or deletion.
+
+* Larger portrait B revision — 2026-09-10
+
+Claude relayed your review: “B wins on phone outright.” The desktop direction still needs refinement: “the four prints are too small at 1728 and 3008: they read as icons beside the wordmark.” This selects B on phone and requests another desktop prototype; it does not approve production implementation.
+
+The [[http://localhost:4336/experiments/footer-b-portrait.html#footer-review][larger portrait B prototype]] keeps four plain prints to the right of the wordmark on desktop and the existing two-column phone grid. All four image frames are 4:5 portraits with individual crop positions. Desktop print widths grow from 190 pixels to approximately 303 pixels at 1728 and 380 pixels at 3008; labels grow with them, and Contact uses the site red. The footer takes the added height: approximately 606 and 702 pixels at those desktop sizes. The phone footer is approximately 821 pixels tall, with equal print heights and room for the wrapped Before & After label.
+
+The Jason Bateman comparison is stacked before above after, with both photographs contained in their half of the common frame so neither face is cropped. It remains readable at the reviewed phone size, so the main revision keeps the pair. The [[http://localhost:4336/experiments/footer-b-large-after.html#footer-review][after-portrait alternative]] is also preserved.
+
+The [[file+emacs:/Users/jay/Dropbox/screenshots/photos-home-header-20260910-d1CTsN/footer-b-large.jpg][new comparison sheet]] shows the preserved current B beside larger B at 1728 by 1117, 3008 by 1692, and 390 by 844, including the last wall photograph above the footer. The sheet is open in Preview. The [[file+emacs:/Users/jay/Dropbox/screenshots/photos-home-header-20260910-d1CTsN/footer-b-large-geometry.json][geometry receipt]] confirms four equal 4:5 frames, one desktop row, two phone columns, a vertical comparison pair, and the red Contact label. All destination image clicks and existing hero/wall PhotoSwipe first-image, next, and Escape interactions passed at all three widths, with no page errors or horizontal overflow; see the [[file+emacs:/Users/jay/Dropbox/screenshots/photos-home-header-20260910-d1CTsN/footer-b-large-verification.json][interaction receipt]]. Application source remains unchanged by this footer work. Previous prototypes remain in place; nothing was committed or pushed.
+
+* First candidates — 2026-09-10
+
+- [[http://localhost:4336/experiments/footer-candidate-a.html#footer-review][Candidate A]] implements the recommendation below: substantial wordmark, prominent Contact link, quiet navigation row, hairlines, and copyright inside the compact band.
+- [[http://localhost:4336/experiments/footer-candidate-b.html#footer-review][Candidate B]] follows your revised brief: four plain photographic prints navigate to Red Carpet, Galleries, Before & After, and Contact. They use Vanessa Kirby, the existing Oslo gallery cover, the Jason Bateman comparison pair, and the About-page portrait of you. Your correction was “but no clothespins for these”. The photographs retain paper borders and shadows; there are no pins. The four prints form one row on desktop and two rows on phones.
+- The Bateman pair remains readable at the actual desktop and phone print sizes, so B uses the pair. The [[http://localhost:4336/experiments/footer-candidate-b-after.html#footer-review][after-portrait alternative]] is preserved. The earlier [[http://localhost:4336/experiments/footer-candidate-b-sixprints.html#footer-review][six-print strip prototype]] and its [[file+emacs:/Users/jay/Dropbox/screenshots/photos-home-header-20260910-d1CTsN/footer-candidates-sixprints.jpg][comparison sheet]] are preserved separately.
+
+The [[file+emacs:/Users/jay/Dropbox/screenshots/photos-home-header-20260910-d1CTsN/footer-candidates.jpg][current comparison sheet]] shows Current, A, and B at 1728 by 1117, 3008 by 1692, and 390 by 844, with the full last wall photograph above each footer. Columns use the same scale within each viewport row. The sheet is open in Preview.
+
+Codex's assessment: B makes the photographs useful navigation and gives the ending more character. A gives Contact more prominence and is substantially shorter on phones. At desktop sizes B is about 449 pixels tall, compared with A's 463–478 pixels; at 390 pixels wide B is about 737 pixels tall and A is about 412 pixels tall. These are measured layouts, not a selection on your behalf.
+
+* Verification and scope
+
+All four B image links were clicked at all three sizes and reached their correct pages with HTTP 200, without opening a lightbox. This follows your explicit direction for these navigation covers. Existing hero and wall photographs still open the correct PhotoSwipe image, advance to the next image, and close with Escape. No page errors or horizontal overflow were observed. The [[file+emacs:/Users/jay/Dropbox/screenshots/photos-home-header-20260910-d1CTsN/footer-destination-verification.json][interaction receipt]] and [[file+emacs:/Users/jay/Dropbox/screenshots/photos-home-header-20260910-d1CTsN/footer-source-contract.json][source and geometry checks]] record the results.
+
+The source and geometry checks confirm unchanged wall photographs and header across the three views. For geometry measurement only, offscreen wall cards were forced to use their actual boxes instead of the homepage's content-visibility intrinsic placeholders; the screenshots retain the normal layout. The source images and derivatives are recorded in [[file+emacs:/Users/jay/Dropbox/screenshots/photos-home-header-20260910-d1CTsN/footer-destination-sources.json][the image-source receipt]]. No new derivatives or page copy were created.
+
+Only standalone HTML review pages were added under [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/experiments/][the experiment directory]] and copied to the existing local preview output. Application source was not changed for the footer. The prototypes remain untracked and must stay out of commits. Nothing was committed or pushed.
+
+* Recommendation
+
+Make the ending a shorter, deliberately composed signature with an obvious next step. Keep the warm paper, editorial serif, red italic Photos, and asymmetry that belong to this site.
+
+- Start with roughly half the current desktop height. The present near-screen-height section separates the wordmark from the links with an empty middle; bringing them together would make the composition feel connected.
+- Put a smaller but still substantial Jay Dixit Photos wordmark on the left and a prominent red Contact link on the right, aligned as one composition. Keep the existing wording. Giving Contact priority is my proposal: someone who has finished looking through the photographs has a clear way to reach you.
+- Put Red Carpet, Galleries, and Before & After in a quieter navigation row beneath, retaining all three destinations. Replace the current four equally weighted bordered cells with spacing and a single thin divider.
+- Reduce the thick top rule to a hairline and bring the copyright into the same closing area. Let the typography provide the emphasis.
+
+The tradeoff is less monumental branding at the bottom of the page. Preserve enough scale and asymmetry that the ending still belongs to the approved splashy editorial design. A prototype should compare this direction with the current section in the context of the last photographs, at 1728 by 1117, 3008 by 1692, and phone width.
+
+* Basis
+
+The [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/experiment-intentions/kinetic-editorial.json][approved artistic intention]] calls for large typography, restrained navigation, balanced asymmetry, and a continuous composition; it cautions against uniform full-viewport sections. The current closing markup and layout are in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][the homepage source]].
+
+[[https://www.nngroup.com/articles/footers/][Nielsen Norman Group’s footer research]] supports keeping contact information and useful navigation available at the end of a long page. The proposed scale, arrangement, and Contact emphasis are my design judgment for this page, not a result tested by that research.
+
+* Shared browsing-page footer — 2026-09-10
+
+After asking “do we need to add it on other pages?”, you answered “yes” to extending it to the main browsing pages, with Contact kept compact and a contextual comparison on a gallery and Before & After first. The preserved prototypes are [[http://localhost:4336/experiments/shared-footer-gallery.html#footer-review][the Nobel gallery ending]] and [[http://localhost:4336/experiments/shared-footer-before-after.html#footer-review][the Before & After ending]]. Both use the approved photographs, proportions, colors, and phone grid, with Website and Instagram on the copyright row.
+
+The shared component is [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/PortfolioClosing.astro][PortfolioClosing.astro]]. It is applied below the existing content on the gallery and Red Carpet directories, individual galleries and person pages, Before & After, About, Nobel coverage, Red Carpets Around the World, and blog pages. The homepage wrapper retains its original placement. Contact, utility pages, and preserved experiments keep their previous endings.
+
+At 1728 by 1117, 3008 by 1692, and 390 by 844, the applied gallery and Before & After footer geometry matches the prototypes exactly; page text, photograph sources, and header geometry match as well. All four destination clicks and correct-image PhotoSwipe opening, next, and Escape passed. Homepage and Contact end-of-page captures are pixel-identical to the pre-extension baselines. The [[file+emacs:/Users/jay/Dropbox/screenshots/photos-home-header-20260910-d1CTsN/shared-footer-final.jpg][applied comparison sheet]] was opened in Preview; the [[file+emacs:/Users/jay/Dropbox/screenshots/photos-home-header-20260910-d1CTsN/shared-footer-final-verification.json][verification receipt]] records these checks. No commit or push.
+
+* Shared-footer review and release authorization — 2026-09-10
+
+Your response: “excellent. update docs, commit, and push.” The shared footer is approved for release. During the page audit, the existing About and Red Carpets photographs were found to lack PhotoSwipe; their scoped bindings are now repaired, with unchanged photograph and footer geometry, correct first/next image sources, and Escape verified at all three required sizes. Footer navigation covers remain outside both sequences. The previous no-commit/no-push notes describe earlier review stages; this response explicitly authorizes the release.

@@ -25,6 +25,34 @@
 			"date": "2026-08-22",
 			"reaction": "good. now add the lisa gilroy photo further down, on the photo wall.",
 			"status": "positive-continued-iteration"
+		},
+		{
+			"date": "2026-09-10",
+			"reaction": "this bottom part still looks kind of blah, what do you suggest?",
+			"status": "closing-section-needs-rework",
+			"review_url": "http://localhost:4336/",
+			"scope": "Homepage closing section only; a replacement design has not been approved."
+		},
+		{
+			"date": "2026-09-10",
+			"reaction": "approved",
+			"status": "closing-section-approved-applied",
+			"review_url": "http://localhost:4336/experiments/footer-b-large.html#footer-review",
+			"scope": "Homepage closing section: four large plain 3:2 landscape navigation prints, the Ana de Armas, Sydney Sweeney, and Ron Howard group portrait for Red Carpet, the side-by-side Bateman Before & After pair, red Contact label, two-column phone grid, and copyright in the same band. The group-portrait substitution follows Jay's final approval relayed by Claude. Prototypes are preserved; no commit or push."
+		},
+		{
+			"date": "2026-09-10",
+			"reaction": "approved",
+			"status": "closing-section-final-review-approved",
+			"review_url": "http://localhost:4336/#footer-review",
+			"scope": "Jay approved the completed homepage footer after reviewing the final desktop and phone captures, including the Ana de Armas, Sydney Sweeney, and Ron Howard group portrait. No commit or push authorized."
+		},
+		{
+			"date": "2026-09-10",
+			"reaction": "excellent. update docs, commit, and push.",
+			"status": "shared-closing-approved-for-release",
+			"review_url": "http://localhost:4336/gallery/events/nobel-prizes-2024/#footer-review",
+			"scope": "Shared photographic footer on the homepage and main browsing pages, with Website and Instagram on the inner-page copyright row, compact Contact and utility footers retained, and all prototypes preserved. Jay authorized documentation, commit, and push."
 		}
 	],
 	"qualities_to_preserve": [

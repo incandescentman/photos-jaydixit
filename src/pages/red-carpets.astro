@@ -2,6 +2,7 @@
 export const prerender = true;
 
 import MainLayout from '../layouts/MainLayout.astro';
+import PhotoSwipeLightbox from '../components/PortfolioLightbox.astro';
 import { cldSizes, cldSrcset, cldUrl } from '../lib/cloudinary';
 import { torontoPortraits, worldTourDestinations } from '../data/worldTour';
 import { routeStops } from '../data/worldTourVariants';
@@ -9,6 +10,49 @@ import { routeStops } from '../data/worldTourVariants';
 const pageTitle = 'Red Carpets Around the World';
 const description =
 	'Jay Dixit photographs actors, filmmakers, and public figures at festivals and cultural events from Stockholm and Busan to Locarno, Sundance, SXSW, and Toronto.';
+
+const imageDimensions: Record<string, { width: number; height: number }> = {
+	'highlights/john-hopfield_nobel-physics_2024': { width: 2048, height: 2560 },
+	'highlights/steven-yeun_sundance_2025': { width: 2048, height: 2560 },
+	'highlights/lisa-gilroy_sxsw_2025': { width: 1707, height: 2560 },
+	'highlights/vanessa-kirby_tiff_2024': { width: 1978, height: 2560 },
+	'highlights/Ana_de_Armas_at_the_2024_Toronto_International_Film_Festival_02_(cropped2)': {
+		width: 2721,
+		height: 4079,
+	},
+	'highlights/Sydney_Sweeney_at_the_2024_Toronto_International_Film_Festival_(cropped_2)': {
+		width: 960,
+		height: 1354,
+	},
+	'highlights/Willem_Dafoe_at_the_2024_Toronto_International_Film_Festival_02': {
+		width: 2898,
+		height: 3623,
+	},
+	'highlights/Kaia_Gerber_at_the_2024_Toronto_International_Film_Festival_03_(cropped)': {
+		width: 1853,
+		height: 2233,
+	},
+	'highlights/Gabriel_LaBelle_at_the_2024_Toronto_International_Film_Festival_03_cropped': {
+		width: 1583,
+		height: 2491,
+	},
+	'highlights/ella-hunt_toronto-film-festival': { width: 1707, height: 2560 },
+	'highlights/nicholas-braun_toronto-film-festival': { width: 1707, height: 2560 },
+	'highlights/jay-dixit_red-carpet_01130': { width: 1707, height: 2560 },
+	'highlights/jason-bateman_tiff_2025': { width: 2400, height: 3000 },
+	'highlights/jason-bateman-jude-law_tiff_2025': { width: 3000, height: 2000 },
+	'highlights/jason-bateman-jude-law-09836_tiff_2025': { width: 3000, height: 2000 },
+	'highlights/Ana_de_Armas_and_Sydney_Sweeney_at_the_2024_Toronto_International_Film_Festival_04': {
+		width: 4000,
+		height: 6000,
+	},
+};
+
+const fullImage = (publicId: string) => {
+	const dimensions = imageDimensions[publicId];
+	if (!dimensions) throw new Error(`Missing dimensions for ${publicId}`);
+	return { href: cldUrl(publicId), ...dimensions };
+};
 
 const placeholderPortraits = {
 	busan: torontoPortraits[1],
@@ -82,6 +126,7 @@ const structuredData = {
 ---
 
 <MainLayout
+	photoFooter
 	title={pageTitle}
 	{description}
 	image={cldUrl('highlights/john-hopfield_nobel-physics_2024', 1600)}
@@ -188,19 +233,29 @@ const structuredData = {
 							data-placeholder-frame={destination.isPlaceholder ? 'true' : undefined}
 						>
 							<div class="city-portrait-frame">
-								<img
-									src={cldUrl(destination.displayPortrait.publicId, 1200)}
-									srcset={cldSrcset(
-										destination.displayPortrait.publicId,
-										[480, 768, 1024, 1200, 1600],
-									)}
-									sizes={cldSizes('(max-width: 800px) 100vw, 58vw')}
-									alt={destination.displayPortrait.alt}
-									loading={index === 0 ? 'eager' : 'lazy'}
-									decoding="async"
-									fetchpriority={index === 0 ? 'high' : 'auto'}
-									style={`object-position: ${destination.displayPortrait.position ?? '50% 24%'}`}
-								/>
+								<a
+									class="world-photo-lightbox"
+									href={fullImage(destination.displayPortrait.publicId).href}
+									data-world-photo
+									data-pswp-width={fullImage(destination.displayPortrait.publicId).width}
+									data-pswp-height={fullImage(destination.displayPortrait.publicId).height}
+									data-pswp-caption={destination.displayPortrait.alt}
+									aria-label={`Open larger photograph: ${destination.displayPortrait.alt}`}
+								>
+									<img
+										src={cldUrl(destination.displayPortrait.publicId, 1200)}
+										srcset={cldSrcset(
+											destination.displayPortrait.publicId,
+											[480, 768, 1024, 1200, 1600],
+										)}
+										sizes={cldSizes('(max-width: 800px) 100vw, 58vw')}
+										alt={destination.displayPortrait.alt}
+										loading={index === 0 ? 'eager' : 'lazy'}
+										decoding="async"
+										fetchpriority={index === 0 ? 'high' : 'auto'}
+										style={`object-position: ${destination.displayPortrait.position ?? '50% 24%'}`}
+									/>
+								</a>
 								{destination.isPlaceholder && (
 									<span class="city-temporary-label">
 										Temporary portfolio frame · final {destination.city} image pending
@@ -286,15 +341,25 @@ const structuredData = {
 								data-subject={portrait.subject}
 								aria-hidden={index === 0 ? 'false' : 'true'}
 							>
-								<img
-									src={cldUrl(portrait.publicId, 1024)}
-									srcset={cldSrcset(portrait.publicId, [480, 768, 1024, 1400])}
-									sizes={cldSizes('(max-width: 800px) 100vw, 68vw')}
-									alt={portrait.alt}
-									loading="lazy"
-									decoding="async"
-									style={`object-position: ${portrait.position ?? '50% 24%'}`}
-								/>
+								<a
+									class="world-photo-lightbox"
+									href={fullImage(portrait.publicId).href}
+									data-world-photo
+									data-pswp-width={fullImage(portrait.publicId).width}
+									data-pswp-height={fullImage(portrait.publicId).height}
+									data-pswp-caption={portrait.alt}
+									aria-label={`Open larger photograph: ${portrait.alt}`}
+								>
+									<img
+										src={cldUrl(portrait.publicId, 1024)}
+										srcset={cldSrcset(portrait.publicId, [480, 768, 1024, 1400])}
+										sizes={cldSizes('(max-width: 800px) 100vw, 68vw')}
+										alt={portrait.alt}
+										loading="lazy"
+										decoding="async"
+										style={`object-position: ${portrait.position ?? '50% 24%'}`}
+									/>
+								</a>
 							</figure>
 						))
 					}
@@ -329,15 +394,25 @@ const structuredData = {
 					torontoPortraits.map((portrait, index) => (
 						<figure>
 							<div>
-								<img
-									src={cldUrl(portrait.publicId, 600)}
-									srcset={cldSrcset(portrait.publicId, [320, 480, 600, 768])}
-									sizes={cldSizes('(max-width: 600px) 50vw, (max-width: 1000px) 33vw, 20vw')}
-									alt={portrait.alt}
-									loading="lazy"
-									decoding="async"
-									style={`object-position: ${portrait.position ?? '50% 24%'}`}
-								/>
+								<a
+									class="world-photo-lightbox"
+									href={fullImage(portrait.publicId).href}
+									data-world-photo
+									data-pswp-width={fullImage(portrait.publicId).width}
+									data-pswp-height={fullImage(portrait.publicId).height}
+									data-pswp-caption={portrait.alt}
+									aria-label={`Open larger photograph: ${portrait.alt}`}
+								>
+									<img
+										src={cldUrl(portrait.publicId, 600)}
+										srcset={cldSrcset(portrait.publicId, [320, 480, 600, 768])}
+										sizes={cldSizes('(max-width: 600px) 50vw, (max-width: 1000px) 33vw, 20vw')}
+										alt={portrait.alt}
+										loading="lazy"
+										decoding="async"
+										style={`object-position: ${portrait.position ?? '50% 24%'}`}
+									/>
+								</a>
 								<span aria-hidden="true">{index + 1}</span>
 							</div>
 							<figcaption>{portrait.subject}</figcaption>
@@ -353,6 +428,12 @@ const structuredData = {
 			<a href="/contact">Bring me to your next festival <span aria-hidden="true">→</span></a>
 		</section>
 	</div>
+
+	<PhotoSwipeLightbox
+		gallerySelector=".world-tour"
+		childrenSelector="a[data-world-photo]"
+		options={{ escKey: true, tapAction: 'toggle-controls' }}
+	/>
 </MainLayout>
 
 <script>
@@ -994,6 +1075,14 @@ const structuredData = {
 		transition:
 			transform 900ms cubic-bezier(0.2, 0.7, 0, 1),
 			filter 500ms ease;
+	}
+
+	.city-portrait-frame > .world-photo-lightbox,
+	.toronto-frame > .world-photo-lightbox,
+	.contact-grid figure > div > .world-photo-lightbox {
+		display: block;
+		width: 100%;
+		height: 100%;
 	}
 
 	.city-portrait:hover img {

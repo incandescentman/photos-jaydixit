@@ -1,0 +1,425 @@
+---
+import { Image, type ImageMetadata } from 'astro:assets';
+import siteConfig from '../../site.config.mts';
+import SocialIcon from './SocialIcon.astro';
+
+import { cldSrcset, cldUrl } from '../lib/cloudinary';
+import { comparisons } from '../data/beforeAfter';
+import oslo from '../gallery/photos/events/nobel-prizes-2024/anti-nuclear-campaigners_nobel-peace-prize-torchlight-procession-oslo_2024.jpg';
+
+interface Props {
+	showSocialLinks?: boolean;
+	as?: 'section' | 'footer';
+}
+const { showSocialLinks = false, as: Tag = 'footer' } = Astro.props;
+
+type PrintImage = {
+	src: string | ImageMetadata;
+	alt: string;
+	srcset?: string;
+	widths?: number[];
+	width?: number;
+	height?: number;
+	focalPoint: string;
+};
+type Destination = { id: string; label: string; href: string; images: PrintImage[] };
+
+const bateman = comparisons.find((comparison) => comparison.name === 'Jason Bateman');
+if (!bateman)
+	throw new Error('The portfolio closing section requires the Jason Bateman comparison.');
+const redCarpetId = 'highlights/group-portrait_ana-de-armas-sydney-sweeney-ron-howard_2024';
+const destinations: Destination[] = [
+	{
+		id: 'red-carpet',
+		label: 'Red Carpet',
+		href: '/red-carpet',
+		images: [
+			{
+				src: cldUrl(redCarpetId, 1000),
+				srcset: cldSrcset(redCarpetId, [480, 760, 1000, 1400, 1800]),
+				alt: 'Ana de Armas, Sydney Sweeney, and Ron Howard',
+				width: 2560,
+				height: 1707,
+				focalPoint: '50% 25%',
+			},
+		],
+	},
+	{
+		id: 'galleries',
+		label: 'Galleries',
+		href: '/gallery',
+		images: [
+			{
+				src: oslo,
+				alt: 'Nobel Prizes 2024',
+				width: 960,
+				widths: [480, 720, 960, 1440],
+				focalPoint: '50% 50%',
+			},
+		],
+	},
+	{
+		id: 'before-and-after',
+		label: 'Before & After',
+		href: '/before-and-after',
+		images: [
+			{
+				src: bateman.beforeImage,
+				alt: 'Jason Bateman — previous Wikipedia photograph',
+				widths: [500, 800, 1200],
+				focalPoint: bateman.beforePos,
+			},
+			{
+				src: bateman.afterImage,
+				alt: 'Jason Bateman — photograph by Jay Dixit',
+				widths: [500, 800, 1200],
+				focalPoint: bateman.afterPos,
+			},
+		],
+	},
+	{
+		id: 'contact',
+		label: 'Contact',
+		href: '/contact',
+		images: [
+			{
+				src: '/images/jay-anisha-williamsburg_jay-dixit-photos_lighter-720.jpg',
+				srcset:
+					'/images/jay-anisha-williamsburg_jay-dixit-photos_lighter-720.jpg 720w, /images/jay-anisha-williamsburg_jay-dixit-photos_lighter-1280.jpg 1280w, /images/jay-anisha-williamsburg_jay-dixit-photos_lighter.jpg 3000w',
+				alt: 'Jay Dixit at the Williamsburg waterfront',
+				width: 3000,
+				height: 2000,
+				focalPoint: '50% 50%',
+			},
+		],
+	},
+];
+const printSizes = '(max-width: 820px) 40vw, (max-width: 2000px) 20vw, 380px';
+const pairSizes = '(max-width: 820px) 20vw, 190px';
+---
+
+<Tag
+	class:list={['closing-panel', { 'has-social-links': showSocialLinks }]}
+	id="footer-review"
+	aria-labelledby="closing-title"
+>
+	<div class="footer-band">
+		<div class="footer-destination-composition">
+			<h2 id="closing-title">Jay Dixit <em>Photos</em></h2>
+			<nav class="destination-navigation" aria-label="Footer navigation">
+				{
+					/* Approved navigation covers: these photographs link to destinations rather than PhotoSwipe. */
+				}
+				{
+					destinations.map((destination) => (
+						<a
+							class="destination-print"
+							href={destination.href}
+							aria-label={destination.label}
+							data-destination={destination.id}
+						>
+							<span
+								class:list={[
+									'destination-media',
+									{ 'destination-pair': destination.images.length > 1 },
+								]}
+							>
+								{destination.images.map((photo) =>
+									typeof photo.src === 'string' ? (
+										<img
+											src={photo.src}
+											srcset={photo.srcset}
+											sizes={printSizes}
+											alt={photo.alt}
+											width={photo.width}
+											height={photo.height}
+											style={`object-position: ${photo.focalPoint}`}
+											loading="lazy"
+											decoding="async"
+										/>
+									) : (
+										<Image
+											src={photo.src}
+											widths={photo.widths}
+											width={photo.width}
+											sizes={destination.images.length > 1 ? pairSizes : printSizes}
+											alt={photo.alt}
+											style={`object-position: ${photo.focalPoint}`}
+											loading="lazy"
+											decoding="async"
+										/>
+									),
+								)}
+							</span>
+							<span class="destination-label">
+								{destination.label}
+								<svg viewBox="0 0 36 14" aria-hidden="true">
+									<path d="M1 7h32M27 1l6 6-6 6" />
+								</svg>
+							</span>
+						</a>
+					))
+				}
+			</nav>
+		</div>
+		<div class="footer-utility-row">
+			{
+				showSocialLinks && (
+					<div class="footer-social" aria-label="Social links">
+						{siteConfig.socialLinks.map((socialLink) => (
+							<SocialIcon socialLink={socialLink} frameSize={36} />
+						))}
+					</div>
+				)
+			}
+			<span class="footer-copyright">© {new Date().getFullYear()} {siteConfig.owner}</span>
+		</div>
+	</div>
+</Tag>
+
+<style>
+	.closing-panel {
+		--paper-bright: #fbf8f1;
+		--ink: #171713;
+		--muted: #756e64;
+		--accent: #a43f2e;
+		--rule: rgba(23, 23, 19, 0.22);
+		--serif: 'Newsreader', 'Iowan Old Style', 'Baskerville', 'Times New Roman', serif;
+		--sans: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+		color: var(--ink);
+		font-family: var(--sans);
+		position: relative;
+		display: block;
+		padding: 0 clamp(24px, 5vw, 80px);
+		overflow: hidden;
+		background: var(--paper-bright);
+	}
+	.footer-band {
+		max-width: 1800px;
+		margin-inline: auto;
+		border-top: 1px solid var(--rule);
+		padding: 60px 0 28px;
+	}
+	.footer-destination-composition {
+		display: grid;
+		grid-template-columns: minmax(350px, 0.9fr) minmax(0, 1.7fr);
+		align-items: center;
+		gap: clamp(40px, 4vw, 96px);
+		padding: 0 clamp(0px, 1.5vw, 24px) 38px;
+	}
+	h2 {
+		margin: 0;
+		font-family: var(--serif);
+		font-size: clamp(104px, 8.4vw, 154px);
+		font-weight: 300;
+		letter-spacing: -0.065em;
+		line-height: 0.76;
+	}
+	h2 em {
+		display: block;
+		margin-left: 23%;
+		color: var(--accent);
+		font-weight: 300;
+	}
+	.destination-navigation {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		align-items: end;
+		justify-items: center;
+		gap: clamp(16px, 1.8vw, 36px);
+	}
+	.destination-print {
+		display: block;
+		width: min(100%, 190px);
+		padding: 7px 7px 0;
+		background: #fffdf7;
+		box-shadow:
+			0 12px 28px rgb(53 42 27 / 14%),
+			0 2px 5px rgb(53 42 27 / 13%);
+		color: var(--ink);
+		text-decoration: none;
+		transition: box-shadow 220ms ease;
+	}
+	.destination-print:hover {
+		box-shadow:
+			0 16px 32px rgb(53 42 27 / 19%),
+			0 3px 6px rgb(53 42 27 / 15%);
+	}
+	.destination-print:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: 6px;
+	}
+	.destination-media {
+		display: block;
+		width: 100%;
+		aspect-ratio: 3 / 2;
+		overflow: hidden;
+		background: #eee9df;
+	}
+	.destination-media img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		min-height: 0;
+		object-fit: cover;
+	}
+	.destination-pair {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		grid-template-rows: 1fr;
+		align-items: start;
+		gap: 3px;
+	}
+	.destination-label {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 8px;
+		min-height: 54px;
+		padding: 6px 3px;
+		font-family: var(--serif);
+		font-size: 21px;
+		font-weight: 400;
+		letter-spacing: -0.012em;
+		line-height: 1.08;
+	}
+	[data-destination='contact'] .destination-label {
+		color: var(--accent);
+	}
+	.destination-label svg {
+		flex: none;
+		width: 25px;
+		height: auto;
+		fill: none;
+		stroke: var(--accent);
+		stroke-width: 1.3;
+		transition: transform 220ms ease;
+	}
+	.destination-print:hover svg {
+		transform: translateX(3px);
+	}
+	.footer-utility-row {
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		gap: 32px;
+		padding-top: 16px;
+		border-top: 1px solid var(--rule);
+	}
+	.footer-copyright {
+		color: var(--muted);
+		font-family: var(--sans);
+		font-size: 10px;
+		font-weight: 500;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		white-space: nowrap;
+	}
+	@media (min-width: 1181px) {
+		.closing-panel {
+			padding-inline: clamp(32px, 2.2vw, 66px);
+		}
+		.footer-band {
+			max-width: 2300px;
+		}
+		.footer-destination-composition {
+			grid-template-columns: clamp(310px, 20vw, 500px) minmax(0, 1fr);
+			gap: clamp(24px, 1.8vw, 54px);
+			padding-inline: 0;
+		}
+		h2 {
+			font-size: clamp(96px, 6vw, 145px);
+		}
+		.destination-navigation {
+			width: min(100%, 1628px);
+			justify-self: end;
+			gap: clamp(16px, 1.2vw, 36px);
+		}
+		.destination-print {
+			width: 100%;
+			max-width: 380px;
+			padding: 9px 9px 0;
+		}
+		.destination-label {
+			font-size: clamp(28px, 2vw, 36px);
+			min-height: 80px;
+			gap: 12px;
+			padding: 8px 6px;
+		}
+		.destination-label svg {
+			width: 36px;
+		}
+	}
+	@media (max-width: 1180px) {
+		.footer-destination-composition {
+			grid-template-columns: 1fr;
+			gap: 42px;
+			padding-inline: 0;
+		}
+		h2 {
+			max-width: 520px;
+		}
+		.destination-print {
+			width: min(100%, 210px);
+		}
+	}
+	@media (max-width: 820px) {
+		.closing-panel {
+			padding: 0 24px;
+		}
+		.footer-band {
+			padding-top: 48px;
+			padding-bottom: 22px;
+		}
+		.footer-destination-composition {
+			gap: 36px;
+			padding-bottom: 28px;
+		}
+		h2 {
+			font-size: clamp(78px, 22vw, 132px);
+			line-height: 0.78;
+		}
+		h2 em {
+			margin-left: 22%;
+		}
+		.destination-navigation {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 24px 20px;
+		}
+		.destination-print {
+			padding: 6px 6px 0;
+		}
+		.destination-label {
+			font-size: 20px;
+			height: 56px;
+			min-height: 56px;
+			padding-inline: 2px;
+		}
+		.destination-label svg {
+			width: 23px;
+		}
+		.footer-utility-row {
+			display: block;
+		}
+		.footer-copyright {
+			display: block;
+			font-size: 9px;
+		}
+	}
+
+	.has-social-links .footer-utility-row {
+		justify-content: space-between;
+	}
+	.footer-social {
+		display: flex;
+		gap: 0.35rem;
+		align-items: center;
+	}
+	@media (max-width: 820px) {
+		.has-social-links .footer-utility-row {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 12px 24px;
+		}
+	}
+</style>

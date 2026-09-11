@@ -152,6 +152,17 @@ const isActive = (href: string) => {
 		position: absolute;
 		border-bottom: 0;
 	}
+	.portfolio-header--home .portfolio-nav-primary a {
+		text-shadow:
+			-1px -1px 0 var(--paper),
+			0 -1px 0 var(--paper),
+			1px -1px 0 var(--paper),
+			-1px 0 0 var(--paper),
+			1px 0 0 var(--paper),
+			-1px 1px 0 var(--paper),
+			0 1px 0 var(--paper),
+			1px 1px 0 var(--paper);
+	}
 	.portfolio-header--home:has(.portfolio-menu-toggle[aria-expanded='true']) {
 		background: var(--paper, #f2eee5);
 	}
@@ -322,6 +333,25 @@ const isActive = (href: string) => {
 		gap: 0.5rem;
 		padding-top: 0.75rem;
 		border-top: 1px solid var(--rule, rgb(22 18 15 / 22%));
+	}
+	/* Pin clearance follows window height; tall desktops retain the full masthead. */
+	@media (min-width: 1501px) {
+		.portfolio-header--home {
+			--portfolio-header-row-height: clamp(48px, calc(12svh - 82px), 120px);
+		}
+		.portfolio-header--home .portfolio-mark img {
+			width: calc(var(--portfolio-header-row-height) / 2 + 12px);
+			height: calc(var(--portfolio-header-row-height) / 2 + 12px);
+		}
+		.portfolio-header--home .portfolio-mark span {
+			font-size: calc(1.35rem + var(--portfolio-header-row-height) / 7.5);
+		}
+		.portfolio-header--home .portfolio-mark small {
+			font-size: calc(8px + var(--portfolio-header-row-height) / 30);
+		}
+		.portfolio-header--home .portfolio-nav-primary a::after {
+			bottom: calc(-1px - var(--portfolio-header-row-height) / 20);
+		}
 	}
 	@media (max-width: 1500px) {
 		.portfolio-header {

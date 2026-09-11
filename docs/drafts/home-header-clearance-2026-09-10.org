@@ -1,0 +1,51 @@
+#+TITLE: Homepage header clearance review
+#+DATE: 2026-09-10
+
+* Brief and status
+
+Jay approved the completed shallower-header prototype on 2026-09-10, as relayed by Claude, and directed its application to the working tree. The approved treatment is now in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/PortfolioHeader.astro][PortfolioHeader.astro]] on the canonical homepage, preserving aligned branding and navigation, unmoved prints, the paper-colored halo, and the original 3008 by 1692 header. The prototype remains available. Nothing has been committed or pushed.
+
+* Compare
+
+- Current homepage: [[http://localhost:4336/][http://localhost:4336/]].
+- Approved prototype: [[http://localhost:4336/experiments/home-header-clearance.html][http://localhost:4336/experiments/home-header-clearance.html]].
+- Earlier halo-only 1728-pixel capture: [[file+emacs:/Users/jay/Dropbox/screenshots/photos-home-header-20260910-d1CTsN/nav-halo-1728.png][earlier header with halo]].
+- Approved prototype at 1728 by 1117: [[file+emacs:/Users/jay/Dropbox/screenshots/photos-home-header-20260910-d1CTsN/shallow-header-1728-1117.png][shallower header]].
+- Approved prototype at 3008 by 1692: [[file+emacs:/Users/jay/Dropbox/screenshots/photos-home-header-20260910-d1CTsN/shallow-header-3008-1692.png][preserved large-display header]].
+
+* Treatment
+
+From 1501 pixels wide, header height follows available window height: ~clamp(48px, calc(12svh - 82px), 120px)~. The seal and wordmark scale with that row, while the navigation keeps its current type size. At 1728 by 1117, the row is about 52 pixels high and the seal is about 38 pixels square, with seven pixels of space above it. At 3008 by 1692, the original 120-pixel row, 72-pixel seal, and wordmark sizes return exactly. The hover underline also stays closer to the letters in the shallow header, so it clears the pins on short windows.
+
+The tradeoff is smaller branding on shorter desktop windows. The photographs retain their positions, dimensions, overlap, and clothespins. The halo remains unchanged. Compact menus at 1500 pixels and below retain their existing treatment.
+
+* Measured clearance
+
+Clearance is measured from the bottom of the navigation text's bounding rectangle plus one pixel for the halo to the highest visible pin. This includes the font's descent space and is a conservative bound on the painted letters. The four requested widths use a window height of 1117 pixels.
+
+- At 1536 pixels wide, clearance is 8.9 pixels.
+- At 1728 pixels wide, clearance is 12.8 pixels.
+- At 1900 pixels wide, clearance is 14.2 pixels.
+- At 2048 pixels wide, clearance is 15.3 pixels.
+- At 2049 pixels wide, clearance is 16.3 pixels.
+- At 3008 by 1692, clearance is 18.0 pixels and the complete top 120 pixels match the prior header capture pixel for pixel.
+- The shortest tested cases, 1501 by 900 and 1536 by 900, retain 6.3 and 6.6 pixels of clearance. Their hover underlines also clear the pins.
+
+* Prototype verification before promotion
+
+Fourteen desktop/mobile viewport checks passed. Header branding and inline navigation remain vertically centered together; seals remain fully on screen. Photograph bounds matched the current homepage in the thirteen desktop cases checked. The phone header matches its previous capture pixel for pixel. PhotoSwipe opens the correct first image, advances, and closes with Escape at 1728 by 1117, 3008 by 1692, and 390 by 844. Keyboard focus and the seal hover passed at 1728 pixels. There were no page or console errors in the final checks. Full measurements are in [[file+emacs:/Users/jay/Dropbox/screenshots/photos-home-header-20260910-d1CTsN/shallow-header-measurements.json][the verification JSON]].
+
+The [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/experiments/home-header-clearance.html][HTML prototype]] was created as a snapshot of the then-current production-built homepage. At creation, removing its noindex meta tag and prototype stylesheet link restored that build byte for byte, including all photographs, prose, links, scripts, and 39 PhotoSwipe item markers. The treatment is isolated in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/experiments/home-header-clearance.css][the prototype stylesheet]], which passed Prettier. Both prototype files stay out of commits. The prototyping turn made no further changes to the canonical header or homepage source; the later approved promotion is recorded below.
+
+* Approved working-tree implementation — 2026-09-10
+
+The approved CSS now lives in the shared header, scoped to the homepage from 1501 pixels. The same height, seal, wordmark, and hover-underline calculations are used without changing the print layout or halo. Production build, scoped ESLint and Prettier, and code whitespace checks passed. Browser verification measured the prototype before rebuilding, then compared the applied header and preserved prototype against those exact baselines.
+
+- At 1536 by 864, prototype and applied clearance both measure 6.4 pixels. This differs from the earlier 8.9-pixel measurement at 1536 by 1117 because the verification window is shorter.
+- At 1728 by 1117, prototype and applied clearance both measure 12.8 pixels.
+- At 3008 by 1692, prototype and applied clearance both measure 18.0 pixels; the complete top 120 pixels match the pre-change header pixel for pixel.
+- Header content bounds match the approved prototype exactly at all three sizes, and print bounds match the original homepage. PhotoSwipe opens the correct first hero image, advances, and closes with Escape at all three sizes and at 390 by 844. The phone header and inner-page header retain their original dimensions and styling.
+
+The [[file+emacs:/Users/jay/Dropbox/screenshots/photos-home-header-20260910-d1CTsN/promotion-applied-1536-864.png][1536 capture]], [[file+emacs:/Users/jay/Dropbox/screenshots/photos-home-header-20260910-d1CTsN/promotion-applied-1728-1117.png][1728 capture]], [[file+emacs:/Users/jay/Dropbox/screenshots/photos-home-header-20260910-d1CTsN/promotion-applied-3008-1692.png][3008 capture]], and [[file+emacs:/Users/jay/Dropbox/screenshots/photos-home-header-20260910-d1CTsN/promotion-verification.json][verification results]] are beside the earlier review set.
+
+To keep the approved prototype working after the build replaces hashed CSS assets, its four original compiled stylesheets are now embedded inline with their bytes preserved exactly. Reversing only those four link-to-style replacements reproduces the approved HTML snapshot, saved at [[file+emacs:/Users/jay/Dropbox/screenshots/photos-home-header-20260910-d1CTsN/promotion-approved-prototype.html][the pre-promotion prototype archive]]. Browser checks confirm the preserved prototype still matches its pre-build bounds and has no page or console errors. The prototype page and its stylesheet remain in place and outside the commit scope. No source photographs were changed.

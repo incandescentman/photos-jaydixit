@@ -3,6 +3,7 @@ import '../styles/global.css';
 import '../styles/photoswipe-custom.css';
 import siteConfig from '../../site.config.mts';
 import Footer from '../components/Footer.astro';
+import PortfolioClosing from '../components/PortfolioClosing.astro';
 import ExhibitionViewer from '../components/ExhibitionViewer.astro';
 import NavBar from '../components/NavBar.astro';
 import SeoTags from '@jaydixit/astro-utils/components/SeoTags.astro';
@@ -34,6 +35,7 @@ type LayoutProps = {
 	modifiedTime?: string | Date;
 	keywords?: string[] | string;
 	showChrome?: boolean;
+	photoFooter?: boolean;
 	useArnoPro?: boolean;
 };
 
@@ -193,12 +195,12 @@ gtag('config', '${gaMeasurementId}', {
 					<main>
 						<slot />
 					</main>
-					<Footer />
 				</>
 			) : (
 				<slot />
 			)
 		}
+		{props.photoFooter ? <PortfolioClosing showSocialLinks /> : showChrome ? <Footer /> : null}
 		<ExhibitionViewer />
 	</body>
 </html>
