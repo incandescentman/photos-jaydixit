@@ -2595,3 +2595,9 @@ The final TIFF resize check also passed desktop → phone → large desktop tran
 Release verification: an isolated checkout containing only the TIFF/gallery work passed a fresh 150-page production build, lint, formatting, all 21 unit tests, and all 51 browser tests. The separately approved Chinagraph branding commit is excluded from this release. The three source JPEGs are intentional release assets; review output, prototypes, dependency files, and credentials are excluded.
 
 Published the TIFF/gallery release as ~d0046f260bb7218e585651fa8f49189f3bad44fd~ to ~origin/main~. Integrated that release into the main local checkout while preserving the separate local branding commit ~bd0e6a9~; the integration and branding remain local. The pre-integration task stash and documentation backup are retained. Production deployment verification follows separately.
+
+* 2026-09-16 — Match the carpet emblem to Chinagraph Red
+
+Jay approved making the header emblem Chinagraph Red with “yes do that”. Changed only the carpet fill in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/brand/red-carpet-seal.svg][the shared SVG]] from ~#B3272D~ to ~#C0261F~ so it matches the wordmark. The geometry, paper background, and gold border are unchanged. Updated the current branding documentation and artistic-intention record. This follow-up covers the emblem; page-specific editorial colors and Like-button colors were not part of this approval.
+
+Validation: the SVG parses, and comparison against the prior committed asset confirms the fill is its only change. The served preview asset matches the source byte for byte. Rendered headers at 1728×1117, 3008×1692, and 390×843 show the matching red without horizontal overflow. Repository lint passed.
