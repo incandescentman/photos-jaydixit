@@ -141,6 +141,8 @@ function buildCommonsDescription(photo) {
 == {{int:license-header}} ==
 ${photo.destinations.commons.license}
 
+${photo.destinations.commons.campaign_wikitext || ''}
+
 ${categories}
 `;
 }
@@ -626,9 +628,24 @@ async function queryCommons(filename) {
 		iiprop: 'url|sha1|timestamp|size|user',
 		titles: `File:${filename}`,
 	}).toString();
-	const response = await fetch(url, {
-		headers: { 'User-Agent': 'exwalker-photo-publisher/1.0 (Jay Dixit)' },
-	});
+	let response;
+	for (let attempt = 0; attempt < 4; attempt++) {
+		response = await fetch(url, {
+			headers: { 'User-Agent': 'exwalker-photo-publisher/1.0 (Jay Dixit)' },
+		});
+		if (response.status !== 429 || attempt === 3) break;
+		const retryAfter = response.headers.get('retry-after');
+		const retrySeconds = Number(retryAfter);
+		const retryDate = Number.isFinite(retrySeconds) ? NaN : Date.parse(retryAfter);
+		const delay = Math.max(
+			30_000 * (attempt + 1),
+			Number.isFinite(retrySeconds) ? retrySeconds * 1000 : 0,
+			Number.isFinite(retryDate) ? retryDate - Date.now() : 0,
+		);
+		await response.arrayBuffer();
+		console.error(`Commons rate limit; retrying verification in ${Math.ceil(delay / 1000)}s`);
+		await new Promise((resolve) => setTimeout(resolve, delay));
+	}
 	if (!response.ok) throw new Error(`Commons verification returned HTTP ${response.status}`);
 	const payload = await response.json();
 	const page = payload.query?.pages?.[0];
@@ -1059,6 +1076,7 @@ async function previewCommand(manifestPath) {
 					? {
 							mode: commons.mode || 'new',
 							filename: commons.filename,
+							description: buildCommonsDescription(photo),
 							replacement_comment: commons.replacement_comment || '',
 							current_revision: remote,
 						}

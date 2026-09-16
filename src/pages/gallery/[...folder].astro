@@ -315,42 +315,15 @@ export const getStaticPaths = () => {
 
 			<div id="masonry" class="masonry-items" data-gutter="8px">
 				<div class="grid-sizer"></div>
+				<div class="gallery-gutter"></div>
 				{
 					images.map((image, index) => {
-						const heuristic =
-							index % 7 === 0
-								? 'wide-tall'
-								: index % 5 === 0
-									? 'wide-short'
-									: index % 4 === 1
-										? 'tall'
-										: index % 6 === 2
-											? 'wide'
-											: index % 8 === 3
-												? 'medium'
-												: 'regular';
-
-						let variant = 'regular';
-						let dataSize = 'portrait';
-						if (heuristic === 'wide' || heuristic === 'wide-short') {
-							variant = 'wide';
-							dataSize = 'landscape';
-						} else if (heuristic === 'wide-tall' || heuristic === 'tall') {
-							variant = 'wide_tall';
-							dataSize = 'xlportrait';
-						}
-
-						// Calculate dimensions based on size
-						const dimensions = {
-							portrait: { w: 320, h: 480 },
-							landscape: { w: 648, h: 480 },
-							xlportrait: { w: 648, h: 968 },
-						};
-						const { w, h } = dimensions[dataSize];
+						const landscape = image.metadata.width > image.metadata.height;
+						const dataSize = landscape ? 'landscape' : 'portrait';
 
 						return (
 							<article
-								class={`masonry-item ${variant}`}
+								class="masonry-item"
 								data-idx={index}
 								data-filename={image.filename}
 								data-size={dataSize}
@@ -364,7 +337,6 @@ export const getStaticPaths = () => {
 									data-pswp-width={image.metadata.width}
 									data-pswp-height={image.metadata.height}
 									data-full-src={image.lightboxSrc}
-									data-cropped="true"
 									data-pswp-caption={image.caption}
 									data-exhibition-details={toPhotoHref(folderPath, image.filename)}
 									data-exhibition-gallery={galleryUrl}
@@ -375,10 +347,15 @@ export const getStaticPaths = () => {
 									<Image
 										src={image.metadata}
 										alt={image.caption}
-										width={w}
-										height={h}
-										fit="cover"
-										position="attention"
+										width={Math.min(image.metadata.width, 1280)}
+										widths={Array.from(
+											new Set(
+												[320, 640, 960, 1280, 1600, 2000, 2400, image.metadata.width].filter(
+													(width) => width <= image.metadata.width,
+												),
+											),
+										)}
+										sizes="(max-width: 768px) 100vw, 50vw"
 										loading="lazy"
 										data-natural-width={image.metadata.width}
 										data-natural-height={image.metadata.height}
@@ -430,7 +407,7 @@ export const getStaticPaths = () => {
 		}
 
 		.gallery-shell {
-			width: min(100% - clamp(2rem, 6vw, 7rem), 96rem);
+			width: calc(100% - 2 * clamp(12px, 2.1vw, 36px));
 			margin-inline: auto;
 		}
 
@@ -723,21 +700,22 @@ export const getStaticPaths = () => {
 			min-height: 400px;
 			overflow-x: hidden;
 			container-type: inline-size;
-			--gallery-unit: calc(20cqw - 6.4px);
-			--gallery-row: calc(30cqw - 9.6px);
+			--gallery-gap: clamp(8px, 1.15vw, 20px);
+			--gallery-unit: calc((100cqw - var(--gallery-gap)) / 2);
 		}
 
 		.masonry-item {
 			box-sizing: border-box;
-			display: grid;
-			grid-template-rows: minmax(0, 1fr) auto;
-			height: var(--gallery-row);
+			display: block;
+			width: var(--gallery-unit);
+			height: auto;
 			padding: 0;
+			margin-bottom: clamp(22px, 3vw, 54px);
 			opacity: 0;
 			transform: translateY(12px);
 			position: absolute;
 			overflow: hidden;
-			background: #fbf8f1;
+			background: transparent;
 		}
 
 		.masonry-item[hidden] {
@@ -764,31 +742,10 @@ export const getStaticPaths = () => {
 			visibility: hidden;
 		}
 
-		.masonry-item.regular {
-			width: var(--gallery-unit);
-		}
-
-		.masonry-item.wide,
-		.masonry-item.wide_tall {
-			width: calc(var(--gallery-unit) + var(--gallery-unit) + 8px);
-		}
-
-		.masonry-item.wide_tall {
-			height: calc(var(--gallery-row) + var(--gallery-row) + 8px);
-		}
-
-		@media only screen and (max-width: 1303px) {
-			.masonry-items {
-				--gallery-unit: calc(25cqw - 6px);
-				--gallery-row: calc(37.5cqw - 9px);
-			}
-		}
-
-		@media only screen and (max-width: 1099px) {
-			.masonry-items {
-				--gallery-unit: calc(33.333333cqw - 5.333333px);
-				--gallery-row: calc(50cqw - 8px);
-			}
+		.gallery-gutter {
+			position: absolute;
+			width: var(--gallery-gap);
+			visibility: hidden;
 		}
 
 		@media only screen and (max-width: 768px) {
@@ -799,7 +756,8 @@ export const getStaticPaths = () => {
 				position: relative !important;
 			}
 
-			.grid-sizer {
+			.grid-sizer,
+			.gallery-gutter {
 				display: none !important;
 			}
 
@@ -827,22 +785,21 @@ export const getStaticPaths = () => {
 		.masonry-item img {
 			display: block;
 			width: 100%;
-			height: 100%;
-			object-fit: cover;
-			transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+			height: auto;
+			object-fit: contain;
 		}
 
 		.masonry-item .masonry-link {
 			display: block;
 			width: 100%;
-			height: 100%;
+			height: auto;
 			min-height: 0;
 			overflow: hidden;
 		}
 
 		.masonry-item .masonry-link:hover img,
 		.masonry-item .masonry-link:focus-visible img {
-			transform: scale(1.018);
+			filter: brightness(1.025);
 		}
 
 		.gallery-photo-meta {
@@ -850,17 +807,14 @@ export const getStaticPaths = () => {
 			gap: 1rem;
 			align-items: flex-start;
 			justify-content: space-between;
-			min-height: 4.5rem;
-			padding: 0.75rem 0.85rem;
-			border-bottom: 1px solid var(--hairline);
-			background: #fbf8f1;
+			padding: 10px 0 0;
 		}
 
 		.gallery-photo-meta p {
 			margin: 0;
 			color: rgb(26 23 20 / 78%);
 			font-family: var(--serif);
-			font-size: clamp(0.96rem, 1.25vw, 1.15rem);
+			font-size: clamp(13px, 1vw, 17px);
 			font-weight: 300;
 			line-height: 1.25;
 		}
@@ -994,6 +948,8 @@ export const getStaticPaths = () => {
 		import initPackeryGallery from '../../scripts/packeryGallery.ts';
 		initPackeryGallery({
 			container: '#masonry',
+			rowHeight: 0,
+			gutter: '.gallery-gutter',
 			adminMode: false,
 			enableToolbar: false,
 		});

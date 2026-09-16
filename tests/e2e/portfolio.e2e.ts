@@ -382,7 +382,10 @@ test('red-carpet index renders editorial person cards from generated data', asyn
 	await waitForInitialImages(page);
 
 	const cards = page.locator('.rc-card');
-	await expect(cards).toHaveCount(23);
+	await expect(cards).toHaveCount(26);
+	for (const name of ['Ed Helms', 'Rick Hansen', 'Seth Rogen']) {
+		await expect(cards.filter({ hasText: name })).toHaveCount(1);
+	}
 	await expect(cards.filter({ hasText: 'Jack Johnson' })).toHaveCount(1);
 	await expect(page.locator('.rc-name').first()).toHaveText('Ana de Armas');
 	await expect(page.locator('.rc-count').first()).toContainText(/photo/i);
@@ -398,14 +401,12 @@ test('red-carpet index renders editorial person cards from generated data', asyn
 	expect(await getBrokenCompletedImages(page)).toEqual([]);
 });
 
-test('TIFF gallery renders the metadata-reviewed 2025 set with truthful captions', async ({
-	page,
-}) => {
+test('TIFF gallery renders the metadata-reviewed set with truthful captions', async ({ page }) => {
 	await page.goto('/gallery/red-carpet/tiff/');
 	await waitForInitialImages(page);
 
 	const cards = page.locator('.masonry-item');
-	await expect(cards).toHaveCount(7);
+	await expect(cards).toHaveCount(10);
 	await expect(
 		page.locator('.masonry-item', {
 			has: page.getByAltText('Jason Bateman at the Toronto Film Festival.'),
@@ -956,6 +957,105 @@ for (const width of [390, 1440]) {
 			expect(errors).toEqual([]);
 		});
 	}
+}
+
+for (const viewport of [
+	{ width: 1728, height: 1117 },
+	{ width: 3008, height: 1692 },
+	{ width: 390, height: 844 },
+]) {
+	test(`TIFF gallery preserves source framing at ${viewport.width}px`, async ({
+		page,
+		request,
+	}) => {
+		await page.setViewportSize(viewport);
+		await page.goto('/gallery/red-carpet/tiff/');
+		await page.evaluate(async () => {
+			await document.fonts.ready;
+			await Promise.all(
+				Array.from(document.querySelectorAll<HTMLImageElement>('#masonry img')).map((image) => {
+					image.loading = 'eager';
+					return image.decode();
+				}),
+			);
+		});
+		await waitForInitialImages(page);
+		const photos = await page.locator('#masonry .masonry-item').evaluateAll((cards) =>
+			cards.map((card) => {
+				const image = card.querySelector('img')!;
+				const imageBounds = image.getBoundingClientRect();
+				const frame = card.querySelector('.masonry-link')!.getBoundingClientRect();
+				const footer = card.querySelector('footer')!.getBoundingClientRect();
+				return {
+					filename: card.getAttribute('data-filename')!,
+					source: image.currentSrc,
+					width: imageBounds.width,
+					ratio: imageBounds.width / imageBounds.height,
+					frameRatio: frame.width / frame.height,
+					captionGap: footer.top - imageBounds.bottom,
+				};
+			}),
+		);
+		expect(photos.map((photo) => photo.filename)).toEqual(
+			expect.arrayContaining([
+				'rick-hansen_tiff_2026_1.jpg',
+				'seth-rogen_tiff_2026_8.jpg',
+				'ed-helms_tiff_2026_10.jpg',
+			]),
+		);
+		if (viewport.width > 768) {
+			const galleryWidth = await page
+				.locator('#masonry')
+				.evaluate((element) => element.getBoundingClientRect().width);
+			const gutter = await page
+				.locator('.gallery-gutter')
+				.evaluate((element) => element.getBoundingClientRect().width);
+			// Every photograph needs the large treatment, including older group shots.
+			for (const photo of photos) {
+				expect(
+					Math.abs(photo.width - (galleryWidth - gutter) / 2),
+					`${photo.filename}: two large columns`,
+				).toBeLessThan(1);
+			}
+		}
+		for (const photo of photos) {
+			const original = await sharp(
+				path.join('src/gallery/photos/red-carpet/tiff', photo.filename),
+			).metadata();
+			const sourceRatio = original.width! / original.height!;
+			const response = await request.get(photo.source);
+			expect(response.ok()).toBe(true);
+			const derivative = await sharp(await response.body()).metadata();
+			expect(
+				Math.abs(derivative.width! / derivative.height! - sourceRatio),
+				`${photo.filename}: derivative crop`,
+			).toBeLessThan(0.003);
+			expect(
+				Math.abs(photo.ratio - sourceRatio),
+				`${photo.filename}: displayed ratio`,
+			).toBeLessThan(0.003);
+			expect(
+				Math.abs(photo.frameRatio - sourceRatio),
+				`${photo.filename}: frame crop`,
+			).toBeLessThan(0.003);
+			expect(
+				photo.captionGap,
+				`${photo.filename}: caption overlaps photograph`,
+			).toBeGreaterThanOrEqual(-0.5);
+		}
+		const selected = page.locator('[data-filename="seth-rogen_tiff_2026_8.jpg"] .masonry-link');
+		await selected.hover();
+		await selected.focus();
+		expect(
+			await selected.locator('img').evaluate((image) => getComputedStyle(image).transform),
+		).toBe('none');
+		await selected.click();
+		await expect
+			.poll(() => page.evaluate(() => window.pswp?.currSlide?.data.src))
+			.toBe(await selected.getAttribute('data-full-src'));
+		await page.keyboard.press('Escape');
+		await expect(page.locator('.pswp')).toBeHidden();
+	});
 }
 
 test('gallery prints retain their Packery geometry across responsive widths', async ({ page }) => {

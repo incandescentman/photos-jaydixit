@@ -46,6 +46,45 @@
 			"title": "Jason Bateman and Jude Law",
 			"tags": ["2025"],
 			"people": ["Jason Bateman", "Jude Law"]
+		},
+		"rick-hansen_tiff_2026_1.jpg": {
+			"title": "Rick Hansen at Toronto International Film Festival 2026",
+			"caption": "Rick Hansen on the Toronto International Film Festival red carpet for Rick Hansen: Man in Motion.",
+			"tags": [
+				"Rick Hansen",
+				"Toronto International Film Festival",
+				"TIFF",
+				"2026",
+				"Rick Hansen: Man in Motion",
+				"Toronto"
+			],
+			"people": ["Rick Hansen"]
+		},
+		"seth-rogen_tiff_2026_8.jpg": {
+			"title": "Seth Rogen at Toronto International Film Festival 2026",
+			"caption": "Seth Rogen at the Toronto International Film Festival world premiere of Babies.",
+			"tags": [
+				"Seth Rogen",
+				"Toronto International Film Festival",
+				"TIFF",
+				"2026",
+				"Babies",
+				"Toronto"
+			],
+			"people": ["Seth Rogen"]
+		},
+		"ed-helms_tiff_2026_10.jpg": {
+			"title": "Ed Helms at Toronto International Film Festival 2026",
+			"caption": "Ed Helms at the Toronto International Film Festival world premiere of Babies.",
+			"tags": [
+				"Ed Helms",
+				"Toronto International Film Festival",
+				"TIFF",
+				"2026",
+				"Babies",
+				"Toronto"
+			],
+			"people": ["Ed Helms"]
 		}
 	}
 }
