@@ -41,6 +41,11 @@
 		"wikipedia": "https://en.wikipedia.org/wiki/Dave_Franco"
 	},
 	{
+		"slug": "ed-helms",
+		"name": "Ed Helms",
+		"match": ["ed-helms"]
+	},
+	{
 		"slug": "ella-hunt",
 		"name": "Ella Hunt",
 		"match": ["ella-hunt"],
@@ -150,6 +155,11 @@
 		"wikipedia": "https://en.wikipedia.org/wiki/Nicholas_Braun"
 	},
 	{
+		"slug": "rick-hansen",
+		"name": "Rick Hansen",
+		"match": ["rick-hansen"]
+	},
+	{
 		"slug": "ron-howard",
 		"name": "Ron Howard",
 		"match": ["ron-howard"],
@@ -169,6 +179,11 @@
 		"name": "Sebastian Stan",
 		"match": ["sebastian-stan"],
 		"wikipedia": "https://en.wikipedia.org/wiki/Sebastian_Stan"
+	},
+	{
+		"slug": "seth-rogen",
+		"name": "Seth Rogen",
+		"match": ["seth-rogen"]
 	},
 	{
 		"slug": "steven-yeun",

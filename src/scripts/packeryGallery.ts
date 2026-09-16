@@ -26,6 +26,8 @@ export interface PackeryGalleryOptions {
 	mobileBreakpoint?: number;
 	enableToolbar?: boolean;
 	enablePhotoSwipe?: boolean;
+	rowHeight?: number | string;
+	gutter?: number | string;
 }
 
 declare global {
@@ -45,6 +47,8 @@ export default function initPackeryGallery(options: PackeryGalleryOptions) {
 		mobileBreakpoint = 768,
 		enableToolbar = true,
 		enablePhotoSwipe = true,
+		rowHeight = '.grid-sizer',
+		gutter = 8,
 	} = options;
 
 	const resolveContainer = () =>
@@ -89,12 +93,10 @@ export default function initPackeryGallery(options: PackeryGalleryOptions) {
 		const pckry: PackeryInstance = new Packery(containerEl, {
 			itemSelector: '.masonry-item',
 			columnWidth: '.grid-sizer',
-			// Quantize vertical placement to the same responsive unit as regular
-			// portrait tiles. Without a row grid, the fixed 8px gutter makes the
-			// aspect-ratio-derived heights drift by a few pixels as columns widen;
-			// Packery then sees earlier openings as just too short to backfill.
-			rowHeight: '.grid-sizer',
-			gutter: 8,
+			// The photo wall uses a row grid. Folder galleries pass 0 so complete
+			// photographs and their captions can determine each card's height.
+			rowHeight,
+			gutter,
 			percentPosition: false,
 			transitionDuration: '0.35s',
 			stagger: 30,
