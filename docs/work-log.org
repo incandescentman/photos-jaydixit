@@ -2601,3 +2601,9 @@ Published the TIFF/gallery release as ~d0046f260bb7218e585651fa8f49189f3bad44fd~
 Jay approved making the header emblem Chinagraph Red with “yes do that”. Changed only the carpet fill in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/brand/red-carpet-seal.svg][the shared SVG]] from ~#B3272D~ to ~#C0261F~ so it matches the wordmark. The geometry, paper background, and gold border are unchanged. Updated the current branding documentation and artistic-intention record. This follow-up covers the emblem; page-specific editorial colors and Like-button colors were not part of this approval.
 
 Validation: the SVG parses, and comparison against the prior committed asset confirms the fill is its only change. The served preview asset matches the source byte for byte. Rendered headers at 1728×1117, 3008×1692, and 390×843 show the matching red without horizontal overflow. Repository lint passed.
+
+* 2026-09-16 — Release Chinagraph branding and the homepage eyebrow
+
+Jay authorized “commit and push”. Included the existing homepage eyebrow wording, “Sundance. SXSW. Busan. Locarno. The Nobel Prizes.”, in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/index.astro][the homepage source]]. The release also includes the upright Medium footer wordmark and matching Chinagraph Red ~#C0261F~ text accents and carpet emblem from local commits ~bd0e6a9~ and ~1df0d8b~. Local review output and prototypes remain outside the release.
+
+Validation: Node 24 production build (150 pages), repository lint, scoped formatting, all 21 unit tests, and all 51 browser tests passed against the final production build. The homepage eyebrow and header were inspected at 1728×1117, 3008×1692, and 390×844; the eyebrow clears the headline and no horizontal overflow was found.
