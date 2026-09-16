@@ -53,6 +53,21 @@
 			"status": "shared-closing-approved-for-release",
 			"review_url": "http://localhost:4336/gallery/events/nobel-prizes-2024/#footer-review",
 			"scope": "Shared photographic footer on the homepage and main browsing pages, with Website and Instagram on the inner-page copyright row, compact Contact and utility footers retained, and all prototypes preserved. Jay authorized documentation, commit, and push."
+		},
+		{
+			"date": "2026-09-16",
+			"reaction": "i don't like the italics in this:",
+			"status": "closing-wordmark-italics-rejected",
+			"review_url": "http://localhost:4325/experiments/wordmark-upright-2026-09-16.html",
+			"scope": "Ruling on the supplied screenshot of the red italic Photos wordmark; original page URL not supplied. Current and upright versions are reproduced in the comparison. Replacement unreviewed; application footer unchanged."
+		},
+		{
+			"date": "2026-09-16",
+			"reaction": "Chinagraph Red approved",
+			"followup_reaction": "Medium.",
+			"status": "chinagraph-medium-wordmark-approved-applied",
+			"review_url": "http://localhost:4325/experiments/wordmark-current-vs-chinagraph-2026-09-16.html",
+			"scope": "Upright Newsreader Medium Photos at 0.84em in Chinagraph Red #C0261F. Jay separately authorized applying Chinagraph Red to other suitable existing red accents, updating docs, and a branding-only local commit. Shared header, homepage, footer, Before & After, and photo-viewer red UI accents now use --portfolio-red. No push authorized."
 		}
 	],
 	"qualities_to_preserve": [

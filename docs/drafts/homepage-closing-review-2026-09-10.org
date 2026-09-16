@@ -83,3 +83,25 @@ At 1728 by 1117, 3008 by 1692, and 390 by 844, the applied gallery and Before & 
 * Shared-footer review and release authorization — 2026-09-10
 
 Your response: “excellent. update docs, commit, and push.” The shared footer is approved for release. During the page audit, the existing About and Red Carpets photographs were found to lack PhotoSwipe; their scoped bindings are now repaired, with unchanged photograph and footer geometry, correct first/next image sources, and Escape verified at all three required sizes. Footer navigation covers remain outside both sequences. The previous no-commit/no-push notes describe earlier review stages; this response explicitly authorizes the release.
+
+* Wordmark revision — 2026-09-16
+
+Jay, on the supplied wordmark screenshot: “i don't like the italics in this:”. The earlier recommendation to preserve italic Photos is superseded for this wordmark. [[http://localhost:4325/experiments/wordmark-upright-2026-09-16.html][The current/upright comparison]] uses the served shared-footer markup, styles, fonts, colors, and navigation photographs. Only Photos changes to upright in the proposed version. The replacement is unreviewed; the application component is unchanged.
+
+* Wordmark color and weight exploration — 2026-09-16
+
+Jay asked “should it be bold or something?” and “should it be either grease pencil red or chinagraph red?”. These are requests to explore, not selections. [[http://localhost:4325/experiments/wordmark-color-and-weight-2026-09-16.html][The combined comparison]] shows current red ~#A43F2E~, Grease Pencil Red ~#DC0807~, and Chinagraph Red ~#C0261F~ side by side, with Light ~300~, Medium ~500~, and Bold ~700~ controls that also update the footer context. Color names and values were checked against [[file+emacs:/Users/jay/Dropbox/github/astro-monorepo/apps/socratic/src/data/brand-colors.ts][the Socratic palette source]]; those site-specific usage rules do not decide this photography-site choice.
+
+Codex recommends medium-weight upright Photos in Chinagraph Red: it gives Photos more presence beneath the name, while Grease Pencil Red attracts more attention beside the photographs. In this comparison Photos is ~84%~ of the name size so all three weights fit the existing footer column. The three weights are real Google Fonts Newsreader faces, verified loaded; the 1728 by 1117 render and controls were checked. The application footer is unchanged. The earlier [[http://localhost:4325/experiments/wordmark-weights-2026-09-16.html][weight-only prototype]] and [[http://localhost:4325/experiments/wordmark-upright-2026-09-16.html][italic/upright comparison]] are preserved.
+
+Jay narrowed the comparison to “Current red · #A43F2E vs chinagraph red”. [[http://localhost:4325/experiments/wordmark-current-vs-chinagraph-2026-09-16.html][The two-color review]] shows only these two colors at identical weight, with the weight controls and footer color switch retained. The rendered comparison and both color switches were checked. No color or weight has been selected; earlier prototypes remain preserved.
+
+* Approved implementation — 2026-09-16
+
+Jay: “Chinagraph Red approved”. Asked through Spokenly to choose the upright weight, with the smaller preview size stated in the question, he answered “Medium.” He then authorized appropriate wider red replacements, documentation, and a local commit, finally narrowing that commit to branding only.
+
+Chinagraph Red ~#C0261F~ is the shared functional red, defined by ~--portfolio-red~ in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/styles/global.css][global.css]]. The shared header, homepage accents and translucent orbit lines, footer navigation and focus outlines, Before & After red controls, and photo-viewer red controls use it. The footer wordmark uses upright Newsreader Medium (~500~) for Photos at ~0.84em~ relative to the name, following Jay’s color approval and spoken Medium selection on September 16, 2026. Gold accents and the existing red-carpet seal artwork retain their separate treatments.
+
+Production preview: [[http://localhost:4327/#footer-review][the implemented shared footer]]. Earlier comparison pages remain preserved outside commits.
+
+Rendered verification confirmed the upright Medium Chinagraph footer at 1728×1117, 3008×1692, and 390×844 without horizontal overflow. Computed styles confirmed the shared header descriptor, footer Contact label and arrows, Before & After red action and transition arrow, and active photo-viewer controls use ~rgb(192, 38, 31)~. Homepage first-click full-size source, next-image navigation, and Escape passed at desktop and phone widths; Before & After’s selected full-size source, next image, and Escape also passed. No browser errors were reported on these checks.

@@ -298,6 +298,8 @@ manifest.
 
 ​*** 🧭 Header and Branding
 
+- 2026-09-16: Chinagraph Red ~#C0261F~ is the shared functional red, defined by ~--portfolio-red~ in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/styles/global.css][global.css]]. The shared header, homepage accents and translucent orbit lines, footer navigation and focus outlines, Before & After red controls, and photo-viewer red controls use it. The footer wordmark uses upright Newsreader Medium (~500~) for Photos at ~0.84em~ relative to the name, following Jay’s color approval and spoken Medium selection on September 16, 2026. Gold accents and the existing red-carpet seal artwork retain their separate treatments.
+
 - Shared PortfolioHeader with the red-carpet seal and Jay Dixit Photos wordmark (updated 2026-09-09)
 
 - Fixed inner-page header and absolute homepage header; compact navigation through 1500px

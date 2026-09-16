@@ -2549,3 +2549,23 @@ Jay: “hmm still hard to read, isn't it”. Status: needs rework. Codex's earli
 * 2026-09-10 - Authorized shared-header and footer release
 
 - Jay reviewed the completed work and said: “excellent. update docs, commit, and push.” This authorizes the accumulated shallower homepage header, approved photographic closing section, shared browsing-page rollout, associated lightbox repairs, and documentation. All prototype pages and the preexisting generated PDF remain preserved outside Git. No source photographs, screenshots, credentials, or generated build output are included in the release. Git publication and deployment success remain separate states.
+
+* 2026-09-16 — Footer wordmark comparison
+
+Jay rejected the italic Photos treatment in his supplied screenshot. Created [[http://localhost:4325/experiments/wordmark-upright-2026-09-16.html][a standalone current/upright comparison]] using the served shared footer and existing Newsreader font, with both wordmarks visible and a toggle for the footer context. Recorded the exact reaction in the artistic-intention sidecar and cross-repo ledger. The application footer remains unchanged while the replacement is reviewed. No commit or push.
+
+* 2026-09-16 — Wordmark color and weight review
+
+Jay then asked about bold and the Grease Pencil Red / Chinagraph Red choices. Added [[http://localhost:4325/experiments/wordmark-color-and-weight-2026-09-16.html][a combined color and weight comparison]] with live controls and the real footer context, using the verified palette values. The heavier Photos is sized to fit its existing column. Codex recommends Medium with Chinagraph Red; no selection or production change has been made.
+
+Jay narrowed the comparison to “Current red · #A43F2E vs chinagraph red”. [[http://localhost:4325/experiments/wordmark-current-vs-chinagraph-2026-09-16.html][The two-color review]] shows only these two colors at identical weight, with the weight controls and footer color switch retained. The rendered comparison and both color switches were checked. No color or weight has been selected; earlier prototypes remain preserved.
+
+* 2026-09-16 — Apply Chinagraph branding
+
+Jay approved Chinagraph Red and selected Medium through Spokenly after reviewing the upright wordmark. Applied the shown ~0.84em~ descriptor in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/PortfolioClosing.astro][PortfolioClosing.astro]]. His further instruction authorized replacing appropriate existing red accents and committing; his final scope correction was “sorry, you were right. yes, commit only the branding work”.
+
+Chinagraph Red ~#C0261F~ is the shared functional red, defined by ~--portfolio-red~ in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/styles/global.css][global.css]]. The shared header, homepage accents and translucent orbit lines, footer navigation and focus outlines, Before & After red controls, and photo-viewer red controls use it. The footer wordmark uses upright Newsreader Medium (~500~) for Photos at ~0.84em~ relative to the name, following Jay’s color approval and spoken Medium selection on September 16, 2026. Gold accents and the existing red-carpet seal artwork retain their separate treatments.
+
+Node 24 production build (150 pages), repository lint, all 21 unit tests, scoped formatting, and code whitespace checks passed. The final build is isolated from the concurrent TIFF/gallery session at [[http://localhost:4327/][the branding preview]]. Only branding source and the corresponding documentation belong in this commit; TIFF, gallery, source photographs, generated review output, and prototypes remain outside it.
+
+Rendered verification confirmed the upright Medium Chinagraph footer at 1728×1117, 3008×1692, and 390×844 without horizontal overflow. Computed styles confirmed the shared header descriptor, footer Contact label and arrows, Before & After red action and transition arrow, and active photo-viewer controls use ~rgb(192, 38, 31)~. Homepage first-click full-size source, next-image navigation, and Escape passed at desktop and phone widths; Before & After’s selected full-size source, next image, and Escape also passed. No browser errors were reported on these checks.

@@ -38,7 +38,7 @@
 	letter-spacing: 0.04em;
 }
 .pswp[data-exhibition-viewer] .pswp__button[aria-expanded='true'] {
-	color: #a33e2b;
+	color: var(--portfolio-red);
 	text-decoration: underline;
 	text-underline-offset: 6px;
 }
@@ -71,7 +71,7 @@
 	display: none !important;
 }
 .pswp[data-exhibition-viewer] :is(button, a):focus-visible {
-	outline: 2px solid #a33e2b;
+	outline: 2px solid var(--portfolio-red);
 	outline-offset: 4px;
 }
 .exhibition-dock {
@@ -122,7 +122,7 @@
 }
 .exhibition-thumbnail[aria-current='true'] {
 	opacity: 1;
-	outline: 1px solid #a33e2b;
+	outline: 1px solid var(--portfolio-red);
 	outline-offset: 2px;
 }
 .exhibition-thumbnail:hover {
@@ -176,9 +176,9 @@
 .exhibition-copy {
 	padding: 12px 0;
 	margin-top: 12px;
-	border-bottom: 1px solid #a33e2b;
+	border-bottom: 1px solid var(--portfolio-red);
 	font-size: 13px;
-	color: #a33e2b;
+	color: var(--portfolio-red);
 	cursor: pointer;
 }
 .exhibition-copy-status {
