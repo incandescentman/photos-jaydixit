@@ -2640,3 +2640,14 @@ Widened the Red Carpet directory at Jay’s request by removing the 76rem shell 
 
 * 2026-09-18 — Documentation and local checkpoint
 Updated both documentation entry points for the homepage sequence, thirteen Before & After comparisons, removal of decorative numbering, Zach Cherry’s directory entry, and the wider three-column Red Carpet directory. The two-column alternative was discussed but not implemented. Final Red Carpet verification measured portraits at 528×704 on the 1728px display, about 955×1273 on the 3008px display, and 342×456 on a 390px phone. Search, keyboard navigation to the portrait page, and the full-size portrait viewer passed; production builds and scoped lint passed during implementation. Local review artifacts and unrelated experiments are excluded from this checkpoint. Jay subsequently authorized pushing this checkpoint and the preceding TIFF favorites checkpoint.
+
+* 2026-09-18 — Enlarge About reading text
+Jay approved 26px desktop and 24px phone body text on [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/about.astro][About]]. Added a page-scoped override for the lead and essay paragraphs, superseding the shared 21px Arno body rule on this page while retaining the existing typefaces, line spacing, and other pages.
+
+Restored the About essay opening’s original Newsreader display treatment after Jay flagged that it remained smaller than the enlarged body. The original responsive 40–76px desktop and 38.4–56px phone rules now take precedence over the shared 25px Arno standfirst rule, including the original display weight and line height. Body paragraphs retain the approved 26px/24px sizes.
+
+Jay approved enlarging the remaining 21px Oslo introduction and Red Carpets Around the World city descriptions. Scoped overrides in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/styles/global.css][global.css]] now render those passages at 26px desktop / 24px phone, including the Toronto introduction. Other editorial type sizes remain unchanged.
+
+Jay superseded the 24px phone proposal: 26px is now the default/minimum for main Arno reading text at every viewport. Updated the shared 21px body and 25px introductory/prose rules to 26px and removed the redundant page-specific body and phone overrides. The About opening retains its separately restored larger Newsreader display treatment. Documented the ruling in both project instruction entry points.
+
+Jay approved restoring the About page’s original hierarchy: the opening and large quotation use their original responsive Newsreader display treatments; Arno intro/body paragraphs use a 26px floor and grow to 28px on larger desktops. The quotation’s local display rule now takes precedence over the shared 30px pullquote rule. Captions and navigation retain their separate sizing.

@@ -99,7 +99,7 @@
 	}
 }
 
-/* Arno is scoped to the site's long-form reading surfaces. */
+/* Arno reading text has a 26px minimum at every viewport; display treatments stay larger. */
 body.reading-face-arno[data-reading-face='arno'] .hero .hero-lede {
 	font-family: var(--arno-subhead);
 	font-size: 28px;
@@ -161,7 +161,7 @@ body.reading-face-arno[data-reading-face='arno']
 	> p:not(.section-number),
 body.reading-face-arno[data-reading-face='arno'] .world-tour :where(.city-line, .toronto-lede) {
 	font-family: var(--arno-text);
-	font-size: 21px;
+	font-size: 26px;
 	font-weight: 400;
 	line-height: 1.55;
 }
@@ -239,7 +239,7 @@ body.reading-face-arno[data-reading-face='arno'] .finale .finale-standfirst,
 body.reading-face-arno[data-reading-face='arno'] .world-tour .world-intro,
 body.reading-face-arno[data-reading-face='arno'] .nobel-page .standfirst p {
 	font-family: var(--arno-subhead);
-	font-size: 25px;
+	font-size: 26px;
 	font-weight: 400;
 	line-height: 1.4;
 }
@@ -253,7 +253,7 @@ body.reading-face-arno[data-reading-face='arno']
 	.section-heading
 	> p:not(.section-number),
 body.reading-face-arno[data-reading-face='arno'] .nobel-page .section-copy p {
-	font-size: 25px;
+	font-size: 26px;
 }
 
 body.reading-face-arno[data-reading-face='arno'] .ed .ed-quote-text,

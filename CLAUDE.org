@@ -440,3 +440,6 @@ manifest.
 - Regenerate gallery YAML from src/gallery/**: npm run generate
 
 - Generate tags for folder photos: npm run generate-tags
+
+* Reading typography
+- 2026-09-18 — Jay approved 26px as the default and minimum for main Arno reading text, including phones. Captions, navigation, and metadata may remain smaller. This is a floor, not a cap. Preserve larger display treatments, including the About essay opening and quotation; About intro/body text grows to 28px on larger desktops. The shared rules live in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/styles/global.css][global.css]].

@@ -6,7 +6,7 @@ import quotePhoto from '../assets/images/about/jay-dixit_2024-10-04_telos_ryan-j
 ---
 
 <MainLayout photoFooter>
-	<div class="ed">
+	<div class="ed ed--about">
 		<!-- Hero -->
 		<section class="ed-hero">
 			<div class="ed-shell ed-shell--hero">
@@ -209,6 +209,13 @@ import quotePhoto from '../assets/images/about/jay-dixit_2024-10-04_telos_ryan-j
 </MainLayout>
 
 <style>
+	:global(body.reading-face-arno[data-reading-face='arno'])
+		.ed.ed--about
+		:is(.ed-lead, .ed-essay)
+		p {
+		font-size: clamp(26px, 1.45vw, 28px);
+	}
+
 	.ed {
 		background: var(--paper);
 	}
@@ -338,7 +345,7 @@ import quotePhoto from '../assets/images/about/jay-dixit_2024-10-04_telos_ryan-j
 		padding-right: clamp(3rem, 6vw, 8rem);
 	}
 
-	.ed-essay-opening p {
+	:global(body.reading-face-arno[data-reading-face='arno']) .ed.ed--about .ed-essay-opening p {
 		margin: 0;
 		font-family: var(--serif);
 		font-size: clamp(2.5rem, 3.6vw, 4.75rem);
@@ -524,7 +531,7 @@ import quotePhoto from '../assets/images/about/jay-dixit_2024-10-04_telos_ryan-j
 		background: #cfc6b3;
 	}
 
-	.ed-quote-text {
+	:global(body.reading-face-arno[data-reading-face='arno']) .ed.ed--about .ed-quote-text {
 		margin: 0 0 2rem;
 		font-family: var(--serif);
 		font-weight: 300;
@@ -668,7 +675,7 @@ import quotePhoto from '../assets/images/about/jay-dixit_2024-10-04_telos_ryan-j
 			padding-inline: 1.5rem;
 		}
 
-		.ed-essay-opening p {
+		:global(body.reading-face-arno[data-reading-face='arno']) .ed.ed--about .ed-essay-opening p {
 			font-size: clamp(2.4rem, 11vw, 3.5rem);
 		}
 
