@@ -16,6 +16,11 @@ const comparisonSequence = [
 	'Sebastian Stan',
 	'John Hopfield',
 	'Fondazione Prada, Milan',
+	'Zach Cherry',
+	'Anna Kendrick',
+	'Issa Rae',
+	'Seth Rogen',
+	'Rick Hansen',
 ];
 
 const comparisonAnchor = (name: string) =>
@@ -78,14 +83,12 @@ const sequencedComparisons = await Promise.all(
 			<nav class="comparison-toc" aria-label="Jump to a comparison">
 				<div class="comparison-toc-heading">
 					<span>The comparisons</span>
-					<span>{sequencedComparisons.length} comparisons</span>
 				</div>
 				<ol>
 					{
-						sequencedComparisons.map((comparison, index) => (
+						sequencedComparisons.map((comparison) => (
 							<li>
 								<a href={`#${comparison.anchor}`}>
-									<span>{index + 1}</span>
 									<strong>{comparison.name}</strong>
 									<i aria-hidden="true">↘</i>
 								</a>
@@ -99,7 +102,6 @@ const sequencedComparisons = await Promise.all(
 					sequencedComparisons.map((comparison, index) => (
 						<article id={comparison.anchor} class="comparison-card">
 							<header class="comparison-header">
-								<span class="comparison-index">{index + 1}</span>
 								<div>
 									<h3>{comparison.name}</h3>
 									<p>{comparison.event}</p>
@@ -356,13 +358,14 @@ const sequencedComparisons = await Promise.all(
 		border-right: 0;
 	}
 
-	.comparison-toc li:nth-last-child(-n + 4) {
+	.comparison-toc li:nth-child(4n + 1):nth-last-child(-n + 4),
+	.comparison-toc li:nth-child(4n + 1):nth-last-child(-n + 4) ~ li {
 		border-bottom: 0;
 	}
 
 	.comparison-toc a {
 		display: grid;
-		grid-template-columns: auto minmax(0, 1fr) auto;
+		grid-template-columns: minmax(0, 1fr) auto;
 		gap: 0.75rem;
 		align-items: center;
 		min-height: 5.25rem;
@@ -372,14 +375,6 @@ const sequencedComparisons = await Promise.all(
 		transition:
 			background-color 180ms ease,
 			color 180ms ease;
-	}
-
-	.comparison-toc a > span {
-		color: var(--gold);
-		font-family: 'Cormorant Garamond', Georgia, serif;
-		font-size: 1.5rem;
-		font-weight: 500;
-		line-height: 1;
 	}
 
 	.comparison-toc strong {
@@ -402,11 +397,6 @@ const sequencedComparisons = await Promise.all(
 		outline: none;
 	}
 
-	.comparison-toc a:hover > span,
-	.comparison-toc a:focus-visible > span {
-		color: white;
-	}
-
 	.comparison-toc a:hover i,
 	.comparison-toc a:focus-visible i {
 		transform: translate(0.2rem, 0.2rem);
@@ -425,21 +415,11 @@ const sequencedComparisons = await Promise.all(
 
 	.comparison-header {
 		display: grid;
-		grid-template-columns: auto minmax(0, 1fr) auto;
+		grid-template-columns: minmax(0, 1fr) auto;
 		gap: clamp(1rem, 3vw, 2rem);
 		align-items: end;
 		padding-bottom: 1rem;
 		border-bottom: 1px solid var(--ink);
-	}
-
-	.comparison-index {
-		color: var(--accent);
-		font-family: var(--serif);
-		font-size: 3.25rem;
-		font-weight: 300;
-		letter-spacing: -0.02em;
-		line-height: 0.8;
-		opacity: 0.55;
 	}
 
 	.comparison-header h3 {
@@ -639,11 +619,11 @@ const sequencedComparisons = await Promise.all(
 		}
 
 		.comparison-header {
-			grid-template-columns: auto minmax(0, 1fr);
+			grid-template-columns: minmax(0, 1fr);
 		}
 
 		.comparison-header > a {
-			grid-column: 2;
+			grid-column: 1;
 			justify-self: start;
 		}
 

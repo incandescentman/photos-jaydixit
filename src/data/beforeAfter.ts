@@ -19,6 +19,17 @@ import sydneyAfterImg from '../assets/images/wikiportraits/sydney-sweeney_tiff_2
 import vanessaBeforeImg from '../assets/images/wikiportraits/vanessa-kirby-before-2018.jpg';
 import vanessaAfterImg from '../assets/images/wikiportraits/vanessa-kirby_tiff_2024.jpg';
 
+import zachBeforeImg from '../assets/images/wikiportraits/zach-cherry-before.jpg';
+import zachAfterImg from '../assets/images/wikiportraits/zach-cherry_tiff_2026_03872.jpg';
+import annaBeforeImg from '../assets/images/wikiportraits/anna-kendrick-before.jpg';
+import annaAfterImg from '../gallery/photos/red-carpet/tiff/anna-kendrick_tiff_2026_04298.jpg';
+import issaBeforeImg from '../assets/images/wikiportraits/issa-rae-before.jpg';
+import issaAfterImg from '../gallery/photos/red-carpet/tiff/issa-rae_tiff_2026_04183.jpg';
+import sethBeforeImg from '../assets/images/wikiportraits/seth-rogen-before.jpg';
+import sethAfterImg from '../gallery/photos/red-carpet/tiff/seth-rogen_tiff_2026_8.jpg';
+import rickBeforeImg from '../assets/images/wikiportraits/rick-hansen-before.jpg';
+import rickAfterImg from '../gallery/photos/red-carpet/tiff/rick-hansen_tiff_2026_1.jpg';
+
 export interface BeforeAfterComparison {
 	name: string;
 	beforeImage: ImageMetadata;
@@ -191,5 +202,65 @@ export const comparisons: BeforeAfterComparison[] = [
 		sourceCredit: 'Jay Dixit',
 		license: 'CC BY 4.0',
 		licenseUrl: 'https://creativecommons.org/licenses/by/4.0/',
+	},
+	{
+		name: 'Zach Cherry',
+		beforeImage: zachBeforeImg,
+		afterImage: zachAfterImg,
+		article: 'https://en.wikipedia.org/wiki/Zach_Cherry',
+		event: 'Toronto International Film Festival 2026',
+		beforeSource: 'Previous Wikipedia portrait',
+		afterSource: 'Jay Dixit, TIFF 2026',
+		beforePos: 'center top',
+		afterPos: 'center top',
+		sourceCredit: 'Jay Dixit',
+	},
+	{
+		name: 'Anna Kendrick',
+		beforeImage: annaBeforeImg,
+		afterImage: annaAfterImg,
+		article: 'https://en.wikipedia.org/wiki/Anna_Kendrick',
+		event: 'Toronto International Film Festival 2026',
+		beforeSource: 'Previous Wikipedia portrait',
+		afterSource: 'Jay Dixit, TIFF 2026',
+		beforePos: 'center top',
+		afterPos: 'center top',
+		sourceCredit: 'Jay Dixit',
+	},
+	{
+		name: 'Issa Rae',
+		beforeImage: issaBeforeImg,
+		afterImage: issaAfterImg,
+		article: 'https://en.wikipedia.org/wiki/Issa_Rae',
+		event: 'Toronto International Film Festival 2026',
+		beforeSource: 'Previous Wikipedia portrait',
+		afterSource: 'Jay Dixit, TIFF 2026',
+		beforePos: 'center top',
+		afterPos: 'center top',
+		sourceCredit: 'Jay Dixit',
+	},
+	{
+		name: 'Seth Rogen',
+		beforeImage: sethBeforeImg,
+		afterImage: sethAfterImg,
+		article: 'https://en.wikipedia.org/wiki/Seth_Rogen',
+		event: 'Toronto International Film Festival 2026',
+		beforeSource: 'Previous Wikipedia portrait',
+		afterSource: 'Jay Dixit, TIFF 2026',
+		beforePos: 'center top',
+		afterPos: 'center top',
+		sourceCredit: 'Jay Dixit',
+	},
+	{
+		name: 'Rick Hansen',
+		beforeImage: rickBeforeImg,
+		afterImage: rickAfterImg,
+		article: 'https://en.wikipedia.org/wiki/Rick_Hansen',
+		event: 'Toronto International Film Festival 2026',
+		beforeSource: 'Previous Wikipedia portrait',
+		afterSource: 'Jay Dixit, TIFF 2026',
+		beforePos: 'center top',
+		afterPos: 'center top',
+		sourceCredit: 'Jay Dixit',
 	},
 ];

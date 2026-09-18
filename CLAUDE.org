@@ -7,7 +7,7 @@
 - [ ] Prepare source photographs for Russell Crowe, Rami Malek, Matt Damon, and Don Cheadle, then run them through Exwalker and the portfolio publication workflow.
 - [ ] Review Giscus configuration if the repo or Discussions category changes; current values live in src/components/PhotoComments.astro
 - [ ] More portrait coverage: Download local highlight files for people who only have Cloudinary assets (Willem Dafoe, Gabriel LaBelle, Rose Byrne, Sydney Sweeney solo, Ana de Armas solo, Jason Collett, Kaia Gerber solo). These are referenced in src/data/homepage-images.js but have no files in src/gallery/highlights/, so they don't appear on portrait pages.
-- [ ] Before-and-after page expansion: src/pages/before-and-after.astro now showcases 8 comparisons. More Wikipedia-upgraded photographs are available and could be added.
+- [X] Before-and-after page expansion (2026-09-18): [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/before-and-after.astro][Before & After]] now showcases 13 comparisons, including Zach Cherry, Anna Kendrick, Issa Rae, Seth Rogen, and Rick Hansen. Each pair uses separate images with full-size viewing; decorative numbering and the comparison count were removed.
 - [ ] Albums: The content collection at src/content/albums/ is scaffolded but empty. Could be used for curated sets (e.g., "SXSW 2024", "Nobel Laureates").
 
 
@@ -120,6 +120,7 @@ manifest.
 - Each person in src/data/people.json gets a page at /red-carpet/[slug]
 
 - Index page at /red-carpet/ lists all people alphabetically with sample photos
+- 2026-09-18: The Red Carpet directory uses the available viewport width with three desktop columns, two tablet columns, and one phone column. The former 76rem cap was removed; responsive image candidates reach 1920px. Zach Cherry now has a directory entry and person page. Three desktop columns remain the current implementation; two columns were discussed but not implemented.
 
 - Legacy /portraits/ routes exist only as redirects to /red-carpet/
 

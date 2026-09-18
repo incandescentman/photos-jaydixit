@@ -2619,3 +2619,24 @@ Jay then supplied the new Issa Rae export ending ~04183 2.jpg~ and requested rep
 
 * 2026-09-18 — Zach Cherry TIFF Commons upload
 Jay requested Commons publication of frame 03872, confirmed the September 12 world premiere of Babies, and rated it good (inventory quality fine). Uploaded with original frame-number suffix, TIFF campaign template, subject/festival/photographer categories, and CC BY-SA 4.0. Live verification confirmed the exact source hash and all four expanded categories. No portfolio addition requested. [[file+emacs:/Users/jay/Dropbox/github/exwalker/output/issa-rae-tiff-2026-09-18/zach-cherry-03872/publication-plan.json][Publication manifest and receipt]]; [[file+emacs:/Users/jay/Dropbox/github/exwalker/output/issa-rae-tiff-2026-09-18/zach-cherry-03872/commons-live-verification.json][live verification]].
+
+* 2026-09-18 — Issa Rae homepage sequence
+After local checkpoint ~cd57eca~, Jay authorized adding the four-photo sequence immediately before the homepage photo wall, ordered 04162 → 04163 → 04164 → 04165. Added [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/src/components/IssaRaeSequence.astro][IssaRaeSequence]] with separate full-size clickable photographs, full uncropped compositions, the existing portfolio PhotoSwipe viewer, and a horizontally scrollable phone strip. Local source copies are in [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/src/assets/issa-rae-sequence/][the sequence asset folder]] and match the supplied export hashes. This editorial strip is separate from the Cloudinary-backed Packery highlights configuration. Existing hero, profile, and photo-wall styling remain intact.
+
+The 156-page production build, scoped ESLint, and whitespace checks passed. Browser checks at 1728×1117, 3008×1692, and 390×844 confirmed frame order, uncropped aspect ratios, all four full-size opens, next navigation, Escape, phone scrolling, and no page overflow or JavaScript errors. Desktop and phone screenshots were compared with the source strip and the adjacent existing photo-wall treatment. Review: [[http://localhost:4337/#issa-rae-sequence][homepage sequence]]. The sequence is implemented locally and is not committed or pushed.
+
+Jay supplied the sequence caption label: “Issa Rae at the Toronto International Film Festival premiere of Babies”. Applied that exact wording to the existing person-page link.
+
+* 2026-09-18 — Add five Before & After comparisons
+Added Zach Cherry, Anna Kendrick, Issa Rae, Seth Rogen, and Rick Hansen at the bottom of the existing comparison sequence, using separate original photographs and the existing PhotoSwipe viewer. Downloaded before images and the revised Zach portrait are copied byte-for-byte into page assets; the other after images reuse the portfolio originals. Updated the table-of-contents last-row border selector for the expanded list.
+
+Validation: production build and scoped ESLint/formatting checks passed. Browser checks at 1728×1117, 3008×1692, and 390×844 verified the five appended pairs, all ten independent full-size images, viewer navigation and Escape, and no page overflow or JavaScript errors. Changes remain local and uncommitted.
+
+Jay flagged decorative numbering in the comparison navigation. Removed navigation numbers, matching comparison-heading numbers, and the comparison count under his existing no-decorative-numbers rule. The existing rule already covers this; no new instruction is needed.
+
+Added Zach Cherry to the Red Carpet directory and person routes using his revised TIFF 2026 portrait already imported for Before & After. Confirmed the other four requested subjects already have directory entries; no duplicate entries added.
+
+Widened the Red Carpet directory at Jay’s request by removing the 76rem shell cap, retaining three desktop columns and the existing tablet/phone breakpoints. Added 1440px and 1920px responsive image candidates for larger displays.
+
+* 2026-09-18 — Documentation and local checkpoint
+Updated both documentation entry points for the homepage sequence, thirteen Before & After comparisons, removal of decorative numbering, Zach Cherry’s directory entry, and the wider three-column Red Carpet directory. The two-column alternative was discussed but not implemented. Final Red Carpet verification measured portraits at 528×704 on the 1728px display, about 955×1273 on the 3008px display, and 342×456 on a 390px phone. Search, keyboard navigation to the portrait page, and the full-size portrait viewer passed; production builds and scoped lint passed during implementation. Local review artifacts and unrelated experiments are excluded from this checkpoint. Jay subsequently authorized pushing this checkpoint and the preceding TIFF favorites checkpoint.

@@ -229,5 +229,15 @@
 		"match": ["vinod-khosla"],
 		"bio": "Venture capitalist and tech investor",
 		"wikipedia": "https://en.wikipedia.org/wiki/Vinod_Khosla"
+	},
+	{
+		"slug": "zach-cherry",
+		"name": "Zach Cherry",
+		"match": ["zach-cherry"],
+		"wikipedia": "https://en.wikipedia.org/wiki/Zach_Cherry",
+		"commonsUrl": "https://commons.wikimedia.org/wiki/File:Zach_Cherry_at_Toronto_International_Film_Festival_2026_-_photographed_by_Jay_Dixit_-_03872.jpg",
+		"sourceCredit": "Jay Dixit",
+		"license": "CC BY-SA 4.0",
+		"licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
 	}
 ]
