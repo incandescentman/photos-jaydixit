@@ -11,6 +11,11 @@
 		"wikipedia": "https://en.wikipedia.org/wiki/Ana_de_Armas"
 	},
 	{
+		"slug": "anna-kendrick",
+		"name": "Anna Kendrick",
+		"match": ["anna-kendrick"]
+	},
+	{
 		"slug": "ben-jackson",
 		"name": "Ben Jackson",
 		"match": ["ben-jackson"],
@@ -71,6 +76,11 @@
 		"match": ["himesh-patel"],
 		"bio": "Yesterday, Station Eleven",
 		"wikipedia": "https://en.wikipedia.org/wiki/Himesh_Patel"
+	},
+	{
+		"slug": "issa-rae",
+		"name": "Issa Rae",
+		"match": ["issa-rae"]
 	},
 	{
 		"slug": "jack-johnson",
