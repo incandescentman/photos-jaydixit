@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import vanessaBeforeImg from '../assets/images/wikiportraits/vanessa-kirby-before-2018.jpg';
 import vanessaAfterImg from '../assets/images/wikiportraits/vanessa-kirby_tiff_2024.jpg';
 ---
@@ -7,9 +8,12 @@ import vanessaAfterImg from '../assets/images/wikiportraits/vanessa-kirby_tiff_2
 	<div class="wikiportraits-feature-hero-grid">
 		<div class="wikiportraits-feature-panel">
 			<div class="wikiportraits-feature-frame">
-				<img
+				<Image
 					class="wikiportraits-feature-img wikiportraits-feature-img--before"
-					src={vanessaBeforeImg.src}
+					src={vanessaBeforeImg}
+					width={1600}
+					widths={[480, 800, 1200, 1600]}
+					sizes="(max-width: 900px) 50vw, 600px"
 					alt="Vanessa Kirby’s 2018 Wikipedia portrait"
 					loading="eager"
 					decoding="async"
@@ -25,9 +29,12 @@ import vanessaAfterImg from '../assets/images/wikiportraits/vanessa-kirby_tiff_2
 
 		<div class="wikiportraits-feature-panel">
 			<div class="wikiportraits-feature-frame">
-				<img
+				<Image
 					class="wikiportraits-feature-img wikiportraits-feature-img--after"
-					src={vanessaAfterImg.src}
+					src={vanessaAfterImg}
+					width={1600}
+					widths={[480, 800, 1200, 1600]}
+					sizes="(max-width: 900px) 50vw, 600px"
 					alt="Vanessa Kirby - Wikipedia photo by Jay Dixit"
 					loading="eager"
 					decoding="async"

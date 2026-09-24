@@ -8,6 +8,8 @@ import PhotoLikeButton from '../../components/PhotoLikeButton.astro';
 import siteConfig from '../../../site.config.mts';
 import { embeddedAttribution } from '../../lib/embeddedAttribution';
 import { buildCaptionAndTags, formatPhrase, type GalleryTagsFile } from '../../lib/galleryMetadata';
+import { dimensionsOf } from '../../lib/image-variants';
+import { ogImageFromAsset } from '../../lib/seo';
 
 const { folder } = Astro.params;
 
@@ -61,10 +63,11 @@ const groupedImageEntries = await Promise.all(
 
 		const { caption, tags } = buildCaptionAndTags(filename, imageFolder, tagsByFolder[imageFolder]);
 		const detailHref = toPhotoHref(folderPath, filename);
+		const size = dimensionsOf(metadata);
 		const [lightboxImage, thumbnailImage, exhibitionAttribution] = await Promise.all([
 			getImage({
 				src: metadata,
-				width: Math.min(metadata.width, 3000),
+				width: Math.min(size.width, 3000),
 				inferSize: true,
 			}),
 			getImage({ src: metadata, width: 160, format: 'webp', inferSize: true }),
@@ -82,8 +85,11 @@ const groupedImageEntries = await Promise.all(
 			slug: filename.replace(/\.[^/.]+$/, ''),
 			caption,
 			tags,
-			originalSrc: metadata.src,
+			width: size.width,
+			height: size.height,
 			lightboxSrc: lightboxImage.src,
+			lightboxWidth: Number(lightboxImage.attributes.width),
+			lightboxHeight: Number(lightboxImage.attributes.height),
 			exhibitionThumb: thumbnailImage.src,
 			exhibitionAttribution,
 		};
@@ -100,8 +106,11 @@ const groupedImages = groupedImageEntries
 			slug: string;
 			caption: string;
 			tags: string[];
-			originalSrc: string;
+			width: number;
+			height: number;
 			lightboxSrc: string;
+			lightboxWidth: number;
+			lightboxHeight: number;
 			exhibitionThumb: string;
 			exhibitionAttribution: string | undefined;
 		} => entry !== null,
@@ -115,8 +124,11 @@ const groupedImages = groupedImageEntries
 				slug: string;
 				caption: string;
 				tags: string[];
-				originalSrc: string;
+				width: number;
+				height: number;
 				lightboxSrc: string;
+				lightboxWidth: number;
+				lightboxHeight: number;
 				exhibitionThumb: string;
 				exhibitionAttribution: string | undefined;
 			}>
@@ -155,7 +167,10 @@ const galleryUrl = `/gallery/${folderPath}`;
 const canonicalUrl = new URL(`/gallery/${folderPath}`, siteUrl).toString();
 const pageTitle = `${displayName} Gallery`;
 const pageDescription = `${images.length} ${images.length === 1 ? 'photo' : 'photos'} in the ${displayName} gallery by ${siteConfig.owner}.`;
-const primaryImage = images[0]?.originalSrc;
+// A complete social card (URL, size, and type), since the shared resolver cannot measure
+// a resized copy before it is written.
+const socialCard = images[0] ? await ogImageFromAsset(images[0].metadata, images[0]?.caption) : undefined;
+const primaryImage = socialCard?.url;
 const folderSegments = folderPath.split('/').filter(Boolean);
 const breadcrumbs = [
 	{ name: 'Home', url: '/' },
@@ -170,7 +185,7 @@ const breadcrumbs = [
 ];
 const imageObjects = images.slice(0, 48).map((image) => ({
 	'@type': 'ImageObject',
-	contentUrl: new URL(image.originalSrc, siteUrl).toString(),
+	contentUrl: new URL(image.lightboxSrc, siteUrl).toString(),
 	caption: image.caption,
 	keywords: image.tags.length > 0 ? image.tags.join(', ') : undefined,
 }));
@@ -228,6 +243,7 @@ export const getStaticPaths = () => {
 	description={pageDescription}
 	canonical={canonicalUrl}
 	image={primaryImage}
+	ogImages={socialCard ? [socialCard] : undefined}
 	imageAlt={images[0]?.caption}
 	structuredData={[galleryStructuredData, breadcrumbStructuredData]}
 >
@@ -318,7 +334,7 @@ export const getStaticPaths = () => {
 				<div class="gallery-gutter"></div>
 				{
 					images.map((image, index) => {
-						const landscape = image.metadata.width > image.metadata.height;
+						const landscape = image.width > image.height;
 						const dataSize = landscape ? 'landscape' : 'portrait';
 
 						return (
@@ -334,8 +350,8 @@ export const getStaticPaths = () => {
 									class="masonry-link portfolio-lightbox"
 									href={image.lightboxSrc}
 									data-pswp-item="true"
-									data-pswp-width={image.metadata.width}
-									data-pswp-height={image.metadata.height}
+									data-pswp-width={image.lightboxWidth}
+									data-pswp-height={image.lightboxHeight}
 									data-full-src={image.lightboxSrc}
 									data-pswp-caption={image.caption}
 									data-exhibition-details={toPhotoHref(folderPath, image.filename)}
@@ -347,18 +363,18 @@ export const getStaticPaths = () => {
 									<Image
 										src={image.metadata}
 										alt={image.caption}
-										width={Math.min(image.metadata.width, 1280)}
+										width={Math.min(image.width, 1280)}
 										widths={Array.from(
 											new Set(
-												[320, 640, 960, 1280, 1600, 2000, 2400, image.metadata.width].filter(
-													(width) => width <= image.metadata.width,
+												[320, 640, 960, 1280, 1600, 2000, 2400, Math.min(image.width, 2400)].filter(
+													(width) => width <= image.width,
 												),
 											),
 										)}
 										sizes="(max-width: 768px) 100vw, 50vw"
 										loading="lazy"
-										data-natural-width={image.metadata.width}
-										data-natural-height={image.metadata.height}
+										data-natural-width={image.width}
+										data-natural-height={image.height}
 										data-caption={image.caption}
 									/>
 								</a>

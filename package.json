@@ -9,7 +9,7 @@
 		"check:node": "node scripts/check-node-version.mjs",
 		"preinstall": "node scripts/check-node-version.mjs",
 		"dev": "node scripts/check-node-version.mjs && astro dev --open",
-		"build": "node scripts/check-node-version.mjs && astro build",
+		"build": "node scripts/check-node-version.mjs && astro build && node scripts/prune-unreferenced-astro-images.mjs",
 		"preview": "node scripts/check-node-version.mjs && astro preview",
 		"astro": "node scripts/check-node-version.mjs && astro",
 		"prettier": "prettier . --write",

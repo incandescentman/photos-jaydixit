@@ -11,6 +11,7 @@ tags:
   - portraits
 ---
 
+import { Image } from 'astro:assets';
 import jeremyBeforeImg from '../../assets/images/wikiportraits/jeremy-strong-before.jpg';
 import jeremyAfterImg from '../../assets/images/wikiportraits/jeremy-strong_the-apprentice-premiere_2024.jpg';
 import wikiPortraitsTeamImg from '../../assets/images/wikiportraits/wikiportraits-team_tiff_2024.jpg';
@@ -137,13 +138,13 @@ import WikiPortraitsOpening from '../../components/WikiPortraitsOpening.astro';
 			</p>
 			<div className="wikiportraits-origin-conan-pair">
 				<figure>
-					<img src={conanObrienBeltImg.src} alt="Conan O’Brien performing onstage at SXSW 2024" />
+					<Image src={conanObrienBeltImg} alt="Conan O’Brien performing onstage at SXSW 2024" width={1600} widths={[480, 800, 1200, 1600]} sizes="(max-width: 900px) 100vw, 900px" />
 				</figure>
 				<figure>
-					<img src={conanObrienKickImg.src} alt="Conan O’Brien kicking onstage at SXSW 2024" />
+					<Image src={conanObrienKickImg} alt="Conan O’Brien kicking onstage at SXSW 2024" width={1600} widths={[480, 800, 1200, 1600]} sizes="(max-width: 900px) 100vw, 900px" />
 				</figure>
 				<figure>
-					<img src={conanObrienPortraitImg.src} alt="Conan O’Brien at Sundance 2024" />
+					<Image src={conanObrienPortraitImg} alt="Conan O’Brien at Sundance 2024" width={1600} widths={[480, 800, 1200, 1600]} sizes="(max-width: 900px) 100vw, 900px" />
 				</figure>
 			</div>
 		</div>
@@ -157,7 +158,7 @@ import WikiPortraitsOpening from '../../components/WikiPortraitsOpening.astro';
 		</p>
 	</div>
 	<figure className="wikiportraits-origin-photo">
-		<img src={wikiPortraitsTeamImg.src} alt="Three people together at TIFF in Toronto" />
+		<Image src={wikiPortraitsTeamImg} alt="Three people together at TIFF in Toronto" width={1600} widths={[480, 800, 1200, 1600]} sizes="(max-width: 900px) 100vw, 900px" />
 		<figcaption>
 			Kevin Payravi, Jenny Lee, and Jay Dixit (me) at the Toronto Film Festival
 		</figcaption>
@@ -229,9 +230,9 @@ import WikiPortraitsOpening from '../../components/WikiPortraitsOpening.astro';
     <div className="wikiportraits-jeremy-visual">
     <figure className="before-after-inline">
     <div className="before-after-grid">
-    	<img src={jeremyBeforeImg.src} alt="Jeremy Strong’s 2014 Wikipedia photo" />
+    	<Image src={jeremyBeforeImg} alt="Jeremy Strong’s 2014 Wikipedia photo" width={1600} widths={[480, 800, 1200, 1600]} sizes="(max-width: 900px) 100vw, 900px" />
     	<div className="before-after-arrow" aria-hidden="true">→</div>
-    	<img src={jeremyAfterImg.src} alt="Portrait of Jeremy Strong by Jay Dixit" />
+    	<Image src={jeremyAfterImg} alt="Portrait of Jeremy Strong by Jay Dixit" width={1600} widths={[480, 800, 1200, 1600]} sizes="(max-width: 900px) 100vw, 900px" />
     </div>
     <figcaption>
     	Mr. Strong happily posed for a portrait, emphasizing his eagerness to see his existing
@@ -275,7 +276,7 @@ import WikiPortraitsOpening from '../../components/WikiPortraitsOpening.astro';
     	</div>
     </div>
     <figure className="wikiportraits-ana-photo">
-    	<img src={anaDeArmasImg.src} alt="Ana de Armas smiling at the Toronto Film Festival" />
+    	<Image src={anaDeArmasImg} alt="Ana de Armas smiling at the Toronto Film Festival" width={1600} widths={[480, 800, 1200, 1600]} sizes="(max-width: 900px) 100vw, 900px" />
     <figcaption>Ana de Armas was surprised to Spanish coming from the photo pit</figcaption>
     </figure>
     </div>
@@ -292,9 +293,11 @@ import WikiPortraitsOpening from '../../components/WikiPortraitsOpening.astro';
     <div className="wikiportraits-mission-secondary">
     We're a team of more than 50 volunteer photographers.
     <figure className="wikiportraits-founders-photo">
-    	<img
-    		src={wikiPortraitsFoundersImg.src}
+    	<Image
+    		src={wikiPortraitsFoundersImg}
     		alt="WikiPortraits founders Jennifer 8. Lee and Kevin Payravi"
+    		width={1600}
+    		widths={[480, 800, 1200, 1600]} sizes="(max-width: 900px) 100vw, 900px"
     	/>
     	<figcaption>WikiPortraits founders Jennifer 8. Lee and Kevin Payravi. Photo by Jay Dixit</figcaption>
     </figure>

@@ -8,6 +8,8 @@ import rawPeople from '../../data/people.json';
 import { images as homepageImages } from '../../data/homepage-images.js';
 import { embeddedAttribution } from '../../lib/embeddedAttribution';
 import { buildCaptionAndTags, formatPhrase, type GalleryTagsFile } from '../../lib/galleryMetadata';
+import { lightboxVariant } from '../../lib/image-variants';
+import { ogImageFromAsset } from '../../lib/seo';
 
 interface Person {
 	slug: string;
@@ -116,7 +118,6 @@ type PhotoEntry = {
 	caption: string;
 	galleryName: string;
 	moduleKey: string;
-	originalSrc: string;
 	detailHref: string | null;
 	source: keyof typeof sourcePriority;
 };
@@ -166,7 +167,6 @@ function collectMatchingPhotos(
 				caption,
 				galleryName,
 				moduleKey: key,
-				originalSrc: metadata.src,
 				detailHref: source === 'gallery' ? toPhotoHref(folder, filename) : null,
 				source,
 			};
@@ -204,8 +204,9 @@ const matchedPhotos = Object.values(grouped)
 
 const photos = await Promise.all(
 	matchedPhotos.map(async (photo) => {
-		const [thumbnail, exhibitionAttribution] = await Promise.all([
+		const [thumbnail, lightbox, exhibitionAttribution] = await Promise.all([
 			getImage({ src: photo.metadata, width: 160, format: 'webp' }),
+			lightboxVariant(photo.metadata),
 			embeddedAttribution({
 				moduleKey: photo.moduleKey,
 				pageFile: 'src/pages/red-carpet/[person].astro',
@@ -217,6 +218,9 @@ const photos = await Promise.all(
 		return {
 			...photo,
 			thumbnailSrc: thumbnail.src,
+			lightboxSrc: lightbox.src,
+			lightboxWidth: lightbox.width,
+			lightboxHeight: lightbox.height,
 			exhibitionAttribution,
 		};
 	}),
@@ -232,7 +236,10 @@ const pageTitle = `${personData.name} — Red Carpet Photos`;
 const pageDescription = personData.bio
 	? `${personData.bio}. ${photos.length} ${photos.length === 1 ? 'red carpet photo' : 'red carpet photos'} by ${siteConfig.owner}.`
 	: `${photos.length} ${photos.length === 1 ? 'red carpet photo' : 'red carpet photos'} of ${personData.name} by ${siteConfig.owner}.`;
-const primaryImage = photos[0]?.originalSrc;
+// A complete social card (URL, size, and type), since the shared resolver cannot measure
+// a resized copy before it is written.
+const socialCard = photos[0] ? await ogImageFromAsset(photos[0].metadata, `Portrait of ${personData.name}`) : undefined;
+const primaryImage = socialCard?.url;
 const provenanceParts = [
 	personData.articleUsageStatus === 'lead' ? 'Currently the lead photo on Wikipedia' : null,
 	personData.sourceCredit ? `Photo by ${personData.sourceCredit}` : null,
@@ -260,7 +267,7 @@ const personStructuredData = {
 		...(personData.wikipedia ? { sameAs: personData.wikipedia } : {}),
 	},
 	creator: { '@type': 'Person', name: siteConfig.owner },
-	image: photos.map((p) => new URL(p.originalSrc, siteUrl).toString()),
+	image: photos.map((p) => new URL(p.lightboxSrc, siteUrl).toString()),
 };
 
 const breadcrumbStructuredData = {
@@ -285,6 +292,7 @@ export function getStaticPaths() {
 	description={pageDescription}
 	canonical={canonicalUrl}
 	image={primaryImage}
+	ogImages={socialCard ? [socialCard] : undefined}
 	imageAlt={`Portrait of ${personData.name}`}
 	structuredData={[personStructuredData, breadcrumbStructuredData]}
 >
@@ -375,13 +383,13 @@ export function getStaticPaths() {
 					photos.map((photo) => (
 						<div class="group block">
 							<a
-								href={photo.originalSrc}
+								href={photo.lightboxSrc}
 								class="block"
 								data-pswp-item="true"
 								data-exhibition-thumb={photo.thumbnailSrc}
-								data-full-src={photo.originalSrc}
-								data-pswp-width={photo.metadata.width}
-								data-pswp-height={photo.metadata.height}
+								data-full-src={photo.lightboxSrc}
+								data-pswp-width={photo.lightboxWidth}
+								data-pswp-height={photo.lightboxHeight}
 								data-pswp-caption={photo.caption}
 								data-exhibition-details={photo.detailHref ?? undefined}
 								data-exhibition-person={canonicalUrl}

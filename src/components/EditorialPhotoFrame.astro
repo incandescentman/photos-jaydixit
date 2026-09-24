@@ -1,6 +1,7 @@
 ---
-import { Image, getImage } from 'astro:assets';
+import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro:assets';
+import { lightboxVariant } from '../lib/image-variants';
 
 interface Props {
 	image: ImageMetadata;
@@ -24,11 +25,8 @@ const {
 	labelVariant,
 } = Astro.props;
 
-const lightboxImage = await getImage({
-	src: image,
-	width: image.width,
-	inferSize: true,
-});
+// A 3,000 px lightbox copy rather than a full-size re-encode of the original.
+const lightboxImage = await lightboxVariant(image);
 ---
 
 <figure class="ba-figure">
@@ -36,14 +34,15 @@ const lightboxImage = await getImage({
 		href={lightboxImage.src}
 		data-pswp-item="true"
 		class="portfolio-lightbox ba-frame"
-		data-pswp-width={image.width}
-		data-pswp-height={image.height}
+		data-pswp-width={lightboxImage.width}
+		data-pswp-height={lightboxImage.height}
 		data-pswp-caption={caption}
 		data-cropped="true"
 	>
 		<Image
 			src={image}
 			alt={alt}
+			width={800}
 			widths={[400, 800]}
 			sizes="(min-width: 768px) 50vw, 100vw"
 			class="ba-img"

@@ -2,6 +2,7 @@
 import { Image, getImage } from 'astro:assets';
 import PhotoSwipeLightbox from './PortfolioLightbox.astro';
 import type { Image as ImageType } from '../data/galleryData';
+import { dimensionsOf } from '../lib/image-variants';
 
 interface Props {
 	images: ImageType[];
@@ -10,7 +11,8 @@ interface Props {
 const { images } = Astro.props;
 const imagesWithLightbox = await Promise.all(
 	images.map(async (image) => {
-		const lightboxWidth = Math.min(image.src.width, 3000);
+		const size = dimensionsOf(image.src);
+		const lightboxWidth = Math.min(size.width, 3000);
 		const lightboxImage = await getImage({
 			src: image.src,
 			width: lightboxWidth,
@@ -21,8 +23,11 @@ const imagesWithLightbox = await Promise.all(
 			...image,
 			lightboxHref: lightboxImage.src,
 			thumbnailSrc: (await getImage({ src: image.src, width: 160, format: 'webp' })).src,
-			lightboxWidth: image.src.width,
-			lightboxHeight: image.src.height,
+			// Tiles render at most 1,600 px wide instead of re-encoding the full original.
+			width: Math.min(size.width, 1600),
+			height: Math.round((Math.min(size.width, 1600) * size.height) / size.width),
+			lightboxWidth: Number(lightboxImage.attributes.width),
+			lightboxHeight: Number(lightboxImage.attributes.height),
 			lightboxCaption: image.description || image.title,
 		};
 	}),
@@ -46,8 +51,8 @@ const imagesWithLightbox = await Promise.all(
 					src={image.src}
 					quality={90}
 					format="webp"
-					width={image.src.width}
-					height={image.src.height}
+					width={image.width}
+					height={image.height}
 					class="w-full h-full object-cover rounded-sm shadow-sm hover:shadow-lg transition-shadow"
 					alt={image.title}
 				/>

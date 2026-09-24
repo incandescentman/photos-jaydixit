@@ -14,6 +14,7 @@ import {
 	type GalleryTagsFile,
 } from '../../../lib/galleryMetadata';
 import { ogImageFromAsset } from '../../../lib/seo';
+import { dimensionsOf, lightboxVariant, thumbnailVariant } from '../../../lib/image-variants';
 
 type TagsByFolder = Record<string, GalleryTagsFile>;
 
@@ -94,7 +95,6 @@ const groupedImages = Object.entries(imageModules)
 			folder: imageFolder,
 			caption,
 			tags,
-			originalSrc: metadata.src,
 			slug: imageFilename.replace(/\.[^/.]+$/, ''),
 			detailHref: toPhotoHref(imageFolder, imageFilename),
 		};
@@ -108,7 +108,6 @@ const groupedImages = Object.entries(imageModules)
 			folder: string;
 			caption: string;
 			tags: string[];
-			originalSrc: string;
 			slug: string;
 			detailHref: string;
 		} => entry !== null,
@@ -122,7 +121,6 @@ const groupedImages = Object.entries(imageModules)
 				folder: string;
 				caption: string;
 				tags: string[];
-				originalSrc: string;
 				slug: string;
 				detailHref: string;
 			}>
@@ -154,6 +152,16 @@ if (currentIndex === -1) {
 const currentPhoto = images[currentIndex];
 const prevPhoto = currentIndex > 0 ? images[currentIndex - 1] : null;
 const nextPhoto = currentIndex < images.length - 1 ? images[currentIndex + 1] : null;
+// The page shows the photo at most 2,048 px wide (the 1,024 px column at 2x).
+const sourceSize = dimensionsOf(currentPhoto.metadata);
+const displayWidth = Math.min(sourceSize.width, 2048);
+const displayHeight = Math.round((displayWidth * sourceSize.height) / sourceSize.width);
+// Sized copies for structured data and social cards; the original never reaches the page.
+const [photoCopy, photoThumbnail, socialCard] = await Promise.all([
+	lightboxVariant(currentPhoto.metadata),
+	thumbnailVariant(currentPhoto.metadata),
+	ogImageFromAsset(currentPhoto.metadata, currentPhoto.caption),
+]);
 
 function formatNumber(value: number) {
 	return Number.isInteger(value) ? String(value) : value.toFixed(1);
@@ -249,8 +257,8 @@ const photoStructuredData = {
 	name: currentPhoto.caption,
 	description: pageDescription,
 	url: canonicalUrl,
-	contentUrl: new URL(currentPhoto.originalSrc, siteUrl).toString(),
-	thumbnailUrl: new URL(currentPhoto.originalSrc, siteUrl).toString(),
+	contentUrl: new URL(photoCopy.src, siteUrl).toString(),
+	thumbnailUrl: new URL(photoThumbnail.src, siteUrl).toString(),
 	creator: {
 		'@type': 'Person',
 		name: siteConfig.owner,
@@ -302,9 +310,9 @@ export const getStaticPaths = () => {
 	title={pageTitle}
 	description={pageDescription}
 	canonical={canonicalUrl}
-	image={currentPhoto.originalSrc}
+	image={socialCard.url}
 	imageAlt={currentPhoto.caption}
-	ogImages={[ogImageFromAsset(currentPhoto.metadata, currentPhoto.caption)]}
+	ogImages={[socialCard]}
 	ogType="article"
 	structuredData={[photoStructuredData, breadcrumbStructuredData]}
 >
@@ -367,8 +375,10 @@ export const getStaticPaths = () => {
 				<Image
 					src={currentPhoto.metadata}
 					alt={currentPhoto.caption}
-					width={currentPhoto.metadata.width}
-					height={currentPhoto.metadata.height}
+					width={displayWidth}
+					height={displayHeight}
+					widths={[640, 1024, 1600, 2048].filter((w) => w <= displayWidth)}
+					sizes="(max-width: 1024px) 100vw, 1024px"
 					loading="eager"
 					decoding="async"
 					class="w-full h-auto object-contain"

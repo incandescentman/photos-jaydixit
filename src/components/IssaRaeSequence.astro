@@ -1,12 +1,13 @@
 ---
 import { Image } from 'astro:assets';
 import PhotoSwipeLightbox from './PortfolioLightbox.astro';
+import { lightboxVariant, thumbnailVariant } from '../lib/image-variants';
 import smile from '../assets/issa-rae-sequence/issa-rae_tiff_2026_04162.jpg';
 import laugh from '../assets/issa-rae-sequence/issa-rae_tiff_2026_04163.jpg';
 import headBack from '../assets/issa-rae-sequence/issa-rae_tiff_2026_04164.jpg';
 import fullLaugh from '../assets/issa-rae-sequence/issa-rae_tiff_2026_04165.jpg';
 
-const photos = [
+const sequence = [
 	{ image: smile, alt: 'Issa Rae smiling at the Toronto International Film Festival in 2026' },
 	{
 		image: laugh,
@@ -21,6 +22,14 @@ const photos = [
 		alt: 'Issa Rae laughing with her eyes closed at the Toronto International Film Festival in 2026',
 	},
 ];
+// The lightbox and exhibition strip use sized copies, never the full-size originals.
+const photos = await Promise.all(
+	sequence.map(async (photo) => ({
+		...photo,
+		full: await lightboxVariant(photo.image),
+		thumb: await thumbnailVariant(photo.image, 160),
+	})),
+);
 const caption =
 	'Issa Rae at the Toronto International Film Festival world premiere of Babies in 2026.';
 ---
@@ -33,15 +42,15 @@ const caption =
 		aria-label="Four photographs of Issa Rae, from smile to laughter"
 	>
 		{
-			photos.map(({ image, alt }) => (
+			photos.map(({ image, alt, full, thumb }) => (
 				<a
-					href={image.src}
+					href={full.src}
 					data-pswp-item="true"
-					data-full-src={image.src}
-					data-pswp-width={image.width}
-					data-pswp-height={image.height}
+					data-full-src={full.src}
+					data-pswp-width={full.width}
+					data-pswp-height={full.height}
 					data-pswp-caption={caption}
-					data-exhibition-thumb={image.src}
+					data-exhibition-thumb={thumb.src}
 					data-exhibition-person="/red-carpet/issa-rae"
 					data-exhibition-person-label="Issa Rae"
 					aria-label={`${alt} — view full size`}
@@ -49,6 +58,7 @@ const caption =
 					<Image
 						src={image}
 						alt={alt}
+						width={1440}
 						widths={[400, 640, 960, 1440]}
 						sizes="(max-width: 820px) 78vw, 25vw"
 						format="webp"

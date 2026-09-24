@@ -4,6 +4,10 @@ import MainLayout from '../layouts/MainLayout.astro';
 import PhotoSwipeLightbox from '../components/PortfolioLightbox.astro';
 import quotePhoto from '../assets/images/about/jay-dixit_2024-10-04_telos_ryan-jina-jess_wong-kar-wai_05420.jpg';
 import issaPhoto from '../assets/issa-rae-sequence/issa-rae_tiff_2026_04164.jpg';
+import { lightboxVariant } from '../lib/image-variants';
+
+// The lightboxes open 3,000 px copies, not the full-size originals.
+const [issaFull, quoteFull] = await Promise.all([lightboxVariant(issaPhoto), lightboxVariant(quotePhoto)]);
 ---
 
 <MainLayout photoFooter>
@@ -97,10 +101,10 @@ import issaPhoto from '../assets/issa-rae-sequence/issa-rae_tiff_2026_04164.jpg'
 				<figure class="ed-quote-photo ed-essay-portrait">
 					<div class="ed-quote-photo-frame">
 						<a
-							href={issaPhoto.src}
+							href={issaFull.src}
 							data-about-photo
-							data-pswp-width={issaPhoto.width}
-							data-pswp-height={issaPhoto.height}
+							data-pswp-width={issaFull.width}
+							data-pswp-height={issaFull.height}
 							data-pswp-caption="Issa Rae at the Toronto International Film Festival."
 							data-exhibition-person="/red-carpet/issa-rae"
 							data-exhibition-person-label="Issa Rae"
@@ -109,6 +113,7 @@ import issaPhoto from '../assets/issa-rae-sequence/issa-rae_tiff_2026_04164.jpg'
 							<Image
 								src={issaPhoto}
 								alt="Issa Rae laughing with her head tilted back at the Toronto International Film Festival in 2026"
+								width={1440}
 								widths={[400, 640, 960, 1440]}
 								sizes="(max-width: 900px) 100vw, 40vw"
 								loading="lazy"
@@ -156,16 +161,17 @@ import issaPhoto from '../assets/issa-rae-sequence/issa-rae_tiff_2026_04164.jpg'
 					<figure class="ed-quote-photo">
 						<div class="ed-quote-photo-frame">
 							<a
-								href={quotePhoto.src}
+								href={quoteFull.src}
 								data-about-photo
-								data-pswp-width={quotePhoto.width}
-								data-pswp-height={quotePhoto.height}
+								data-pswp-width={quoteFull.width}
+								data-pswp-height={quoteFull.height}
 								data-pswp-caption="Catching Jina in an unguarded moment at the Wong Kar-wai party in Bushwick"
 								aria-label="Open larger photograph of a woman smiling in red light"
 							>
 								<Image
 									src={quotePhoto}
 									alt="A woman smiling in red light"
+									width={1200}
 									widths={[500, 900, 1200]}
 									sizes="(max-width: 900px) 100vw, 46vw"
 									loading="lazy"

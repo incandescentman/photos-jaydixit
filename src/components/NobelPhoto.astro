@@ -37,6 +37,7 @@ const thumbnail = await getImage({ src: photo.src, width: 160, format: 'webp' })
 		<Image
 			src={photo.src}
 			alt={photo.alt}
+			width={1800}
 			widths={[480, 720, 960, 1280, 1800]}
 			sizes="(max-width: 760px) 100vw, 50vw"
 			loading={eager ? 'eager' : 'lazy'}

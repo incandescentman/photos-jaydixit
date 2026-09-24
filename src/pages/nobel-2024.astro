@@ -5,6 +5,7 @@ import { getImage } from 'astro:assets';
 import MainLayout from '../layouts/MainLayout.astro';
 import NobelPhoto from '../components/NobelPhoto.astro';
 import PhotoSwipeLightbox from '../components/PortfolioLightbox.astro';
+import { ogImageFromAsset } from '../lib/seo';
 
 import peaceCampaigners from '../gallery/photos/events/nobel-prizes-2024/anti-nuclear-campaigners_nobel-peace-prize-torchlight-procession-oslo_2024.jpg';
 import pressCredentials from '../gallery/photos/events/nobel-prizes-2024/press-credentials_nobel-peace-prize-oslo_2024.jpg';
@@ -206,7 +207,7 @@ const photographs = [
 const lightboxImages = await Promise.all(
 	photographs.map(async (photo) => ({
 		...photo,
-		full: await getImage({ src: photo.src, width: 2600, quality: 90, format: 'webp' }),
+		full: await getImage({ src: photo.src, width: 2600, quality: 85, format: 'webp' }),
 	})),
 );
 
@@ -215,6 +216,9 @@ const photo = (id: string) => {
 	if (!match) throw new Error(`Missing Nobel photograph: ${id}`);
 	return match;
 };
+
+// The social card is a 1,200 px JPEG rather than the 2,600 px lightbox copy.
+const socialCard = await ogImageFromAsset(photo('hassabis').src, 'Demis Hassabis at the 2024 Nobel Lectures in Stockholm');
 
 const structuredData = {
 	'@context': 'https://schema.org',
@@ -238,17 +242,9 @@ const structuredData = {
 	photoFooter
 	title={pageTitle}
 	{description}
-	image={photo('hassabis').full.src}
+	image={socialCard.url}
 	imageAlt="Demis Hassabis at the 2024 Nobel Lectures in Stockholm"
-	ogImages={[
-		{
-			url: photo('hassabis').full.src,
-			alt: 'Demis Hassabis at the 2024 Nobel Lectures in Stockholm',
-			width: photo('hassabis').full.options.width,
-			height: photo('hassabis').full.options.height,
-			type: 'image/webp',
-		},
-	]}
+	ogImages={[socialCard]}
 	keywords={[
 		'2024 Nobel Prize photographs',
 		'Nobel Lectures Stockholm',

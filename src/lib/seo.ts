@@ -1,5 +1,7 @@
+import type { ImageMetadata } from 'astro:assets';
 import { resolveSocialImage } from '@jaydixit/astro-utils/utils/social-image.ts';
 import { serializeJsonLd as serializeSharedJsonLd } from '@jaydixit/astro-utils/utils/json-ld.ts';
+import { socialVariant } from './image-variants';
 
 type JsonLdRecord = Record<string, unknown>;
 type JsonLd = JsonLdRecord | JsonLdRecord[];
@@ -23,16 +25,15 @@ function imageMimeType(format: string | undefined) {
 	return undefined;
 }
 
-export function ogImageFromAsset(
-	image: { src: string; width: number; height: number; format?: string },
-	alt?: string,
-): OgImage {
+// A 1,200 px JPEG card, so social previews never point at the full-size original.
+export async function ogImageFromAsset(image: ImageMetadata, alt?: string): Promise<OgImage> {
+	const card = await socialVariant(image);
 	return {
-		url: image.src,
+		url: card.src,
 		alt,
-		width: image.width,
-		height: image.height,
-		type: imageMimeType(image.format),
+		width: card.width,
+		height: card.height,
+		type: imageMimeType('jpg'),
 	};
 }
 
