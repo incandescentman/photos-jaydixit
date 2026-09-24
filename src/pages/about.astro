@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import MainLayout from '../layouts/MainLayout.astro';
 import PhotoSwipeLightbox from '../components/PortfolioLightbox.astro';
 import quotePhoto from '../assets/images/about/jay-dixit_2024-10-04_telos_ryan-jina-jess_wong-kar-wai_05420.jpg';
+import issaPhoto from '../assets/issa-rae-sequence/issa-rae_tiff_2026_04164.jpg';
 ---
 
 <MainLayout photoFooter>
@@ -92,6 +93,32 @@ import quotePhoto from '../assets/images/about/jay-dixit_2024-10-04_telos_ryan-j
 						</p>
 					</div>
 				</div>
+
+				<figure class="ed-quote-photo ed-essay-portrait">
+					<div class="ed-quote-photo-frame">
+						<a
+							href={issaPhoto.src}
+							data-about-photo
+							data-pswp-width={issaPhoto.width}
+							data-pswp-height={issaPhoto.height}
+							data-pswp-caption="Issa Rae at the Toronto International Film Festival."
+							data-exhibition-person="/red-carpet/issa-rae"
+							data-exhibition-person-label="Issa Rae"
+							aria-label="Open larger photograph of Issa Rae laughing"
+						>
+							<Image
+								src={issaPhoto}
+								alt="Issa Rae laughing with her head tilted back at the Toronto International Film Festival in 2026"
+								widths={[400, 640, 960, 1440]}
+								sizes="(max-width: 900px) 100vw, 40vw"
+								loading="lazy"
+							/>
+						</a>
+					</div>
+					<figcaption class="ed-quote-caption">
+						Issa Rae at the Toronto International Film Festival.
+					</figcaption>
+				</figure>
 
 				<nav class="ed-link-list ed-link-list--essay" aria-label="More about Jay">
 					<a class="ed-link" href="https://jaydixit.com" target="_blank" rel="noopener noreferrer">
@@ -214,6 +241,12 @@ import quotePhoto from '../assets/images/about/jay-dixit_2024-10-04_telos_ryan-j
 		:is(.ed-lead, .ed-essay)
 		p {
 		font-size: clamp(26px, 1.45vw, 28px);
+	}
+
+	@media (min-width: 901px) {
+		:global(body.reading-face-arno[data-reading-face='arno']) .ed.ed--about .ed-essay p {
+			font-size: clamp(30px, 1.85vw, 34px);
+		}
 	}
 
 	.ed {
@@ -358,6 +391,27 @@ import quotePhoto from '../assets/images/about/jay-dixit_2024-10-04_telos_ryan-j
 	.ed-essay-main {
 		padding-left: clamp(3rem, 6vw, 8rem);
 		border-left: 1px solid #cfc6b3;
+	}
+
+	.ed-quote-photo.ed-essay-portrait {
+		margin: clamp(3rem, 5vw, 5rem) clamp(3rem, 6vw, 8rem) 0 0;
+	}
+
+	@media (min-width: 901px) {
+		.ed-essay-main {
+			grid-column: 2;
+			grid-row: 1 / 3;
+		}
+		.ed-essay-portrait {
+			grid-column: 1;
+			grid-row: 2;
+		}
+	}
+
+	@media (max-width: 900px) {
+		.ed-quote-photo.ed-essay-portrait {
+			margin: 0;
+		}
 	}
 
 	/* Essay */

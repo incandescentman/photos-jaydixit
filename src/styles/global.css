@@ -252,8 +252,24 @@ body.reading-face-arno[data-reading-face='arno']
 	.nobel-page
 	.section-heading
 	> p:not(.section-number),
-body.reading-face-arno[data-reading-face='arno'] .nobel-page .section-copy p {
-	font-size: 26px;
+body.reading-face-arno[data-reading-face='arno'] .nobel-page .section-copy p,
+body.reading-face-arno[data-reading-face='arno'] .nobel-page .standfirst p,
+body.reading-face-arno[data-reading-face='arno']
+	.nobel-page
+	.oslo-section
+	.section-heading
+	> p:not(.section-number) {
+	font-size: clamp(26px, 1.45vw, 28px);
+}
+
+body.reading-face-arno[data-reading-face='arno'] .world-tour .toronto-lede {
+	font-size: clamp(26px, 3vw, 2.6rem);
+	line-height: 1.35;
+}
+
+body.reading-face-arno[data-reading-face='arno'] .finale .finale-standfirst {
+	font-size: clamp(26px, 2.25vw, 2.25rem);
+	line-height: 1.32;
 }
 
 body.reading-face-arno[data-reading-face='arno'] .ed .ed-quote-text,
