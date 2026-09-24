@@ -256,7 +256,7 @@ caption legibility, or whether navigation exists.
   Socratic AI should not become equally photo-heavy, but should learn from the
   portfolio's “big splashy elegant look.”
 - Updated the local experiment chooser and the
-  [[file+emacs:/Users/jay/Dropbox/github/socratic-video/references/look-and-feel/experiment-reactions.org][📄
+  [[file+emacs:/Users/jay/Dropbox/github/vibecoding/preferences/cross-repo-visual-experiment-reactions.org][📄
   cross-repo visual reaction ledger]].
 - Added
   [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/experiment-intentions/kinetic-editorial.json][📄
@@ -269,7 +269,7 @@ caption legibility, or whether navigation exists.
 
 ** Summary
 - Backfilled the explicit reactions to the photography homepage variants into
-  [[file+emacs:/Users/jay/Dropbox/github/socratic-video/references/look-and-feel/experiment-reactions.org][📄
+  [[file+emacs:/Users/jay/Dropbox/github/vibecoding/preferences/cross-repo-visual-experiment-reactions.org][📄
   the cross-repo visual experiment reaction ledger]].
 - Preserved the original distinctions:
   - Kinetic Editorial was liked, then promoted to the canonical homepage.
@@ -2503,7 +2503,7 @@ Jay approved porting the Storytelling.NYC button hover he chose today to the con
 
 ** Review response — 2026-09-10
 
-Jay: “hmm still hard to read, isn't it”. Status: needs rework. Codex's earlier positive assessment of the halo was too generous: the clothespins still interrupt the words. The [[file+emacs:/Users/jay/Dropbox/github/socratic-video/references/look-and-feel/experiment-reactions.org][cross-repo reaction ledger]] records the exact response. No replacement treatment was approved or applied in this review turn.
+Jay: “hmm still hard to read, isn't it”. Status: needs rework. Codex's earlier positive assessment of the halo was too generous: the clothespins still interrupt the words. The [[file+emacs:/Users/jay/Dropbox/github/vibecoding/preferences/cross-repo-visual-experiment-reactions.org][cross-repo reaction ledger]] records the exact response. No replacement treatment was approved or applied in this review turn.
 
 * 2026-09-10 - Prototype a shallower homepage header
 
@@ -2666,3 +2666,6 @@ Jay identified the That was two years ago travel paragraph as too large. Its dis
 - Fixed the interrupted essay divider reported by Sunjay: the conclusion cell now stretches through its grid row and uses internal top padding instead of an external margin. Confirmed the two desktop border segments meet exactly at both desktop widths; mobile retains its horizontal divider.
 - Corrected the large paragraph gap reported by Sunjay: restored all six essay paragraphs to one uninterrupted text column spanning the two left-column rows. The portrait remains beneath the opening at desktop widths and follows the essay on phones. All paragraph gaps now measure equally at both desktop sizes and phone width; the divider is one continuous border. PhotoSwipe opening, navigation, and Escape still work. The earlier split-row placement created the gap and is superseded.
 - Increased the desktop essay body to ~clamp(30px, 1.85vw, 34px)~ at Sunjay's suggestion, making it approximately 32px on the laptop and 34px on the large display. Phone essay text remains 26px. Verified all three rendered sizes with no horizontal overflow and ran the typography audit. Smaller existing text remains in navigation, captions, attribution, footer, and the separate contact CTA/routes; those roles are outside this essay-size change.
+
+* 2026-09-24 — Reaction ledger link repointed
+At Jay's direction, non-video reactions moved from the socratic-video ledger, which is for his YouTube videos only, to [[file+emacs:/Users/jay/Dropbox/github/vibecoding/preferences/cross-repo-visual-experiment-reactions.org][📄 Cross-Repo Visual Experiment Reactions]]. This project's CLAUDE.org and linked documents now point there. Superseded link target, verbatim: ~/Users/jay/Dropbox/github/socratic-video/references/look-and-feel/experiment-reactions.org~.
