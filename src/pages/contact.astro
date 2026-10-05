@@ -26,7 +26,14 @@ import MainLayout from '../layouts/MainLayout.astro';
 					name="_subject"
 					value="New message from photos.jaydixit.com contact form"
 				/>
-				<input type="text" name="_gotcha" class="hp-field" tabindex="-1" autocomplete="off" />
+				<input
+					type="text"
+					name="_gotcha"
+					class="hp-field"
+					tabindex="-1"
+					autocomplete="off"
+					aria-hidden="true"
+				/>
 
 				<div class="field">
 					<label for="name">Name</label>
@@ -53,7 +60,9 @@ import MainLayout from '../layouts/MainLayout.astro';
 					<textarea id="message" name="message" rows={7} required></textarea>
 				</div>
 
-				<button type="submit" class="underline-draw"><span class="underline-draw__label">Send Message</span></button>
+				<button type="submit" class="underline-draw"
+					><span class="underline-draw__label">Send Message</span></button
+				>
 			</form>
 			<p
 				class="contact-status"
@@ -201,8 +210,6 @@ import MainLayout from '../layouts/MainLayout.astro';
 
 	.contact-form button:disabled .underline-draw__label::after {
 		transform: scaleX(0);
-	}
-
 	}
 
 	.hp-field {

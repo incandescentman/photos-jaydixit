@@ -138,7 +138,8 @@
 		"slug": "kaia-gerber",
 		"name": "Kaia Gerber",
 		"match": ["kaia-gerber"],
-		"wikipedia": "https://en.wikipedia.org/wiki/Kaia_Gerber"
+		"wikipedia": "https://en.wikipedia.org/wiki/Kaia_Gerber",
+		"photoSlugs": ["Kaia_Gerber_at_the_2024_Toronto_International_Film_Festival_03_(cropped)"]
 	},
 	{
 		"slug": "kieran-culkin",
@@ -239,5 +240,68 @@
 		"sourceCredit": "Jay Dixit",
 		"license": "CC BY-SA 4.0",
 		"licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+	},
+	{
+		"slug": "alexander-skarsgard",
+		"name": "Alexander Skarsgård",
+		"match": ["alexander-skarsgard"]
+	},
+	{
+		"slug": "stephen-root",
+		"name": "Stephen Root",
+		"match": ["stephen-root"]
+	},
+	{
+		"slug": "demis-hassabis",
+		"name": "Demis Hassabis",
+		"match": ["demis-hassabis"]
+	},
+	{
+		"slug": "david-baker",
+		"name": "David Baker",
+		"match": ["david-baker"]
+	},
+	{
+		"slug": "geoffrey-hinton",
+		"name": "Geoffrey Hinton",
+		"match": ["geoffrey-hinton"]
+	},
+	{
+		"slug": "john-jumper",
+		"name": "John Jumper",
+		"match": ["john-jumper"]
+	},
+	{
+		"slug": "james-robinson",
+		"name": "James A. Robinson",
+		"match": ["james-robinson"]
+	},
+	{
+		"slug": "simon-johnson",
+		"name": "Simon Johnson",
+		"match": ["simon-johnson"]
+	},
+	{
+		"slug": "daron-acemoglu",
+		"name": "Daron Acemoglu",
+		"match": ["daron-acemoglu"]
+	},
+	{
+		"slug": "willem-dafoe",
+		"name": "Willem Dafoe",
+		"match": ["willem-dafoe"],
+		"photoSlugs": ["Willem_Dafoe_at_the_2024_Toronto_International_Film_Festival_02"]
+	},
+	{
+		"slug": "gabriel-labelle",
+		"name": "Gabriel LaBelle",
+		"match": ["gabriel-labelle"],
+		"photoSlugs": ["Gabriel_LaBelle_at_the_2024_Toronto_International_Film_Festival_03_cropped"]
+	},
+	{
+		"slug": "jason-collett",
+		"name": "Jason Collett",
+		"match": ["jason-collett"],
+		"photoSlugs": ["Jason_Collett_at_Ottawa_Jazz_Festival_in_2025_-_3"]
 	}
 ]

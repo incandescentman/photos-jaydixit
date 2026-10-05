@@ -7,6 +7,8 @@ import SocialShare from '../../components/SocialShare.astro';
 import PhotoLikeButton from '../../components/PhotoLikeButton.astro';
 import siteConfig from '../../../site.config.mts';
 import { embeddedAttribution } from '../../lib/embeddedAttribution';
+import { photoPublication } from '../../lib/photoPublication';
+import { photoSubjects } from '../../lib/photoSubjects';
 import { buildCaptionAndTags, formatPhrase, type GalleryTagsFile } from '../../lib/galleryMetadata';
 import { dimensionsOf } from '../../lib/image-variants';
 import { ogImageFromAsset } from '../../lib/seo';
@@ -64,7 +66,7 @@ const groupedImageEntries = await Promise.all(
 		const { caption, tags } = buildCaptionAndTags(filename, imageFolder, tagsByFolder[imageFolder]);
 		const detailHref = toPhotoHref(folderPath, filename);
 		const size = dimensionsOf(metadata);
-		const [lightboxImage, thumbnailImage, exhibitionAttribution] = await Promise.all([
+		const [lightboxImage, thumbnailImage, exhibitionAttribution, publication] = await Promise.all([
 			getImage({
 				src: metadata,
 				width: Math.min(size.width, 3000),
@@ -75,8 +77,9 @@ const groupedImageEntries = await Promise.all(
 				moduleKey: key,
 				pageFile: 'src/pages/gallery/[...folder].astro',
 				caption,
-				sourceDetailUrl: detailHref,
+				sourceDetailUrl: new URL(detailHref, siteConfig.siteUrl).toString(),
 			}),
+			photoPublication(key, 'src/pages/gallery/[...folder].astro'),
 		]);
 
 		return {
@@ -92,48 +95,15 @@ const groupedImageEntries = await Promise.all(
 			lightboxHeight: Number(lightboxImage.attributes.height),
 			exhibitionThumb: thumbnailImage.src,
 			exhibitionAttribution,
+			publication,
 		};
 	}),
 );
 
+type GalleryImage = NonNullable<(typeof groupedImageEntries)[number]>;
 const groupedImages = groupedImageEntries
-	.filter(
-		(
-			entry,
-		): entry is {
-			metadata: ImageMetadata;
-			filename: string;
-			slug: string;
-			caption: string;
-			tags: string[];
-			width: number;
-			height: number;
-			lightboxSrc: string;
-			lightboxWidth: number;
-			lightboxHeight: number;
-			exhibitionThumb: string;
-			exhibitionAttribution: string | undefined;
-		} => entry !== null,
-	)
-	.reduce<
-		Record<
-			string,
-			Array<{
-				metadata: ImageMetadata;
-				filename: string;
-				slug: string;
-				caption: string;
-				tags: string[];
-				width: number;
-				height: number;
-				lightboxSrc: string;
-				lightboxWidth: number;
-				lightboxHeight: number;
-				exhibitionThumb: string;
-				exhibitionAttribution: string | undefined;
-			}>
-		>
-	>((acc, entry) => {
+	.filter((entry): entry is GalleryImage => entry !== null)
+	.reduce<Record<string, GalleryImage[]>>((acc, entry) => {
 		if (!acc[entry.slug]) {
 			acc[entry.slug] = [];
 		}
@@ -169,7 +139,9 @@ const pageTitle = `${displayName} Gallery`;
 const pageDescription = `${images.length} ${images.length === 1 ? 'photo' : 'photos'} in the ${displayName} gallery by ${siteConfig.owner}.`;
 // A complete social card (URL, size, and type), since the shared resolver cannot measure
 // a resized copy before it is written.
-const socialCard = images[0] ? await ogImageFromAsset(images[0].metadata, images[0]?.caption) : undefined;
+const socialCard = images[0]
+	? await ogImageFromAsset(images[0].metadata, images[0]?.caption)
+	: undefined;
 const primaryImage = socialCard?.url;
 const folderSegments = folderPath.split('/').filter(Boolean);
 const breadcrumbs = [
@@ -359,6 +331,11 @@ export const getStaticPaths = () => {
 									data-exhibition-gallery-label={displayName}
 									data-exhibition-thumb={image.exhibitionThumb}
 									data-exhibition-attribution={image.exhibitionAttribution}
+									data-exhibition-subjects={JSON.stringify(photoSubjects(image.filename))}
+									data-exhibition-commons={image.publication?.commonsUrl}
+									data-exhibition-license={image.publication?.license}
+									data-exhibition-license-url={image.publication?.licenseUrl}
+									data-exhibition-download={image.publication?.downloadUrl}
 								>
 									<Image
 										src={image.metadata}

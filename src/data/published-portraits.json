@@ -1,0 +1,38 @@
+[
+	{
+		"personSlug": "willem-dafoe",
+		"filename": "Willem_Dafoe_at_the_2024_Toronto_International_Film_Festival_02.jpg",
+		"publicId": "highlights/Willem_Dafoe_at_the_2024_Toronto_International_Film_Festival_02",
+		"caption": "Willem Dafoe at the 2024 Toronto International Film Festival",
+		"width": 2400,
+		"height": 3000,
+		"publishedOn": "/"
+	},
+	{
+		"personSlug": "gabriel-labelle",
+		"filename": "Gabriel_LaBelle_at_the_2024_Toronto_International_Film_Festival_03_cropped.jpg",
+		"publicId": "highlights/Gabriel_LaBelle_at_the_2024_Toronto_International_Film_Festival_03_cropped",
+		"caption": "Gabriel LaBelle at the 2024 Toronto International Film Festival",
+		"width": 1583,
+		"height": 2491,
+		"publishedOn": "/"
+	},
+	{
+		"personSlug": "jason-collett",
+		"filename": "Jason_Collett_at_Ottawa_Jazz_Festival_in_2025_-_3.jpg",
+		"publicId": "highlights/Jason_Collett_at_Ottawa_Jazz_Festival_in_2025_-_3",
+		"caption": "Jason Collett at Ottawa Jazz Festival in 2025",
+		"width": 1706,
+		"height": 2560,
+		"publishedOn": "/"
+	},
+	{
+		"personSlug": "kaia-gerber",
+		"filename": "Kaia_Gerber_at_the_2024_Toronto_International_Film_Festival_03_(cropped).jpg",
+		"publicId": "highlights/Kaia_Gerber_at_the_2024_Toronto_International_Film_Festival_03_(cropped)",
+		"caption": "Kaia Gerber at the Toronto International Film Festival",
+		"width": 1853,
+		"height": 2233,
+		"publishedOn": "/red-carpets/"
+	}
+]

@@ -7,6 +7,10 @@ import MainLayout from '../../../layouts/MainLayout.astro';
 import PhotoComments from '../../../components/PhotoComments.astro';
 import PhotoLikeButton from '../../../components/PhotoLikeButton.astro';
 import SocialShare from '../../../components/SocialShare.astro';
+import PortfolioLightbox from '../../../components/PortfolioLightbox.astro';
+import { embeddedAttribution } from '../../../lib/embeddedAttribution';
+import { photoPublication } from '../../../lib/photoPublication';
+import { photoSubjects } from '../../../lib/photoSubjects';
 import siteConfig from '../../../../site.config.mts';
 import {
 	buildCaptionAndTags,
@@ -237,6 +241,16 @@ const displayName = formatFolderName(folderPath);
 const pageTitle = currentPhoto.caption;
 const pageDescription = `${currentPhoto.caption} from ${displayName} by ${siteConfig.owner}.`;
 const canonicalUrl = new URL(currentPhoto.detailHref, siteUrl).toString();
+const subjects = photoSubjects(currentPhoto.filename);
+const [publication, attribution] = await Promise.all([
+	photoPublication(photoFilePath, 'src/pages/gallery/photo/[...photo].astro'),
+	embeddedAttribution({
+		moduleKey: photoFilePath,
+		pageFile: 'src/pages/gallery/photo/[...photo].astro',
+		caption: currentPhoto.caption,
+		sourceDetailUrl: canonicalUrl,
+	}),
+]);
 const folderSegments = folderPath.split('/').filter(Boolean);
 const breadcrumbs = [
 	{ name: 'Home', url: '/' },
@@ -258,6 +272,7 @@ const photoStructuredData = {
 	description: pageDescription,
 	url: canonicalUrl,
 	contentUrl: new URL(photoCopy.src, siteUrl).toString(),
+	...(publication ? { license: publication.licenseUrl, sameAs: publication.commonsUrl } : {}),
 	thumbnailUrl: new URL(photoThumbnail.src, siteUrl).toString(),
 	creator: {
 		'@type': 'Person',
@@ -371,19 +386,80 @@ export const getStaticPaths = () => {
 				<p class="photo-credit">{displayName}</p>
 			</header>
 
-			<div class="overflow-hidden rounded-2xl bg-gray-100 shadow-sm">
-				<Image
-					src={currentPhoto.metadata}
-					alt={currentPhoto.caption}
-					width={displayWidth}
-					height={displayHeight}
-					widths={[640, 1024, 1600, 2048].filter((w) => w <= displayWidth)}
-					sizes="(max-width: 1024px) 100vw, 1024px"
-					loading="eager"
-					decoding="async"
-					class="w-full h-auto object-contain"
-				/>
+			<div class="overflow-hidden rounded-2xl bg-gray-100 shadow-sm" data-photo-detail-gallery>
+				<a
+					href={photoCopy.src}
+					class="block"
+					data-pswp-item="true"
+					data-pswp-width={photoCopy.width}
+					data-pswp-height={photoCopy.height}
+					data-pswp-caption={currentPhoto.caption}
+					data-exhibition-thumb={photoThumbnail.src}
+					data-exhibition-subjects={JSON.stringify(subjects)}
+					data-exhibition-gallery={`/gallery/${folderPath}`}
+					data-exhibition-gallery-label={displayName}
+					data-exhibition-commons={publication?.commonsUrl}
+					data-exhibition-license={publication?.license}
+					data-exhibition-license-url={publication?.licenseUrl}
+					data-exhibition-download={publication?.downloadUrl}
+					data-exhibition-attribution={attribution}
+					aria-label={`${currentPhoto.caption} — view full size`}
+				>
+					<Image
+						src={currentPhoto.metadata}
+						alt={currentPhoto.caption}
+						width={displayWidth}
+						height={displayHeight}
+						widths={[640, 1024, 1600, 2048].filter((w) => w <= displayWidth)}
+						sizes="(max-width: 1024px) 100vw, 1024px"
+						loading="eager"
+						decoding="async"
+						class="w-full h-auto object-contain"
+					/>
+				</a>
 			</div>
+			{
+				(subjects.length > 0 || publication) && (
+					<nav
+						aria-label="Photograph links"
+						class="photo-credit mt-4 flex flex-wrap gap-x-6 gap-y-3"
+					>
+						{subjects.map((subject) => (
+							<a class="editorial-link" href={subject.href}>
+								{subject.label}
+							</a>
+						))}
+						{publication && (
+							<>
+								<a
+									class="editorial-link"
+									href={publication.commonsUrl}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									View on Wikimedia Commons
+								</a>
+								<a
+									class="editorial-link"
+									href={publication.licenseUrl}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									{publication.license}
+								</a>
+								<a
+									class="editorial-link"
+									href={publication.downloadUrl}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									Download original
+								</a>
+							</>
+						)}
+					</nav>
+				)
+			}
 
 			<div class="mt-6 flex flex-wrap gap-2">
 				{
@@ -424,4 +500,8 @@ export const getStaticPaths = () => {
 			<PhotoComments galleryName={folderPath} photoId={currentPhoto.slug} />
 		</div>
 	</section>
+	<PortfolioLightbox
+		gallerySelector="[data-photo-detail-gallery]"
+		childrenSelector="a[data-pswp-item]"
+	/>
 </MainLayout>

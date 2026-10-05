@@ -6,6 +6,7 @@ import MainLayout from '../layouts/MainLayout.astro';
 import NobelPhoto from '../components/NobelPhoto.astro';
 import PhotoSwipeLightbox from '../components/PortfolioLightbox.astro';
 import { ogImageFromAsset } from '../lib/seo';
+import { photoSubjects } from '../lib/photoSubjects';
 
 import peaceCampaigners from '../gallery/photos/events/nobel-prizes-2024/anti-nuclear-campaigners_nobel-peace-prize-torchlight-procession-oslo_2024.jpg';
 import pressCredentials from '../gallery/photos/events/nobel-prizes-2024/press-credentials_nobel-peace-prize-oslo_2024.jpg';
@@ -204,9 +205,22 @@ const photographs = [
 	},
 ];
 
+const subjectById: Record<string, string> = {
+	baker: 'david-baker',
+	hopfield: 'john-hopfield',
+	hinton: 'geoffrey-hinton',
+	hassabis: 'demis-hassabis',
+	'hassabis-chemistry': 'demis-hassabis',
+	jumper: 'john-jumper',
+	robinson: 'james-robinson',
+	acemoglu: 'daron-acemoglu',
+	johnson: 'simon-johnson',
+};
+
 const lightboxImages = await Promise.all(
 	photographs.map(async (photo) => ({
 		...photo,
+		subjects: subjectById[photo.id] ? photoSubjects(subjectById[photo.id]) : [],
 		full: await getImage({ src: photo.src, width: 2600, quality: 85, format: 'webp' }),
 	})),
 );
@@ -218,7 +232,10 @@ const photo = (id: string) => {
 };
 
 // The social card is a 1,200 px JPEG rather than the 2,600 px lightbox copy.
-const socialCard = await ogImageFromAsset(photo('hassabis').src, 'Demis Hassabis at the 2024 Nobel Lectures in Stockholm');
+const socialCard = await ogImageFromAsset(
+	photo('hassabis').src,
+	'Demis Hassabis at the 2024 Nobel Lectures in Stockholm',
+);
 
 const structuredData = {
 	'@context': 'https://schema.org',

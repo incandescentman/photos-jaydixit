@@ -5,6 +5,9 @@ import MainLayout from '../../layouts/MainLayout.astro';
 import PortfolioLightbox from '../../components/PortfolioLightbox.astro';
 import siteConfig from '../../../site.config.mts';
 import rawPeople from '../../data/people.json';
+import publishedPortraits from '../../data/published-portraits.json';
+import { cldUrl, cldSrcset } from '../../lib/cloudinary';
+import { photoPublication } from '../../lib/photoPublication';
 import { images as homepageImages } from '../../data/homepage-images.js';
 import { embeddedAttribution } from '../../lib/embeddedAttribution';
 import { buildCaptionAndTags, formatPhrase, type GalleryTagsFile } from '../../lib/galleryMetadata';
@@ -47,6 +50,11 @@ const highlightImageModules = import.meta.glob<{ default: ImageMetadata }>(
 
 const wikiportraitImageModules = import.meta.glob<{ default: ImageMetadata }>(
 	'../../assets/images/wikiportraits/**/*.{jpg,jpeg,png,webp,gif}',
+	{ eager: true },
+);
+
+const sequenceImageModules = import.meta.glob<{ default: ImageMetadata }>(
+	'../../assets/issa-rae-sequence/issa-rae_tiff_2026_{04162,04163,04164,04165}.jpg',
 	{ eager: true },
 );
 
@@ -102,7 +110,7 @@ function toPhotoHref(folderSlug: string, file: string) {
 }
 
 const extensionPriority = ['jpg', 'jpeg', 'webp', 'png', 'gif'];
-const sourcePriority = { gallery: 0, highlights: 1, wikiportraits: 2 } as const;
+const sourcePriority = { gallery: 0, highlights: 1, wikiportraits: 2, sequence: 3 } as const;
 
 function extensionRank(file: string) {
 	const ext = file.split('.').pop()?.toLowerCase() ?? '';
@@ -146,18 +154,22 @@ function collectMatchingPhotos(
 					? buildCaptionAndTags(filename, folder, tagsByFolder[folder], personData.name).caption
 					: undefined;
 			const caption =
-				captionByFilename.get(filename) ??
+				(source === 'sequence'
+					? 'Issa Rae at the Toronto International Film Festival world premiere of Babies in 2026.'
+					: captionByFilename.get(filename)) ??
 				galleryCaption ??
 				buildCaptionAndTags(filename, folder, undefined, personData.name).caption;
 			const galleryName =
-				source === 'highlights'
-					? 'Highlights'
-					: source === 'wikiportraits'
-						? 'WikiPortraits'
-						: folder
-								.split('/')
-								.map((part) => formatPhrase(part))
-								.join(' / ');
+				source === 'sequence'
+					? 'Toronto International Film Festival'
+					: source === 'highlights'
+						? 'Highlights'
+						: source === 'wikiportraits'
+							? 'WikiPortraits'
+							: folder
+									.split('/')
+									.map((part) => formatPhrase(part))
+									.join(' / ');
 
 			return {
 				metadata,
@@ -177,6 +189,7 @@ function collectMatchingPhotos(
 const allMatches: PhotoEntry[] = [
 	...collectMatchingPhotos(galleryImageModules, '../../gallery/photos/', 'gallery'),
 	...collectMatchingPhotos(highlightImageModules, '../../gallery/highlights/', 'highlights'),
+	...collectMatchingPhotos(sequenceImageModules, '../../assets/issa-rae-sequence/', 'sequence'),
 	...collectMatchingPhotos(
 		wikiportraitImageModules,
 		'../../assets/images/wikiportraits/',
@@ -202,17 +215,21 @@ const matchedPhotos = Object.values(grouped)
 	)
 	.sort((a, b) => a.filename.localeCompare(b.filename));
 
-const photos = await Promise.all(
+const localPhotos = await Promise.all(
 	matchedPhotos.map(async (photo) => {
-		const [thumbnail, lightbox, exhibitionAttribution] = await Promise.all([
+		const [thumbnail, lightbox, exhibitionAttribution, publication] = await Promise.all([
 			getImage({ src: photo.metadata, width: 160, format: 'webp' }),
 			lightboxVariant(photo.metadata),
 			embeddedAttribution({
 				moduleKey: photo.moduleKey,
 				pageFile: 'src/pages/red-carpet/[person].astro',
 				caption: photo.caption,
-				sourceDetailUrl: photo.detailHref,
+				sourceDetailUrl: new URL(
+					photo.detailHref ?? `/red-carpet/${personData.slug}`,
+					siteConfig.siteUrl,
+				).toString(),
 			}),
+			photoPublication(photo.moduleKey, 'src/pages/red-carpet/[person].astro'),
 		]);
 
 		return {
@@ -222,9 +239,33 @@ const photos = await Promise.all(
 			lightboxWidth: lightbox.width,
 			lightboxHeight: lightbox.height,
 			exhibitionAttribution,
+			publication,
+			publicId: undefined,
+			publishedOn: photo.source === 'sequence' ? '/#issa-rae-sequence' : undefined,
 		};
 	}),
 );
+
+// These four remote originals are already displayed on the public homepage/editorial page.
+// Keep their existing Cloudinary sources; do not make new source-image copies.
+const remotePhotos = publishedPortraits
+	.filter((photo) => photo.personSlug === personData.slug)
+	.map((photo) => ({
+		...photo,
+		metadata: undefined,
+		folder: '',
+		slug: photo.filename.replace(/\.[^/.]+$/, ''),
+		galleryName: photo.publishedOn === '/' ? 'Highlights' : 'Toronto International Film Festival',
+		detailHref: null,
+		source: 'published' as const,
+		thumbnailSrc: cldUrl(photo.publicId, 160),
+		lightboxSrc: cldUrl(photo.publicId, Math.min(photo.width, 3000)),
+		lightboxWidth: Math.min(photo.width, 3000),
+		lightboxHeight: Math.round((photo.height * Math.min(photo.width, 3000)) / photo.width),
+		exhibitionAttribution: undefined,
+		publication: undefined,
+	}));
+const photos = [...localPhotos, ...remotePhotos];
 
 if (photos.length === 0) {
 	return Astro.redirect('/404');
@@ -238,7 +279,16 @@ const pageDescription = personData.bio
 	: `${photos.length} ${photos.length === 1 ? 'red carpet photo' : 'red carpet photos'} of ${personData.name} by ${siteConfig.owner}.`;
 // A complete social card (URL, size, and type), since the shared resolver cannot measure
 // a resized copy before it is written.
-const socialCard = photos[0] ? await ogImageFromAsset(photos[0].metadata, `Portrait of ${personData.name}`) : undefined;
+const firstPhoto = photos[0];
+const socialCard = firstPhoto.metadata
+	? await ogImageFromAsset(firstPhoto.metadata, `Portrait of ${personData.name}`)
+	: {
+			url: cldUrl(firstPhoto.publicId, 1200).replace('f_auto', 'f_jpg'),
+			width: 1200,
+			height: Math.round((firstPhoto.lightboxHeight * 1200) / firstPhoto.lightboxWidth),
+			type: 'image/jpeg',
+			alt: firstPhoto.caption,
+		};
 const primaryImage = socialCard?.url;
 const provenanceParts = [
 	personData.articleUsageStatus === 'lead' ? 'Currently the lead photo on Wikipedia' : null,
@@ -400,19 +450,38 @@ export function getStaticPaths() {
 										: undefined
 								}
 								data-exhibition-attribution={photo.exhibitionAttribution}
+								data-exhibition-story={photo.publishedOn}
+								data-exhibition-story-label="View original placement"
+								data-exhibition-commons={photo.publication?.commonsUrl}
+								data-exhibition-license={photo.publication?.license}
+								data-exhibition-license-url={photo.publication?.licenseUrl}
+								data-exhibition-download={photo.publication?.downloadUrl}
 								aria-label={`${photo.caption} — view full size`}
 							>
 								<div class="aspect-[3/4] overflow-hidden rounded-xl bg-gray-100 shadow-sm">
-									<Image
-										src={photo.metadata}
-										alt={photo.caption}
-										width={480}
-										height={640}
-										fit="cover"
-										position="attention"
-										loading="lazy"
-										class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-									/>
+									{photo.metadata ? (
+										<Image
+											src={photo.metadata}
+											alt={photo.caption}
+											width={480}
+											height={640}
+											fit="cover"
+											position="attention"
+											loading="lazy"
+											class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+										/>
+									) : (
+										<img
+											src={cldUrl(photo.publicId, 960)}
+											srcset={cldSrcset(photo.publicId, [480, 720, 960, 1440])}
+											sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw"
+											width={480}
+											height={640}
+											alt={photo.caption}
+											loading="lazy"
+											class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+										/>
+									)}
 								</div>
 							</a>
 							<div class="mt-3 px-1">

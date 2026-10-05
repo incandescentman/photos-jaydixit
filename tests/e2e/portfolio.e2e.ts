@@ -382,12 +382,12 @@ test('red-carpet index renders editorial person cards from generated data', asyn
 	await waitForInitialImages(page);
 
 	const cards = page.locator('.rc-card');
-	await expect(cards).toHaveCount(26);
+	await expect(cards).toHaveCount(42);
 	for (const name of ['Ed Helms', 'Rick Hansen', 'Seth Rogen']) {
 		await expect(cards.filter({ hasText: name })).toHaveCount(1);
 	}
 	await expect(cards.filter({ hasText: 'Jack Johnson' })).toHaveCount(1);
-	await expect(page.locator('.rc-name').first()).toHaveText('Ana de Armas');
+	await expect(page.locator('.rc-name').first()).toHaveText('Alexander Skarsgård');
 	await expect(page.locator('.rc-count').first()).toContainText(/photo/i);
 
 	await expect
@@ -791,8 +791,15 @@ for (const width of [390, 1440]) {
 		await expect.poll(() => page.evaluate(() => window.pswp?.opener.isOpen)).toBe(true);
 		await expect(page.locator('.exhibition-caption')).toContainText('Hassabis');
 		await page.getByRole('button', { name: 'About this photograph', exact: true }).click();
-		await expect(page.locator('.exhibition-links a')).toHaveCount(1);
-		await expect(page.locator('.exhibition-links a')).toHaveAttribute('href', /\/gallery\/photo\//);
+		await expect(page.locator('.exhibition-links a')).toHaveCount(2);
+		await expect(page.getByRole('link', { name: 'Photo details', exact: true })).toHaveAttribute(
+			'href',
+			/\/gallery\/photo\//,
+		);
+		await expect(page.getByRole('link', { name: 'Demis Hassabis', exact: true })).toHaveAttribute(
+			'href',
+			/\/red-carpet\/demis-hassabis$/,
+		);
 		await page.getByRole('button', { name: 'Close info' }).click();
 		await page.keyboard.press('ArrowRight');
 		await expect(page.locator('.exhibition-caption')).toContainText('Hassabis');

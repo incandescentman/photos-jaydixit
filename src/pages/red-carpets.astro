@@ -6,6 +6,7 @@ import PhotoSwipeLightbox from '../components/PortfolioLightbox.astro';
 import { cldSizes, cldSrcset, cldUrl } from '../lib/cloudinary';
 import { torontoPortraits, worldTourDestinations } from '../data/worldTour';
 import { routeStops } from '../data/worldTourVariants';
+import { photoSubjects } from '../lib/photoSubjects';
 
 const pageTitle = 'Red Carpets Around the World';
 const description =
@@ -25,8 +26,8 @@ const imageDimensions: Record<string, { width: number; height: number }> = {
 		height: 1354,
 	},
 	'highlights/Willem_Dafoe_at_the_2024_Toronto_International_Film_Festival_02': {
-		width: 2898,
-		height: 3623,
+		width: 2400,
+		height: 3000,
 	},
 	'highlights/Kaia_Gerber_at_the_2024_Toronto_International_Film_Festival_03_(cropped)': {
 		width: 1853,
@@ -240,6 +241,9 @@ const structuredData = {
 									data-pswp-width={fullImage(destination.displayPortrait.publicId).width}
 									data-pswp-height={fullImage(destination.displayPortrait.publicId).height}
 									data-pswp-caption={destination.displayPortrait.alt}
+									data-exhibition-subjects={JSON.stringify(
+										photoSubjects(destination.displayPortrait.publicId),
+									)}
 									aria-label={`Open larger photograph: ${destination.displayPortrait.alt}`}
 								>
 									<img
@@ -348,6 +352,7 @@ const structuredData = {
 									data-pswp-width={fullImage(portrait.publicId).width}
 									data-pswp-height={fullImage(portrait.publicId).height}
 									data-pswp-caption={portrait.alt}
+									data-exhibition-subjects={JSON.stringify(photoSubjects(portrait.publicId))}
 									aria-label={`Open larger photograph: ${portrait.alt}`}
 								>
 									<img
@@ -401,6 +406,7 @@ const structuredData = {
 									data-pswp-width={fullImage(portrait.publicId).width}
 									data-pswp-height={fullImage(portrait.publicId).height}
 									data-pswp-caption={portrait.alt}
+									data-exhibition-subjects={JSON.stringify(photoSubjects(portrait.publicId))}
 									aria-label={`Open larger photograph: ${portrait.alt}`}
 								>
 									<img

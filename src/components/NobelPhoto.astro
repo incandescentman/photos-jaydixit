@@ -12,6 +12,7 @@ interface Props {
 		alt: string;
 		caption: string;
 		commons?: string;
+		subjects?: { href: string; label: string }[];
 	};
 	eager?: boolean;
 	className?: string;
@@ -29,6 +30,7 @@ const thumbnail = await getImage({ src: photo.src, width: 160, format: 'webp' })
 		data-exhibition-gallery="/gallery/events/nobel-prizes-2024/"
 		data-exhibition-gallery-label="Nobel Prizes 2024"
 		data-exhibition-commons={photo.commons}
+		data-exhibition-subjects={JSON.stringify(photo.subjects ?? [])}
 		data-pswp-width={photo.full.attributes.width}
 		data-pswp-height={photo.full.attributes.height}
 		data-pswp-caption={`${photo.caption} — Photograph by Jay Dixit`}

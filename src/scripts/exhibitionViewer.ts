@@ -185,10 +185,22 @@ function enhance(pswp: PhotoSwipe) {
 		};
 		addLink(dataset.exhibitionDetails, 'Photo details');
 		addLink(dataset.exhibitionPerson, dataset.exhibitionPersonLabel || 'Portraits');
+		if (dataset.exhibitionSubjects) {
+			try {
+				const subjects: unknown = JSON.parse(dataset.exhibitionSubjects);
+				if (Array.isArray(subjects))
+					for (const subject of subjects)
+						if (typeof subject?.href === 'string' && typeof subject?.label === 'string')
+							addLink(subject.href, subject.label);
+			} catch {
+				// Ignore malformed optional metadata; the photograph remains usable.
+			}
+		}
 		addLink(dataset.exhibitionGallery, dataset.exhibitionGalleryLabel || 'View gallery');
 		addLink(dataset.exhibitionStory, dataset.exhibitionStoryLabel || 'Read the story');
 		addLink(dataset.exhibitionCommons, 'View on Wikimedia Commons');
 		addLink(dataset.exhibitionLicenseUrl, dataset.exhibitionLicense || 'Photo license');
+		addLink(dataset.exhibitionDownload, 'Download original');
 		panel.append(links);
 		contextToggle.hidden = links.childElementCount === 0;
 		if (contextToggle.hidden) showContext = false;
