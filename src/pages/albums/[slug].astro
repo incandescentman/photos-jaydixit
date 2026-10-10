@@ -2,6 +2,7 @@
 import MainLayout from '../../layouts/MainLayout.astro';
 import Gallery from '../../components/Gallery.astro';
 import { getCollection, getEntry } from 'astro:content';
+import { cldUrl } from '../../lib/cloudinary';
 
 const { slug } = Astro.params;
 const entry = await getEntry('albums', String(slug));
@@ -11,12 +12,28 @@ if (!album) {
   return Astro.redirect('/404');
 }
 
+const albumDescriptions: Record<string, string> = {
+  'sundance-film-festival':
+    'Jay Dixit photographs Steven Yeun, Dave Franco, Conan O’Brien, and other film figures at Sundance in 2024 and 2025.',
+  'sxsw-2024':
+    'Photographs of Judd Apatow, Conan O’Brien, Nick Kroll, Ron Livingston, and other performers at SXSW 2024 by Jay Dixit.',
+  'tiff-2024':
+    'Red carpet portraits of Vanessa Kirby, Sydney Sweeney, Ana de Armas, and other actors at the 2024 Toronto International Film Festival by Jay Dixit.',
+};
+const pageDescription = albumDescriptions[String(slug)] ?? `Photographs from ${album.title} by Jay Dixit.`;
+const coverImage = album.coverPublicId ? cldUrl(album.coverPublicId, 1200) : undefined;
+
 export const getStaticPaths = async () => {
   const albums = (await getCollection('albums')).filter((album) => !album.data.draft);
   return albums.map((a) => ({ params: { slug: a.id } }));
 };
 ---
 
-<MainLayout>
+<MainLayout
+  title={album.title}
+  description={pageDescription}
+  image={coverImage}
+  imageAlt={album.photos[0]?.alt}
+>
   <Gallery album={album} />
 </MainLayout>

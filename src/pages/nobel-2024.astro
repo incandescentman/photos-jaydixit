@@ -1,12 +1,14 @@
 ---
 export const prerender = true;
 
-import { getImage } from 'astro:assets';
+import { getImage, type ImageMetadata } from 'astro:assets';
 import MainLayout from '../layouts/MainLayout.astro';
 import NobelPhoto from '../components/NobelPhoto.astro';
 import PhotoSwipeLightbox from '../components/PortfolioLightbox.astro';
-import { ogImageFromAsset } from '../lib/seo';
+import { ogImageFromAsset, photographer, photoImageObject } from '../lib/seo';
 import { photoSubjects } from '../lib/photoSubjects';
+import { photoPublication } from '../lib/photoPublication';
+import { embeddedCreator } from '../lib/embeddedAttribution';
 
 import peaceCampaigners from '../gallery/photos/events/nobel-prizes-2024/anti-nuclear-campaigners_nobel-peace-prize-torchlight-procession-oslo_2024.jpg';
 import pressCredentials from '../gallery/photos/events/nobel-prizes-2024/press-credentials_nobel-peace-prize-oslo_2024.jpg';
@@ -217,12 +219,30 @@ const subjectById: Record<string, string> = {
 	johnson: 'simon-johnson',
 };
 
+const sourceModules = import.meta.glob<{ default: ImageMetadata }>(
+	'../gallery/photos/events/nobel-prizes-2024/*.{jpg,jpeg,png}',
+	{ eager: true },
+);
+const sourceByImage = new Map(
+	Object.entries(sourceModules).map(([key, value]) => [value.default.src, key]),
+);
 const lightboxImages = await Promise.all(
-	photographs.map(async (photo) => ({
-		...photo,
-		subjects: subjectById[photo.id] ? photoSubjects(subjectById[photo.id]) : [],
-		full: await getImage({ src: photo.src, width: 2600, quality: 85, format: 'webp' }),
-	})),
+	photographs.map(async (photo) => {
+		const source = sourceByImage.get(photo.src.src);
+		if (!source) throw new Error(`Missing source for Nobel photograph: ${photo.id}`);
+		const [full, publication, creatorName] = await Promise.all([
+			getImage({ src: photo.src, width: 2600, quality: 85, format: 'webp' }),
+			photoPublication(source, 'src/pages/nobel-2024.astro'),
+			embeddedCreator(source, 'src/pages/nobel-2024.astro'),
+		]);
+		return {
+			...photo,
+			subjects: subjectById[photo.id] ? photoSubjects(subjectById[photo.id]) : [],
+			full,
+			publication,
+			creatorName,
+		};
+	}),
 );
 
 const photo = (id: string) => {
@@ -242,16 +262,19 @@ const structuredData = {
 	'@type': 'ImageGallery',
 	name: pageTitle,
 	description,
-	creator: { '@type': 'Person', name: 'Jay Dixit' },
+	creator: photographer,
 	dateCreated: '2024-12',
-	associatedMedia: photographs.map((image) => ({
-		'@type': 'ImageObject',
-		name: image.caption,
-		caption: image.caption,
-		creditText: 'Photograph by Jay Dixit',
-		license: 'https://creativecommons.org/licenses/by-sa/4.0/',
-		...(image.commons ? { contentUrl: image.commons } : {}),
-	})),
+	associatedMedia: lightboxImages.map((image) =>
+		photoImageObject({
+			src: image.full.src,
+			caption: image.caption,
+			width: Number(image.full.attributes.width),
+			height: Number(image.full.attributes.height),
+			creatorName: image.creatorName,
+			publication: image.publication,
+			pageUrl: '/nobel-2024/',
+		}),
+	),
 };
 ---
 
@@ -408,6 +431,12 @@ const structuredData = {
 				</div>
 			</div>
 		</section>
+
+		<nav class="nobel-related photo-credit" aria-label="Related portraits">
+			<a class="editorial-link" href="/red-carpet/anne-carson/"
+				>Anne Carson — Nobel Prize in Literature, 2026 <span aria-hidden="true">→</span></a
+			>
+		</nav>
 
 		<footer class="nobel-contact">
 			<h2>Red carpet and portrait photography</h2>
@@ -784,6 +813,10 @@ const structuredData = {
 		border-bottom: 1px solid currentColor;
 		font-weight: 700;
 		line-height: 1.8;
+	}
+
+	.nobel-related {
+		padding: 2rem clamp(2rem, 9vw, 11rem);
 	}
 
 	.nobel-contact {

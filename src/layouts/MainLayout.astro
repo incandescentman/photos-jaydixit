@@ -8,6 +8,7 @@ import ExhibitionViewer from '../components/ExhibitionViewer.astro';
 import NavBar from '../components/NavBar.astro';
 import SeoTags from '@jaydixit/astro-utils/components/SeoTags.astro';
 import StructuredData from '../components/StructuredData.astro';
+import { isPublicSearchPage } from '../lib/indexing';
 import {
 	createSeoTagProps,
 	normalizeDateValue,
@@ -71,7 +72,8 @@ const twitterCard =
 	(typeof frontmatter.twitterCard === 'string' ? frontmatter.twitterCard : 'summary_large_image');
 const twitterHandle = siteConfig.twitterHandle;
 const noindex =
-	props.noindex ?? (typeof frontmatter.noindex === 'boolean' ? frontmatter.noindex : false);
+	!isPublicSearchPage(Astro.url.pathname) ||
+	(props.noindex ?? (typeof frontmatter.noindex === 'boolean' ? frontmatter.noindex : false));
 const keywords = normalizeKeywords(
 	props.keywords ?? (frontmatter.keywords as string[] | string | undefined),
 );
@@ -123,10 +125,11 @@ const websiteStructuredData = {
 	'@type': 'WebSite',
 	name: siteConfig.title,
 	url: siteUrl,
-	description: pageDescription ?? `${owner} photography portfolio`,
+	description: siteConfig.description,
 	publisher: {
 		'@type': 'Person',
 		name: owner,
+		url: siteConfig.authorUrl,
 	},
 };
 
@@ -168,6 +171,7 @@ gtag('config', '${gaMeasurementId}', {
 		<meta name="author" content={owner} />
 		{keywords && <meta name="keywords" content={keywords} />}
 		<SeoTags {...seoTags} />
+		{!noindex && <meta name="robots" content="max-image-preview:large" />}
 		<link
 			rel="alternate"
 			type="application/rss+xml"

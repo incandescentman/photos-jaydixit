@@ -382,7 +382,7 @@ test('red-carpet index renders editorial person cards from generated data', asyn
 	await waitForInitialImages(page);
 
 	const cards = page.locator('.rc-card');
-	await expect(cards).toHaveCount(42);
+	await expect(cards).toHaveCount(43);
 	for (const name of ['Ed Helms', 'Rick Hansen', 'Seth Rogen']) {
 		await expect(cards.filter({ hasText: name })).toHaveCount(1);
 	}

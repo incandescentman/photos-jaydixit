@@ -1,0 +1,67 @@
+---
+import { smartQuotes } from '@jaydixit/astro-utils';
+
+// Jay's revised copy, supplied for this page on October 10, 2026.
+const paragraphs = [
+	"I photographed Frances Haugen at the International Journalism Festival in 2024. It was WikiPortraits' first international photography trip, and Jenny 8. Lee and I flew to Italy for it.",
+	"At the time, I didn't really know who Haugen was, but Jenny pulled me aside to introduce me to her and make sure I got a photo of her for Wikipedia. It was the day before I started at OpenAI.",
+	"I didn't know until yesterday when I walked into Village East by Angelika that the main character of Aaron Sorkin's The Social Reckoning is not Mark Zuckerberg, as I had assumed, but the whistleblower whose Wikipedia portrait I'd taken in Perugia two years prior.",
+	"The Social Reckoning tells the story of how Haugen, once a true believer in Facebook's original democratization mission, came forward as a confidential source for Wall Street Journal reporter Jeff Horwitz, leaking documents demonstrating that Facebook knew its algorithms were amplifying violence and extremism. Haugen is presented not just as the main character, but as the conscience and moral hero of the movie.",
+	'My favorite moment of the movie happens after Haugen realizes to her horror that the only way to force Facebook to stop intentionally amplifying hate and division is to go on the record using her real name. When she arrives at the offices of The Wall Street Journal, the college intern there says, "Frances." "Yeah?" "You\'re cool." But the way he says it is more like "This is the most courageous thing I\'ve ever seen anyone do."',
+	'Shoutout to Jenny for always spotting the secret luminaries and future laureates in a sea of conference lanyards.',
+];
+const links: Record<string, string> = {
+	WikiPortraits: 'https://www.wikiportraits.org/',
+	Wikipedia: 'https://en.wikipedia.org/wiki/Frances_Haugen',
+	'future laureates': '/red-carpet/anne-carson/',
+};
+---
+
+<div class="frances-haugen-story" data-person-story>
+	{
+		paragraphs.map((paragraph, paragraphIndex) => (
+			<p>
+				{smartQuotes(paragraph)
+					.split(
+						/(WikiPortraits|Wikipedia|future laureates|The Social Reckoning|(?:The )?Wall Street Journal)/,
+					)
+					.map((part) =>
+						links[part] && !(part === 'Wikipedia' && paragraphIndex === 2) ? (
+							<a class="editorial-link" href={links[part]} set:text={part} />
+						) : ['The Social Reckoning', 'Wall Street Journal', 'The Wall Street Journal'].includes(
+								part,
+						  ) ? (
+							<em set:text={part} />
+						) : (
+							part
+						),
+					)}
+			</p>
+		))
+	}
+</div>
+
+<style>
+	.frances-haugen-story {
+		font-family: var(--arno-text);
+		font-size: clamp(28px, 1.85vw, 32px);
+		font-weight: 400;
+		line-height: 1.45;
+		color: var(--ink, #292725);
+	}
+	.frances-haugen-story p {
+		margin: 0 0 1em;
+	}
+	.frances-haugen-story p:first-child {
+		font-size: 1.125em;
+		line-height: 1.35;
+	}
+	.frances-haugen-story p:last-child {
+		margin-bottom: 0;
+	}
+	@media (max-width: 999px) {
+		.frances-haugen-story {
+			font-size: 26px;
+		}
+	}
+</style>

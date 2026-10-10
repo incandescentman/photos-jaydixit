@@ -1,0 +1,20 @@
+{
+	"defaults": {
+		"tags": [
+			"Anne Carson",
+			"National Book Awards",
+			"New York City",
+			"2024",
+			"WikiPortraits",
+			"literature",
+			"portrait"
+		]
+	},
+	"overrides": {
+		"anne-carson_national-book-awards_2024.jpg": {
+			"title": "Anne Carson at the National Book Awards in 2024",
+			"caption": "Anne Carson at the National Book Awards in New York City in 2024.",
+			"people": ["Anne Carson"]
+		}
+	}
+}

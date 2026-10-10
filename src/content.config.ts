@@ -11,6 +11,7 @@ const blogPosts = defineCollection({
     publishDate: z.coerce.date().optional(),
     updateDate: z.coerce.date().optional(),
     draft: z.boolean().optional().default(false),
+    noindex: z.boolean().optional().default(false),
     image: z.string().optional(),
     imagePublicId: z.string().optional(),
     imageAlt: z.string().optional(),

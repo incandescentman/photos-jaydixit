@@ -5,7 +5,7 @@ const SITE_FALLBACK = 'https://photos.jaydixit.com';
 
 export const GET: APIRoute = async ({ site }) => {
   const siteUrl = site?.origin ?? SITE_FALLBACK;
-  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  const posts = await getCollection('blog', ({ data }) => !data.draft && !data.noindex);
 
   const items = posts
     .map((entry) => {

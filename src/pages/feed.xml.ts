@@ -18,7 +18,7 @@ function escapeXml(value: string) {
 
 export const GET: APIRoute = async ({ site }) => {
   const siteUrl = getSiteUrl(site);
-  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  const posts = await getCollection('blog', ({ data }) => !data.draft && !data.noindex);
 
   const items = posts
     .map((entry) => {

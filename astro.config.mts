@@ -4,6 +4,7 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { isPublicSearchPage } from './src/lib/indexing';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,10 +20,7 @@ export default defineConfig({
 	integrations: [
 		mdx(),
 		sitemap({
-			filter: (page) =>
-				!page.includes('/prototype-documentary') &&
-				!page.includes('/salient-photography-demo') &&
-				!page.includes('/photo-wall'),
+			filter: (page) => isPublicSearchPage(new URL(page).pathname),
 		}),
 	],
 	vite: {

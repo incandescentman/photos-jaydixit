@@ -3,24 +3,30 @@ import { Image, getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro:assets';
 import MainLayout from '../../layouts/MainLayout.astro';
 import PortfolioLightbox from '../../components/PortfolioLightbox.astro';
+import AnneCarsonStory from '../../components/AnneCarsonStory.astro';
+import AnneCarsonReuse from '../../components/AnneCarsonReuse.astro';
+import FrancesHaugenStory from '../../components/FrancesHaugenStory.astro';
 import siteConfig from '../../../site.config.mts';
 import rawPeople from '../../data/people.json';
 import publishedPortraits from '../../data/published-portraits.json';
 import { cldUrl, cldSrcset } from '../../lib/cloudinary';
 import { photoPublication } from '../../lib/photoPublication';
 import { images as homepageImages } from '../../data/homepage-images.js';
-import { embeddedAttribution } from '../../lib/embeddedAttribution';
+import { embeddedAttribution, embeddedCreator } from '../../lib/embeddedAttribution';
 import { buildCaptionAndTags, formatPhrase, type GalleryTagsFile } from '../../lib/galleryMetadata';
 import { lightboxVariant } from '../../lib/image-variants';
-import { ogImageFromAsset } from '../../lib/seo';
+import { ogImageFromAsset, photographer, photoImageObject } from '../../lib/seo';
 
 interface Person {
 	slug: string;
 	name: string;
 	match: string[];
 	photoSlugs?: string[];
+	featuredPhotoSlug?: string;
 	indexExcludedPhotoSlugs?: string[];
 	bio?: string;
+	seoTitle?: string;
+	seoDescription?: string;
 	wikipedia?: string;
 	commonsUrl?: string;
 	articleUsageStatus?: 'lead' | 'formerly-lead' | 'unknown';
@@ -217,20 +223,22 @@ const matchedPhotos = Object.values(grouped)
 
 const localPhotos = await Promise.all(
 	matchedPhotos.map(async (photo) => {
-		const [thumbnail, lightbox, exhibitionAttribution, publication] = await Promise.all([
-			getImage({ src: photo.metadata, width: 160, format: 'webp' }),
-			lightboxVariant(photo.metadata),
-			embeddedAttribution({
-				moduleKey: photo.moduleKey,
-				pageFile: 'src/pages/red-carpet/[person].astro',
-				caption: photo.caption,
-				sourceDetailUrl: new URL(
-					photo.detailHref ?? `/red-carpet/${personData.slug}`,
-					siteConfig.siteUrl,
-				).toString(),
-			}),
-			photoPublication(photo.moduleKey, 'src/pages/red-carpet/[person].astro'),
-		]);
+		const [thumbnail, lightbox, exhibitionAttribution, publication, creatorName] =
+			await Promise.all([
+				getImage({ src: photo.metadata, width: 160, format: 'webp' }),
+				lightboxVariant(photo.metadata),
+				embeddedAttribution({
+					moduleKey: photo.moduleKey,
+					pageFile: 'src/pages/red-carpet/[person].astro',
+					caption: photo.caption,
+					sourceDetailUrl: new URL(
+						photo.detailHref ?? `/red-carpet/${personData.slug}`,
+						siteConfig.siteUrl,
+					).toString(),
+				}),
+				photoPublication(photo.moduleKey, 'src/pages/red-carpet/[person].astro'),
+				embeddedCreator(photo.moduleKey, 'src/pages/red-carpet/[person].astro'),
+			]);
 
 		return {
 			...photo,
@@ -240,6 +248,7 @@ const localPhotos = await Promise.all(
 			lightboxHeight: lightbox.height,
 			exhibitionAttribution,
 			publication,
+			creatorName,
 			publicId: undefined,
 			publishedOn: photo.source === 'sequence' ? '/#issa-rae-sequence' : undefined,
 		};
@@ -264,8 +273,18 @@ const remotePhotos = publishedPortraits
 		lightboxHeight: Math.round((photo.height * Math.min(photo.width, 3000)) / photo.width),
 		exhibitionAttribution: undefined,
 		publication: undefined,
+		creatorName: undefined,
 	}));
 const photos = [...localPhotos, ...remotePhotos];
+const featuredPhotoIndex = personData.featuredPhotoSlug
+	? photos.findIndex(
+			(photo) => photo.filename.replace(/\.[^/.]+$/, '') === personData.featuredPhotoSlug,
+		)
+	: -1;
+const hasFeaturedPhoto = featuredPhotoIndex >= 0;
+if (hasFeaturedPhoto) {
+	photos.unshift(...photos.splice(featuredPhotoIndex, 1));
+}
 
 if (photos.length === 0) {
 	return Astro.redirect('/404');
@@ -273,13 +292,22 @@ if (photos.length === 0) {
 
 const siteUrl = Astro.site?.origin ?? siteConfig.siteUrl ?? 'https://photos.jaydixit.com';
 const canonicalUrl = new URL(`/red-carpet/${personData.slug}`, siteUrl).toString();
-const pageTitle = `${personData.name} — Red Carpet Photos`;
-const pageDescription = personData.bio
-	? `${personData.bio}. ${photos.length} ${photos.length === 1 ? 'red carpet photo' : 'red carpet photos'} by ${siteConfig.owner}.`
-	: `${photos.length} ${photos.length === 1 ? 'red carpet photo' : 'red carpet photos'} of ${personData.name} by ${siteConfig.owner}.`;
+const hasStory = personData.slug === 'anne-carson';
+const hasPortraitEssay = personData.slug === 'frances-haugen';
+const pageTitle = personData.seoTitle ?? `${personData.name} Photos`;
+const pageDescription =
+	personData.seoDescription ?? `Photographs of ${personData.name} by ${siteConfig.owner}.`;
 // A complete social card (URL, size, and type), since the shared resolver cannot measure
 // a resized copy before it is written.
 const firstPhoto = photos[0];
+const sharedCaption =
+	photos.length > 1 && photos.every((photo) => photo.caption === firstPhoto.caption)
+		? firstPhoto.caption
+		: undefined;
+const sharedGalleryName =
+	sharedCaption && photos.every((photo) => photo.galleryName === firstPhoto.galleryName)
+		? firstPhoto.galleryName
+		: undefined;
 const socialCard = firstPhoto.metadata
 	? await ogImageFromAsset(firstPhoto.metadata, `Portrait of ${personData.name}`)
 	: {
@@ -305,6 +333,18 @@ const breadcrumbs = [
 	{ name: personData.name, url: `/red-carpet/${personData.slug}` },
 ];
 
+const imageObjects = photos.map((photo) =>
+	photoImageObject({
+		src: photo.lightboxSrc,
+		caption: photo.caption,
+		width: photo.lightboxWidth,
+		height: photo.lightboxHeight,
+		thumbnail: photo.thumbnailSrc,
+		pageUrl: photo.detailHref ?? canonicalUrl,
+		creatorName: photo.creatorName,
+		publication: photo.publication,
+	}),
+);
 const personStructuredData = {
 	'@context': 'https://schema.org',
 	'@type': 'CollectionPage',
@@ -316,8 +356,9 @@ const personStructuredData = {
 		name: personData.name,
 		...(personData.wikipedia ? { sameAs: personData.wikipedia } : {}),
 	},
-	creator: { '@type': 'Person', name: siteConfig.owner },
-	image: photos.map((p) => new URL(p.lightboxSrc, siteUrl).toString()),
+	creator: photographer,
+	image: imageObjects,
+	primaryImageOfPage: imageObjects[0],
 };
 
 const breadcrumbStructuredData = {
@@ -338,6 +379,7 @@ export function getStaticPaths() {
 
 <MainLayout
 	photoFooter
+	useArnoPro={hasStory || hasFeaturedPhoto}
 	title={pageTitle}
 	description={pageDescription}
 	canonical={canonicalUrl}
@@ -347,7 +389,16 @@ export function getStaticPaths() {
 	structuredData={[personStructuredData, breadcrumbStructuredData]}
 >
 	<section class="py-16 pt-(--nav-clearance)">
-		<div class="container mx-auto px-4 max-w-7xl">
+		<div
+			class:list={[
+				'container mx-auto px-4 max-w-7xl',
+				{
+					'person-feature': hasStory,
+					'person-portrait-feature': hasFeaturedPhoto,
+					'person-portrait-essay': hasPortraitEssay,
+				},
+			]}
+		>
 			<nav aria-label="Breadcrumb" class="mb-6">
 				<ol class="flex flex-wrap items-center gap-2 text-sm text-gray-500">
 					{
@@ -367,137 +418,230 @@ export function getStaticPaths() {
 				</ol>
 			</nav>
 
-			<header class="mb-10 text-center">
-				<h1 class="text-4xl md:text-5xl font-bold mb-3">{personData.name}</h1>
-				{
-					personData.bio && (
-						<p class="text-xl text-gray-600 max-w-xl mx-auto mb-3">{personData.bio}</p>
-					)
-				}
-				<p class="text-gray-500 text-base">
-					{photos.length}
-					{photos.length === 1 ? 'photo' : 'photos'}
-				</p>
-				{
-					personData.wikipedia && (
-						<a
-							href={personData.wikipedia}
-							target="_blank"
-							rel="noopener noreferrer"
-							class="editorial-link inline-block mt-2"
-						>
-							Wikipedia &rarr;
-						</a>
-					)
-				}
-				{
-					showProvenance && (
-						<p class="photo-credit mt-4">
-							{provenanceParts.join(' · ')}
-							{personData.license && personData.licenseUrl && (
-								<>
-									{provenanceParts.length > 0 && <span aria-hidden="true"> · </span>}
-									<a
-										href={personData.licenseUrl}
-										target="_blank"
-										rel="noopener noreferrer"
-										class="editorial-link"
-									>
-										{personData.license}
-									</a>
-								</>
-							)}
-							{personData.commonsUrl && (
-								<>
-									{(provenanceParts.length > 0 ||
-										Boolean(personData.license && personData.licenseUrl)) && (
-										<span aria-hidden="true"> · </span>
-									)}
-									<a
-										href={personData.commonsUrl}
-										target="_blank"
-										rel="noopener noreferrer"
-										class="editorial-link"
-									>
-										View on Wikimedia Commons
-									</a>
-								</>
-							)}
-						</p>
-					)
-				}
-			</header>
-
-			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" data-person-photo-gallery>
-				{
-					photos.map((photo) => (
-						<div class="group block">
+			<div class="person-introduction">
+				<header class="mb-10 text-center">
+					<h1 class="text-4xl md:text-5xl font-bold mb-3">{personData.name}</h1>
+					{
+						hasPortraitEssay && (
+							<p class="person-story-deck">
+								<em>
+									Facebook whistleblower | International Journalism Festival, Perugia, Italy | April
+									19, 2024
+								</em>
+							</p>
+						)
+					}
+					{
+						personData.bio && (
+							<p class="text-xl text-gray-600 max-w-xl mx-auto mb-3">{personData.bio}</p>
+						)
+					}
+					{
+						!hasStory && !hasFeaturedPhoto && (
+							<p class="text-gray-500 text-base">
+								{photos.length}
+								{photos.length === 1 ? 'photo' : 'photos'}
+							</p>
+						)
+					}
+					{
+						personData.wikipedia && !hasPortraitEssay && (
 							<a
-								href={photo.lightboxSrc}
-								class="block"
-								data-pswp-item="true"
-								data-exhibition-thumb={photo.thumbnailSrc}
-								data-full-src={photo.lightboxSrc}
-								data-pswp-width={photo.lightboxWidth}
-								data-pswp-height={photo.lightboxHeight}
-								data-pswp-caption={photo.caption}
-								data-exhibition-details={photo.detailHref ?? undefined}
-								data-exhibition-person={canonicalUrl}
-								data-exhibition-person-label={personData.name}
-								data-exhibition-gallery={
-									photo.source === 'gallery' && photo.folder
-										? `/gallery/${photo.folder}`
-										: undefined
-								}
-								data-exhibition-attribution={photo.exhibitionAttribution}
-								data-exhibition-story={photo.publishedOn}
-								data-exhibition-story-label="View original placement"
-								data-exhibition-commons={photo.publication?.commonsUrl}
-								data-exhibition-license={photo.publication?.license}
-								data-exhibition-license-url={photo.publication?.licenseUrl}
-								data-exhibition-download={photo.publication?.downloadUrl}
-								aria-label={`${photo.caption} — view full size`}
+								href={personData.wikipedia}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="editorial-link inline-block mt-2"
 							>
-								<div class="aspect-[3/4] overflow-hidden rounded-xl bg-gray-100 shadow-sm">
-									{photo.metadata ? (
-										<Image
-											src={photo.metadata}
-											alt={photo.caption}
-											width={480}
-											height={640}
-											fit="cover"
-											position="attention"
-											loading="lazy"
-											class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-										/>
-									) : (
-										<img
-											src={cldUrl(photo.publicId, 960)}
-											srcset={cldSrcset(photo.publicId, [480, 720, 960, 1440])}
-											sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw"
-											width={480}
-											height={640}
-											alt={photo.caption}
-											loading="lazy"
-											class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-										/>
+								Wikipedia &rarr;
+							</a>
+						)
+					}
+					{
+						showProvenance && (
+							<p class="photo-credit mt-4">
+								{provenanceParts.join(' · ')}
+								{personData.license && personData.licenseUrl && (
+									<>
+										{provenanceParts.length > 0 && <span aria-hidden="true"> · </span>}
+										<a
+											href={personData.licenseUrl}
+											target="_blank"
+											rel="noopener noreferrer"
+											class="editorial-link"
+										>
+											{personData.license}
+										</a>
+									</>
+								)}
+								{personData.commonsUrl && (
+									<>
+										{(provenanceParts.length > 0 ||
+											Boolean(personData.license && personData.licenseUrl)) && (
+											<span aria-hidden="true"> · </span>
+										)}
+										<a
+											href={personData.commonsUrl}
+											target="_blank"
+											rel="noopener noreferrer"
+											class="editorial-link"
+										>
+											View on Wikimedia Commons
+										</a>
+									</>
+								)}
+							</p>
+						)
+					}
+				</header>
+
+				{
+					sharedCaption && !hasPortraitEssay && (
+						<div class="mb-8 text-center" data-person-shared-caption>
+							<p class="text-base font-medium text-gray-800">{sharedCaption}</p>
+							{sharedGalleryName && !hasFeaturedPhoto && (
+								<p class="photo-credit mt-1">{sharedGalleryName}</p>
+							)}
+						</div>
+					)
+				}
+			</div>
+
+			{
+				hasPortraitEssay && (
+					<article class="person-essay" aria-label="Photographing Frances Haugen">
+						<FrancesHaugenStory />
+					</article>
+				)
+			}
+
+			<div class:list={{ 'person-story-layout': hasStory }} data-person-photo-gallery>
+				<div
+					class:list={[
+						'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6',
+						{ 'person-story-photos': hasStory },
+					]}
+				>
+					{
+						photos.map((photo, index) => (
+							<div
+								class:list={[
+									'group block',
+									{
+										'person-portrait-photo': hasFeaturedPhoto,
+										'person-portrait-lead': hasFeaturedPhoto && index === 0,
+									},
+								]}
+							>
+								<a
+									href={photo.lightboxSrc}
+									class="block"
+									data-pswp-item="true"
+									data-exhibition-thumb={photo.thumbnailSrc}
+									data-full-src={photo.lightboxSrc}
+									data-pswp-width={photo.lightboxWidth}
+									data-pswp-height={photo.lightboxHeight}
+									data-pswp-caption={photo.caption}
+									data-exhibition-details={photo.detailHref ?? undefined}
+									data-exhibition-person={canonicalUrl}
+									data-exhibition-person-label={personData.name}
+									data-exhibition-gallery={
+										photo.source === 'gallery' && photo.folder
+											? `/gallery/${photo.folder}`
+											: undefined
+									}
+									data-exhibition-attribution={photo.exhibitionAttribution}
+									data-exhibition-story={photo.publishedOn}
+									data-exhibition-story-label="View original placement"
+									data-exhibition-commons={photo.publication?.commonsUrl}
+									data-exhibition-license={photo.publication?.license}
+									data-exhibition-license-url={photo.publication?.licenseUrl}
+									data-exhibition-download={photo.publication?.downloadUrl}
+									aria-label={`${photo.caption} — view full size`}
+								>
+									<div
+										class:list={
+											hasStory || hasFeaturedPhoto
+												? 'person-feature-image'
+												: 'aspect-[3/4] overflow-hidden rounded-xl bg-gray-100 shadow-sm'
+										}
+									>
+										{(hasStory || hasFeaturedPhoto) && photo.metadata ? (
+											<Image
+												src={photo.metadata}
+												alt={photo.caption}
+												width={1600}
+												widths={[480, 720, 960, 1280, 1600, 2400]}
+												sizes={
+													hasFeaturedPhoto
+														? index === 0
+															? hasPortraitEssay
+																? '(min-width: 1680px) 788px, (min-width: 1000px) 47vw, calc(100vw - 48px)'
+																: '(min-width: 1560px) 853px, (min-width: 1000px) 55vw, calc(100vw - 48px)'
+															: hasPortraitEssay
+																? '(min-width: 1680px) 382px, (min-width: 1000px) 23vw, (min-width: 601px) 46vw, calc(100vw - 48px)'
+																: '(min-width: 1560px) 352px, (min-width: 1000px) 23vw, (min-width: 601px) 46vw, calc(100vw - 48px)'
+														: '(min-width: 1680px) 780px, (min-width: 1000px) 47vw, calc(100vw - 48px)'
+												}
+												loading={index === 0 ? 'eager' : 'lazy'}
+												fetchpriority={index === 0 ? 'high' : 'auto'}
+											/>
+										) : photo.metadata ? (
+											<Image
+												src={photo.metadata}
+												alt={photo.caption}
+												width={480}
+												height={640}
+												fit="cover"
+												position="attention"
+												loading="lazy"
+												class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+											/>
+										) : (
+											<img
+												src={cldUrl(photo.publicId, 960)}
+												srcset={cldSrcset(photo.publicId, [480, 720, 960, 1440])}
+												sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw"
+												width={480}
+												height={640}
+												alt={photo.caption}
+												loading="lazy"
+												class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+											/>
+										)}
+									</div>
+								</a>
+								<div class="mt-3 px-1">
+									{hasPortraitEssay && index === 0 && sharedCaption && (
+										<p class="person-lead-caption" data-person-shared-caption>
+											{sharedCaption}
+										</p>
+									)}
+									{hasPortraitEssay && index === 0 && (
+										<p class="photo-credit mt-1">
+											Photo by{' '}
+											<a class="editorial-link" href="https://jaydixit.com/about">
+												{siteConfig.owner}
+											</a>
+										</p>
+									)}
+									{!sharedCaption && (
+										<p class="text-base font-medium text-gray-800 group-hover:text-gray-900">
+											{photo.caption}
+										</p>
+									)}
+									{!sharedGalleryName && <p class="photo-credit mt-0.5">{photo.galleryName}</p>}
+									{hasStory && <AnneCarsonReuse />}
+									{photo.detailHref && (
+										<a href={photo.detailHref} class="editorial-link mt-2 inline-block text-sm">
+											Details
+										</a>
 									)}
 								</div>
-							</a>
-							<div class="mt-3 px-1">
-								<p class="text-base font-medium text-gray-800 group-hover:text-gray-900">
-									{photo.caption}
-								</p>
-								<p class="photo-credit mt-0.5">{photo.galleryName}</p>
-								{photo.detailHref && (
-									<a href={photo.detailHref} class="editorial-link mt-2 inline-block text-sm">
-										Details
-									</a>
-								)}
 							</div>
-						</div>
-					))
-				}
+						))
+					}
+				</div>
+				{hasStory && <AnneCarsonStory />}
 			</div>
 		</div>
 	</section>
@@ -508,3 +652,204 @@ export function getStaticPaths() {
 		options={{ escKey: true, tapAction: 'toggle-controls' }}
 	/>
 </MainLayout>
+
+<style>
+	.person-feature {
+		width: 100%;
+		max-width: 1680px;
+		padding-inline: 2.5rem;
+	}
+	.person-feature h1 {
+		font-family: var(--serif);
+		font-weight: 300;
+		font-size: clamp(3rem, 6vw, 5rem);
+		line-height: 1.05;
+	}
+	.person-story-layout {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+		gap: clamp(2rem, 4vw, 5rem);
+		align-items: start;
+	}
+	.person-story-photos {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.person-feature-image img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+	.person-portrait-feature {
+		width: 100%;
+		max-width: 1560px;
+		padding-inline: 2.5rem;
+		display: grid;
+		grid-template-columns: repeat(12, minmax(0, 1fr));
+		column-gap: 1.5rem;
+		row-gap: 3.5rem;
+		align-items: start;
+	}
+	.person-portrait-feature > nav {
+		grid-column: 1 / -1;
+		margin-bottom: 0;
+	}
+	.person-portrait-feature .person-introduction {
+		grid-column: 1 / span 5;
+		grid-row: 2;
+		align-self: center;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		padding-right: clamp(1rem, 4vw, 4rem);
+	}
+	.person-portrait-feature .person-introduction header,
+	.person-portrait-feature [data-person-photo-gallery],
+	.person-portrait-feature [data-person-photo-gallery] > .grid {
+		display: contents;
+	}
+	.person-portrait-feature h1 {
+		font-family: var(--serif);
+		font-size: clamp(4.5rem, 6.5vw, 6.75rem);
+		font-weight: 300;
+		line-height: 0.98;
+		letter-spacing: -0.035em;
+		margin: 0 0 2rem;
+		text-align: left;
+	}
+	.person-portrait-feature [data-person-shared-caption] {
+		order: 1;
+		margin: 0;
+		text-align: left;
+	}
+	.person-portrait-feature [data-person-shared-caption] > p {
+		font-family: var(--arno-text);
+		font-size: clamp(28px, 2vw, 32px);
+		font-weight: 400;
+		line-height: 1.45;
+		color: var(--ink, #292725);
+	}
+	.person-portrait-feature .person-introduction .editorial-link {
+		order: 2;
+		margin-top: 1.75rem;
+	}
+	.person-portrait-photo {
+		grid-column: span 3;
+		min-width: 0;
+	}
+	.person-portrait-lead {
+		grid-column: 6 / -1;
+		grid-row: 2;
+	}
+	.person-portrait-essay {
+		max-width: 1680px;
+	}
+	.person-portrait-essay .person-introduction {
+		grid-column: 1 / -1;
+		align-self: start;
+		padding-right: 0;
+	}
+	.person-portrait-essay h1 {
+		margin-bottom: 1.25rem;
+	}
+	.person-story-deck {
+		font-family: var(--arno-text);
+		font-size: 26px;
+		font-weight: 400;
+		line-height: 1.4;
+		text-align: left;
+		color: #625f58;
+	}
+	.person-portrait-essay .person-portrait-lead {
+		grid-column: 1 / span 6;
+		grid-row: 3;
+	}
+	.person-portrait-essay .person-portrait-photo:not(.person-portrait-lead) .person-feature-image {
+		aspect-ratio: 4 / 5;
+		overflow: hidden;
+	}
+	.person-portrait-essay
+		.person-portrait-photo:not(.person-portrait-lead)
+		.person-feature-image
+		img {
+		height: 100%;
+		object-fit: cover;
+		object-position: 50% 30%;
+	}
+	.person-essay {
+		grid-column: 7 / -1;
+		grid-row: 3;
+		min-width: 0;
+		padding-left: clamp(1.5rem, 3vw, 3.5rem);
+	}
+	.person-portrait-essay .person-lead-caption {
+		margin: 1rem 0 0.5rem;
+		max-width: 38em;
+		font-family: var(--arno-text);
+		font-size: 22px;
+		line-height: 1.4;
+		color: #625f58;
+	}
+	@media (max-width: 999px) {
+		.person-feature {
+			padding-inline: 1.5rem;
+		}
+		.person-story-layout {
+			grid-template-columns: minmax(0, 1fr);
+		}
+		.person-portrait-feature {
+			padding-inline: 1.5rem;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			row-gap: 2.5rem;
+		}
+		.person-portrait-feature .person-introduction {
+			display: contents;
+		}
+		.person-portrait-feature h1 {
+			grid-column: 1 / -1;
+			grid-row: 2;
+			font-size: clamp(3.5rem, 10vw, 5.5rem);
+			margin: 0;
+		}
+		.person-portrait-lead {
+			grid-column: 1 / -1;
+			grid-row: 3;
+		}
+		.person-portrait-feature [data-person-shared-caption] {
+			grid-column: 1 / -1;
+			grid-row: 4;
+			max-width: 680px;
+		}
+		.person-portrait-feature [data-person-shared-caption] > p {
+			font-size: 26px;
+		}
+		.person-portrait-feature .person-introduction .editorial-link {
+			grid-column: 1 / -1;
+			grid-row: 5;
+			justify-self: start;
+			margin-top: -1rem;
+		}
+		.person-portrait-photo:not(.person-portrait-lead) {
+			grid-column: span 1;
+		}
+		.person-portrait-essay .person-introduction {
+			display: block;
+			grid-column: 1 / -1;
+			grid-row: 2;
+		}
+		.person-portrait-essay .person-portrait-lead {
+			grid-column: 1 / -1;
+		}
+		.person-essay {
+			grid-column: 1 / -1;
+			grid-row: 4;
+			max-width: 760px;
+			padding-left: 0;
+			margin-inline: auto;
+		}
+	}
+	@media (max-width: 600px) {
+		.person-portrait-feature {
+			grid-template-columns: minmax(0, 1fr);
+		}
+	}
+</style>

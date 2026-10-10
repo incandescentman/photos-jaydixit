@@ -73,7 +73,9 @@ manifest.
 
 - Year is optional
 
-- Displayed under each photo
+- Displayed under each photo when captions differ.
+
+- *Shared captions* (Jay, 2026-10-10): When every photograph in a gallery or group has the same caption, display that caption once for the group. Use individual captions when they provide different information. Preserve per-image alt text, embedded metadata, and lightbox captions.
 
 
 
@@ -443,3 +445,9 @@ manifest.
 
 * Reading typography
 - 2026-09-23 — Jay approved 26px as the default and minimum for main Arno reading text, including phones. Captions, navigation, and metadata may remain smaller. This is a floor, not a cap. Preserve larger display treatments, including the About essay opening and quotation; About introductory text grows to 28px on larger desktops. Its essay body uses ~clamp(30px, 1.85vw, 34px)~ above 900px and 26px on phones; the local override lives in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/about.astro][about.astro]]. The shared rules live in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/styles/global.css][global.css]].
+
+* Instruction Work Log
+** 2026-10-10 — Shared gallery captions
+Jay approved displaying an identical caption once for the group rather than repeating it under every photograph. The prior caption-display instruction is preserved verbatim below:
+
+- Displayed under each photo

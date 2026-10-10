@@ -8,7 +8,7 @@ import PhotoComments from '../../../components/PhotoComments.astro';
 import PhotoLikeButton from '../../../components/PhotoLikeButton.astro';
 import SocialShare from '../../../components/SocialShare.astro';
 import PortfolioLightbox from '../../../components/PortfolioLightbox.astro';
-import { embeddedAttribution } from '../../../lib/embeddedAttribution';
+import { embeddedAttribution, embeddedCreator } from '../../../lib/embeddedAttribution';
 import { photoPublication } from '../../../lib/photoPublication';
 import { photoSubjects } from '../../../lib/photoSubjects';
 import siteConfig from '../../../../site.config.mts';
@@ -17,7 +17,7 @@ import {
 	formatPhrase,
 	type GalleryTagsFile,
 } from '../../../lib/galleryMetadata';
-import { ogImageFromAsset } from '../../../lib/seo';
+import { ogImageFromAsset, photoImageObject } from '../../../lib/seo';
 import { dimensionsOf, lightboxVariant, thumbnailVariant } from '../../../lib/image-variants';
 
 type TagsByFolder = Record<string, GalleryTagsFile>;
@@ -239,7 +239,10 @@ const exifItems = [
 const siteUrl = Astro.site?.origin ?? siteConfig.siteUrl ?? 'https://photos.jaydixit.com';
 const displayName = formatFolderName(folderPath);
 const pageTitle = currentPhoto.caption;
-const pageDescription = `${currentPhoto.caption} from ${displayName} by ${siteConfig.owner}.`;
+const creatorName =
+	(await embeddedCreator(photoFilePath, 'src/pages/gallery/photo/[...photo].astro')) ??
+	siteConfig.owner;
+const pageDescription = `${currentPhoto.caption.replace(/[.!?]$/, '')}. Photograph by ${creatorName}.`;
 const canonicalUrl = new URL(currentPhoto.detailHref, siteUrl).toString();
 const subjects = photoSubjects(currentPhoto.filename);
 const [publication, attribution] = await Promise.all([
@@ -252,32 +255,40 @@ const [publication, attribution] = await Promise.all([
 	}),
 ]);
 const folderSegments = folderPath.split('/').filter(Boolean);
+const galleryPaths = new Set(
+	Object.keys(imageModules).map((key) =>
+		key.replace('../../../gallery/photos/', '').split('/').slice(0, -1).join('/'),
+	),
+);
 const breadcrumbs = [
 	{ name: 'Home', url: '/' },
 	{ name: 'Gallery', url: '/gallery' },
-	...folderSegments.map((segment, index) => ({
-		name: formatPhrase(segment),
-		url: `/gallery/${folderSegments
-			.slice(0, index + 1)
-			.map((part) => encodeURIComponent(part))
-			.join('/')}`,
-	})),
+	...folderSegments.map((segment, index) => {
+		const folder = folderSegments.slice(0, index + 1).join('/');
+		return {
+			name: formatPhrase(segment),
+			url: galleryPaths.has(folder)
+				? `/gallery/${folder.split('/').map(encodeURIComponent).join('/')}`
+				: undefined,
+		};
+	}),
 	{ name: currentPhoto.caption, url: currentPhoto.detailHref },
 ];
 
 const photoStructuredData = {
 	'@context': 'https://schema.org',
-	'@type': 'Photograph',
-	name: currentPhoto.caption,
+	...photoImageObject({
+		src: photoCopy.src,
+		caption: currentPhoto.caption,
+		width: photoCopy.width,
+		height: photoCopy.height,
+		creatorName,
+		pageUrl: canonicalUrl,
+		thumbnail: photoThumbnail.src,
+		publication,
+	}),
+	'@type': ['ImageObject', 'Photograph'],
 	description: pageDescription,
-	url: canonicalUrl,
-	contentUrl: new URL(photoCopy.src, siteUrl).toString(),
-	...(publication ? { license: publication.licenseUrl, sameAs: publication.commonsUrl } : {}),
-	thumbnailUrl: new URL(photoThumbnail.src, siteUrl).toString(),
-	creator: {
-		'@type': 'Person',
-		name: siteConfig.owner,
-	},
 	keywords: currentPhoto.tags.join(', '),
 	isPartOf: {
 		'@type': 'ImageGallery',
@@ -288,12 +299,14 @@ const photoStructuredData = {
 const breadcrumbStructuredData = {
 	'@context': 'https://schema.org',
 	'@type': 'BreadcrumbList',
-	itemListElement: breadcrumbs.map((crumb, index) => ({
-		'@type': 'ListItem',
-		position: index + 1,
-		name: crumb.name,
-		item: new URL(crumb.url, siteUrl).toString(),
-	})),
+	itemListElement: breadcrumbs
+		.filter((crumb) => crumb.url)
+		.map((crumb, index) => ({
+			'@type': 'ListItem',
+			position: index + 1,
+			name: crumb.name,
+			item: new URL(crumb.url!, siteUrl).toString(),
+		})),
 };
 
 export const getStaticPaths = () => {
@@ -339,7 +352,7 @@ export const getStaticPaths = () => {
 						breadcrumbs.map((crumb, index) => (
 							<li class="inline-flex items-center gap-2">
 								{index > 0 && <span aria-hidden="true">/</span>}
-								{index === breadcrumbs.length - 1 ? (
+								{index === breadcrumbs.length - 1 || !crumb.url ? (
 									<span class="text-gray-700">{crumb.name}</span>
 								) : (
 									<a href={crumb.url} class="hover:text-gray-900 hover:underline">

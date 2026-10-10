@@ -3,9 +3,15 @@ import MainLayout from '../../layouts/MainLayout.astro';
 import { getCollection } from 'astro:content';
 
 const albums = (await getCollection('albums')).filter((album) => !album.data.draft);
+const albumNames = new Intl.ListFormat('en-US', { style: 'long', type: 'conjunction' }).format(
+  albums.map((album) => album.data.title),
+);
+const pageDescription = albumNames
+  ? `Explore Jay Dixit’s photo albums from ${albumNames}.`
+  : 'Explore Jay Dixit’s photography albums.';
 ---
 
-<MainLayout>
+<MainLayout title="Photo Albums" description={pageDescription}>
   <section class="py-16 pt-(--nav-clearance)">
     <div class="container mx-auto px-4 max-w-5xl">
       <h1 class="text-3xl md:text-4xl font-bold mb-6">Albums</h1>

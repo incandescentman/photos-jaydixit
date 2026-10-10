@@ -2,6 +2,8 @@
 	{
 		"slug": "ana-de-armas",
 		"name": "Ana de Armas",
+		"seoTitle": "Ana de Armas Photos",
+		"seoDescription": "Portraits of Ana de Armas by Jay Dixit at the 2024 Toronto International Film Festival, including photographs with Sydney Sweeney and Ron Howard.",
 		"match": ["ana-de-armas"],
 		"photoSlugs": [
 			"group-portrait_ana-de-armas-sydney-sweeney-ron-howard_2024",
@@ -13,17 +15,32 @@
 	{
 		"slug": "anna-kendrick",
 		"name": "Anna Kendrick",
+		"seoTitle": "Anna Kendrick Photos",
+		"seoDescription": "A portrait of Anna Kendrick by Jay Dixit at the 2026 Toronto International Film Festival world premiere of Babies.",
 		"match": ["anna-kendrick"]
+	},
+	{
+		"slug": "anne-carson",
+		"name": "Anne Carson",
+		"seoTitle": "Anne Carson Photos",
+		"seoDescription": "Photographs of Anne Carson, winner of the 2026 Nobel Prize in Literature, by Jay Dixit at the 2024 National Book Awards in New York City.",
+		"match": ["anne-carson"],
+		"bio": "Nobel Prize in Literature, 2026",
+		"wikipedia": "https://en.wikipedia.org/wiki/Anne_Carson"
 	},
 	{
 		"slug": "ben-jackson",
 		"name": "Ben Jackson",
+		"seoTitle": "Ben Jackson Photos",
+		"seoDescription": "Photographs of Ben Jackson with Jude Law and Jason Bateman by Jay Dixit at the 2025 Toronto International Film Festival.",
 		"match": ["ben-jackson"],
 		"photoSlugs": ["jude-law-ben-jackson_tiff_2025", "jason-bateman-jude-law-ben-jackson_tiff_2025"]
 	},
 	{
 		"slug": "conan-obrien",
 		"name": "Conan O’Brien",
+		"seoTitle": "Conan O’Brien Photos",
+		"seoDescription": "Photographs of Conan O’Brien by Jay Dixit at Sundance 2024 and a South by Southwest Office Space event.",
 		"match": ["conan-obrien"],
 		"photoSlugs": [
 			"2024-03-09_SXSW_Conan_Nick-Kroll_Office-Space_events_07141",
@@ -34,6 +51,8 @@
 	{
 		"slug": "cory-michael-smith",
 		"name": "Cory Michael Smith",
+		"seoTitle": "Cory Michael Smith Photos",
+		"seoDescription": "A photograph of Cory Michael Smith with Kaia Gerber by Jay Dixit at the Sundance premiere of Saturday Night.",
 		"match": ["cory-michael-smith"],
 		"photoSlugs": ["kaia-gerber_cory-michael-smith_saturday-night-sundance-premiere"],
 		"bio": "Gotham, May December",
@@ -42,17 +61,23 @@
 	{
 		"slug": "dave-franco",
 		"name": "Dave Franco",
+		"seoTitle": "Dave Franco Photos",
+		"seoDescription": "A portrait of Dave Franco by Jay Dixit at the 2025 Sundance Film Festival.",
 		"match": ["dave-franco"],
 		"wikipedia": "https://en.wikipedia.org/wiki/Dave_Franco"
 	},
 	{
 		"slug": "ed-helms",
 		"name": "Ed Helms",
+		"seoTitle": "Ed Helms Photos",
+		"seoDescription": "A portrait of Ed Helms by Jay Dixit at the 2026 Toronto International Film Festival world premiere of Babies.",
 		"match": ["ed-helms"]
 	},
 	{
 		"slug": "ella-hunt",
 		"name": "Ella Hunt",
+		"seoTitle": "Ella Hunt Photos",
+		"seoDescription": "Portraits of Ella Hunt by Jay Dixit at the Toronto International Film Festival, including a photograph from 2024.",
 		"match": ["ella-hunt"],
 		"bio": "Dickinson, Anna and the Apocalypse",
 		"wikipedia": "https://en.wikipedia.org/wiki/Ella_Hunt"
@@ -60,12 +85,25 @@
 	{
 		"slug": "emma-stone",
 		"name": "Emma Stone",
+		"seoTitle": "Emma Stone Photos",
+		"seoDescription": "A portrait of Emma Stone by Jay Dixit at the New York Film Festival.",
 		"match": ["emma-stone"],
 		"wikipedia": "https://en.wikipedia.org/wiki/Emma_Stone"
 	},
 	{
+		"slug": "frances-haugen",
+		"name": "Frances Haugen",
+		"seoTitle": "Frances Haugen Photos",
+		"seoDescription": "Portraits of Facebook whistleblower Frances Haugen by Jay Dixit at the International Journalism Festival in Perugia, Italy, on April 19, 2024.",
+		"match": ["frances-haugen"],
+		"featuredPhotoSlug": "frances-haugen_international-journalism-festival_2024_09527-cropped",
+		"wikipedia": "https://en.wikipedia.org/wiki/Frances_Haugen"
+	},
+	{
 		"slug": "frank-oz",
 		"name": "Frank Oz",
+		"seoTitle": "Frank Oz Photos",
+		"seoDescription": "A portrait of Frank Oz by Jay Dixit at South by Southwest in 2024.",
 		"match": ["frank-oz"],
 		"photoSlugs": ["Frank_Oz_2024_Cropped"],
 		"wikipedia": "https://en.wikipedia.org/wiki/Frank_Oz"
@@ -73,6 +111,8 @@
 	{
 		"slug": "himesh-patel",
 		"name": "Himesh Patel",
+		"seoTitle": "Himesh Patel Photos",
+		"seoDescription": "A portrait of Himesh Patel by Jay Dixit at the 2025 Sundance Film Festival in Park City, Utah.",
 		"match": ["himesh-patel"],
 		"bio": "Yesterday, Station Eleven",
 		"wikipedia": "https://en.wikipedia.org/wiki/Himesh_Patel"
@@ -80,16 +120,22 @@
 	{
 		"slug": "issa-rae",
 		"name": "Issa Rae",
+		"seoTitle": "Issa Rae Photos",
+		"seoDescription": "Photographs of Issa Rae by Jay Dixit at the 2026 Toronto International Film Festival world premiere of Babies.",
 		"match": ["issa-rae"]
 	},
 	{
 		"slug": "jack-johnson",
 		"name": "Jack Johnson",
+		"seoTitle": "Jack Johnson Photos",
+		"seoDescription": "Photographs of Jack Johnson performing at Stubb’s during South by Southwest in Austin, Texas, in March 2026, by Jay Dixit.",
 		"match": ["jack-johnson"]
 	},
 	{
 		"slug": "jason-bateman",
 		"name": "Jason Bateman",
+		"seoTitle": "Jason Bateman Photos",
+		"seoDescription": "Portraits of Jason Bateman by Jay Dixit at the 2025 Toronto International Film Festival, including photographs with Jude Law and Ben Jackson.",
 		"match": ["jason-bateman"],
 		"photoSlugs": [
 			"jason-bateman-jude-law_tiff_2025",
@@ -100,12 +146,16 @@
 	{
 		"slug": "jeremy-strong",
 		"name": "Jeremy Strong",
+		"seoTitle": "Jeremy Strong Photos",
+		"seoDescription": "A portrait of Jeremy Strong by Jay Dixit at the 2024 New York premiere of The Apprentice.",
 		"match": ["jeremy-strong"],
 		"wikipedia": "https://en.wikipedia.org/wiki/Jeremy_Strong_(actor)"
 	},
 	{
 		"slug": "john-hopfield",
 		"name": "John Hopfield",
+		"seoTitle": "John Hopfield Photos",
+		"seoDescription": "Photographs of physicist John Hopfield by Jay Dixit at the 2024 Nobel Lectures in Stockholm and the Nobel Prize in Physics ceremony.",
 		"match": ["john-hopfield"],
 		"bio": "Nobel Prize-winning physicist",
 		"wikipedia": "https://en.wikipedia.org/wiki/John_Hopfield"
@@ -113,17 +163,23 @@
 	{
 		"slug": "john-slattery",
 		"name": "John Slattery",
+		"seoTitle": "John Slattery Photos",
+		"seoDescription": "A portrait of John Slattery by Jay Dixit at the 2025 Toronto International Film Festival.",
 		"match": ["john-slattery"]
 	},
 	{
 		"slug": "judd-apatow",
 		"name": "Judd Apatow",
+		"seoTitle": "Judd Apatow Photos",
+		"seoDescription": "A portrait of Judd Apatow by Jay Dixit at South by Southwest in 2024.",
 		"match": ["judd-apatow"],
 		"wikipedia": "https://en.wikipedia.org/wiki/Judd_Apatow"
 	},
 	{
 		"slug": "jude-law",
 		"name": "Jude Law",
+		"seoTitle": "Jude Law Photos",
+		"seoDescription": "Photographs of Jude Law by Jay Dixit at the Toronto International Film Festival, including 2025 portraits with Jason Bateman and Ben Jackson.",
 		"match": ["jude-law"],
 		"photoSlugs": [
 			"jude-law_tiff",
@@ -137,6 +193,8 @@
 	{
 		"slug": "kaia-gerber",
 		"name": "Kaia Gerber",
+		"seoTitle": "Kaia Gerber Photos",
+		"seoDescription": "Photographs of Kaia Gerber by Jay Dixit at the Sundance premiere of Saturday Night and the 2024 Toronto International Film Festival.",
 		"match": ["kaia-gerber"],
 		"wikipedia": "https://en.wikipedia.org/wiki/Kaia_Gerber",
 		"photoSlugs": ["Kaia_Gerber_at_the_2024_Toronto_International_Film_Festival_03_(cropped)"]
@@ -144,12 +202,16 @@
 	{
 		"slug": "kieran-culkin",
 		"name": "Kieran Culkin",
+		"seoTitle": "Kieran Culkin Photos",
+		"seoDescription": "A portrait of Kieran Culkin by Jay Dixit at the New York Film Festival.",
 		"match": ["kieran-culkin"],
 		"wikipedia": "https://en.wikipedia.org/wiki/Kieran_Culkin"
 	},
 	{
 		"slug": "lisa-gilroy",
 		"name": "Lisa Gilroy",
+		"seoTitle": "Lisa Gilroy Photos",
+		"seoDescription": "A portrait of comedian Lisa Gilroy by Jay Dixit at South by Southwest in 2025.",
 		"match": ["lisa-gilroy"],
 		"bio": "Comedian and improviser",
 		"wikipedia": "https://en.wikipedia.org/wiki/Lisa_Gilroy",
@@ -162,17 +224,23 @@
 	{
 		"slug": "nicholas-braun",
 		"name": "Nicholas Braun",
+		"seoTitle": "Nicholas Braun Photos",
+		"seoDescription": "A portrait of Nicholas Braun by Jay Dixit at the Toronto International Film Festival.",
 		"match": ["nicholas-braun"],
 		"wikipedia": "https://en.wikipedia.org/wiki/Nicholas_Braun"
 	},
 	{
 		"slug": "rick-hansen",
 		"name": "Rick Hansen",
+		"seoTitle": "Rick Hansen Photos",
+		"seoDescription": "A portrait of Rick Hansen by Jay Dixit at the 2026 Toronto International Film Festival for Rick Hansen: Man in Motion.",
 		"match": ["rick-hansen"]
 	},
 	{
 		"slug": "ron-howard",
 		"name": "Ron Howard",
+		"seoTitle": "Ron Howard Photos",
+		"seoDescription": "A 2024 group portrait of Ron Howard with Ana de Armas and Sydney Sweeney by Jay Dixit.",
 		"match": ["ron-howard"],
 		"photoSlugs": ["group-portrait_ana-de-armas-sydney-sweeney-ron-howard_2024"],
 		"wikipedia": "https://en.wikipedia.org/wiki/Ron_Howard"
@@ -180,6 +248,8 @@
 	{
 		"slug": "ron-livingston",
 		"name": "Ron Livingston",
+		"seoTitle": "Ron Livingston Photos",
+		"seoDescription": "A portrait of Ron Livingston by Jay Dixit at a South by Southwest Office Space event in 2024.",
 		"match": ["ron-livingston"],
 		"photoSlugs": ["ron-livingston_sxsw-office-space-event_2024"],
 		"bio": "Office Space, Band of Brothers",
@@ -188,23 +258,31 @@
 	{
 		"slug": "sebastian-stan",
 		"name": "Sebastian Stan",
+		"seoTitle": "Sebastian Stan Photos",
+		"seoDescription": "A portrait of Sebastian Stan by Jay Dixit at the 2024 New York City premiere of The Apprentice.",
 		"match": ["sebastian-stan"],
 		"wikipedia": "https://en.wikipedia.org/wiki/Sebastian_Stan"
 	},
 	{
 		"slug": "seth-rogen",
 		"name": "Seth Rogen",
+		"seoTitle": "Seth Rogen Photos",
+		"seoDescription": "A portrait of Seth Rogen by Jay Dixit at the 2026 Toronto International Film Festival world premiere of Babies.",
 		"match": ["seth-rogen"]
 	},
 	{
 		"slug": "steven-yeun",
 		"name": "Steven Yeun",
+		"seoTitle": "Steven Yeun Photos",
+		"seoDescription": "A portrait of Steven Yeun by Jay Dixit at the 2025 Sundance Film Festival.",
 		"match": ["steven-yeun"],
 		"wikipedia": "https://en.wikipedia.org/wiki/Steven_Yeun"
 	},
 	{
 		"slug": "sydney-sweeney",
 		"name": "Sydney Sweeney",
+		"seoTitle": "Sydney Sweeney Photos",
+		"seoDescription": "Portraits of Sydney Sweeney by Jay Dixit at the 2024 Toronto International Film Festival, including photographs with Ana de Armas and Ron Howard.",
 		"match": ["sydney-sweeney"],
 		"photoSlugs": [
 			"group-portrait_ana-de-armas-sydney-sweeney-ron-howard_2024",
@@ -221,12 +299,16 @@
 	{
 		"slug": "vanessa-kirby",
 		"name": "Vanessa Kirby",
+		"seoTitle": "Vanessa Kirby Photos",
+		"seoDescription": "A portrait of Vanessa Kirby by Jay Dixit at the 2024 Toronto International Film Festival.",
 		"match": ["vanessa-kirby"],
 		"wikipedia": "https://en.wikipedia.org/wiki/Vanessa_Kirby"
 	},
 	{
 		"slug": "vinod-khosla",
 		"name": "Vinod Khosla",
+		"seoTitle": "Vinod Khosla Photos",
+		"seoDescription": "A portrait of venture capitalist Vinod Khosla by Jay Dixit at South by Southwest.",
 		"match": ["vinod-khosla"],
 		"bio": "Venture capitalist and tech investor",
 		"wikipedia": "https://en.wikipedia.org/wiki/Vinod_Khosla"
@@ -234,6 +316,8 @@
 	{
 		"slug": "zach-cherry",
 		"name": "Zach Cherry",
+		"seoTitle": "Zach Cherry Photos",
+		"seoDescription": "A portrait of Zach Cherry by Jay Dixit at the 2026 Toronto International Film Festival.",
 		"match": ["zach-cherry"],
 		"wikipedia": "https://en.wikipedia.org/wiki/Zach_Cherry",
 		"commonsUrl": "https://commons.wikimedia.org/wiki/File:Zach_Cherry_at_Toronto_International_Film_Festival_2026_-_photographed_by_Jay_Dixit_-_03872.jpg",
@@ -244,63 +328,87 @@
 	{
 		"slug": "alexander-skarsgard",
 		"name": "Alexander Skarsgård",
+		"seoTitle": "Alexander Skarsgård Photos",
+		"seoDescription": "A portrait of Alexander Skarsgård by Jay Dixit at the 2025 New York Film Festival.",
 		"match": ["alexander-skarsgard"]
 	},
 	{
 		"slug": "stephen-root",
 		"name": "Stephen Root",
+		"seoTitle": "Stephen Root Photos",
+		"seoDescription": "A portrait of Stephen Root by Jay Dixit at South by Southwest in 2024.",
 		"match": ["stephen-root"]
 	},
 	{
 		"slug": "demis-hassabis",
 		"name": "Demis Hassabis",
+		"seoTitle": "Demis Hassabis Photos",
+		"seoDescription": "Photographs of Demis Hassabis by Jay Dixit at the 2024 Nobel Lectures in Stockholm.",
 		"match": ["demis-hassabis"]
 	},
 	{
 		"slug": "david-baker",
 		"name": "David Baker",
+		"seoTitle": "David Baker Photos",
+		"seoDescription": "A portrait of David Baker by Jay Dixit at the 2024 Nobel Lectures in Stockholm.",
 		"match": ["david-baker"]
 	},
 	{
 		"slug": "geoffrey-hinton",
 		"name": "Geoffrey Hinton",
+		"seoTitle": "Geoffrey Hinton Photos",
+		"seoDescription": "A portrait of Geoffrey Hinton by Jay Dixit at the 2024 Nobel Lectures in Stockholm.",
 		"match": ["geoffrey-hinton"]
 	},
 	{
 		"slug": "john-jumper",
 		"name": "John Jumper",
+		"seoTitle": "John Jumper Photos",
+		"seoDescription": "A portrait of John Jumper by Jay Dixit at the 2024 Nobel Lectures in Stockholm.",
 		"match": ["john-jumper"]
 	},
 	{
 		"slug": "james-robinson",
 		"name": "James A. Robinson",
+		"seoTitle": "James A. Robinson Photos",
+		"seoDescription": "A portrait of James A. Robinson by Jay Dixit at the 2024 Nobel Lectures in Stockholm.",
 		"match": ["james-robinson"]
 	},
 	{
 		"slug": "simon-johnson",
 		"name": "Simon Johnson",
+		"seoTitle": "Simon Johnson Photos",
+		"seoDescription": "A portrait of Simon Johnson by Jay Dixit at the 2024 Nobel Lectures in Stockholm.",
 		"match": ["simon-johnson"]
 	},
 	{
 		"slug": "daron-acemoglu",
 		"name": "Daron Acemoglu",
+		"seoTitle": "Daron Acemoglu Photos",
+		"seoDescription": "A portrait of Daron Acemoglu by Jay Dixit at the 2024 Nobel Lectures in Stockholm.",
 		"match": ["daron-acemoglu"]
 	},
 	{
 		"slug": "willem-dafoe",
 		"name": "Willem Dafoe",
+		"seoTitle": "Willem Dafoe Photos",
+		"seoDescription": "A portrait of Willem Dafoe by Jay Dixit at the 2024 Toronto International Film Festival.",
 		"match": ["willem-dafoe"],
 		"photoSlugs": ["Willem_Dafoe_at_the_2024_Toronto_International_Film_Festival_02"]
 	},
 	{
 		"slug": "gabriel-labelle",
 		"name": "Gabriel LaBelle",
+		"seoTitle": "Gabriel LaBelle Photos",
+		"seoDescription": "A portrait of Gabriel LaBelle by Jay Dixit at the 2024 Toronto International Film Festival.",
 		"match": ["gabriel-labelle"],
 		"photoSlugs": ["Gabriel_LaBelle_at_the_2024_Toronto_International_Film_Festival_03_cropped"]
 	},
 	{
 		"slug": "jason-collett",
 		"name": "Jason Collett",
+		"seoTitle": "Jason Collett Photos",
+		"seoDescription": "A portrait of Jason Collett by Jay Dixit at the Ottawa Jazz Festival in 2025.",
 		"match": ["jason-collett"],
 		"photoSlugs": ["Jason_Collett_at_Ottawa_Jazz_Festival_in_2025_-_3"]
 	}

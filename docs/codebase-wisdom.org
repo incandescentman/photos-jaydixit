@@ -607,3 +607,18 @@ The first fix made every portrait one column wide. Jay rejected the result: “w
 
 * 2026-09-18 — Keep Exwalker backups outside gallery source folders
 Applying Exwalker metadata directly to a portfolio asset creates hidden backup/session artifacts beside it. The publication inventory scanner counted the backup JPEG as an additional local photo: the local count rose from 75 to 76, then returned to 75 after moving those artifacts into the batch evidence folder outside gallery sources. Apply metadata to a staging/export copy before copying it into the gallery, or preserve the generated backup and session outside the gallery immediately. Hidden does not mean excluded from every gallery/inventory scanner.
+
+
+* 2026-10-10 — Image attribution has separate display and search paths
+
+** Trigger
+
+The Stockholm portrait of Jay already credited John Sears in its visible caption, but the Nobel page’s search metadata credited Jay and its viewer appended “Photograph by Jay Dixit.” Correcting the JSON-LD alone did not correct the viewer caption.
+
+** Mechanism and current implementation
+
+[[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/nobel-2024.astro][The Nobel page]] now reads each source photograph’s embedded creator through [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/lib/embeddedAttribution.ts][embeddedCreator()]] and passes that value to both [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/lib/seo.ts][photoImageObject()]] and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/NobelPhoto.astro][NobelPhoto]]. The viewer preserves a caption already containing that creator’s photo credit; otherwise it appends the corresponding creator credit. The site owner remains the fallback where embedded creator data is absent. The gallery’s creator and the individual image’s creator are separate fields.
+
+** Actionable insight
+
+A correct visible caption does not establish that the lightbox or JSON-LD has the correct attribution. The source creator, displayed credit, and image search metadata need to agree, especially for guest photographs. The John Sears portrait is an existing real example for checking those paths. License fields come separately from hash-matched records through [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/lib/photoPublication.ts][the publication helper]]; an author credit alone does not establish a license.

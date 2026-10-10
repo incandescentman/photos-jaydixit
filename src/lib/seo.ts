@@ -2,9 +2,54 @@ import type { ImageMetadata } from 'astro:assets';
 import { resolveSocialImage } from '@jaydixit/astro-utils/utils/social-image.ts';
 import { serializeJsonLd as serializeSharedJsonLd } from '@jaydixit/astro-utils/utils/json-ld.ts';
 import { socialVariant } from './image-variants';
+import siteConfig from '../../site.config.mts';
 
 type JsonLdRecord = Record<string, unknown>;
 type JsonLd = JsonLdRecord | JsonLdRecord[];
+
+export const photographer = {
+	'@type': 'Person',
+	name: siteConfig.owner,
+	url: siteConfig.authorUrl,
+};
+
+/** License fields are supplied only from the verified publication record. */
+export function photoImageObject(input: {
+	src: string;
+	caption: string;
+	width: number;
+	height: number;
+	creatorName?: string;
+	pageUrl?: string | null;
+	thumbnail?: string;
+	publication?: { licenseUrl: string; commonsUrl: string };
+}) {
+	const creator =
+		!input.creatorName || input.creatorName === siteConfig.owner
+			? photographer
+			: { '@type': 'Person', name: input.creatorName };
+	return {
+		'@type': 'ImageObject',
+		contentUrl: new URL(input.src, siteConfig.siteUrl).toString(),
+		name: input.caption,
+		caption: input.caption,
+		width: input.width,
+		height: input.height,
+		creator,
+		creditText: `Photo by ${creator.name}`,
+		...(input.pageUrl ? { url: new URL(input.pageUrl, siteConfig.siteUrl).toString() } : {}),
+		...(input.thumbnail
+			? { thumbnailUrl: new URL(input.thumbnail, siteConfig.siteUrl).toString() }
+			: {}),
+		...(input.publication
+			? {
+					license: input.publication.licenseUrl,
+					acquireLicensePage: input.publication.commonsUrl,
+					sameAs: input.publication.commonsUrl,
+				}
+			: {}),
+	};
+}
 
 export type OgImage = {
 	url: string;

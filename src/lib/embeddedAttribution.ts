@@ -52,6 +52,21 @@ async function readEmbeddedMetadata(filePath: string): Promise<EmbeddedMetadata 
 	}
 }
 
+async function sourceMetadata(moduleKey: string, pageFile: string) {
+	const imagePath = resolve(dirname(pageFile), moduleKey);
+	let metadata = metadataByPath.get(imagePath);
+	if (!metadata) {
+		metadata = readEmbeddedMetadata(imagePath);
+		metadataByPath.set(imagePath, metadata);
+	}
+	return metadata;
+}
+
+/** Preserve the source photograph's credit, including guest photographers. */
+export async function embeddedCreator(moduleKey: string, pageFile: string) {
+	return xmpText((await sourceMetadata(moduleKey, pageFile))?.dc?.creator);
+}
+
 /**
  * Produces copy-ready attribution only when the source image itself carries both
  * an embedded creator and explicit usage terms or license statement.
@@ -64,14 +79,7 @@ export async function embeddedAttribution({
 }: EmbeddedAttributionOptions): Promise<string | undefined> {
 	if (!sourceDetailUrl) return undefined;
 
-	const imagePath = resolve(dirname(pageFile), moduleKey);
-	let metadata = metadataByPath.get(imagePath);
-	if (!metadata) {
-		metadata = readEmbeddedMetadata(imagePath);
-		metadataByPath.set(imagePath, metadata);
-	}
-
-	const parsed = await metadata;
+	const parsed = await sourceMetadata(moduleKey, pageFile);
 	const creator = xmpText(parsed?.dc?.creator);
 	const rights = xmpText(parsed?.dc?.rights);
 	const usageTerms = xmpText(parsed?.xmpRights?.UsageTerms);

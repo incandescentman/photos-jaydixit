@@ -10,7 +10,13 @@ import { lightboxVariant } from '../lib/image-variants';
 const [issaFull, quoteFull] = await Promise.all([lightboxVariant(issaPhoto), lightboxVariant(quotePhoto)]);
 ---
 
-<MainLayout photoFooter>
+<MainLayout
+	photoFooter
+	title="About — Red Carpet Photographer for Wikipedia"
+	description="I’m a red carpet photographer for Wikipedia and the first photographer of the WikiPortraits initiative founded by Jennifer 8. Lee and Kevin Payravi."
+	image="/images/jay-anisha-williamsburg_jay-dixit-photos_lighter.jpg"
+	imageAlt="Jay Dixit at the Williamsburg waterfront"
+>
 	<div class="ed ed--about">
 		<!-- Hero -->
 		<section class="ed-hero">

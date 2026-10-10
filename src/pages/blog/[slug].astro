@@ -6,7 +6,9 @@ import WikiPortraitsHero from '../../components/WikiPortraitsHero.astro';
 import { getCollection, render } from 'astro:content';
 import { smartQuotes } from '@jaydixit/astro-utils';
 import { cldUrl, cldSrcset, cldSizes } from '../../lib/cloudinary';
+import { ogImageFromAsset } from '../../lib/seo';
 import siteConfig from '../../../site.config.mts';
+import jeremyStrongPortrait from '../../assets/images/wikiportraits/jeremy-strong_the-apprentice-premiere_2024.jpg';
 
 function formatTagLabel(tag: string) {
 	const normalized = tag.trim().toLowerCase();
@@ -44,6 +46,11 @@ const formattedDate = publishDate
 	: null;
 const heroImage = data.imagePublicId ? cldUrl(data.imagePublicId, 2000) : (data.image ?? null);
 const heroSrcset = data.imagePublicId ? cldSrcset(data.imagePublicId) : undefined;
+const featureSocialCard =
+	post.id === 'wikiportraits-story'
+		? await ogImageFromAsset(jeremyStrongPortrait, 'Portrait of Jeremy Strong by Jay Dixit')
+		: undefined;
+const socialImage = featureSocialCard?.url ?? heroImage;
 const excerptSource = data.excerpt ?? data.description;
 const excerpt = excerptSource ? smartQuotes(excerptSource) : null;
 const siteUrl = Astro.site?.origin ?? siteConfig.siteUrl ?? 'https://photos.jaydixit.com';
@@ -66,7 +73,7 @@ const blogStructuredData = {
 		name: siteConfig.owner,
 	},
 	mainEntityOfPage: canonicalUrl,
-	image: heroImage ? [new URL(heroImage, siteUrl).toString()] : undefined,
+	image: socialImage ? [new URL(socialImage, siteUrl).toString()] : undefined,
 	keywords: data.tags?.join(', '),
 };
 ---
@@ -76,8 +83,10 @@ const blogStructuredData = {
 	title={data.title}
 	description={excerptSource}
 	canonical={canonicalUrl}
-	image={heroImage ?? undefined}
-	imageAlt={data.imageAlt ?? data.title}
+	image={socialImage ?? undefined}
+	imageAlt={featureSocialCard?.alt ?? data.imageAlt ?? data.title}
+	ogImages={featureSocialCard ? [featureSocialCard] : undefined}
+	noindex={data.noindex}
 	ogType="article"
 	publishedTime={publishDate}
 	modifiedTime={data.updateDate ?? data.publishDate}

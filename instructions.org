@@ -111,6 +111,7 @@ Use ~subject_event_year.jpg~ for solo photographs. Use an unambiguous hyphenated
 - Copy all selected photographs into the appropriate folder under [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/gallery/photos][📁 /Users/jay/Dropbox/github/photos-jaydixit/src/gallery/photos/]].
 - The folder becomes a public ~/gallery/.../~ route. For TIFF, [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/gallery/photos/red-carpet/tiff][📁 /Users/jay/Dropbox/github/photos-jaydixit/src/gallery/photos/red-carpet/tiff/]] renders at [[https://photos.jaydixit.com/gallery/red-carpet/tiff/][photos.jaydixit.com/gallery/red-carpet/tiff/]].
 - Keep factual public captions and tags in that folder’s ~tags.json~. Both the legacy flat filename-to-tags format and the structured ~defaults~ / ~captions~ / ~overrides~ format are supported.
+- Whenever a gallery gains photographs, review and update its entry in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/gallery-seo.json][the gallery SEO registry]] so its title and description cover the whole current gallery. Expandable event folders use event titles rather than the name of their first photographed person. (2026-10-10.)
 - A Cloudinary upload is not required for filesystem galleries. Astro processes the local assets during the Vercel build.
 - The private publisher can additionally create an explicit Cloudinary mirror for a reviewed batch. That mirror remains separate from public gallery routing and homepage selection.
 

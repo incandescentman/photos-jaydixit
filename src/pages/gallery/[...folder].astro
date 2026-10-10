@@ -6,12 +6,13 @@ import PhotoComments from '../../components/PhotoComments.astro';
 import SocialShare from '../../components/SocialShare.astro';
 import PhotoLikeButton from '../../components/PhotoLikeButton.astro';
 import siteConfig from '../../../site.config.mts';
-import { embeddedAttribution } from '../../lib/embeddedAttribution';
+import { embeddedAttribution, embeddedCreator } from '../../lib/embeddedAttribution';
 import { photoPublication } from '../../lib/photoPublication';
 import { photoSubjects } from '../../lib/photoSubjects';
 import { buildCaptionAndTags, formatPhrase, type GalleryTagsFile } from '../../lib/galleryMetadata';
 import { dimensionsOf } from '../../lib/image-variants';
-import { ogImageFromAsset } from '../../lib/seo';
+import { ogImageFromAsset, photographer, photoImageObject } from '../../lib/seo';
+import gallerySeo from '../../data/gallery-seo.json';
 
 const { folder } = Astro.params;
 
@@ -66,21 +67,23 @@ const groupedImageEntries = await Promise.all(
 		const { caption, tags } = buildCaptionAndTags(filename, imageFolder, tagsByFolder[imageFolder]);
 		const detailHref = toPhotoHref(folderPath, filename);
 		const size = dimensionsOf(metadata);
-		const [lightboxImage, thumbnailImage, exhibitionAttribution, publication] = await Promise.all([
-			getImage({
-				src: metadata,
-				width: Math.min(size.width, 3000),
-				inferSize: true,
-			}),
-			getImage({ src: metadata, width: 160, format: 'webp', inferSize: true }),
-			embeddedAttribution({
-				moduleKey: key,
-				pageFile: 'src/pages/gallery/[...folder].astro',
-				caption,
-				sourceDetailUrl: new URL(detailHref, siteConfig.siteUrl).toString(),
-			}),
-			photoPublication(key, 'src/pages/gallery/[...folder].astro'),
-		]);
+		const [lightboxImage, thumbnailImage, exhibitionAttribution, publication, creatorName] =
+			await Promise.all([
+				getImage({
+					src: metadata,
+					width: Math.min(size.width, 3000),
+					inferSize: true,
+				}),
+				getImage({ src: metadata, width: 160, format: 'webp', inferSize: true }),
+				embeddedAttribution({
+					moduleKey: key,
+					pageFile: 'src/pages/gallery/[...folder].astro',
+					caption,
+					sourceDetailUrl: new URL(detailHref, siteConfig.siteUrl).toString(),
+				}),
+				photoPublication(key, 'src/pages/gallery/[...folder].astro'),
+				embeddedCreator(key, 'src/pages/gallery/[...folder].astro'),
+			]);
 
 		return {
 			metadata,
@@ -96,6 +99,7 @@ const groupedImageEntries = await Promise.all(
 			exhibitionThumb: thumbnailImage.src,
 			exhibitionAttribution,
 			publication,
+			creatorName,
 		};
 	}),
 );
@@ -135,8 +139,12 @@ const displayName = formatPhrase(folderPath.split('/').at(-1) ?? folderPath);
 const siteUrl = Astro.site?.origin ?? siteConfig.siteUrl ?? 'https://photos.jaydixit.com';
 const galleryUrl = `/gallery/${folderPath}`;
 const canonicalUrl = new URL(`/gallery/${folderPath}`, siteUrl).toString();
-const pageTitle = `${displayName} Gallery`;
-const pageDescription = `${images.length} ${images.length === 1 ? 'photo' : 'photos'} in the ${displayName} gallery by ${siteConfig.owner}.`;
+const galleryMetadata = (
+	gallerySeo as Record<string, { seoTitle: string; seoDescription: string }>
+)[folderPath];
+const pageTitle = galleryMetadata?.seoTitle ?? `${displayName} Photos`;
+const pageDescription =
+	galleryMetadata?.seoDescription ?? `Photographs from ${displayName} by ${siteConfig.owner}.`;
 // A complete social card (URL, size, and type), since the shared resolver cannot measure
 // a resized copy before it is written.
 const socialCard = images[0]
@@ -144,21 +152,35 @@ const socialCard = images[0]
 	: undefined;
 const primaryImage = socialCard?.url;
 const folderSegments = folderPath.split('/').filter(Boolean);
+const galleryPaths = new Set(
+	Object.keys(imageModules).map((key) =>
+		key.replace('../../gallery/photos/', '').split('/').slice(0, -1).join('/'),
+	),
+);
 const breadcrumbs = [
 	{ name: 'Home', url: '/' },
 	{ name: 'Gallery', url: '/gallery' },
-	...folderSegments.map((segment, index) => ({
-		name: formatPhrase(segment),
-		url: `/gallery/${folderSegments
-			.slice(0, index + 1)
-			.map((part) => encodeURIComponent(part))
-			.join('/')}`,
-	})),
+	...folderSegments.map((segment, index) => {
+		const folder = folderSegments.slice(0, index + 1).join('/');
+		return {
+			name: formatPhrase(segment),
+			url: galleryPaths.has(folder)
+				? `/gallery/${folder.split('/').map(encodeURIComponent).join('/')}`
+				: undefined,
+		};
+	}),
 ];
-const imageObjects = images.slice(0, 48).map((image) => ({
-	'@type': 'ImageObject',
-	contentUrl: new URL(image.lightboxSrc, siteUrl).toString(),
-	caption: image.caption,
+const imageObjects = images.map((image) => ({
+	...photoImageObject({
+		src: image.lightboxSrc,
+		caption: image.caption,
+		width: image.lightboxWidth,
+		height: image.lightboxHeight,
+		creatorName: image.creatorName,
+		publication: image.publication,
+		pageUrl: toPhotoHref(folderPath, image.filename),
+		thumbnail: image.exhibitionThumb,
+	}),
 	keywords: image.tags.length > 0 ? image.tags.join(', ') : undefined,
 }));
 
@@ -168,19 +190,21 @@ const galleryStructuredData = {
 	name: `${displayName} — ${siteConfig.owner}`,
 	description: pageDescription,
 	url: canonicalUrl,
-	creator: { '@type': 'Person', name: siteConfig.owner },
+	creator: photographer,
 	image: imageObjects.map((image) => image.contentUrl),
 	hasPart: imageObjects,
 };
 const breadcrumbStructuredData = {
 	'@context': 'https://schema.org',
 	'@type': 'BreadcrumbList',
-	itemListElement: breadcrumbs.map((crumb, index) => ({
-		'@type': 'ListItem',
-		position: index + 1,
-		name: crumb.name,
-		item: new URL(crumb.url, siteUrl).toString(),
-	})),
+	itemListElement: breadcrumbs
+		.filter((crumb) => crumb.url)
+		.map((crumb, index) => ({
+			'@type': 'ListItem',
+			position: index + 1,
+			name: crumb.name,
+			item: new URL(crumb.url!, siteUrl).toString(),
+		})),
 };
 
 export const getStaticPaths = () => {
@@ -227,8 +251,10 @@ export const getStaticPaths = () => {
 						breadcrumbs.map((crumb, index) => (
 							<li>
 								{index > 0 && <span aria-hidden="true">/</span>}
-								{index === breadcrumbs.length - 1 ? (
-									<span aria-current="page">{crumb.name}</span>
+								{index === breadcrumbs.length - 1 || !crumb.url ? (
+									<span aria-current={index === breadcrumbs.length - 1 ? 'page' : undefined}>
+										{crumb.name}
+									</span>
 								) : (
 									<a href={crumb.url}>{crumb.name}</a>
 								)}

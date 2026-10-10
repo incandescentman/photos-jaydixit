@@ -18,7 +18,7 @@ function formatTagLabel(tag: string) {
 	return labelMap[normalized] ?? tag;
 }
 
-const posts = await getCollection('blog', ({ data }) => !data.draft);
+const posts = await getCollection('blog', ({ data }) => !data.draft && !data.noindex);
 const sortedPosts = posts
 	.map((entry) => ({
 		...entry,

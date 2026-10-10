@@ -1,0 +1,126 @@
+---
+import { Image } from 'astro:assets';
+import { ArrowUpRight } from '@lucide/astro';
+import siteConfig from '../../site.config.mts';
+import socraticLogo from '../assets/images/brand/socratic-ai-logo-horizontal.png';
+
+const jayLink = siteConfig.socialLinks.find((link) => link.name === 'Jay Dixit');
+const socraticLink = siteConfig.socialLinks.find((link) => link.name === 'Socratic AI');
+
+if (!jayLink || !socraticLink) {
+	throw new Error('The site footer requires Jay Dixit and Socratic AI destinations.');
+}
+---
+
+<nav class="site-links" aria-label="More from Jay Dixit">
+	<a class="site-link" href={jayLink.url}>
+		<span class="site-link-brand site-link-jay">Jay Dixit</span>
+		<span class="site-link-domain">
+			jaydixit.com
+			<ArrowUpRight size={16} strokeWidth={1.5} aria-hidden="true" />
+		</span>
+	</a>
+	<a class="site-link" href={socraticLink.url}>
+		<span class="site-link-brand site-link-socratic">
+			<Image src={socraticLogo} width={640} alt="Socratic AI" loading="lazy" />
+		</span>
+		<span class="site-link-domain">
+			socraticai.co
+			<ArrowUpRight size={16} strokeWidth={1.5} aria-hidden="true" />
+		</span>
+	</a>
+</nav>
+
+<style>
+	.site-links {
+		--ink: #1a1714;
+		--muted: #756e64;
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		width: 100%;
+		border-block: 1px solid var(--hairline, #ded8ce);
+		font-family: var(--sans);
+	}
+	.site-link {
+		display: flex;
+		min-width: 0;
+		flex-direction: column;
+		align-items: flex-start;
+		justify-content: center;
+		gap: 0.5rem;
+		padding: clamp(1.4rem, 2.8vw, 2.5rem);
+		color: var(--ink, #1a1714);
+		text-decoration: none;
+	}
+	.site-link + .site-link {
+		border-left: 1px solid var(--hairline, #ded8ce);
+	}
+	.site-link:focus-visible {
+		outline: 2px solid var(--portfolio-red, #c0261f);
+		outline-offset: -4px;
+	}
+	.site-link-brand {
+		display: inline-flex;
+		min-height: 76px;
+		align-items: center;
+	}
+	.site-link-jay {
+		gap: 0.7rem;
+		font-family: var(--serif);
+		font-size: clamp(2rem, 2.8vw, 2.75rem);
+		font-weight: 600;
+		letter-spacing: -0.01em;
+		line-height: 1;
+	}
+	.site-link-jay::before {
+		content: '';
+		width: 8px;
+		height: 8px;
+		flex: none;
+		border-radius: 50%;
+		background: #fbb6ce;
+		box-shadow: 0 0 0 4px rgb(251 182 206 / 22%);
+	}
+	.site-link-socratic :global(img) {
+		display: block;
+		width: min(100%, 300px);
+		height: auto;
+	}
+	.site-link-domain {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		font-size: 0.82rem;
+		font-weight: 500;
+		letter-spacing: 0.035em;
+		color: var(--muted, #756e64);
+		transition: color 180ms ease;
+	}
+	.site-link-domain :global(svg) {
+		transition: transform 180ms ease;
+	}
+	.site-link:hover .site-link-domain {
+		color: var(--portfolio-red, #c0261f);
+	}
+	.site-link:hover .site-link-domain :global(svg) {
+		transform: translate(2px, -2px);
+	}
+	@media (max-width: 640px) {
+		.site-links {
+			grid-template-columns: minmax(0, 1fr);
+		}
+		.site-link {
+			padding: 1.25rem 0.5rem;
+		}
+		.site-link + .site-link {
+			border-left: 0;
+			border-top: 1px solid var(--hairline, #ded8ce);
+		}
+		.site-link-brand {
+			min-height: 60px;
+		}
+		.site-link-socratic :global(img) {
+			width: min(100%, 270px);
+		}
+	}
+</style>

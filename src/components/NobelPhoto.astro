@@ -11,6 +11,7 @@ interface Props {
 		};
 		alt: string;
 		caption: string;
+		creatorName?: string;
 		commons?: string;
 		subjects?: { href: string; label: string }[];
 	};
@@ -20,6 +21,10 @@ interface Props {
 
 const { photo, eager = false, className = '' } = Astro.props;
 const thumbnail = await getImage({ src: photo.src, width: 160, format: 'webp' });
+const creatorName = photo.creatorName || 'Jay Dixit';
+const lightboxCaption = photo.caption.includes(`Photo by ${creatorName}`)
+	? photo.caption
+	: `${photo.caption} — Photograph by ${creatorName}`;
 ---
 
 <figure class:list={['nobel-photo', className]}>
@@ -33,7 +38,7 @@ const thumbnail = await getImage({ src: photo.src, width: 160, format: 'webp' })
 		data-exhibition-subjects={JSON.stringify(photo.subjects ?? [])}
 		data-pswp-width={photo.full.attributes.width}
 		data-pswp-height={photo.full.attributes.height}
-		data-pswp-caption={`${photo.caption} — Photograph by Jay Dixit`}
+		data-pswp-caption={lightboxCaption}
 		aria-label={`Open larger photograph: ${photo.caption}`}
 	>
 		<Image

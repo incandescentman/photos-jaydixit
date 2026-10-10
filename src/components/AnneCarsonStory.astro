@@ -1,0 +1,114 @@
+---
+import { Image } from 'astro:assets';
+import carneyPost from '../assets/images/anne-carson/carney-facebook-photo-credit.png';
+
+// Jay's five paragraphs, supplied and approved for this page on October 10, 2026.
+const paragraphs = [
+	'Since Anne Carson won the Nobel Prize in Literature, I’ve been happy to see that my photos of her have been featured in dozens of publications around the world, including Wikipedia, Princeton, Berkeley, The Conversation, and the official Nobel Prize website.',
+	'Canadian Prime Minister Mark Carney even used my photo in his official note congratulating her.',
+	'I took this portrait of her at the National Book Awards in New York City in 2024 as a volunteer with WikiPortraits (we photograph notable people for Wikipedia).',
+	'I also had the privilege of photographing the Nobel Prizes themselves in Stockholm and Oslo in 2024.',
+	'As a Canadian writer and photographer, I’m honoured to see my portraits being used around the world to celebrate Anne Carson’s extraordinary achievement. 🇨🇦📸',
+];
+
+const publicationLinks: Record<string, string> = {
+	WikiPortraits: 'https://www.wikiportraits.org/',
+	Wikipedia: 'https://en.wikipedia.org/wiki/Anne_Carson',
+	Princeton:
+		'https://www.dailyprincetonian.com/article/2026/10/princeton-news-broadfocus-former-lecturer-anne-carson-wins-nobel-prize-for-literature',
+	Berkeley:
+		'https://news.berkeley.edu/2026/10/08/anne-carson-wins-a-nobel-prize-in-literature-with-a-chapter-at-uc-berkeley/',
+	'The Conversation':
+		'https://theconversation.com/la-audacia-de-traducir-a-anne-carson-premio-nobel-de-literatura-2026-294021',
+	'official Nobel Prize website':
+		'https://www.nobelprize.org/prizes/literature/2026/carson/photo-gallery/?gallery_style=page',
+	'Canadian Prime Minister Mark Carney':
+		'https://www.facebook.com/CanadianPM/posts/on-behalf-of-all-canadians-prime-minister-carney-congratulates-anne-carson-on-be/122200417700875278/',
+};
+const linkedNames =
+	/(WikiPortraits|Wikipedia|Princeton|Berkeley|The Conversation|official Nobel Prize website|Canadian Prime Minister Mark Carney)/;
+---
+
+<div class="ed anne-carson-story">
+	<div class="ed-essay">
+		{
+			paragraphs.map((paragraph, index) => (
+				<>
+					<p>
+						{index < 3
+							? paragraph
+									.split(linkedNames)
+									.map((part) =>
+										publicationLinks[part] ? (
+											<a class="editorial-link" href={publicationLinks[part]} set:text={part} />
+										) : (
+											part
+										),
+									)
+							: paragraph}
+					</p>
+					{index === 1 && (
+						<figure class="post-evidence">
+							<a
+								class="post-evidence-image"
+								href={carneyPost.src}
+								data-pswp-item="true"
+								data-pswp-width={carneyPost.width}
+								data-pswp-height={carneyPost.height}
+								data-pswp-caption="Prime Minister of Canada’s Facebook post — photo credit to Jay Dixit"
+								data-exhibition-story={publicationLinks['Canadian Prime Minister Mark Carney']}
+								data-exhibition-story-label="View Facebook post"
+								aria-label="Prime Minister of Canada’s Facebook post — view full size"
+							>
+								<Image
+									src={carneyPost}
+									alt="Screenshot of the Prime Minister of Canada’s Anne Carson post, including the credit: Photo by Jay Dixit used under CC BY-SA 4.0."
+									width={840}
+									widths={[420, 840, 1260, 1680, 2098]}
+									sizes="(min-width: 1680px) 780px, (min-width: 1000px) 47vw, calc(100vw - 48px)"
+									format="png"
+									loading="lazy"
+								/>
+							</a>
+						</figure>
+					)}
+				</>
+			))
+		}
+	</div>
+	<nav class="story-links" aria-label="Related photographs">
+		<a
+			class="editorial-link"
+			href="https://www.nobelprize.org/prizes/literature/2026/carson/photo-gallery/?gallery_style=page"
+			>Official Nobel Prize photo gallery &rarr;</a
+		>
+		<a class="editorial-link" href="/nobel-2024/">My Nobel Prizes photographs, 2024 &rarr;</a>
+	</nav>
+</div>
+
+<style>
+	.anne-carson-story {
+		min-width: 0;
+	}
+	.post-evidence {
+		margin-block: 1.5rem 2rem;
+	}
+	.post-evidence-image {
+		display: block;
+		border: 1px solid rgb(0 0 0 / 12%);
+		background: white;
+		cursor: zoom-in;
+	}
+	.post-evidence-image img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+	.story-links {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 1rem;
+		margin-top: 2rem;
+	}
+</style>

@@ -33,6 +33,23 @@ export default [
 		},
 	},
 	{
+		files: ['scripts/**/*.mjs'],
+		languageOptions: {
+			globals: {
+				...globals.node,
+			},
+		},
+	},
+	{
+		files: ['output/check-*.mjs'],
+		languageOptions: {
+			globals: {
+				...globals.node,
+				...globals.browser,
+			},
+		},
+	},
+	{
 		files: ['salient-portfolio.js'],
 		languageOptions: {
 			globals: {
