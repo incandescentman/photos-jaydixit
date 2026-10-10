@@ -1,0 +1,41 @@
+#+TITLE: Photography Analytics and Search Console
+#+DATE: 2026-10-10
+
+* Google Analytics
+
+The portfolio uses the existing Jay Dixit GA4 property, ~325431637~, under account ~236149738~. The Jay Dixit web stream is ~3873498216~, with public measurement ID ~G-GGEE0BBMSC~. These identifiers and enabled enhanced measurement were verified in the Analytics console on October 10, 2026.
+
+Vercel project ~photos-jaydixit~ has ~PUBLIC_GA_MEASUREMENT_ID~ set only for Production. [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/layouts/MainLayout.astro][MainLayout]] includes the Google tag when that variable is present. A new deployment is required after changing it. Local builds and Preview deployments remain untracked by default.
+
+[[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/scripts/analytics-events.ts][The destination-click handler]] sends ~outbound_cta_click~ for links to these three exact domains, including their ~www~ variants:
+
+- ~jaydixit.com~ sends ~cta_name: jay_dixit~.
+- ~socraticai.co~ sends ~cta_name: socratic_ai~.
+- ~storytelling.nyc~ sends ~cta_name: storytelling_nyc~.
+
+Every event includes ~site_section: photography~, ~source_path~, ~link_domain~, ~link_url~, and ~link_text~. The destination URL excludes its query string and fragment. Normal clicks, keyboard activation, and middle clicks keep their normal navigation behavior. Links within ~photos.jaydixit.com~ do not count as onward clicks. The explicit event also covers the parent-domain destination, independently of enhanced measurement’s outbound-link classification.
+
+These events measure clicks, not newsletter subscriptions, inquiries, or sales. The ~outbound_cta_click~ name and ~cta_name~ / ~site_section~ parameters follow the existing main-site convention. The shared property also receives other hostnames: use hostname ~photos.jaydixit.com~ for portfolio traffic, and ~site_section = photography~ plus the event name for onward clicks. Preserve the main site’s existing “Real website traffic” exploration and its hostname filter. Related configuration is documented in [[file+emacs:/Users/jay/Dropbox/github/astro-monorepo/apps/jaydixit/docs/google-analytics-and-search-console.org][the main-site analytics runbook]].
+
+Verify collection in [[https://analytics.google.com/analytics/web/#/a236149738p325431637/realtime/overview][Realtime overview]] by clicking each destination from the live portfolio and opening ~outbound_cta_click~ → ~cta_name~. Confirm all three values and ~site_section: photography~. Processed reports can lag behind Realtime.
+
+* Search Console
+
+The portfolio belongs to the existing domain property ~sc-domain:jaydixit.com~. The [[https://search.google.com/search-console/sitemaps?resource_id=sc-domain%3Ajaydixit.com][Sitemaps report]] includes [[https://photos.jaydixit.com/sitemap-index.xml][the photography sitemap index]] and [[https://photos.jaydixit.com/sitemap-0.xml][its child sitemap]]. On October 10, 2026, both reported *Success* and *125 discovered pages*.
+
+The earlier “Couldn’t fetch” report cleared after successful Google live fetch tests and one resubmission of the child sitemap. Public HTTP and XML checks found no hosting or file defect; the original error’s cause remains unknown. The live child-sitemap inspection at 4:38 a.m. reported crawling allowed, page fetch successful, and indexing allowed. Discovered pages are not necessarily indexed pages.
+
+Google accepted manual indexing requests on October 10 for the canonical portrait URLs below. A subsequent individual inspection of each URL that morning reported “URL is on Google” and “Page is indexed” for all four. No repeated indexing requests were made. This establishes index inclusion, not a particular search ranking.
+
+- [[https://photos.jaydixit.com/red-carpet/anne-carson][Anne Carson]].
+- [[https://photos.jaydixit.com/red-carpet/frances-haugen][Frances Haugen]].
+- [[https://photos.jaydixit.com/red-carpet/demis-hassabis][Demis Hassabis]].
+- [[https://photos.jaydixit.com/red-carpet/geoffrey-hinton][Geoffrey Hinton]].
+
+* References
+
+- [[https://developers.google.com/analytics/devguides/collection/ga4/events][Google: send and verify GA4 events]].
+- [[https://support.google.com/analytics/answer/9216061][Google: enhanced measurement and outbound clicks]].
+- [[https://support.google.com/webmasters/answer/7451001][Google: sitemap status and fetch-error troubleshooting]].
+- [[https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl][Google: request recrawling]].
+- [[https://vercel.com/docs/cli/env][Vercel environment-variable commands]].
