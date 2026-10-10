@@ -21,6 +21,18 @@ export default defineConfig({
 		mdx(),
 		sitemap({
 			filter: (page) => isPublicSearchPage(new URL(page).pathname),
+			serialize(item) {
+				const pathname = new URL(item.url).pathname;
+				// These pages set slashless canonicals; keep sitemap entries identical to them.
+				if (
+					pathname === '/contact/' ||
+					pathname === '/popular/' ||
+					/^\/(gallery|red-carpet)\/.+\/$/.test(pathname)
+				) {
+					item.url = item.url.replace(/\/$/, '');
+				}
+				return item;
+			},
 		}),
 	],
 	vite: {

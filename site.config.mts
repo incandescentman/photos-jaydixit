@@ -23,6 +23,10 @@ export default {
 			url: 'https://socraticai.co',
 		},
 		{
+			name: 'Storytelling.NYC',
+			url: 'https://storytelling.nyc',
+		},
+		{
 			name: 'Instagram',
 			url: 'https://www.instagram.com/jaydixit',
 		},

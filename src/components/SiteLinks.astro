@@ -3,12 +3,16 @@ import { Image } from 'astro:assets';
 import { ArrowUpRight } from '@lucide/astro';
 import siteConfig from '../../site.config.mts';
 import socraticLogo from '../assets/images/brand/socratic-ai-logo-horizontal.png';
+import storytellingIcon from '../assets/images/brand/storytelling-nyc-icon.png';
 
 const jayLink = siteConfig.socialLinks.find((link) => link.name === 'Jay Dixit');
 const socraticLink = siteConfig.socialLinks.find((link) => link.name === 'Socratic AI');
+const storytellingLink = siteConfig.socialLinks.find((link) => link.name === 'Storytelling.NYC');
 
-if (!jayLink || !socraticLink) {
-	throw new Error('The site footer requires Jay Dixit and Socratic AI destinations.');
+if (!jayLink || !socraticLink || !storytellingLink) {
+	throw new Error(
+		'The site footer requires Jay Dixit, Socratic AI, and Storytelling.NYC destinations.',
+	);
 }
 ---
 
@@ -29,6 +33,16 @@ if (!jayLink || !socraticLink) {
 			<ArrowUpRight size={16} strokeWidth={1.5} aria-hidden="true" />
 		</span>
 	</a>
+	<a class="site-link" href={storytellingLink.url}>
+		<span class="site-link-brand site-link-storytelling">
+			<Image src={storytellingIcon} width={160} alt="" loading="lazy" />
+			<span>STORYTELLING.NYC</span>
+		</span>
+		<span class="site-link-domain">
+			storytelling.nyc
+			<ArrowUpRight size={16} strokeWidth={1.5} aria-hidden="true" />
+		</span>
+	</a>
 </nav>
 
 <style>
@@ -36,7 +50,7 @@ if (!jayLink || !socraticLink) {
 		--ink: #1a1714;
 		--muted: #756e64;
 		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
+		grid-template-columns: repeat(3, minmax(0, 1fr));
 		width: 100%;
 		border-block: 1px solid var(--hairline, #ded8ce);
 		font-family: var(--sans);
@@ -86,6 +100,36 @@ if (!jayLink || !socraticLink) {
 		width: min(100%, 300px);
 		height: auto;
 	}
+	@font-face {
+		font-family: 'StorytellingLogoCondensed';
+		src:
+			local('HelveticaNeueLTPro-BdCn'), local('Helvetica Neue LT Pro 77 Bold Condensed'),
+			local('HelveticaNeueLT Pro 77 BdCn');
+		font-stretch: condensed;
+		font-style: normal;
+		font-weight: 800;
+	}
+	.site-link-storytelling {
+		gap: 0.3rem;
+		color: #06283b;
+		font-family:
+			'StorytellingLogoCondensed', 'Helvetica Neue Condensed Bold', 'HelveticaNeue-CondensedBold',
+			'Arial Narrow', 'Aptos Narrow', 'Liberation Sans Narrow', Helvetica, Arial, sans-serif;
+		font-stretch: condensed;
+		font-weight: 800;
+		font-size: clamp(1.15rem, 1.55vw, 1.6rem);
+		line-height: 1;
+		white-space: nowrap;
+	}
+	.site-link-storytelling :global(img) {
+		width: 44px;
+		height: 64px;
+		object-fit: contain;
+		flex: none;
+	}
+	.site-link-storytelling span {
+		transform: translateY(0.24em);
+	}
 	.site-link-domain {
 		display: inline-flex;
 		align-items: center;
@@ -105,7 +149,7 @@ if (!jayLink || !socraticLink) {
 	.site-link:hover .site-link-domain :global(svg) {
 		transform: translate(2px, -2px);
 	}
-	@media (max-width: 640px) {
+	@media (max-width: 1000px) {
 		.site-links {
 			grid-template-columns: minmax(0, 1fr);
 		}
@@ -121,6 +165,9 @@ if (!jayLink || !socraticLink) {
 		}
 		.site-link-socratic :global(img) {
 			width: min(100%, 270px);
+		}
+		.site-link-storytelling {
+			font-size: 1.45rem;
 		}
 	}
 </style>
