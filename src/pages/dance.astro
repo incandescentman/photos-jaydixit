@@ -1,0 +1,170 @@
+---
+import { Image, getImage } from 'astro:assets';
+import MainLayout from '../layouts/MainLayout.astro';
+import PhotoSwipeLightbox from '../components/PortfolioLightbox.astro';
+import { ogImageFromAsset, photoImageObject } from '../lib/seo';
+import frame6112 from '../gallery/photos/events/moca-gala-2023/dance_moca-gala_2023_6112.png';
+import frame6114 from '../gallery/photos/events/moca-gala-2023/dance_moca-gala_2023_6114.png';
+import frame6115 from '../gallery/photos/events/moca-gala-2023/dance_moca-gala_2023_6115.png';
+import frame6156 from '../gallery/photos/events/moca-gala-2023/dance_moca-gala_2023_6156.png';
+import frame6164 from '../gallery/photos/events/moca-gala-2023/dance_moca-gala_2023_6164.png';
+const caption =
+	'Dancers at the Museum of Chinese in America gala, New York City, November 8, 2023.';
+const selected = [
+	{
+		src: frame6112,
+		alt: 'Dancers in striped costumes with raised arms and bent knees, led by a dancer looking toward the audience',
+	},
+	{ src: frame6114, alt: 'Two dancers kicking forward in unison' },
+	{
+		src: frame6115,
+		alt: 'A dancer extending one hand forward and raising the other, echoed by a dancer behind her',
+	},
+	{ src: frame6156, alt: 'A dancer looking upward with both arms raised' },
+	{ src: frame6164, alt: 'A dancer reaching outward beneath blue stage projections' },
+];
+const photos = await Promise.all(
+	selected.map(async (photo) => ({
+		...photo,
+		thumb: await getImage({ src: photo.src, width: 160, format: 'webp' }),
+	})),
+);
+const ogImage = await ogImageFromAsset(selected[0].src, selected[0].alt);
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'ImageGallery',
+	name: 'Dance',
+	url: 'https://photos.jaydixit.com/dance/',
+	image: photos.map((photo) =>
+		photoImageObject({
+			src: photo.src.src,
+			caption,
+			width: photo.src.width,
+			height: photo.src.height,
+			pageUrl: '/dance/',
+		}),
+	),
+};
+---
+
+<MainLayout
+	title="Dance"
+	description="Dance photographs at the Museum of Chinese in America gala in New York City by Jay Dixit."
+	ogImages={[ogImage]}
+	structuredData={structuredData}
+	photoFooter
+>
+	<div class="dance-page">
+		<header class="dance-heading"><h1>Dance</h1></header>
+		<section>
+			<div class="dance-set-heading">
+				<h2>Museum of Chinese in America Gala</h2><p class="photo-credit">{caption}</p>
+			</div>
+			<div class="dance-grid">
+				{
+					photos.map((photo, index) => (
+						<figure class:list={{ 'dance-lead': index === 0 }}>
+							<a
+								href={photo.src.src}
+								data-dance-photo
+								data-pswp-width={photo.src.width}
+								data-pswp-height={photo.src.height}
+								data-pswp-caption="Dance at the MOCA gala, 2023 — Photograph by Jay Dixit"
+								data-exhibition-thumb={photo.thumb.src}
+								data-exhibition-gallery="/gallery/events/moca-gala-2023/"
+								data-exhibition-gallery-label="Museum of Chinese in America Gala"
+								aria-label={`Open larger photograph: ${photo.alt}`}
+							>
+								<Image
+									src={photo.src}
+									alt={photo.alt}
+									width={Math.min(photo.src.width, 3000)}
+									widths={[480, 800, 1200, 1800, 2400, 3000].filter((w) => w <= photo.src.width)}
+									sizes={index === 0 ? '100vw' : '(max-width: 760px) 100vw, 50vw'}
+									format="webp"
+									loading={index === 0 ? 'eager' : 'lazy'}
+									fetchpriority={index === 0 ? 'high' : undefined}
+								/>
+							</a>
+						</figure>
+					))
+				}
+			</div>
+		</section>
+	</div>
+	<PhotoSwipeLightbox
+		gallerySelector=".dance-page"
+		childrenSelector="a[data-dance-photo]"
+		options={{ escKey: true, tapAction: 'toggle-controls' }}
+	/>
+</MainLayout>
+<style>
+	.dance-page {
+		--ink: #1a1714;
+		--serif: 'Newsreader', Georgia, serif;
+		width: calc(100% - clamp(2rem, 5vw, 8rem));
+		margin: 0 auto;
+		padding: calc(var(--portfolio-header-clearance) + 1.5rem) 0 clamp(4rem, 8vw, 8rem);
+		color: var(--ink);
+	}
+	.dance-heading {
+		padding-bottom: 1.75rem;
+		border-bottom: 1px solid var(--ink);
+		margin-bottom: 2rem;
+	}
+	h1 {
+		margin: 0;
+		font-family: var(--serif);
+		font-size: clamp(3.75rem, 6.5vw, 6.5rem);
+		font-weight: 400;
+		letter-spacing: -0.06em;
+		line-height: 0.95;
+	}
+	.dance-set-heading {
+		margin-bottom: 1.5rem;
+	}
+	h2 {
+		margin: 0 0 0.6rem;
+		font-family: var(--serif);
+		font-size: clamp(2rem, 3vw, 3.5rem);
+		font-weight: 400;
+		line-height: 1.15;
+		letter-spacing: -0.025em;
+	}
+	.photo-credit {
+		margin: 0;
+		max-width: 65ch;
+		font-size: 1rem;
+		line-height: 1.55;
+	}
+	.dance-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: clamp(1rem, 2vw, 2.5rem);
+		align-items: start;
+	}
+	figure {
+		margin: 0;
+	}
+	.dance-lead {
+		grid-column: 1 / -1;
+	}
+	figure a {
+		display: block;
+		cursor: zoom-in;
+	}
+	figure a:focus-visible {
+		outline: 3px solid var(--portfolio-red);
+		outline-offset: 6px;
+	}
+	figure img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+	@media (max-width: 760px) {
+		.dance-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

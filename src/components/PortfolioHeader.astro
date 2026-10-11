@@ -12,6 +12,8 @@ const { mode = 'inner' } = Astro.props;
 const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
 const menuId = `portfolio-menu-${mode}`;
 export const navLinks: NavLink[] = [
+	{ href: '/concerts', label: 'Concerts' },
+	{ href: '/dance', label: 'Dance' },
 	{ href: '/before-and-after', label: 'Before & After' },
 	{ href: '/about', label: 'About Me' },
 	{ href: '/blog/wikiportraits-story', label: 'Why WikiPortraits' },

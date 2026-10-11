@@ -1,0 +1,338 @@
+---
+import { Image, getImage } from 'astro:assets';
+import MainLayout from '../layouts/MainLayout.astro';
+import PhotoSwipeLightbox from '../components/PortfolioLightbox.astro';
+import { ogImageFromAsset, photoImageObject } from '../lib/seo';
+import duet from '../gallery/photos/events/sxsw-2026/jack-johnson_sxsw_2026_02.jpg';
+import smile from '../gallery/photos/events/sxsw-2026/jack-johnson_sxsw_2026_04546.jpg';
+import crowd from '../gallery/photos/events/sxsw-2026/jack-johnson_sxsw_2026_03.jpg';
+import alanis from '../gallery/photos/events/sxsw-2026/alanis-morissette-st-vincent_sxsw_2026.jpg';
+
+import nfg00441 from '../gallery/photos/events/nfg-collective-pianos-2026/nfg-collective_pianos_2026_00441.jpg';
+import nfg00205 from '../gallery/photos/events/nfg-collective-pianos-2026/nfg-collective_pianos_2026_00205.jpg';
+import nfg00254 from '../gallery/photos/events/nfg-collective-pianos-2026/nfg-collective_pianos_2026_00254.jpg';
+import nfg00259 from '../gallery/photos/events/nfg-collective-pianos-2026/nfg-collective_pianos_2026_00259.jpg';
+import nfg00719 from '../gallery/photos/events/nfg-collective-pianos-2026/nfg-collective_pianos_2026_00719.jpg';
+import nfg00959 from '../gallery/photos/events/nfg-collective-pianos-2026/nfg-collective_pianos_2026_00959.jpg';
+import olive24 from '../gallery/photos/events/olive-gymnopedie-2025/olive_gymnopedie_2025_24.jpg';
+import olive70 from '../gallery/photos/events/olive-gymnopedie-2025/olive_gymnopedie_2025_70.jpg';
+const oliveCaption = 'Olive at Gymnopedie, Brooklyn, July 7, 2025.';
+const nfgCaption = 'NFG Collective at Pianos, New York City, July 9, 2026.';
+
+const jackCaption =
+	'Jack Johnson performs at Stubb’s during South by Southwest in Austin, Texas, on March 13, 2026.';
+const alanisCaption =
+	'Alanis Morissette and St. Vincent at Stubb’s, South by Southwest, Austin, Texas, March 14, 2026.';
+const selected = [
+	{
+		src: duet,
+		alt: 'Jack Johnson singing and playing guitar beside an accordion player under blue stage lights',
+		caption: jackCaption,
+		commons: 'https://commons.wikimedia.org/wiki/File:Jack_Johnson_at_SXSW_2026_02.jpg',
+		subjects: [{ href: '/red-carpet/jack-johnson/', label: 'Jack Johnson' }],
+	},
+	{
+		src: smile,
+		alt: 'Jack Johnson smiling and gesturing toward a seated musician while holding his guitar',
+		caption: jackCaption,
+		commons:
+			'https://commons.wikimedia.org/wiki/File:Jack_Johnson_at_SXSW_2026_-_photographed_by_Jay_Dixit_-_04546.jpg',
+		subjects: [{ href: '/red-carpet/jack-johnson/', label: 'Jack Johnson' }],
+	},
+	{
+		src: crowd,
+		alt: 'A red-lit audience watching Jack Johnson and his band beneath the stage canopy at Stubb’s',
+		caption: jackCaption,
+		commons: 'https://commons.wikimedia.org/wiki/File:Jack_Johnson_at_SXSW_2026_03.jpg',
+		subjects: [{ href: '/red-carpet/jack-johnson/', label: 'Jack Johnson' }],
+	},
+	{
+		src: alanis,
+		alt: 'Alanis Morissette and St. Vincent singing toward one another with a musician between them',
+		caption: alanisCaption,
+		commons: undefined,
+		subjects: [
+			{ href: '/red-carpet/alanis-morissette/', label: 'Alanis Morissette' },
+			{ href: '/red-carpet/st-vincent/', label: 'St. Vincent' },
+		],
+	},
+	{
+		src: nfg00441,
+		alt: 'A vocalist leaning back into a handheld microphone, with the band behind him under blue and magenta lights',
+		caption: nfgCaption,
+		commons: undefined,
+		subjects: [],
+	},
+	{
+		src: nfg00205,
+		alt: 'A vocalist in sunglasses holding a microphone under blue stage lights',
+		caption: nfgCaption,
+		commons: undefined,
+		subjects: [],
+	},
+	{
+		src: nfg00254,
+		alt: 'A smiling vocalist raising one arm toward the crowd',
+		caption: nfgCaption,
+		commons: undefined,
+		subjects: [],
+	},
+	{
+		src: nfg00259,
+		alt: 'A vocalist singing with one arm raised beside a guitarist',
+		caption: nfgCaption,
+		commons: undefined,
+		subjects: [],
+	},
+	{
+		src: nfg00719,
+		alt: 'A vocalist turning toward the band as a guitarist plays',
+		caption: nfgCaption,
+		commons: undefined,
+		subjects: [],
+	},
+	{
+		src: nfg00959,
+		alt: 'A vocalist leaning toward an audience member and reaching out his hand',
+		caption: nfgCaption,
+		commons: undefined,
+		subjects: [],
+	},
+	{
+		src: olive24,
+		alt: 'Olive silhouetted in blue light, singing with one arm raised',
+		caption: oliveCaption,
+		commons: undefined,
+		subjects: [],
+	},
+	{
+		src: olive70,
+		alt: 'Olive singing in a mirrored outfit and purple bob, framed by projected shadows',
+		caption: oliveCaption,
+		commons: undefined,
+		subjects: [],
+	},
+];
+const photos = await Promise.all(
+	selected.map(async (photo) => ({
+		...photo,
+		thumb: await getImage({ src: photo.src, width: 160, format: 'webp' }),
+	})),
+);
+const ogImage = await ogImageFromAsset(duet, selected[0].alt);
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'ImageGallery',
+	name: 'Concerts',
+	url: 'https://photos.jaydixit.com/concerts/',
+	image: photos.map((photo) =>
+		photoImageObject({
+			src: photo.src.src,
+			caption: photo.caption,
+			width: photo.src.width,
+			height: photo.src.height,
+			pageUrl: '/concerts/',
+			...(photo.commons
+				? {
+						publication: {
+							licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
+							commonsUrl: photo.commons,
+						},
+					}
+				: {}),
+		}),
+	),
+};
+---
+
+<MainLayout
+	title="Concerts"
+	description="Concert photographs of Jack Johnson, Alanis Morissette, St. Vincent, NFG Collective, and Olive by Jay Dixit."
+	ogImages={[ogImage]}
+	structuredData={structuredData}
+	photoFooter
+>
+	<div class="concerts-page">
+		<header class="concerts-heading">
+			<h1>Concerts</h1>
+			<a href="/gallery/events/sxsw-2026/">SXSW 2026 <span aria-hidden="true">↗</span></a>
+		</header>
+		{
+			[
+				{ title: 'Jack Johnson', caption: jackCaption, photos: photos.slice(0, 3) },
+				{
+					title: 'Alanis Morissette & St. Vincent',
+					caption: alanisCaption,
+					photos: photos.slice(3, 4),
+				},
+				{ title: 'NFG Collective', caption: nfgCaption, photos: photos.slice(4, 10) },
+				{ title: 'Olive', caption: oliveCaption, photos: photos.slice(10) },
+			].map((group, groupIndex) => (
+				<section class:list={['concert-set', { 'concert-set--duet': groupIndex === 1 }]}>
+					<div class="concert-set-heading">
+						<h2>{group.title}</h2>
+						<p class="photo-credit">{group.caption}</p>
+					</div>
+					<div class="concert-grid">
+						{group.photos.map((photo, index) => (
+							<figure
+								class:list={{
+									'concert-lead':
+										index === 0 ||
+										photo.src === crowd ||
+										photo.src === nfg00959 ||
+										groupIndex === 3,
+								}}
+							>
+								<a
+									href={photo.src.src}
+									data-concert-photo
+									data-pswp-width={photo.src.width}
+									data-pswp-height={photo.src.height}
+									data-pswp-caption={`${group.title} at ${groupIndex === 3 ? 'Gymnopedie, Brooklyn' : groupIndex === 2 ? 'Pianos, NYC' : 'Stubb’s, SXSW 2026'} — Photograph by Jay Dixit`}
+									data-exhibition-thumb={photo.thumb.src}
+									data-exhibition-gallery={
+										groupIndex === 3
+											? '/gallery/events/olive-gymnopedie-2025/'
+											: groupIndex === 2
+												? '/gallery/events/nfg-collective-pianos-2026/'
+												: '/gallery/events/sxsw-2026/'
+									}
+									data-exhibition-gallery-label={
+										groupIndex === 3
+											? 'Olive at Gymnopedie'
+											: groupIndex === 2
+												? 'NFG Collective at Pianos'
+												: 'SXSW 2026'
+									}
+									data-exhibition-commons={photo.commons}
+									data-exhibition-subjects={JSON.stringify(photo.subjects)}
+									aria-label={`Open larger photograph: ${photo.alt}`}
+								>
+									<Image
+										src={photo.src}
+										alt={photo.alt}
+										width={Math.min(photo.src.width, 3000)}
+										widths={[480, 800, 1200, 1800, 2400, 3000].filter((w) => w <= photo.src.width)}
+										sizes={
+											groupIndex === 1
+												? '(max-width: 760px) 100vw, 68vw'
+												: index === 0 ||
+													  photo.src === crowd ||
+													  photo.src === nfg00959 ||
+													  groupIndex === 3
+													? '100vw'
+													: '(max-width: 760px) 100vw, 50vw'
+										}
+										format="webp"
+										loading={groupIndex === 0 && index === 0 ? 'eager' : 'lazy'}
+										fetchpriority={groupIndex === 0 && index === 0 ? 'high' : undefined}
+									/>
+								</a>
+							</figure>
+						))}
+					</div>
+				</section>
+			))
+		}
+	</div>
+	<PhotoSwipeLightbox
+		gallerySelector=".concerts-page"
+		childrenSelector="a[data-concert-photo]"
+		options={{ escKey: true, tapAction: 'toggle-controls' }}
+	/>
+</MainLayout>
+
+<style>
+	.concerts-page {
+		--ink: #1a1714;
+		--serif: 'Newsreader', Georgia, serif;
+		width: calc(100% - clamp(2rem, 5vw, 8rem));
+		margin: 0 auto;
+		padding: calc(var(--portfolio-header-clearance) + 1.5rem) 0 clamp(4rem, 8vw, 8rem);
+		color: var(--ink);
+	}
+	.concerts-heading {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1.5rem;
+		padding-bottom: 1.75rem;
+		border-bottom: 1px solid var(--ink);
+		margin-bottom: 2rem;
+	}
+	h1 {
+		margin: 0;
+		font-family: var(--serif);
+		font-size: clamp(3.75rem, 6.5vw, 6.5rem);
+		font-weight: 400;
+		letter-spacing: -0.06em;
+		line-height: 0.95;
+	}
+	.concerts-heading > a {
+		color: var(--portfolio-red);
+		font-size: 1rem;
+		white-space: nowrap;
+	}
+	.concert-set + .concert-set {
+		margin-top: clamp(3.5rem, 7vw, 7rem);
+	}
+	.concert-set-heading {
+		margin-bottom: 1.5rem;
+	}
+	h2 {
+		margin: 0 0 0.6rem;
+		font-family: var(--serif);
+		font-size: clamp(2rem, 3vw, 3.5rem);
+		font-weight: 400;
+		line-height: 1.15;
+		letter-spacing: -0.025em;
+	}
+	.photo-credit {
+		margin: 0;
+		max-width: 65ch;
+		font-size: 1rem;
+		line-height: 1.55;
+	}
+	.concert-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: clamp(1rem, 2vw, 2.5rem);
+		align-items: start;
+	}
+	figure {
+		margin: 0;
+	}
+	.concert-lead {
+		grid-column: 1 / -1;
+	}
+	figure a {
+		display: block;
+		cursor: zoom-in;
+	}
+	figure a:focus-visible {
+		outline: 3px solid var(--portfolio-red);
+		outline-offset: 6px;
+	}
+	figure img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+	.concert-set--duet {
+		width: 68%;
+		margin-inline: auto;
+	}
+	@media (max-width: 760px) {
+		.concerts-heading {
+			flex-wrap: wrap;
+			gap: 0.75rem;
+		}
+		.concert-grid {
+			grid-template-columns: 1fr;
+		}
+		.concert-set--duet {
+			width: 100%;
+		}
+	}
+</style>

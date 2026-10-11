@@ -415,5 +415,17 @@
 		"seoDescription": "A portrait of Jason Collett by Jay Dixit at the Ottawa Jazz Festival in 2025.",
 		"match": ["jason-collett"],
 		"photoSlugs": ["Jason_Collett_at_Ottawa_Jazz_Festival_in_2025_-_3"]
+	},
+	{
+		"slug": "alanis-morissette",
+		"name": "Alanis Morissette",
+		"match": ["alanis-morissette"],
+		"photoSlugs": ["alanis-morissette-st-vincent_sxsw_2026"]
+	},
+	{
+		"slug": "st-vincent",
+		"name": "St. Vincent",
+		"match": ["st-vincent"],
+		"photoSlugs": ["alanis-morissette-st-vincent_sxsw_2026"]
 	}
 ]

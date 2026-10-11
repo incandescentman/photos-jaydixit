@@ -183,5 +183,25 @@
 		"sourcePaths": [
 			"src/gallery/photos/events/nobel-prizes-2024/demis-hassabis-2_nobel-lectures-stockholm_2024.jpg"
 		]
+	},
+	"fde31365ff880c883048240d945cf7d3cafd991c04348b2b323d60294cc9b60c": {
+		"commonsTitle": "File:Jack Johnson at SXSW 2026 02.jpg",
+		"commonsUrl": "https://commons.wikimedia.org/wiki/File:Jack_Johnson_at_SXSW_2026_02.jpg",
+		"downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/3/35/Jack_Johnson_at_SXSW_2026_02.jpg",
+		"license": "CC BY-SA 4.0",
+		"licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+		"sourceSha1": "f0d95fb26f137eef1ef41171be6be85043562861",
+		"verifiedAt": "2026-10-11T00:30:30.309Z",
+		"sourcePaths": ["src/gallery/photos/events/sxsw-2026/jack-johnson_sxsw_2026_02.jpg"]
+	},
+	"d5be69ddd9d39864dcee461355a276a676bf5a4422a0be98104b1028cbcf43d2": {
+		"commonsTitle": "File:Jack Johnson at SXSW 2026 - photographed by Jay Dixit - 04546.jpg",
+		"commonsUrl": "https://commons.wikimedia.org/wiki/File:Jack_Johnson_at_SXSW_2026_-_photographed_by_Jay_Dixit_-_04546.jpg",
+		"downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Jack_Johnson_at_SXSW_2026_-_photographed_by_Jay_Dixit_-_04546.jpg",
+		"license": "CC BY-SA 4.0",
+		"licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+		"sourceSha1": "93dab7591b2309785019ef7af6dad26ae76fea59",
+		"verifiedAt": "2026-10-11T00:37:23.637Z",
+		"sourcePaths": ["src/gallery/photos/events/sxsw-2026/jack-johnson_sxsw_2026_04546.jpg"]
 	}
 }
