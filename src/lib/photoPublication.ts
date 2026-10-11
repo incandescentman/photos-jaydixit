@@ -7,7 +7,7 @@ export type PhotoPublication = (typeof publications)[keyof typeof publications];
 const byHash: Record<string, PhotoPublication> = publications;
 const cached = new Map<string, Promise<PhotoPublication | undefined>>();
 
-/** A publication applies only to the exact source bytes verified against Commons. */
+/** Only the exact reviewed local source bytes inherit a verified publication record. */
 export function photoPublication(moduleKey: string, pageFile: string) {
 	const source = resolve(dirname(pageFile), moduleKey);
 	let result = cached.get(source);

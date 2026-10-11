@@ -1,0 +1,56 @@
+---
+import type { PhotoPublication } from '../lib/photoPublication';
+
+interface Props {
+	creatorName?: string;
+	publication?: PhotoPublication;
+}
+const { creatorName, publication } = Astro.props;
+---
+
+<div class="photo-credit mt-2" data-photo-reuse>
+	{
+		creatorName && (
+			<p>
+				Photo by{' '}
+				{creatorName === 'Jay Dixit' ? (
+					<a class="editorial-link" href="https://jaydixit.com/about">
+						{creatorName}
+					</a>
+				) : (
+					creatorName
+				)}
+			</p>
+		)
+	}
+	{
+		publication && (
+			<nav aria-label="Photo download and reuse" class="mt-2 flex flex-wrap gap-x-6 gap-y-3">
+				<a
+					class="editorial-link"
+					href={publication.downloadUrl}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					Download full-resolution photo
+				</a>
+				<a
+					class="editorial-link"
+					href={publication.licenseUrl}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					{publication.license}
+				</a>
+				<a
+					class="editorial-link"
+					href={publication.commonsUrl}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					Wikimedia Commons
+				</a>
+			</nav>
+		)
+	}
+</div>

@@ -155,5 +155,33 @@
 		"sourceSha1": "127706ec35c2ef49ac2287a3eb32aceaf8832f94",
 		"verifiedAt": "2026-10-03",
 		"sourcePaths": ["src/gallery/photos/red-carpet/tiff/anna-kendrick_tiff_2026_04298.jpg"]
+	},
+	"286e6fe20f5ef9251fb48adb7b3033136f09661066e0a7e956047760fd1cfa2f": {
+		"commonsTitle": "File:Demis Hassabis at the 2024 Nobel Lectures in Stockholm - photographed by Jay Dixit - 01232.jpg",
+		"commonsUrl": "https://commons.wikimedia.org/wiki/File:Demis_Hassabis_at_the_2024_Nobel_Lectures_in_Stockholm_-_photographed_by_Jay_Dixit_-_01232.jpg",
+		"downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d5/Demis_Hassabis_at_the_2024_Nobel_Lectures_in_Stockholm_-_photographed_by_Jay_Dixit_-_01232.jpg",
+		"license": "CC BY-SA 4.0",
+		"licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+		"sourceSha1": "f6f40ba0ddc47f3cc4d1eea7560bd9ab0899b5a1",
+		"commonsSha1": "acfbc5bc6c6fbfd69465fa837edf06c0a08899b0",
+		"verification": "identical decoded pixels; metadata differs",
+		"verifiedAt": "2026-10-10",
+		"sourcePaths": [
+			"src/gallery/photos/events/nobel-prizes-2024/demis-hassabis_nobel-lectures-stockholm_2024.jpg"
+		]
+	},
+	"d69f9fb9c2a1a75d5f42af0eed449231326aea107ac42fde6cee440bac80827b": {
+		"commonsTitle": "File:Demis Hassabis at the 2024 Nobel Lectures 3.jpg",
+		"commonsUrl": "https://commons.wikimedia.org/wiki/File:Demis_Hassabis_at_the_2024_Nobel_Lectures_3.jpg",
+		"downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Demis_Hassabis_at_the_2024_Nobel_Lectures_3.jpg",
+		"license": "CC BY-SA 4.0",
+		"licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+		"sourceSha1": "821d66787efad57159404f95d4b38c85f37419ab",
+		"commonsSha1": "092a9c869d59e6e692ba512fc758c4857ca3339d",
+		"verification": "reduced export of frame 01457; matching OriginalDocumentID A56B39A10166DCCB1508B6D638537B90 and visually verified composition",
+		"verifiedAt": "2026-10-10",
+		"sourcePaths": [
+			"src/gallery/photos/events/nobel-prizes-2024/demis-hassabis-2_nobel-lectures-stockholm_2024.jpg"
+		]
 	}
 }

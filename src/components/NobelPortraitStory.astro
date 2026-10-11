@@ -1,0 +1,57 @@
+---
+import { smartQuotes } from '@jaydixit/astro-utils';
+import { nobelPortraitStories } from '../data/nobel-story';
+
+interface Props {
+	personSlug: string;
+	wikipedia?: string;
+}
+const { personSlug, wikipedia } = Astro.props;
+const story = nobelPortraitStories[personSlug];
+---
+
+<div class="nobel-portrait-story" data-person-story>
+	<p class="story-source">
+		From <a class="editorial-link" href="/nobel-2024/">The year AI won the Nobel Prize.</a>
+	</p>
+	{story.paragraphs.map((paragraph) => <p class="story-excerpt">{smartQuotes(paragraph)}</p>)}
+	<nav aria-label="Nobel story and subject" class="story-links">
+		<a class="editorial-link" href={`/nobel-2024/#${story.section}`}>Read the full story &rarr;</a>
+		{
+			wikipedia && (
+				<a class="editorial-link" href={wikipedia}>
+					Wikipedia &rarr;
+				</a>
+			)
+		}
+	</nav>
+</div>
+
+<style>
+	.nobel-portrait-story {
+		font-family: var(--arno-text);
+		font-size: clamp(28px, 1.85vw, 32px);
+		line-height: 1.45;
+		color: var(--ink, #292725);
+	}
+	.story-source {
+		margin: 0 0 1.25em;
+		font-size: 26px;
+		font-style: normal;
+	}
+	.story-excerpt {
+		margin: 0 0 1em;
+	}
+	.story-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem 2rem;
+		font-family: var(--sans);
+		font-size: 18px;
+	}
+	@media (max-width: 999px) {
+		.nobel-portrait-story {
+			font-size: 26px;
+		}
+	}
+</style>

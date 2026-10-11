@@ -6,6 +6,9 @@ import PortfolioLightbox from '../../components/PortfolioLightbox.astro';
 import AnneCarsonStory from '../../components/AnneCarsonStory.astro';
 import AnneCarsonReuse from '../../components/AnneCarsonReuse.astro';
 import FrancesHaugenStory from '../../components/FrancesHaugenStory.astro';
+import NobelPortraitStory from '../../components/NobelPortraitStory.astro';
+import PhotoReuseLinks from '../../components/PhotoReuseLinks.astro';
+import { nobelPortraitStories } from '../../data/nobel-story';
 import siteConfig from '../../../site.config.mts';
 import rawPeople from '../../data/people.json';
 import publishedPortraits from '../../data/published-portraits.json';
@@ -293,7 +296,9 @@ if (photos.length === 0) {
 const siteUrl = Astro.site?.origin ?? siteConfig.siteUrl ?? 'https://photos.jaydixit.com';
 const canonicalUrl = new URL(`/red-carpet/${personData.slug}`, siteUrl).toString();
 const hasStory = personData.slug === 'anne-carson';
-const hasPortraitEssay = personData.slug === 'frances-haugen';
+const hasFrancesStory = personData.slug === 'frances-haugen';
+const hasNobelStory = Boolean(nobelPortraitStories[personData.slug]);
+const hasPortraitEssay = hasFrancesStory || hasNobelStory;
 const pageTitle = personData.seoTitle ?? `${personData.name} Photos`;
 const pageDescription =
 	personData.seoDescription ?? `Photographs of ${personData.name} by ${siteConfig.owner}.`;
@@ -301,7 +306,8 @@ const pageDescription =
 // a resized copy before it is written.
 const firstPhoto = photos[0];
 const sharedCaption =
-	photos.length > 1 && photos.every((photo) => photo.caption === firstPhoto.caption)
+	(photos.length > 1 || hasNobelStory) &&
+	photos.every((photo) => photo.caption === firstPhoto.caption)
 		? firstPhoto.caption
 		: undefined;
 const sharedGalleryName =
@@ -359,6 +365,7 @@ const personStructuredData = {
 	creator: photographer,
 	image: imageObjects,
 	primaryImageOfPage: imageObjects[0],
+	...(hasNobelStory ? { relatedLink: new URL('/nobel-2024/', siteUrl).toString() } : {}),
 };
 
 const breadcrumbStructuredData = {
@@ -396,6 +403,7 @@ export function getStaticPaths() {
 					'person-feature': hasStory,
 					'person-portrait-feature': hasFeaturedPhoto,
 					'person-portrait-essay': hasPortraitEssay,
+					'person-nobel-feature': hasNobelStory,
 				},
 			]}
 		>
@@ -422,13 +430,16 @@ export function getStaticPaths() {
 				<header class="mb-10 text-center">
 					<h1 class="text-4xl md:text-5xl font-bold mb-3">{personData.name}</h1>
 					{
-						hasPortraitEssay && (
+						hasFrancesStory && (
 							<p class="person-story-deck">
-								<em>
-									Facebook whistleblower | International Journalism Festival, Perugia, Italy | April
-									19, 2024
-								</em>
+								Facebook whistleblower · International Journalism Festival, Perugia, Italy · April
+								19, 2024
 							</p>
+						)
+					}
+					{
+						hasNobelStory && (
+							<p class="person-story-deck">Nobel Lectures · Stockholm, Sweden · December 2024</p>
 						)
 					}
 					{
@@ -508,8 +519,11 @@ export function getStaticPaths() {
 
 			{
 				hasPortraitEssay && (
-					<article class="person-essay" aria-label="Photographing Frances Haugen">
-						<FrancesHaugenStory />
+					<article class="person-essay" aria-label={`Photographing ${personData.name}`}>
+						{hasFrancesStory && <FrancesHaugenStory />}
+						{hasNobelStory && (
+							<NobelPortraitStory personSlug={personData.slug} wikipedia={personData.wikipedia} />
+						)}
 					</article>
 				)
 			}
@@ -572,15 +586,19 @@ export function getStaticPaths() {
 												width={1600}
 												widths={[480, 720, 960, 1280, 1600, 2400]}
 												sizes={
-													hasFeaturedPhoto
+													hasNobelStory
 														? index === 0
-															? hasPortraitEssay
-																? '(min-width: 1680px) 788px, (min-width: 1000px) 47vw, calc(100vw - 48px)'
-																: '(min-width: 1560px) 853px, (min-width: 1000px) 55vw, calc(100vw - 48px)'
-															: hasPortraitEssay
-																? '(min-width: 1680px) 382px, (min-width: 1000px) 23vw, (min-width: 601px) 46vw, calc(100vw - 48px)'
-																: '(min-width: 1560px) 352px, (min-width: 1000px) 23vw, (min-width: 601px) 46vw, calc(100vw - 48px)'
-														: '(min-width: 1680px) 780px, (min-width: 1000px) 47vw, calc(100vw - 48px)'
+															? '(min-width: 1680px) 788px, (min-width: 1000px) 47vw, calc(100vw - 48px)'
+															: '(min-width: 1280px) 1200px, (min-width: 1000px) calc(100vw - 80px), calc(100vw - 48px)'
+														: hasFeaturedPhoto
+															? index === 0
+																? hasPortraitEssay
+																	? '(min-width: 1680px) 788px, (min-width: 1000px) 47vw, calc(100vw - 48px)'
+																	: '(min-width: 1560px) 853px, (min-width: 1000px) 55vw, calc(100vw - 48px)'
+																: hasPortraitEssay
+																	? '(min-width: 1680px) 382px, (min-width: 1000px) 23vw, (min-width: 601px) 46vw, calc(100vw - 48px)'
+																	: '(min-width: 1560px) 352px, (min-width: 1000px) 23vw, (min-width: 601px) 46vw, calc(100vw - 48px)'
+															: '(min-width: 1680px) 780px, (min-width: 1000px) 47vw, calc(100vw - 48px)'
 												}
 												loading={index === 0 ? 'eager' : 'lazy'}
 												fetchpriority={index === 0 ? 'high' : 'auto'}
@@ -616,7 +634,7 @@ export function getStaticPaths() {
 											{sharedCaption}
 										</p>
 									)}
-									{hasPortraitEssay && index === 0 && (
+									{hasFrancesStory && index === 0 && (
 										<p class="photo-credit mt-1">
 											Photo by{' '}
 											<a class="editorial-link" href="https://jaydixit.com/about">
@@ -629,7 +647,15 @@ export function getStaticPaths() {
 											{photo.caption}
 										</p>
 									)}
-									{!sharedGalleryName && <p class="photo-credit mt-0.5">{photo.galleryName}</p>}
+									{!sharedGalleryName && !hasNobelStory && (
+										<p class="photo-credit mt-0.5">{photo.galleryName}</p>
+									)}
+									{hasNobelStory && (
+										<PhotoReuseLinks
+											creatorName={photo.creatorName}
+											publication={photo.publication}
+										/>
+									)}
 									{hasStory && <AnneCarsonReuse />}
 									{photo.detailHref && (
 										<a href={photo.detailHref} class="editorial-link mt-2 inline-block text-sm">
@@ -789,6 +815,21 @@ export function getStaticPaths() {
 		line-height: 1.4;
 		color: #625f58;
 	}
+	.person-nobel-feature .person-portrait-photo:not(.person-portrait-lead) {
+		grid-column: 1 / -1;
+		width: 100%;
+		max-width: 1200px;
+		justify-self: center;
+	}
+	.person-nobel-feature .person-portrait-photo:not(.person-portrait-lead) .person-feature-image {
+		aspect-ratio: auto;
+	}
+	.person-nobel-feature
+		.person-portrait-photo:not(.person-portrait-lead)
+		.person-feature-image
+		img {
+		height: auto;
+	}
 	@media (max-width: 999px) {
 		.person-feature {
 			padding-inline: 1.5rem;
@@ -837,6 +878,9 @@ export function getStaticPaths() {
 			grid-row: 2;
 		}
 		.person-portrait-essay .person-portrait-lead {
+			grid-column: 1 / -1;
+		}
+		.person-nobel-feature .person-portrait-photo:not(.person-portrait-lead) {
 			grid-column: 1 / -1;
 		}
 		.person-essay {

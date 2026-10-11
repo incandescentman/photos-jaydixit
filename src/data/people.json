@@ -344,7 +344,9 @@
 		"name": "Demis Hassabis",
 		"seoTitle": "Demis Hassabis Photos",
 		"seoDescription": "Photographs of Demis Hassabis by Jay Dixit at the 2024 Nobel Lectures in Stockholm.",
-		"match": ["demis-hassabis"]
+		"match": ["demis-hassabis"],
+		"featuredPhotoSlug": "demis-hassabis_nobel-lectures-stockholm_2024",
+		"wikipedia": "https://en.wikipedia.org/wiki/Demis_Hassabis"
 	},
 	{
 		"slug": "david-baker",
@@ -358,7 +360,9 @@
 		"name": "Geoffrey Hinton",
 		"seoTitle": "Geoffrey Hinton Photos",
 		"seoDescription": "A portrait of Geoffrey Hinton by Jay Dixit at the 2024 Nobel Lectures in Stockholm.",
-		"match": ["geoffrey-hinton"]
+		"match": ["geoffrey-hinton"],
+		"featuredPhotoSlug": "geoffrey-hinton_nobel-lectures-stockholm_2024",
+		"wikipedia": "https://en.wikipedia.org/wiki/Geoffrey_Hinton"
 	},
 	{
 		"slug": "john-jumper",

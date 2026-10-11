@@ -1,162 +1,94 @@
 {
-	"anti-nuclear-campaigners_nobel-peace-prize-torchlight-procession-oslo_2024.jpg": [
-		"Nobel Peace Prize",
-		"Torchlight Procession",
-		"Oslo",
-		"anti-nuclear campaigners",
-		"2024"
-	],
-	"daron-acemoglu_nobel-lectures-stockholm_2024.jpg": [
-		"Daron Acemoglu",
-		"Nobel Lectures",
-		"Stockholm",
-		"Economic sciences",
-		"2024"
-	],
-	"david-baker_nobel-lectures-stockholm_2024.jpg": [
-		"David Baker",
-		"Nobel Lectures",
-		"Stockholm",
-		"Chemistry",
-		"2024"
-	],
-	"demis-hassabis_nobel-lectures-stockholm_2024.jpg": [
-		"Demis Hassabis",
-		"Nobel Lectures",
-		"Stockholm",
-		"Chemistry",
-		"2024"
-	],
-	"demis-hassabis-2_nobel-lectures-stockholm_2024.jpg": [
-		"Demis Hassabis",
-		"Nobel Lectures",
-		"Stockholm",
-		"Chemistry",
-		"2024"
-	],
-	"geoffrey-hinton_nobel-lectures-stockholm_2024.jpg": [
-		"Geoffrey Hinton",
-		"Nobel Lectures",
-		"Stockholm",
-		"Physics",
-		"2024"
-	],
-	"james-robinson_nobel-lectures-stockholm_2024.jpg": [
-		"James A. Robinson",
-		"Nobel Lectures",
-		"Stockholm",
-		"Economic sciences",
-		"2024"
-	],
-	"john-hopfield_nobel-lectures-stockholm_2024.jpg": [
-		"John Hopfield",
-		"Nobel Lectures",
-		"Stockholm",
-		"Physics",
-		"2024"
-	],
-	"john-jumper_nobel-lectures-stockholm_2024.jpg": [
-		"John Jumper",
-		"Nobel Lectures",
-		"Stockholm",
-		"Chemistry",
-		"2024"
-	],
-	"nobel-peace-prize-ceremony-award-presentation-oslo_2024.jpg": [
-		"Nobel Peace Prize",
-		"Nobel Peace Prize ceremony",
-		"Nihon Hidankyo",
-		"Jørgen Watne Frydnes",
-		"Terumi Tanaka",
-		"Shigemitsu Tanaka",
-		"Toshiyuki Mimaki",
-		"Oslo",
-		"2024"
-	],
-	"nobel-peace-prize-ceremony-high-angle_oslo-city-hall_2024.jpg": [
-		"Nobel Peace Prize",
-		"Award Ceremony",
-		"Oslo City Hall",
-		"2024"
-	],
-	"nobel-peace-prize-ceremony-oslo-01_2024.jpg": [
-		"Nobel Peace Prize",
-		"Award Ceremony",
-		"Oslo City Hall",
-		"2024"
-	],
-	"nobel-peace-prize-ceremony-oslo-02_2024.jpg": [
-		"Nobel Peace Prize",
-		"Award Ceremony",
-		"Oslo City Hall",
-		"2024"
-	],
-	"nobel-peace-prize-ceremony-oslo-03_2024.jpg": [
-		"Nobel Peace Prize",
-		"Award Ceremony",
-		"Oslo City Hall",
-		"2024"
-	],
-	"nobel-peace-prize-ceremony-oslo-04_2024.jpg": [
-		"Nobel Peace Prize",
-		"Award Ceremony",
-		"Oslo City Hall",
-		"2024"
-	],
-	"nobel-peace-prize-ceremony-program_oslo-city-hall_2024.jpg": [
-		"Nobel Peace Prize",
-		"Award Ceremony",
-		"Oslo City Hall",
-		"2024"
-	],
-	"nobel-peace-prize-torchlight-procession-oslo-04_2024.jpg": [
-		"Nobel Peace Prize",
-		"Torchlight Procession",
-		"Oslo",
-		"2024"
-	],
-	"nobel-peace-prize-torchlight-procession-oslo-06_2024.jpg": [
-		"Nobel Peace Prize",
-		"Torchlight Procession",
-		"Oslo",
-		"2024"
-	],
-	"nobel-peace-prize-torchlight-procession-oslo-15_2024.jpg": [
-		"Nobel Peace Prize",
-		"Torchlight Procession",
-		"Oslo",
-		"2024"
-	],
-	"nobel-peace-prize-torchlight-procession-oslo-21_2024.jpg": [
-		"Nobel Peace Prize",
-		"Torchlight Procession",
-		"Oslo",
-		"2024"
-	],
-	"nobel-peace-prize-torchlight-procession-oslo-crowd_2024.jpg": [
-		"Nobel Peace Prize",
-		"Torchlight Procession",
-		"Oslo",
-		"2024"
-	],
-	"photographer-in-stockholm_nobel-lectures_2024.jpg": [
-		"Nobel Lectures",
-		"Stockholm",
-		"John Sears",
-		"2024"
-	],
-	"press-credentials_nobel-peace-prize-oslo_2024.jpg": [
-		"Nobel Peace Prize",
-		"press credentials",
-		"WikiPortraits",
-		"Oslo",
-		"2024"
-	],
-	"simon-johnson_nobel-lectures-stockholm_2024.jpg": [
-		"Simon Johnson",
-		"Nobel Lectures",
-		"Stockholm",
-		"Economic sciences",
-		"2024"
-	]
+	"overrides": {
+		"anti-nuclear-campaigners_nobel-peace-prize-torchlight-procession-oslo_2024.jpg": {
+			"tags": [
+				"Nobel Peace Prize",
+				"Torchlight Procession",
+				"Oslo",
+				"anti-nuclear campaigners",
+				"2024"
+			]
+		},
+		"daron-acemoglu_nobel-lectures-stockholm_2024.jpg": {
+			"tags": ["Daron Acemoglu", "Nobel Lectures", "Stockholm", "Economic sciences", "2024"]
+		},
+		"david-baker_nobel-lectures-stockholm_2024.jpg": {
+			"tags": ["David Baker", "Nobel Lectures", "Stockholm", "Chemistry", "2024"]
+		},
+		"demis-hassabis_nobel-lectures-stockholm_2024.jpg": {
+			"tags": ["Demis Hassabis", "Nobel Lectures", "Stockholm", "Chemistry", "2024"]
+		},
+		"demis-hassabis-2_nobel-lectures-stockholm_2024.jpg": {
+			"tags": ["Demis Hassabis", "Nobel Lectures", "Stockholm", "Chemistry", "2024"],
+			"caption": "Demis Hassabis at the 2024 Nobel Lectures in Stockholm"
+		},
+		"geoffrey-hinton_nobel-lectures-stockholm_2024.jpg": {
+			"tags": ["Geoffrey Hinton", "Nobel Lectures", "Stockholm", "Physics", "2024"],
+			"caption": "Geoffrey Hinton at the 2024 Nobel Lectures in Stockholm"
+		},
+		"james-robinson_nobel-lectures-stockholm_2024.jpg": {
+			"tags": ["James A. Robinson", "Nobel Lectures", "Stockholm", "Economic sciences", "2024"]
+		},
+		"john-hopfield_nobel-lectures-stockholm_2024.jpg": {
+			"tags": ["John Hopfield", "Nobel Lectures", "Stockholm", "Physics", "2024"]
+		},
+		"john-jumper_nobel-lectures-stockholm_2024.jpg": {
+			"tags": ["John Jumper", "Nobel Lectures", "Stockholm", "Chemistry", "2024"]
+		},
+		"nobel-peace-prize-ceremony-award-presentation-oslo_2024.jpg": {
+			"tags": [
+				"Nobel Peace Prize",
+				"Nobel Peace Prize ceremony",
+				"Nihon Hidankyo",
+				"Jørgen Watne Frydnes",
+				"Terumi Tanaka",
+				"Shigemitsu Tanaka",
+				"Toshiyuki Mimaki",
+				"Oslo",
+				"2024"
+			]
+		},
+		"nobel-peace-prize-ceremony-high-angle_oslo-city-hall_2024.jpg": {
+			"tags": ["Nobel Peace Prize", "Award Ceremony", "Oslo City Hall", "2024"]
+		},
+		"nobel-peace-prize-ceremony-oslo-01_2024.jpg": {
+			"tags": ["Nobel Peace Prize", "Award Ceremony", "Oslo City Hall", "2024"]
+		},
+		"nobel-peace-prize-ceremony-oslo-02_2024.jpg": {
+			"tags": ["Nobel Peace Prize", "Award Ceremony", "Oslo City Hall", "2024"]
+		},
+		"nobel-peace-prize-ceremony-oslo-03_2024.jpg": {
+			"tags": ["Nobel Peace Prize", "Award Ceremony", "Oslo City Hall", "2024"]
+		},
+		"nobel-peace-prize-ceremony-oslo-04_2024.jpg": {
+			"tags": ["Nobel Peace Prize", "Award Ceremony", "Oslo City Hall", "2024"]
+		},
+		"nobel-peace-prize-ceremony-program_oslo-city-hall_2024.jpg": {
+			"tags": ["Nobel Peace Prize", "Award Ceremony", "Oslo City Hall", "2024"]
+		},
+		"nobel-peace-prize-torchlight-procession-oslo-04_2024.jpg": {
+			"tags": ["Nobel Peace Prize", "Torchlight Procession", "Oslo", "2024"]
+		},
+		"nobel-peace-prize-torchlight-procession-oslo-06_2024.jpg": {
+			"tags": ["Nobel Peace Prize", "Torchlight Procession", "Oslo", "2024"]
+		},
+		"nobel-peace-prize-torchlight-procession-oslo-15_2024.jpg": {
+			"tags": ["Nobel Peace Prize", "Torchlight Procession", "Oslo", "2024"]
+		},
+		"nobel-peace-prize-torchlight-procession-oslo-21_2024.jpg": {
+			"tags": ["Nobel Peace Prize", "Torchlight Procession", "Oslo", "2024"]
+		},
+		"nobel-peace-prize-torchlight-procession-oslo-crowd_2024.jpg": {
+			"tags": ["Nobel Peace Prize", "Torchlight Procession", "Oslo", "2024"]
+		},
+		"photographer-in-stockholm_nobel-lectures_2024.jpg": {
+			"tags": ["Nobel Lectures", "Stockholm", "John Sears", "2024"]
+		},
+		"press-credentials_nobel-peace-prize-oslo_2024.jpg": {
+			"tags": ["Nobel Peace Prize", "press credentials", "WikiPortraits", "Oslo", "2024"]
+		},
+		"simon-johnson_nobel-lectures-stockholm_2024.jpg": {
+			"tags": ["Simon Johnson", "Nobel Lectures", "Stockholm", "Economic sciences", "2024"]
+		}
+	}
 }

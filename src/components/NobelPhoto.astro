@@ -53,12 +53,30 @@ const lightboxCaption = photo.caption.includes(`Photo by ${creatorName}`)
 	</a>
 	<figcaption>
 		<span>{photo.caption}</span>
-		{
-			photo.commons && (
-				<a href={photo.commons} target="_blank" rel="noopener noreferrer">
-					Wikimedia Commons ↗
-				</a>
-			)
-		}
+		<span class="nobel-photo-links">
+			{photo.subjects?.map((subject) => <a href={subject.href}>{subject.label} photos →</a>)}
+			{
+				photo.commons && (
+					<a href={photo.commons} target="_blank" rel="noopener noreferrer">
+						Wikimedia Commons ↗
+					</a>
+				)
+			}
+		</span>
 	</figcaption>
 </figure>
+
+<style>
+	.nobel-photo-links {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 0.35rem;
+		flex-shrink: 0;
+	}
+	@media (max-width: 900px) {
+		.nobel-photo-links {
+			align-items: flex-start;
+		}
+	}
+</style>
