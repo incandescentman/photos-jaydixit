@@ -390,8 +390,9 @@ body.reading-face-arno
 			text-decoration-color 0.2s ease;
 	}
 
-	.editorial-link:hover {
-		color: #6f552a;
+	.editorial-link:hover,
+	.editorial-link:focus-visible {
+		color: #4478dd; /* Deep cornflower — approved October 11, 2026 */
 		text-decoration-line: underline;
 	}
 
