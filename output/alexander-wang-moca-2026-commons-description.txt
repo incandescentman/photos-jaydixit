@@ -1,0 +1,17 @@
+== {{int:filedesc}} ==
+{{Information
+|Description={{en|1=Alexander Wang at the Museum of Chinese in America’s Legacy Awards Gala on October 29, 2026.}}
+|Source={{Own}}
+|Author=[[User:Jaydixit|Jay Dixit]]
+|Date=2026-10-29
+|Permission=
+|other_versions=
+}}
+
+== {{int:license-header}} ==
+{{self|cc-by-sa-4.0}}
+
+
+
+[[Category:Alexander Wang]]
+[[Category:Photographs by Jay Dixit]]

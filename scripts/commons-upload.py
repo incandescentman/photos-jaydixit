@@ -63,6 +63,7 @@ def main() -> None:
         description=description_path.read_text(encoding="utf-8"),
         use_filename=args.filename,
         target_site=site,
+        chunk_size=1024 * 1024,
         aborts=True,
         always=True,
         summary="Uploaded by Jay Dixit through his reviewed local photo publication workflow",

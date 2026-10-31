@@ -627,6 +627,9 @@ async function queryCommons(filename) {
 		prop: 'imageinfo',
 		iiprop: 'url|sha1|timestamp|size|user',
 		titles: `File:${filename}`,
+		maxage: '0',
+		smaxage: '0',
+		requestid: String(Date.now()),
 	}).toString();
 	let response;
 	for (let attempt = 0; attempt < 4; attempt++) {
@@ -691,7 +694,7 @@ async function uploadToCommons(photo) {
 			cwd: REPO_ROOT,
 			reject: false,
 			stdin: 'ignore',
-			timeout: 60_000,
+			timeout: 600_000,
 		});
 		if (result.exitCode !== 0) {
 			throw new Error(result.stderr.trim() || result.stdout.trim() || 'Pywikibot upload failed');
@@ -730,7 +733,7 @@ async function uploadToCommons(photo) {
 			cwd: REPO_ROOT,
 			reject: false,
 			stdin: 'ignore',
-			timeout: 60_000,
+			timeout: 600_000,
 		});
 		if (result.exitCode !== 0) {
 			throw new Error(result.stderr.trim() || result.stdout.trim() || 'Pywikibot upload failed');

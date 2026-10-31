@@ -2940,3 +2940,26 @@ Update at about 4:06am on 2026-10-11, by Claude in the transcription session: as
 Jay selected “deep cornflower.” Applied ~#4478DD~ to hover and keyboard focus for the shared ~.editorial-link~ rule in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/styles/global.css][global.css]]. Original gold and the existing underline/transition remain. Recorded the selection in the cross-repo reaction ledger.
 
 Verified the gold resting color and exact Deep cornflower keyboard-focus color on the local Frances Haugen page, with no overflow at 1728×1117, 3008×1692, and 390×844. Desktop and phone checks confirmed that the first photograph opens the correct full-size frame, Next advances to the second image, and Escape closes the viewer. No browser warnings or errors; repository lint, scoped Prettier, and code whitespace checks pass. Local implementation only, not committed or pushed. Preview: [[http://localhost:4347/red-carpet/frances-haugen/][Frances Haugen]]. The comparison prototype remains outside commits.
+
+* 2026-10-31 — Alexander Wang Commons publication
+Uploaded approved frames 01533 and 01530 from the October 29 Museum of Chinese in America Legacy Awards Gala. Both were rated fine by the user and published with the approved expanded museum name, Jay Dixit attribution, CC BY-SA 4.0, and Alexander Wang / Photographs by Jay Dixit categories. Verified both remote SHA-1 hashes, dimensions, captions, licenses, and categories against the local exports. Exwalker backed up the exports before applying and verifying metadata. No portfolio or Cloudinary publication was requested.
+
+Receipts: [[file:../output/alexander-wang-moca-2026-01533-plan.json][Frame 01533]] and [[file:../output/alexander-wang-moca-2026-01530-plan.json][Frame 01530]].
+
+The initial whole-file transfer reported write timeouts. Updated [[file:../scripts/commons-upload.py][the upload adapter]] to use 1 MiB chunks for new files, and [[file:../scripts/photo-publish.js][the publisher]] to allow ten minutes for transfers. The original imageinfo query repeatedly returned missing after another query confirmed the file existed; adding a unique request ID and zero cache ages returned the current revision. The layer responsible for the stale response was not established. Both uploads then passed live verification. JavaScript syntax and code whitespace checks passed. Changes remain local and uncommitted.
+
+* 2026-10-31 — Copy-ready Commons filenames
+At the user's explicit request, clarified the existing Wikipedia infobox handoff in [[file:../instructions.org][the publication protocol]], [[file:../CLAUDE.org][the root agent guidance]], and [[file:CLAUDE.org][the detailed agent guidance]]: each exact filename must appear on its own unbroken plain-text line without hyperlink formatting; the Commons URL is separate. A link label alone does not fulfill the requirement. Root AGENTS.md and CLAUDE.md both resolve to CLAUDE.org, so Codex and Claude receive the clarification.
+
+Superseded wording, preserved verbatim (the same substring occurred in all three files):
+each clearly labeled and ready to copy. Also include the Commons file URL.
+
+Reference check: [[https://www.mediawiki.org/wiki/Help:Images][MediaWiki image syntax]] distinguishes a filename from a URL; [[https://en.wikibooks.org/wiki/Template:Infobox_person/doc][community-maintained Infobox person documentation]] uses a bare filename. The plain-text presentation requirement is the user's preference, not a MediaWiki restriction.
+
+* 2026-10-31 — Caption date precision
+At the user’s direction, clarified the Commons handoff rule in [[file:../instructions.org][the publication protocol]], [[file:../CLAUDE.org][root agent guidance]], and [[file:CLAUDE.org][detailed agent guidance]]: captions use the event and verified year without month and day; the exact capture date stays in the structured date field. This adds presentation guidance to the existing year requirement without removing it. Verified that both root agent-entry symlinks expose the clarification.
+
+The user accepted the subsequent guidance check: omitting month and day is the default for event portraits, not a universal Wikimedia requirement. Scoped all three rule copies accordingly, with an exception when a precise date matters to understanding a historically significant event. Sources: [[https://en.wikipedia.org/wiki/Wikipedia:Manual_of_Style/Captions#Other_special_situations][Wikipedia portrait-caption guidance]] and [[https://commons.wikimedia.org/wiki/Template:Information/doc][Commons description and date documentation]].
+
+Superseded date-precision wording, preserved verbatim (2026-10-31):
+Use the event and year in the caption, without the month and day. Keep the exact capture date in the structured date field.

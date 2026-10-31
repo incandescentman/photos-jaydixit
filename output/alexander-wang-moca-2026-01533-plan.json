@@ -1,0 +1,166 @@
+{
+  "manifest_version": 1,
+  "generated_at": "2026-10-31T23:08:21.761Z",
+  "approved_at": "2026-10-31T23:09:55.934922+00:00",
+  "approval_note": "Approved in conversation; both rated fine.",
+  "batch": {
+    "source_root": "/Volumes/Pantheon/lightroom/lightroom-exports/2026-10-29_MOCA-gala-2026",
+    "gallery": "moca-2026",
+    "inventory_path": "/Users/jay/Dropbox/roam/photography/20260823235900-celebrity-photograph-inventory.org",
+    "required_fields": [
+      "title",
+      "caption",
+      "keywords",
+      "people",
+      "event"
+    ],
+    "photo_count": 1,
+    "ready_count": 1
+  },
+  "photos": [
+    {
+      "source": "/Volumes/Pantheon/lightroom/lightroom-exports/2026-10-29_MOCA-gala-2026/2026-10-29_MOCA-gala-2026--2.jpg",
+      "relative_path": "2026-10-29_MOCA-gala-2026--2.jpg",
+      "asset_id": "7c9a93613b082e6c83092251e99ff92d",
+      "sha256": "ac9466d75fa0b9038ff48f2fba043ae9cb9805060d2359f767386454df6df959",
+      "file_size": 7026853,
+      "metadata": {
+        "people": [
+          "Alexander Wang"
+        ],
+        "title": "Alexander Wang at the Museum of Chinese in America Legacy Awards Gala 2026",
+        "caption": "Alexander Wang at the Museum of Chinese in America’s Legacy Awards Gala in 2026.",
+        "event": "Museum of Chinese in America Legacy Awards Gala 2026",
+        "keywords": [
+          "Alexander Wang",
+          "Museum of Chinese in America",
+          "MOCA",
+          "Legacy Awards Gala",
+          "2026",
+          "portrait"
+        ],
+        "city": "",
+        "state": "",
+        "country": "",
+        "creator": [
+          "Jay Dixit"
+        ],
+        "credit": "Jay Dixit",
+        "rights": "",
+        "capture_date": "2026-10-29",
+        "event_date": "2026-10-29",
+        "date": "2026-10-29",
+        "camera": {
+          "Camera": "SONY ILCE-1",
+          "Lens": "FE 55mm F1.8 ZA",
+          "Exposure": "1/160 s",
+          "Aperture": "f/4.5",
+          "ISO": "800",
+          "Focal length": "55 mm",
+          "Captured": "2026:10:29 17:22:10"
+        }
+      },
+      "review": {
+        "approved": true,
+        "quality": "fine",
+        "favorite": false,
+        "event_date_approved": true,
+        "identity_notes": [],
+        "unidentified_people": [],
+        "publication_notes": "User requested Commons upload of both photographs, approved the expanded museum name and caption, and rated both fine. Exwalker applied and verified approved metadata with backups. User corrected the public caption to omit month and day on 2026-10-31; both Commons description pages were updated and reread. Uploaded binary and embedded metadata remain unchanged."
+      },
+      "issues": [],
+      "destinations": {
+        "portfolio": {
+          "enabled": false,
+          "gallery": "moca-2026",
+          "filename": "unidentified-person_event_2026_2d17d32e.jpg",
+          "path": "/Users/jay/Dropbox/github/photos-jaydixit/src/gallery/photos/moca-2026/unidentified-person_event_2026_2d17d32e.jpg"
+        },
+        "commons": {
+          "enabled": true,
+          "mode": "new",
+          "filename": "Alexander Wang at the Museum of Chinese in America Legacy Awards Gala 2026 - photographed by Jay Dixit - 01533.jpg",
+          "replacement_comment": "",
+          "categories": [
+            "Alexander Wang",
+            "Photographs by Jay Dixit"
+          ],
+          "license": "{{self|cc-by-sa-4.0}}",
+          "gallery_urls": [],
+          "description": "== {{int:filedesc}} ==\n{{Information\n|Description={{en|1=Alexander Wang at the Museum of Chinese in America’s Legacy Awards Gala in 2026.}}\n|Source={{Own}}\n|Author=[[User:Jaydixit|Jay Dixit]]\n|Date=2026-10-29\n|Permission=\n|other_versions=\n}}\n\n== {{int:license-header}} ==\n{{self|cc-by-sa-4.0}}\n\n\n\n[[Category:Alexander Wang]]\n[[Category:Photographs by Jay Dixit]]\n"
+        },
+        "cloudinary": {
+          "enabled": false,
+          "derive_public_id_from_portfolio": true,
+          "public_id": "photos/moca-2026/unidentified-person_event_2026_2d17d32e"
+        },
+        "homepage": {
+          "enabled": false,
+          "derive_filename_from_portfolio": true,
+          "filename": "unidentified-person_event_2026_2d17d32e.jpg",
+          "size": "portrait",
+          "caption": "Alexander Wang at the Museum of Chinese in America Legacy Awards Gala 2026",
+          "public_id": "highlights/unidentified-person_event_2026_2d17d32e"
+        }
+      },
+      "receipts": {
+        "commons": {
+          "status": "verified-existing",
+          "title": "File:Alexander Wang at the Museum of Chinese in America Legacy Awards Gala 2026 - photographed by Jay Dixit - 01533.jpg",
+          "page_url": "https://commons.wikimedia.org/wiki/File:Alexander_Wang_at_the_Museum_of_Chinese_in_America_Legacy_Awards_Gala_2026_-_photographed_by_Jay_Dixit_-_01533.jpg",
+          "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/34/Alexander_Wang_at_the_Museum_of_Chinese_in_America_Legacy_Awards_Gala_2026_-_photographed_by_Jay_Dixit_-_01533.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+          "sha1": "59a6fa0938dcbb3b110767d4a5f83521967b2470",
+          "timestamp": "2026-10-31T23:11:39Z",
+          "width": 4536,
+          "height": 5670,
+          "user": "Jaydixit",
+          "verified_at": "2026-10-31T23:12:15.991Z"
+        }
+      },
+      "inventory_id": "b632b52c-372f-4c62-aee9-0ae7490646bc"
+    }
+  ],
+  "execution": {
+    "phases": {
+      "preflight": {
+        "status": "complete",
+        "started_at": "2026-10-31T23:12:14.750Z",
+        "completed_at": "2026-10-31T23:12:15.882Z"
+      },
+      "portfolio": {
+        "status": "skipped",
+        "completed_at": "2026-10-31T23:12:15.886Z"
+      },
+      "commons": {
+        "status": "complete",
+        "started_at": "2026-10-31T23:12:15.887Z",
+        "completed_at": "2026-10-31T23:12:15.997Z"
+      },
+      "cloudinary": {
+        "status": "skipped",
+        "completed_at": "2026-10-31T23:12:15.997Z"
+      },
+      "homepage": {
+        "status": "skipped",
+        "completed_at": "2026-10-31T23:12:15.998Z"
+      },
+      "commons-gallery": {
+        "status": "skipped",
+        "completed_at": "2026-10-31T23:12:15.999Z"
+      },
+      "inventory-commons": {
+        "status": "complete",
+        "started_at": "2026-10-31T23:12:15.999Z",
+        "completed_at": "2026-10-31T23:15:04.484Z"
+      },
+      "inventory-site": {
+        "status": "complete",
+        "started_at": "2026-10-31T23:15:04.486Z",
+        "completed_at": "2026-10-31T23:15:05.251Z"
+      }
+    },
+    "current_phase": null
+  },
+  "completed_at": "2026-10-31T23:15:05.251Z"
+}
