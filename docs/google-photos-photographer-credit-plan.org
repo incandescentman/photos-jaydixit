@@ -1,4 +1,4 @@
-#+title: Google Photos Credit Card — Intention and Plan
+#+title: Google Photos Photographer-Credit Image — Intention and Plan
 #+date: 2026-11-01
 
 * Purpose and audience
@@ -23,10 +23,10 @@ Website: photos.jaydixit.com
 
 * Permanent assets
 
-- Default square upload JPEG :: [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/public/brand/photo-credit-card-light-square.jpg][Square upload card]].
-- Alternate 4:5 upload JPEG :: [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/public/brand/photo-credit-card-light-4x5.jpg][4:5 upload card]].
-- Square master :: [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/public/brand/photo-credit-card-light-square.png][Square credit card, PNG]].
-- 4:5 master :: [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/public/brand/photo-credit-card-light-4x5.png][4:5 credit card, PNG]].
+- Default square upload JPEG :: [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/public/brand/photographer-credit-light-square.jpg][Square upload card]].
+- Alternate 4:5 upload JPEG :: [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/public/brand/photographer-credit-light-4x5.jpg][4:5 upload card]].
+- Square master :: [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/public/brand/photographer-credit-light-square.png][Square photographer-credit image, PNG]].
+- 4:5 master :: [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/public/brand/photographer-credit-light-4x5.png][4:5 photographer-credit image, PNG]].
 - Portrait source :: [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/public/images/jay-anisha-williamsburg_jay-dixit-photos_lighter.jpg][Jay’s waterfront portrait]].
 
 * Album plan and current status

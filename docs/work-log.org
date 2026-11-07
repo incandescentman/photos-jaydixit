@@ -2964,13 +2964,13 @@ The user accepted the subsequent guidance check: omitting month and day is the d
 Superseded date-precision wording, preserved verbatim (2026-10-31):
 Use the event and year in the caption, without the month and day. Keep the exact capture date in the structured date field.
 
-* 2026-11-01 — Google Photos credit card intention and plan
+* 2026-11-01 — Google Photos photographer-credit image intention and plan
 
-Recorded the selected light square and 4:5 cards, exact user-selected message, photographer-portrait purpose, permanent asset paths, and accepted plan to put the square card first in shared Google Photos albums in [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/docs/google-photos-credit-card-plan.org][the credit card plan]]. Added a link in the documentation map. The selected PNGs are in the brand directory; no album upload, automation, commit, push, or deployment was performed for this work. Earlier Codex designs remain unselected.
+Recorded the selected light square and 4:5 cards, exact user-selected message, photographer-portrait purpose, permanent asset paths, and accepted plan to put the square card first in shared Google Photos albums in [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/docs/google-photos-photographer-credit-plan.org][the photographer-credit image plan]]. Added a link in the documentation map. The selected PNGs are in the brand directory; no album upload, automation, commit, push, or deployment was performed for this work. Earlier Codex designs remain unselected.
 
-* 2026-11-01 — Credit card upload JPEGs
+* 2026-11-01 — Photographer-credit image upload JPEGs
 
-Updated [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/docs/google-photos-credit-card-plan.org][the credit card plan]] to use the square JPEG for uploads, retain both PNG masters, and explain the January 1, 2000 sorting date. Verified both JPEGs’ date, Artist, and Copyright fields with ExifTool. Google Photos placement remains unverified. Removed draft-comparison remarks and the session-reaction quotation from the plan.
+Updated [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/docs/google-photos-photographer-credit-plan.org][the photographer-credit image plan]] to use the square JPEG for uploads, retain both PNG masters, and explain the January 1, 2000 sorting date. Verified both JPEGs’ date, Artist, and Copyright fields with ExifTool. Google Photos placement remains unverified. Removed draft-comparison remarks and the session-reaction quotation from the plan.
 
 * 2026-11-07 — Future gallery photos served by Cloudinary
 
@@ -2987,4 +2987,7 @@ Gallery discovery, gallery and person pages, directories, photo details, Popular
 - The first browser check sent ArrowRight before PhotoSwipe finished opening. Waiting for its actual opener state resolved the test timeout; no viewer behavior change was needed.
 
 ** Publication state
-This entry accompanies the scoped local Cloudinary commit authorized on November 7. No upload, migration, push, or deployment was performed. Existing unrelated credit-card files and documentation edits were left outside this commit. An actual future upload remains subject to the established reviewed-manifest publication approval.
+This entry accompanies the scoped local Cloudinary commit authorized on November 7. No upload, migration, push, or deployment was performed. Existing unrelated photographer-credit image files and documentation edits were left outside this commit. An actual future upload remains subject to the established reviewed-manifest publication approval.
+
+* 2026-11-07 — Renamed the photographer-credit images
+Jay directed that the photographer-credit images stop using the name "credit card," which reads as a payment card. Renamed the plan to [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/google-photos-photographer-credit-plan.org][📄 google-photos-photographer-credit-plan.org]], the four committed images in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/public/brand/][📁 public/brand]] to ~photographer-credit-light-*~, the four uncommitted alternates to ~photographer-credit_*~ and ~photographer-credit-photo_*~, and the generated drafts folder to [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/output/gallery-photographer-credit/][📁 output/gallery-photographer-credit]]. Updated the plan's title and link labels, the documentation-map link, the work-log headings and links, and the prompt sidecar's image path. The card's own wording is unchanged.
