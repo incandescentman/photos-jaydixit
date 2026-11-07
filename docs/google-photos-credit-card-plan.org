@@ -1,0 +1,42 @@
+#+title: Google Photos Credit Card — Intention and Plan
+#+date: 2026-11-01
+
+* Purpose and audience
+
+This reusable image introduces Jay Dixit as the photographer to people browsing a shared Google Photos album. It gives them permission to use or post the album’s photographs, asks for credit and an Instagram tag, and provides the photography website. It belongs among the album images so viewers encounter the message while browsing.
+
+* Selected design
+
+The selected light designs are kept in square and 4:5 formats in the photography repository. Use the square card first in shared albums.
+
+The selected cards show a portrait of Jay against the Brooklyn waterfront, with his website seal, name, Photographer label, message, Instagram, and website. The portrait identifies the photographer. The permission concerns the album’s photographs.
+
+The supplied designs are the visual references: retain their photograph, margins, light background, typography, and connected treatment of the two sentences.
+
+* Exact selected wording
+
+Feel free to use or post. Make sure to credit Jay Dixit and tag @jaydixit.
+
+Instagram: @jaydixit
+
+Website: photos.jaydixit.com
+
+* Permanent assets
+
+- Default square upload JPEG :: [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/public/brand/photo-credit-card-light-square.jpg][Square upload card]].
+- Alternate 4:5 upload JPEG :: [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/public/brand/photo-credit-card-light-4x5.jpg][4:5 upload card]].
+- Square master :: [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/public/brand/photo-credit-card-light-square.png][Square credit card, PNG]].
+- 4:5 master :: [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/public/brand/photo-credit-card-light-4x5.png][4:5 credit card, PNG]].
+- Portrait source :: [[file+emacs:/Users/jay/Library/CloudStorage/Dropbox/github/photos-jaydixit/public/images/jay-anisha-williamsburg_jay-dixit-photos_lighter.jpg][Jay’s waterfront portrait]].
+
+* Album plan and current status
+
+Upload the square card with each shared Google Photos album so viewers see the permission and credit request before browsing. Keep the 4:5 version available as an alternative; no separate use for it has been selected.
+
+Google Photos orders an album by capture date, and an image with no capture date lands at upload time, which is the end of the album. Upload the JPEGs, not the PNGs: Google Photos reads capture dates from JPEG EXIF reliably, and PNG metadata support is spotty. Both JPEGs carry EXIF ~DateTimeOriginal~ and ~CreateDate~ values of ~2000:01:01 00:00:00~, with ~Artist~ and ~Copyright~ set to ~Jay Dixit~ (verified with ExifTool, November 1, 2026). The early date is sorting metadata, not the portrait’s capture date; it puts the card before every photograph in an album ordered oldest first. Automatic placement has not yet been verified in Google Photos, so check after uploading and drag the card to the front if needed. The JPEGs are saved at quality 95 with no chroma subsampling, so the text stays crisp. The PNGs are the masters; if a card is ever re-rendered, regenerate the JPEGs from the new PNGs with the same date.
+
+Both JPEGs and PNG masters are saved locally at the permanent paths above. No Google Photos album has been changed in this session. The plan is manual reuse; no automated upload or insertion has been implemented. Storage under the site’s public directory does not establish that the files have been committed, deployed, or published.
+
+* Decision source
+
+This plan records Jay’s November 1, 2026 conversation with Codex: the exact shortened wording, selected light designs, and accepted storage and album-placement plan. The subsequent JPEG export handoff supplied the upload-format and early-date approach.
