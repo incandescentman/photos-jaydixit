@@ -281,7 +281,7 @@ Documentation structure:
 - URL pattern: `https://res.cloudinary.com/dszpm7yps/image/upload/f_auto,q_auto,w_{width}/highlights/{publicId}`
 - Automatic format negotiation (AVIF/WebP/JPEG)
 - Images uploaded via `scripts/upload-to-cloudinary.js`
-- Cloudinary is selective in the current architecture: use it for Jay-approved homepage/Packery highlights and other explicit Cloudinary consumers, not as a required mirror of every filesystem gallery photograph
+- New portfolio publication plans default to Cloudinary delivery through the verified remote registry; existing filesystem galleries and older manifests retain local delivery. Read [[file:../instructions.org][the publication protocol]] before adding photos. Homepage selection remains separately approved. (2026-11-07.)
 - Files under ~src/gallery/photos/~ are the canonical source for public filesystem galleries and are processed by Astro/Vercel without a Cloudinary upload
 - Canonical local highlight source files live in `src/gallery/highlights/` and should stay meaningfully named
 - When a local highlight filename no longer matches the remote Cloudinary asset name, set ~=cloudinaryPublicId=~ in ~src/data/homepage-images.js~ instead of forcing an immediate Cloudinary rename
@@ -428,3 +428,7 @@ Frequency: Very High
 [[file:the-photos-approach.org][→ Philosophy]] | [[file:design-architecture.org][→ Architecture]] | [[file:../instructions.org][→ Instructions]]
 
 Last Updated: 2026-08-19
+
+* Instruction Work Log
+** 2026-11-07 — Superseded Cloudinary routing
+- Cloudinary is selective in the current architecture: use it for Jay-approved homepage/Packery highlights and other explicit Cloudinary consumers, not as a required mirror of every filesystem gallery photograph

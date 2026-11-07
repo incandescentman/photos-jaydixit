@@ -2963,3 +2963,20 @@ The user accepted the subsequent guidance check: omitting month and day is the d
 
 Superseded date-precision wording, preserved verbatim (2026-10-31):
 Use the event and year in the caption, without the month and day. Keep the exact capture date in the structured date field.
+
+* 2026-11-07 — Future gallery photos served by Cloudinary
+
+** Result and scope
+New reviewed plans from [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/scripts/photo-publish.js][the photo publisher]] default to Cloudinary portfolio delivery. Existing manifests without a delivery field retain local behavior. The original stays at its source location; verified Cloudinary receipts produce records in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/remote-photos.json][the public remote-photo registry]] rather than copies in the deployed gallery tree. The registry retains source hashes, dimensions, captions, tags, embedded credit/license metadata, and display EXIF. Private source paths remain in private manifests and receipts. Duplicate destinations and mismatched receipts fail closed.
+
+Gallery discovery, gallery and person pages, directories, photo details, Popular, and the publication inventory now recognize registered photos. Cloudinary delivery bypasses Astro image generation while retaining the existing PhotoSwipe, captions, likes identifiers, and detail routes. Existing photographs were not migrated. Homepage selection retains its established separate workflow and local highlight copy; Commons uploads for new remote-gallery records use the publisher and preserved original rather than the local-only web helper. The publication instructions and both instruction entry points were updated; superseded instructions remain under their work-log headings.
+
+** Verification
+- All 30 tests passed, including real-source EXIF/attribution equivalence, destination collisions, receipt mismatches, registry validation, and avoiding tracked Astro source reads. Lint and code whitespace checks passed.
+- The normal production build passed with 218 routes. A separate build temporarily registered two real existing Cloudinary photographs, Jack Johnson and Jeremy Strong, and built 221 routes. The public registry was restored to its empty state after the test; no new photograph was uploaded.
+- Both builds referenced exactly 1,744 local image files totaling 519,698,251 bytes. The remote gallery, detail, person, directory, and Popular HTML used Cloudinary URLs; no additional local image files were required by the two remote records.
+- Chromium checks passed at 1728×1117, 3008×1692, and 390×844 with device scale factor 3 on the phone. On the remote gallery, remote photo detail, Jack Johnson person page, and existing SXSW gallery, the first click opened the correct full-size photograph, multi-image navigation worked, and Escape closed the viewer. There were no JavaScript page errors. Likes reads were mocked and the Giscus script omitted; this does not establish backend likes/comment availability. Screenshots were inspected and removed after testing.
+- The first browser check sent ArrowRight before PhotoSwipe finished opening. Waiting for its actual opener state resolved the test timeout; no viewer behavior change was needed.
+
+** Publication state
+This entry accompanies the scoped local Cloudinary commit authorized on November 7. No upload, migration, push, or deployment was performed. Existing unrelated credit-card files and documentation edits were left outside this commit. An actual future upload remains subject to the established reviewed-manifest publication approval.

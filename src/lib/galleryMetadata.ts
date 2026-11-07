@@ -1,3 +1,5 @@
+import { remotePhotos } from './remotePhotos';
+
 export type GalleryFileOverride = {
 	title?: string;
 	caption?: string;
@@ -87,6 +89,10 @@ export function buildCaptionAndTags(
 	tagsFile?: GalleryTagsFile,
 	subjectName?: string,
 ) {
+	const remote = remotePhotos.find(
+		(photo) => photo.gallery === folderSlug && photo.filename === filename,
+	);
+	if (remote) return { caption: remote.caption, tags: [...remote.tags] };
 	const baseName = filename.replace(/\.[^/.]+$/, '');
 	const parts = baseName.split('_');
 	let subject = subjectName ?? '';

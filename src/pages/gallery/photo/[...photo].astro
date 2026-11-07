@@ -1,5 +1,6 @@
 ---
-import { Image } from 'astro:assets';
+import { withRemotePhotos, remotePhotoForPath } from '../../../lib/remotePhotos';
+import Image from '../../../components/PortfolioImage.astro';
 import type { ImageMetadata } from 'astro:assets';
 import path from 'node:path';
 import exifr from 'exifr';
@@ -37,11 +38,14 @@ if (!photoSlug || !folderPath) {
 	return Astro.redirect('/404');
 }
 
-const imageModules = import.meta.glob<{ default: ImageMetadata }>(
-	'../../../gallery/photos/**/*.{jpg,jpeg,png,webp,gif}',
-	{
-		eager: true,
-	},
+const imageModules = withRemotePhotos(
+	import.meta.glob<{ default: ImageMetadata }>(
+		'../../../gallery/photos/**/*.{jpg,jpeg,png,webp,gif}',
+		{
+			eager: true,
+		},
+	),
+	'../../../gallery/photos/',
 );
 
 const tagModules = import.meta.glob<GalleryTagsFile>('../../../gallery/photos/**/tags.json', {
@@ -189,11 +193,14 @@ const photoFilePath = path.join(
 	currentPhoto.filename,
 );
 
-let exifData: Record<string, unknown> | null = null;
-try {
-	exifData = await exifr.parse(photoFilePath);
-} catch (error) {
-	console.warn(`Failed to parse EXIF for ${photoFilePath}:`, error);
+const remotePhoto = remotePhotoForPath(photoFilePath, 'src/pages/gallery/photo/[...photo].astro');
+let exifData: Record<string, unknown> | null = remotePhoto?.exif ?? null;
+if (!remotePhoto) {
+	try {
+		exifData = await exifr.parse(photoFilePath);
+	} catch (error) {
+		console.warn(`Failed to parse EXIF for ${photoFilePath}:`, error);
+	}
 }
 
 const captureDateRaw = exifData?.DateTimeOriginal;
@@ -310,11 +317,14 @@ const breadcrumbStructuredData = {
 };
 
 export const getStaticPaths = () => {
-	const staticModules = import.meta.glob<{ default: ImageMetadata }>(
-		'../../../gallery/photos/**/*.{jpg,jpeg,png,webp,gif}',
-		{
-			eager: true,
-		},
+	const staticModules = withRemotePhotos(
+		import.meta.glob<{ default: ImageMetadata }>(
+			'../../../gallery/photos/**/*.{jpg,jpeg,png,webp,gif}',
+			{
+				eager: true,
+			},
+		),
+		'../../../gallery/photos/',
 	);
 
 	const canonicalPaths = new Set<string>();

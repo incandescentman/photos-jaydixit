@@ -2,6 +2,9 @@
 
 *Note*: This is legacy documentation. For comprehensive documentation, see [[file:docs/CLAUDE.org][docs/CLAUDE.org]].
 
+** Future gallery delivery (2026-11-07)
+New publication plans default to Cloudinary-backed gallery photos through [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/remote-photos.json][the remote photo registry]]. Preserve originals locally outside the deployed gallery tree. Existing galleries and old manifests retain their current local delivery. Read [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/instructions.org][the publication protocol]] for the reviewed upload, metadata, Commons, homepage, and verification boundaries. New remote photos use the same gallery/person/detail routes and PhotoSwipe behavior.
+
 ** Future Tasks
 
 - [ ] Prepare source photographs for Russell Crowe, Rami Malek, Matt Damon, and Don Cheadle, then run them through Exwalker and the portfolio publication workflow.
@@ -214,7 +217,7 @@ manifest.
 
 - Validation proves required fields are present, not that inferred identities or captions are factually true
 
-- Filesystem galleries use local files under src/gallery/photos/ and do not require Cloudinary; only Jay-selected homepage/Packery highlights must be uploaded under Cloudinary highlights/
+- Existing filesystem-gallery photographs remain local. New portfolio plans default to Cloudinary delivery and registry-backed gallery/person/detail pages; homepage/Packery selection remains separate. Follow [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/instructions.org][the publication protocol]]. (2026-11-07.)
 - Publication-history questions route to [[file+emacs:/Users/jay/Dropbox/roam/photography/20260902015339-photo_publication_inventory.org][📄 Photo Publication Inventory]]; search it first and run ~pnpm photo:inventory freshness~ before any remote rescan
 
 
@@ -451,3 +454,6 @@ manifest.
 Jay approved displaying an identical caption once for the group rather than repeating it under every photograph. The prior caption-display instruction is preserved verbatim below:
 
 - Displayed under each photo
+
+** 2026-11-07 — Superseded destination rule
+- Filesystem galleries use local files under src/gallery/photos/ and do not require Cloudinary; only Jay-selected homepage/Packery highlights must be uploaded under Cloudinary highlights/

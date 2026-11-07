@@ -10,6 +10,16 @@ This guide walks you through uploading photos to Cloudinary with proper metadata
 
 The publication workflow has two separate jobs: establish truthful portable metadata, then wire each photograph into the intended site surface. A Cloudinary upload by itself does not make a photograph visible on this site.
 
+** Future gallery uploads use Cloudinary (2026-11-07)
+
+For new portfolio uploads, preserve the metadata-complete original at its permanent source location and use the reviewed publisher’s default ~--portfolio-delivery cloudinary~. Do not copy new gallery images into the deployed source tree. After a verified upload, the publisher registers the photograph in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/remote-photos.json][the remote photo registry]], retaining the semantic gallery/filename, Cloudinary version and dimensions, source hash, caption, tags, embedded attribution, and display EXIF. Private original paths stay in the publication manifest and receipts, outside the public registry.
+
+Existing local galleries remain unchanged. Older manifests without a delivery field retain their local behavior; explicitly select ~--portfolio-delivery local~ only when local delivery is intended. New remote records participate in the same gallery directory, gallery, person directory, person, photo-detail, and Popular pages, using the existing URL and interaction conventions. Merely uploading a Cloudinary asset does not register it on the site.
+
+The existing local-only Commons web helper cannot upload a remote registry record from a nonexistent local gallery path. For new photographs, use the reviewed publisher’s Commons destination, which reads the preserved original. Curated editorial pages and YAML collections still require explicit selection and wiring. Homepage selection remains separate and currently keeps its established local highlight copy; this change does not migrate that workflow or existing photographs.
+
+Use [[https://cloudinary.com/documentation/billing_and_plans][Cloudinary’s usage model]] when assessing capacity: included storage, image delivery, and transformations share the free credit allowance. Consumption of included credits is not itself a financial charge. Do not upgrade or incur paid usage without approval.
+
 ** Agent-fronted private batch workflow
 
 The private publisher turns a Lightroom export into a reviewable, resumable manifest. Planning is read-only:
@@ -23,7 +33,7 @@ pnpm photo:publish plan /path/to/lightroom-export \
   --commons-gallery "https://commons.gallery/@account/album"
 #+end_src
 
-Repeat ~--commons-category~ and ~--commons-gallery~ for multiple values. A planned photograph defaults to the local portfolio, Wikimedia Commons, and Cloudinary; any destination can be disabled in the reviewed manifest. Planning never copies or uploads a file.
+Repeat ~--commons-category~ and ~--commons-gallery~ for multiple values. New plans default to Cloudinary-backed portfolio delivery, Wikimedia Commons, and Cloudinary. Portfolio delivery requires its Cloudinary destination; Commons and homepage selection remain independent reviewed choices. Planning never copies or uploads a file. (2026-11-07.)
 
 Commons filename rule (Jay, 2026-09-18): For new Wikimedia Commons uploads, the filename suffix must be the original photograph/frame number, not a checksum. Preserve the original number exactly, including leading zeros: source ~2026-09-12_TIFF-naomi-watts_seth-rogen_issa-rae_sarah-paulson_04298.jpg~ becomes ~Anna Kendrick at Toronto International Film Festival 2026 - photographed by Jay Dixit - 04298.jpg~. An export-copy suffix such as the ~2~ in ~04183 2.jpg~ is not the frame number; retain ~04183~. If the original number cannot be established, ask Jay rather than substituting a checksum or inventing a number. This rule applies to new upload names; an explicit new-version upload keeps the existing Commons filename.
 
@@ -102,11 +112,11 @@ Do not treat ~npm run photo:validate~ as proof that a caption or identity is tru
 
 The site does not read embedded people/caption metadata when deciding public routes. Filenames, folder paths, ~tags.json~, and [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/people.json][📄 /Users/jay/Dropbox/github/photos-jaydixit/src/data/people.json]] drive the public presentation.
 
-Use ~subject_event_year.jpg~ for solo photographs. Use an unambiguous hyphenated subject list plus explicit ~photoSlugs~ mappings for group photographs. Preserve the metadata-complete Lightroom export; copy it to the site under the semantic publication filename.
+Use ~subject_event_year.jpg~ for solo photographs. Use an unambiguous hyphenated subject list plus explicit ~photoSlugs~ mappings for group photographs. Preserve the metadata-complete Lightroom export; use the semantic publication filename in the remote registry, or for the explicit local-delivery copy. (2026-11-07.)
 
 ** 3. Choose The Site Lane
 
-*** Complete gallery set
+*** Existing galleries and explicitly selected local delivery (2026-11-07)
 
 - Copy all selected photographs into the appropriate folder under [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/gallery/photos][📁 /Users/jay/Dropbox/github/photos-jaydixit/src/gallery/photos/]].
 - The folder becomes a public ~/gallery/.../~ route. For TIFF, [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/gallery/photos/red-carpet/tiff][📁 /Users/jay/Dropbox/github/photos-jaydixit/src/gallery/photos/red-carpet/tiff/]] renders at [[https://photos.jaydixit.com/gallery/red-carpet/tiff/][photos.jaydixit.com/gallery/red-carpet/tiff/]].
@@ -720,3 +730,11 @@ npm run dev
 - Standardized basic upload usage: ~node scripts/upload-to-cloudinary.js ./src/gallery/photos photos~
 - Clarified overwrite vs skip behavior between scripts
 - Added filename and slug guidance; added tags.json slug notes
+
+* Instruction Work Log
+** 2026-11-07 — Prior default, replaced by future Cloudinary delivery
+Repeat ~--commons-category~ and ~--commons-gallery~ for multiple values. A planned photograph defaults to the local portfolio, Wikimedia Commons, and Cloudinary; any destination can be disabled in the reviewed manifest. Planning never copies or uploads a file.
+
+Preserve the metadata-complete Lightroom export; copy it to the site under the semantic publication filename.
+
+Previous section heading: Complete gallery set

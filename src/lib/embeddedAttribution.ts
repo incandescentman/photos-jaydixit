@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import exifr from 'exifr';
+import { remotePhotoForPath } from './remotePhotos';
 
 type EmbeddedMetadata = {
 	dc?: {
@@ -53,6 +54,8 @@ async function readEmbeddedMetadata(filePath: string): Promise<EmbeddedMetadata 
 }
 
 async function sourceMetadata(moduleKey: string, pageFile: string) {
+	const remote = remotePhotoForPath(moduleKey, pageFile);
+	if (remote) return remote.embedded;
 	const imagePath = resolve(dirname(pageFile), moduleKey);
 	let metadata = metadataByPath.get(imagePath);
 	if (!metadata) {

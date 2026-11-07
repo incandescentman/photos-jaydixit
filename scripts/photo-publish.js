@@ -9,6 +9,8 @@
 
 import { Command } from 'commander';
 import { v2 as cloudinary } from 'cloudinary';
+import exifr from 'exifr';
+import { validateRemotePhotos } from './lib/remote-photos.js';
 import { execa } from 'execa';
 import dotenv from 'dotenv';
 import path from 'node:path';
@@ -222,6 +224,7 @@ function buildPlanRecord(record, options, digest) {
 		destinations: {
 			portfolio: {
 				enabled: options.portfolio,
+				delivery: options.portfolioDelivery,
 				gallery: options.gallery,
 				filename: portfolioFilename,
 				path: path.join(REPO_ROOT, 'src/gallery/photos', options.gallery, portfolioFilename),
@@ -409,8 +412,10 @@ function inventoryEntry(photo, inventoryId) {
 		photo.metadata.title || photo.metadata.caption || path.basename(photo.source),
 	);
 	const destinations = [];
-	if (photo.receipts.portfolio) {
+	if (photo.receipts.portfolio?.path) {
 		destinations.push(`Portfolio local: ${orgLink(photo.receipts.portfolio.path)}`);
+	} else if (photo.receipts.portfolio?.public_id) {
+		destinations.push(`Portfolio Cloudinary: ${orgSafe(photo.receipts.portfolio.public_id)}`);
 	}
 	if (photo.receipts.commons?.page_url) {
 		destinations.push(
@@ -512,7 +517,11 @@ async function updateOrgInventory(manifest) {
 }
 
 async function ensurePortfolioCopies(photos) {
-	for (const photo of photos.filter((item) => item.destinations.portfolio.enabled)) {
+	for (const photo of photos.filter(
+		(item) =>
+			item.destinations.portfolio.enabled &&
+			(item.destinations.portfolio.delivery || 'local') === 'local',
+	)) {
 		const destination = photo.destinations.portfolio.path;
 		await fs.mkdir(path.dirname(destination), { recursive: true });
 		if (existsSync(destination)) {
@@ -535,8 +544,171 @@ async function ensurePortfolioCopies(photos) {
 			throw new Error(`Copied file failed checksum verification: ${destination}`);
 		photo.receipts.portfolio = { status: 'copied', path: destination, verified_at: now() };
 	}
-	await updateGalleryTags(photos);
-	await updatePeopleIndex(photos);
+	const local = photos.filter(
+		(photo) => (photo.destinations.portfolio.delivery || 'local') === 'local',
+	);
+	await updateGalleryTags(local);
+	await updatePeopleIndex(local);
+}
+
+export function validatePortfolioCollisions(photo, records, localFiles) {
+	const dest = photo.destinations.portfolio;
+	const remote = dest.delivery === 'cloudinary';
+	const stem = path.parse(dest.filename).name.toLowerCase();
+	if (
+		remote &&
+		localFiles.some(
+			(name) =>
+				path.parse(name).name.toLowerCase() === stem && /\.(jpg|jpeg|png|gif|webp)$/i.test(name),
+		)
+	) {
+		throw new Error(`Local portfolio slug collision: ${dest.gallery}/${dest.filename}`);
+	}
+	const prior = records.find(
+		(record) =>
+			(record.gallery.toLowerCase() === dest.gallery.toLowerCase() &&
+				path.parse(record.filename).name.toLowerCase() === stem) ||
+			(remote && record.publicId === photo.destinations.cloudinary.public_id),
+	);
+	if (
+		prior &&
+		(!remote ||
+			prior.sha256 !== photo.sha256 ||
+			prior.gallery !== dest.gallery ||
+			prior.filename !== dest.filename ||
+			prior.publicId !== photo.destinations.cloudinary.public_id)
+	) {
+		throw new Error(`Remote portfolio collision: ${dest.gallery}/${dest.filename}`);
+	}
+	return prior;
+}
+
+export function validatePortfolioBatch(photos) {
+	const slugs = new Map();
+	const ids = new Set();
+	for (const photo of photos.filter((item) => item.destinations.portfolio.enabled)) {
+		const dest = photo.destinations.portfolio;
+		const slug = `${dest.gallery}/${path.parse(dest.filename).name}`.toLowerCase();
+		const previous = slugs.get(slug);
+		if (
+			previous &&
+			(dest.delivery === 'cloudinary' ||
+				previous.destinations.portfolio.delivery === 'cloudinary' ||
+				previous.sha256 !== photo.sha256)
+		)
+			throw new Error(`Duplicate planned portfolio slug: ${slug}`);
+		slugs.set(slug, photo);
+		if (dest.delivery === 'cloudinary') {
+			const id = photo.destinations.cloudinary.public_id;
+			if (ids.has(id)) throw new Error(`Duplicate planned Cloudinary public ID: ${id}`);
+			ids.add(id);
+		}
+	}
+}
+
+async function checkRemoteCollision(photo, records) {
+	let localFiles = [];
+	try {
+		localFiles = await fs.readdir(path.dirname(photo.destinations.portfolio.path));
+	} catch (error) {
+		if (error.code !== 'ENOENT') throw error;
+	}
+	return validatePortfolioCollisions(photo, records, localFiles);
+}
+
+export async function readRemoteMetadata(source) {
+	const metadata =
+		(await exifr.parse(await fs.readFile(source), { xmp: true, mergeOutput: false })) || {};
+	const fields = { ...metadata.ifd0, ...metadata.exif };
+	const pick = (object, names) =>
+		Object.fromEntries(
+			names
+				.filter((key) => object[key] !== undefined && object[key] !== null)
+				.map((key) => [key, object[key]]),
+		);
+	return {
+		embedded: {
+			dc: pick(metadata.dc || {}, ['creator', 'rights']),
+			xmpRights: pick(metadata.xmpRights || {}, ['UsageTerms', 'WebStatement']),
+		},
+		exif: pick(fields, [
+			'DateTimeOriginal',
+			'Model',
+			'LensModel',
+			'FNumber',
+			'FocalLength',
+			'ISO',
+			'ExposureTime',
+		]),
+	};
+}
+
+export function validateRemoteReceipt(photo, dimensions) {
+	const receipt = photo.receipts?.cloudinary;
+	if (
+		!receipt?.verified_at ||
+		receipt.source_sha256 !== photo.sha256 ||
+		receipt.source !== photo.source ||
+		receipt.public_id !== photo.destinations.cloudinary.public_id
+	)
+		throw new Error(`Missing matching verified Cloudinary receipt: ${photo.source}`);
+	if (
+		!Number.isSafeInteger(dimensions.width) ||
+		dimensions.width <= 0 ||
+		!Number.isSafeInteger(dimensions.height) ||
+		dimensions.height <= 0 ||
+		receipt.width !== dimensions.width ||
+		receipt.height !== dimensions.height ||
+		!Number.isSafeInteger(receipt.version) ||
+		receipt.version <= 0 ||
+		!['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(receipt.format)
+	)
+		throw new Error(`Cloudinary receipt dimensions, version, or format invalid: ${photo.source}`);
+	return receipt;
+}
+
+async function registerRemotePortfolio(photos) {
+	const selected = photos.filter(
+		(photo) =>
+			photo.destinations.portfolio.enabled &&
+			photo.destinations.portfolio.delivery === 'cloudinary',
+	);
+	if (!selected.length) return;
+	const registryPath = path.join(REPO_ROOT, 'src/data/remote-photos.json');
+	const records = validateRemotePhotos(JSON.parse(await fs.readFile(registryPath, 'utf8')));
+	for (const photo of selected) {
+		const dest = photo.destinations.portfolio;
+		const receipt = photo.receipts.cloudinary;
+		validateRemoteReceipt(photo, await localImageInfo(photo.source));
+		const prior = await checkRemoteCollision(photo, records);
+		const snapshot = await readRemoteMetadata(photo.source);
+		const record = {
+			gallery: dest.gallery,
+			filename: dest.filename,
+			publicId: receipt.public_id,
+			version: receipt.version,
+			width: receipt.width,
+			height: receipt.height,
+			format: receipt.format,
+			sha256: photo.sha256,
+			caption: photo.metadata.caption || photo.metadata.title || '',
+			tags: photo.metadata.keywords || [],
+			...snapshot,
+		};
+		if (prior) records.splice(records.indexOf(prior), 1, record);
+		else records.push(record);
+		photo.receipts.portfolio = {
+			status: 'registered',
+			public_id: receipt.public_id,
+			source: photo.source,
+			source_sha256: photo.sha256,
+			verified_at: now(),
+		};
+	}
+	validateRemotePhotos(records);
+	await writeJsonAtomic(registryPath, records);
+	await updateGalleryTags(selected);
+	await updatePeopleIndex(selected);
 }
 
 function singleQuoted(value) {
@@ -856,7 +1028,7 @@ function cloudinaryMetadataOptions(metadata) {
 	};
 }
 
-async function ensureCloudinaryAsset(source, publicId, metadata) {
+async function ensureCloudinaryAsset(source, publicId, metadata, rejectExisting = false) {
 	configureCloudinary();
 	const metadataOptions = cloudinaryMetadataOptions(metadata);
 	const existing = await cloudinary.api.resource(publicId, { type: 'upload' }).catch((error) => {
@@ -864,6 +1036,10 @@ async function ensureCloudinaryAsset(source, publicId, metadata) {
 		throw safeCloudinaryError('Cloudinary asset lookup', error);
 	});
 	if (existing) {
+		if (rejectExisting)
+			throw new Error(
+				`Cloudinary public ID already exists without a matching upload receipt: ${publicId}`,
+			);
 		return {
 			status: 'verified-existing',
 			public_id: existing.public_id,
@@ -885,8 +1061,14 @@ async function ensureCloudinaryAsset(source, publicId, metadata) {
 	} catch (error) {
 		throw safeCloudinaryError('Cloudinary upload', error);
 	}
+	if (rejectExisting && result.existing)
+		throw new Error(`Cloudinary public ID was occupied during upload: ${publicId}`);
 	return {
 		status: 'uploaded',
+		version: result.version,
+		width: result.width,
+		height: result.height,
+		format: result.format,
 		public_id: result.public_id,
 		secure_url: result.secure_url,
 		verified_at: now(),
@@ -898,6 +1080,7 @@ async function uploadToCloudinary(photo) {
 		photo.source,
 		photo.destinations.cloudinary.public_id,
 		photo.metadata,
+		photo.destinations.portfolio.enabled && photo.destinations.portfolio.delivery === 'cloudinary',
 	);
 }
 
@@ -954,6 +1137,15 @@ function validateExecutionManifest(manifest) {
 		if (!photo.destinations.commons.enabled && photo.destinations.commons.gallery_urls.length > 0) {
 			throw new Error(`Commons Gallery requires a Commons upload destination: ${photo.source}`);
 		}
+		const portfolio = photo.destinations.portfolio;
+		if (portfolio.enabled && !['local', 'cloudinary'].includes(portfolio.delivery || 'local'))
+			throw new Error(`Unknown portfolio delivery: ${portfolio.delivery}`);
+		if (
+			portfolio.enabled &&
+			portfolio.delivery === 'cloudinary' &&
+			!photo.destinations.cloudinary.enabled
+		)
+			throw new Error(`Cloudinary portfolio delivery requires Cloudinary enabled: ${photo.source}`);
 		const homepage = photo.destinations.homepage;
 		if (homepage.enabled) {
 			if (!photo.review.favorite || photo.review.quality !== 'great') {
@@ -1168,6 +1360,14 @@ async function executeCommand(manifestPath, options) {
 			await verifyCommonsAuthentication();
 			await verifyCommonsCategories(manifest);
 		}
+		const portfolioPhotos = manifest.photos.filter((photo) => photo.destinations.portfolio.enabled);
+		validatePortfolioBatch(portfolioPhotos);
+		if (portfolioPhotos.length) {
+			const records = validateRemotePhotos(
+				JSON.parse(await fs.readFile(path.join(REPO_ROOT, 'src/data/remote-photos.json'), 'utf8')),
+			);
+			for (const photo of portfolioPhotos) await checkRemoteCollision(photo, records);
+		}
 		if (hasCloudinary) await verifyCloudinaryAuthentication();
 	});
 
@@ -1190,12 +1390,34 @@ async function executeCommand(manifestPath, options) {
 	await runExecutionPhase(manifest, resolvedManifest, 'cloudinary', hasCloudinary, async () => {
 		for (const photo of manifest.photos) {
 			if (photo.destinations.cloudinary.enabled && !photo.receipts.cloudinary?.verified_at) {
-				photo.receipts.cloudinary = await uploadToCloudinary(photo);
+				const receipt = await uploadToCloudinary(photo);
+				if (
+					photo.destinations.portfolio.enabled &&
+					photo.destinations.portfolio.delivery === 'cloudinary'
+				) {
+					receipt.source = photo.source;
+					receipt.source_sha256 = photo.sha256;
+					photo.receipts.cloudinary = receipt;
+					await writeJsonAtomic(resolvedManifest, manifest);
+					validateRemoteReceipt(photo, await localImageInfo(photo.source));
+				}
+				photo.receipts.cloudinary = receipt;
 				await writeJsonAtomic(resolvedManifest, manifest);
 				await updateOrgInventory(manifest);
 			}
 		}
 	});
+
+	await runExecutionPhase(
+		manifest,
+		resolvedManifest,
+		'remote-portfolio',
+		hasPortfolio,
+		async () => {
+			await registerRemotePortfolio(manifest.photos);
+			await updateOrgInventory(manifest);
+		},
+	);
 
 	await runExecutionPhase(manifest, resolvedManifest, 'homepage', hasHomepage, async () => {
 		for (const photo of manifest.photos) {
@@ -1286,10 +1508,19 @@ program
 	.option('--commons-replacement-comment <comment>', 'Commons new-version upload comment')
 	.option('--license <template>', 'Commons license template', '{{self|cc-by-sa-4.0}}')
 	.option('--cloudinary <mode>', 'Cloudinary destination: none or all', 'all')
-	.option('--no-portfolio', 'do not plan a local portfolio copy')
+	.option('--portfolio-delivery <mode>', 'portfolio delivery: cloudinary or local', 'cloudinary')
+	.option('--no-portfolio', 'do not plan a portfolio destination')
 	.option('--no-commons', 'do not plan a Wikimedia Commons upload')
 	.option('--non-recursive', 'inspect only the named directory')
 	.action(async (source, options) => {
+		if (!['local', 'cloudinary'].includes(options.portfolioDelivery))
+			throw new Error('--portfolio-delivery must be local or cloudinary');
+		if (
+			options.portfolio &&
+			options.portfolioDelivery === 'cloudinary' &&
+			options.cloudinary !== 'all'
+		)
+			throw new Error('Cloudinary portfolio delivery requires --cloudinary all');
 		if (!['none', 'all'].includes(options.cloudinary))
 			throw new Error('--cloudinary must be none or all');
 		if (!['new', 'new-version'].includes(options.commonsMode)) {
@@ -1317,7 +1548,9 @@ program
 	.requiredOption('--confirm <token>', 'must be the literal token PUBLISH')
 	.action(executeCommand);
 
-program.parseAsync(process.argv).catch((error) => {
-	console.error(`Error: ${error.message}`);
-	process.exitCode = 1;
-});
+if (process.argv[1] && path.resolve(process.argv[1]) === path.resolve(import.meta.filename)) {
+	program.parseAsync(process.argv).catch((error) => {
+		console.error(`Error: ${error.message}`);
+		process.exitCode = 1;
+	});
+}

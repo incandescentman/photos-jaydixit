@@ -1,0 +1,25 @@
+---
+import { Image } from 'astro:assets';
+import type { ComponentProps } from 'astro/types';
+import { remotePhotoForImage } from '../lib/remotePhotos';
+import { getImage } from '../lib/portfolioImage';
+type Props = ComponentProps<typeof Image>;
+const props = Astro.props;
+const remote = remotePhotoForImage(props.src);
+if (remote && props.alt == null) throw new Error('A photograph requires alt text');
+const image = remote ? await getImage(props) : undefined;
+const { class: className, ...attributes } = image?.attributes ?? {};
+---
+
+{
+	image ? (
+		<img
+			src={image.src}
+			srcset={image.srcSet.attribute || undefined}
+			{...attributes}
+			class={className}
+		/>
+	) : (
+		<Image {...props} />
+	)
+}

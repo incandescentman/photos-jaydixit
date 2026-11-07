@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { pathToFileURL } from 'node:url';
+import { validateRemotePhotos } from './remote-photos.js';
 
 const EXTENSION_PRIORITY = ['jpg', 'jpeg', 'webp', 'png', 'gif'];
 const SUPPORTED_EXTENSIONS = new Set(EXTENSION_PRIORITY);
@@ -241,6 +242,50 @@ export async function buildLocalPortfolioInventory(repoRoot) {
 		});
 	}
 
+	let remotePhotos = [];
+	try {
+		remotePhotos = validateRemotePhotos(
+			JSON.parse(await fs.readFile(path.join(repoRoot, 'src/data/remote-photos.json'), 'utf8')),
+		);
+	} catch (error) {
+		if (error.code !== 'ENOENT') throw error;
+	}
+	for (const photo of remotePhotos) {
+		const folder = photo.gallery;
+		const filename = photo.filename;
+		const slug = filename.replace(/\.[^/.]+$/, '');
+		const matchedPeople = people.filter((person) => matchesPerson(filename, person));
+		const metadata = galleryMetadata(tagsByFolder.get(folder), filename);
+		const homepage = homepageByFilename.get(filename);
+		const surfaces = [
+			{
+				kind: 'gallery',
+				url: `https://photos.jaydixit.com/gallery/${encodedRoute(folder.split('/'))}`,
+			},
+			{
+				kind: 'photo-detail',
+				url: `https://photos.jaydixit.com/gallery/photo/${encodedRoute([...folder.split('/'), slug])}`,
+			},
+			...matchedPeople.map((person) => ({
+				kind: 'person',
+				url: `https://photos.jaydixit.com/red-carpet/${encodeURIComponent(person.slug)}`,
+			})),
+		];
+		if (homepage) surfaces.push({ kind: 'homepage', url: 'https://photos.jaydixit.com/' });
+		records.push({
+			asset_key: `cloudinary/${photo.publicId}`,
+			source_kind: 'remote-portfolio',
+			source_path: null,
+			filename,
+			caption: photo.caption || metadata.caption || filenameCaption(filename),
+			people: [...new Set([...metadata.people, ...matchedPeople.map((person) => person.name)])],
+			tags: photo.tags,
+			cloudinary_public_id: photo.publicId,
+			source_sha256: photo.sha256,
+			surfaces,
+		});
+	}
+
 	const localHighlightFilenames = new Set();
 	for (const image of canonicalImages(await walkFiles(highlightsRoot), highlightsRoot)) {
 		const filename = path.basename(image.relative);
@@ -270,7 +315,9 @@ export async function buildLocalPortfolioInventory(repoRoot) {
 	for (const homepage of homepageImages) {
 		if (localHighlightFilenames.has(homepage.filename)) continue;
 		const galleryRecord = records.find(
-			(record) => record.source_kind === 'gallery' && record.filename === homepage.filename,
+			(record) =>
+				['gallery', 'remote-portfolio'].includes(record.source_kind) &&
+				record.filename === homepage.filename,
 		);
 		if (galleryRecord) continue;
 		const slug = homepage.filename.replace(/\.[^/.]+$/, '');
