@@ -5,6 +5,9 @@
 ** Future gallery delivery (2026-11-07)
 New publication plans default to Cloudinary-backed gallery photos through [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/data/remote-photos.json][the remote photo registry]]. Preserve originals locally outside the deployed gallery tree. Existing galleries and old manifests retain their current local delivery. Read [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/instructions.org][the publication protocol]] for the reviewed upload, metadata, Commons, homepage, and verification boundaries. New remote photos use the same gallery/person/detail routes and PhotoSwipe behavior.
 
+** Photograph framing — 2026-11-09
+Before adding or replacing a photograph or changing its layout, follow Photograph framing in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/CLAUDE.org][the project instructions]]. Check the actual previews at desktop and phone sizes, including hover/focus; full-size PhotoSwipe success does not establish that faces survive the preview crop.
+
 ** Future Tasks
 
 - [ ] Prepare source photographs for Russell Crowe, Rami Malek, Matt Damon, and Don Cheadle, then run them through Exwalker and the portfolio publication workflow.
@@ -238,6 +241,7 @@ manifest.
 - src/pages/photo-wall.astro → former Packery homepage, preserved as a noindexed and intentionally unlinked reference route
 
 - src/pages/galleries/index.astro → lists all gallery folders with thumbnails at ~/galleries/~; src/pages/gallery/index.astro is a 301 from the old ~/gallery/~ address. Individual galleries stay at ~/gallery/{name}/~ (2026-11-09).
+- src/pages/gallery/portraits/studio.astro and src/pages/gallery/photo/portraits/studio/[photo].astro → 301s from the old Studio gallery, renamed Actors and Filmmakers on 2026-11-09 because its photos are red-carpet and festival portraits, not studio shots. When Jay adds a real studio gallery at src/gallery/photos/portraits/studio/, delete studio.astro first: a page file there takes priority over the gallery route and would hide the new gallery. Keep the photo redirects.
 
 - src/pages/gallery/[...folder].astro → renders a gallery page for each folder
 
@@ -255,7 +259,7 @@ manifest.
 
 - src/pages/nobel-2024.astro → 2024 Nobel coverage in Stockholm and Oslo
 
-- src/pages/resources/bounce-flash-cheat-sheet.astro → Jay's bounce flash class notes at ~/resources/bounce-flash-cheat-sheet/~, outside the menu. Its content is generated from portable-flash-guide by that repo's scripts/build-photos-site-copy.py; edit the source there, not the body file here (2026-11-09).
+- src/pages/resources/bounce-flash-cheat-sheet.astro → Jay's bounce flash class notes at ~/resources/bounce-flash-cheat-sheet/~, outside the menu. Its content is generated from portable-flash-guide by that repo's scripts/build-photos-site-copy.py; edit the source there, not the body file here (2026-11-09). Its "On this page" contents list is built at build time from the body's ~h2~ headings and the ~h3~ of each ~.setup~ panel, so new sections and setups appear in it without editing the page; a setup named with its section's first word drops that word ("Butterfly forward" under Butterfly lighting reads Forward).
 
 - src/pages/red-carpets.astro → canonical Red Carpets Around the World editorial journey
 

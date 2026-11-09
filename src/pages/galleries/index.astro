@@ -28,15 +28,21 @@ const imageModules = withRemotePhotos(
 
 // Positions belong to specific photographs, not folders that may get a new cover.
 const coverFocalPoints: Record<string, string> = {
+	'events/international-journalism-festival-2024/frances-haugen_international-journalism-festival_2024_09517.jpg': '50% 0%',
+	'events/national-book-awards/anne-carson_national-book-awards_2024.jpg': '50% 0%',
+	'events/sxsw-2026/alanis-morissette-st-vincent_sxsw_2026.jpg': '50% 0%',
+	'red-carpet/tiff/anna-kendrick_tiff_2026_04298.jpg': '50% 0%',
 	'events/nobel/john-hopfield_nobel-physics_2024.jpg': '50% 0%',
 	'events/nobel-prizes-2024/anti-nuclear-campaigners_nobel-peace-prize-torchlight-procession-oslo_2024.jpg':
 		'50% 50%',
 	'events/sxsw-2026/jack-johnson_sxsw_2026_01.jpg': '50% 50%',
-	'portraits/studio/dave-franco_sundance_2025.jpg': '50% 0%',
+	'portraits/actors-and-filmmakers/dave-franco_sundance_2025.jpg': '50% 0%',
 	'red-carpet/sundance/conan-obrien_sundance_2024.jpg': '50% 28%',
 	'red-carpet/sxsw/judd-apatow_sxsw_2024.jpg': '50% 0%',
 	'red-carpet/tiff/jason-bateman-jude-law-09836_tiff_2025.jpg': '40% 50%',
 };
+
+const MINOR_WORDS = new Set(['a', 'an', 'and', 'at', 'for', 'in', 'of', 'on', 'the', 'to', 'with']);
 
 function formatWord(word: string) {
 	const normalized = word.toLowerCase();
@@ -56,7 +62,7 @@ function formatPhrase(slug: string) {
 	return slug
 		.split(/[\s-]+/)
 		.filter(Boolean)
-		.map(formatWord)
+		.map((word, index) => (index > 0 && MINOR_WORDS.has(word.toLowerCase()) ? word.toLowerCase() : formatWord(word)))
 		.join(' ');
 }
 

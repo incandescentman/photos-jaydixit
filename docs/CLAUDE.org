@@ -255,6 +255,11 @@ Documentation structure:
 - A page change involving photographs is not complete until browser verification confirms that the first click opens the correct full-size image, navigation works when the page contains multiple photographs, and Escape closes the lightbox.
 - Verify PhotoSwipe at desktop and mobile widths and check for browser errors. A successful build alone does not prove that the lightbox works.
 
+*** Photograph framing — 2026-11-09
+When adding or replacing a photograph, changing a cover selection, or changing image layout, inspect every affected rendered preview at 1728×1117, 3008×1692, and 390×844, including hover and keyboard focus. Keep faces visible; check every person in group photos. A working full-size lightbox does not validate a thumbnail's crop.
+
+Preserve source proportions in generated derivatives. Navigation covers may use the approved fixed frames, with crop positions attached to the exact photograph rather than its person or gallery. Inspect a replacement cover afresh; never assume the old position or automatic attention crop works. If the frame cannot include the subjects, show the complete image rather than clipping them. Keep normal photo grids uncropped. Do not enlarge images on hover when that clips their edges. Read the two-stage cropping diagnosis in [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/docs/codebase-wisdom.org][codebase wisdom]] before repairing a crop.
+
 *** Exhibition Viewer — Local Implementation, 2026-09-09
 - [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/PortfolioLightbox.astro][PortfolioLightbox]] is a thin presentation wrapper around the installed shared PhotoSwipe component. It passes the [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/lib/exhibitionOptions.ts][exhibition options]] without duplicating initialization, exclusions, or the homepage transition.
 - [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/components/ExhibitionViewer.astro][ExhibitionViewer]] installs the [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/scripts/exhibitionViewer.ts][local viewer extension]] through MainLayout. Direct Packery and blog initializers use the same padding policy. The [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/styles/photoswipe-custom.css][viewer stylesheet]] supplies the warm canvas and controls.

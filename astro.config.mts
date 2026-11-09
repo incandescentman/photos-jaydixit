@@ -2,6 +2,7 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+import socialCards from './integrations/social-cards.mjs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { isPublicSearchPage } from './src/lib/indexing';
@@ -19,6 +20,7 @@ export default defineConfig({
 	},
 	integrations: [
 		mdx(),
+		socialCards(),
 		sitemap({
 			filter: (page) => isPublicSearchPage(new URL(page).pathname),
 			serialize(item) {

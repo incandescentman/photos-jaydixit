@@ -581,7 +581,7 @@ export function getStaticPaths() {
 										class:list={
 											hasStory || hasFeaturedPhoto
 												? 'person-feature-image'
-												: 'aspect-[3/4] overflow-hidden rounded-xl bg-gray-100 shadow-sm'
+												: 'overflow-hidden rounded-xl bg-gray-100 shadow-sm'
 										}
 									>
 										{(hasStory || hasFeaturedPhoto) && photo.metadata ? (
@@ -613,11 +613,8 @@ export function getStaticPaths() {
 												src={photo.metadata}
 												alt={photo.caption}
 												width={480}
-												height={640}
-												fit="cover"
-												position="attention"
 												loading="lazy"
-												class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+												class="w-full h-auto transition-[filter] duration-200 group-hover:brightness-105"
 											/>
 										) : (
 											<img
@@ -625,10 +622,9 @@ export function getStaticPaths() {
 												srcset={cldSrcset(photo.publicId, [480, 720, 960, 1440])}
 												sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw"
 												width={480}
-												height={640}
 												alt={photo.caption}
 												loading="lazy"
-												class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+												class="w-full h-auto transition-[filter] duration-200 group-hover:brightness-105"
 											/>
 										)}
 									</div>

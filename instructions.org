@@ -221,7 +221,7 @@ brew install exiftool
 *** Add Caption and Title to a Photo
 #+begin_src bash
 # Navigate to your photo folder
-cd src/gallery/photos/portraits/studio
+cd src/gallery/photos/portraits/actors-and-filmmakers
 
 # Add caption and title
 exiftool -overwrite_original \

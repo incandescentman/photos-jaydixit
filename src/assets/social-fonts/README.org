@@ -1,0 +1,6 @@
+#+title: Social Card Fonts
+
+* Fonts used by the build
+[[file:Newsreader.ttf][Newsreader.ttf]] comes from [[https://github.com/google/fonts/tree/main/ofl/newsreader][Google Fonts' Newsreader directory]], with its license in [[file:OFL.txt][OFL.txt]]. [[file:InstrumentSans.ttf][InstrumentSans.ttf]] comes from [[https://github.com/google/fonts/tree/main/ofl/instrumentsans][Google Fonts' Instrument Sans directory]], with [[file:InstrumentSans-OFL.txt][its OFL license]]. Both were downloaded November 9, 2026.
+
+The renderer uses Newsreader.ttf from the Google Fonts Newsreader directory and InstrumentSans.ttf, reading variable font outlines directly through Fontkit to avoid host font substitution. It matches the site's heading weight and tracking, plus the header wordmark's weight, size, and tracking.

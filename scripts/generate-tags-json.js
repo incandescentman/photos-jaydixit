@@ -110,7 +110,7 @@ function main() {
   if (args.length === 0) {
     console.log('Usage: node scripts/generate-tags-json.js <folder-path>');
     console.log('Example: node scripts/generate-tags-json.js ./src/gallery/photos/red-carpet/tiff');
-    console.log('Example: node scripts/generate-tags-json.js ./src/gallery/photos/portraits/studio');
+    console.log('Example: node scripts/generate-tags-json.js ./src/gallery/photos/portraits/actors-and-filmmakers');
     process.exit(1);
   }
   

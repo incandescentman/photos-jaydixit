@@ -13,7 +13,7 @@ import johnAfterImg from '../assets/images/wikiportraits/john-hopfield_nobel-phy
 import lisaBeforeImg from '../assets/images/wikiportraits/lisa-gilroy-before-2019.jpg';
 import lisaAfterImg from '../assets/images/wikiportraits/Lisa_Gilroy_at_SXSW_in_2025-1.jpg';
 import sebastianBeforeImg from '../assets/images/wikiportraits/sebastian-stan-before-2019.png';
-import sebastianAfterImg from '../gallery/photos/portraits/studio/sebastian-stan.jpg';
+import sebastianAfterImg from '../gallery/photos/portraits/actors-and-filmmakers/sebastian-stan.jpg';
 import sydneyBeforeImg from '../assets/images/wikiportraits/sydney-sweeney-before-2019.jpg';
 import sydneyAfterImg from '../assets/images/wikiportraits/sydney-sweeney_tiff_2024.jpg';
 import vanessaBeforeImg from '../assets/images/wikiportraits/vanessa-kirby-before-2018.jpg';

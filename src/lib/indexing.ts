@@ -5,6 +5,7 @@ export function isPublicSearchPage(pathname: string) {
 	const excluded = new Set([
 		'/before-after',
 		'/gallery',
+		'/gallery/portraits/studio',
 		'/photo-wall',
 		'/prototype-documentary',
 		'/salient-photography-demo',
@@ -14,6 +15,7 @@ export function isPublicSearchPage(pathname: string) {
 	return (
 		!excluded.has(path) &&
 		!/^\/(portraits|experiments|collections)(?:\/|$)/.test(path) &&
-		!path.startsWith('/red-carpets/')
+		!path.startsWith('/red-carpets/') &&
+		!path.startsWith('/gallery/photo/portraits/studio/')
 	);
 }

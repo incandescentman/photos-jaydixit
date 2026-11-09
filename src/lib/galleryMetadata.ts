@@ -61,6 +61,8 @@ export function getGalleryFileMetadata(tagsFile: GalleryTagsFile | undefined, fi
 	return { caption, tags };
 }
 
+const MINOR_WORDS = new Set(['a', 'an', 'and', 'at', 'for', 'in', 'of', 'on', 'the', 'to', 'with']);
+
 function formatWord(word: string) {
 	const normalized = word.toLowerCase();
 	const acronymMap: Record<string, string> = {
@@ -79,7 +81,7 @@ export function formatPhrase(value: string) {
 	return value
 		.split(/[\s-]+/)
 		.filter(Boolean)
-		.map(formatWord)
+		.map((word, index) => (index > 0 && MINOR_WORDS.has(word.toLowerCase()) ? word.toLowerCase() : formatWord(word)))
 		.join(' ');
 }
 

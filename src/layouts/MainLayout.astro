@@ -28,6 +28,7 @@ type LayoutProps = {
 	image?: string;
 	imageAlt?: string;
 	ogImages?: OgImage[];
+	socialCover?: string;
 	ogType?: string;
 	noindex?: boolean;
 	twitterCard?: string;
@@ -86,6 +87,16 @@ const modifiedTime = normalizeDateValue(
 		(frontmatter.publishDate as string | Date | undefined),
 );
 const suppliedOgImages = props.ogImages ?? (frontmatter.ogImages as OgImage[] | undefined);
+// Explicit image/ogImages override automatic cards. Never infer a cover from DOM order.
+const automaticSocialCard =
+	!rawImage && !suppliedOgImages?.length
+		? Buffer.from(
+				JSON.stringify({
+					title: pageTitleSource ?? owner,
+					cover: props.socialCover ?? frontmatter.socialCover,
+				}),
+			).toString('base64')
+		: undefined;
 const ogImages = await resolveOgImages(
 	suppliedOgImages?.length
 		? suppliedOgImages
@@ -171,6 +182,7 @@ gtag('config', '${gaMeasurementId}', {
 		<meta name="author" content={owner} />
 		{keywords && <meta name="keywords" content={keywords} />}
 		<SeoTags {...seoTags} />
+		{automaticSocialCard && <meta name="portfolio-social-card" content={automaticSocialCard} />}
 		{!noindex && <meta name="robots" content="max-image-preview:large" />}
 		<link
 			rel="alternate"

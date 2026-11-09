@@ -247,9 +247,36 @@ const isActive = (href: string, also: string[] = []) => {
 	.portfolio-nav-primary a:hover::after,
 	.portfolio-nav-primary a:focus-visible::after,
 	.portfolio-contact:hover::after,
-	.portfolio-contact:focus-visible::after,
-	.portfolio-nav-primary a[aria-current='page']::after {
+	.portfolio-contact:focus-visible::after {
 		right: 0;
+	}
+	/* The current-page catchlight: the same gold bead with a white glint as the cheat sheet's contents list. */
+	.portfolio-nav-primary a[aria-current='page']::before,
+	.portfolio-contact[aria-current='page']::before,
+	.portfolio-menu a[aria-current='page']::before {
+		content: '';
+		position: absolute;
+		left: -12px;
+		top: calc(50% - 3.5px);
+		width: 7px;
+		height: 7px;
+		border-radius: 50%;
+		background: radial-gradient(
+			circle at 33% 30%,
+			#fff 0 1.1px,
+			#f1d27e 1.9px,
+			#c89b34 60%,
+			#94701f 100%
+		);
+		box-shadow: 0 0 0 3px rgb(200 155 52 / 13%);
+		pointer-events: none;
+	}
+	.portfolio-menu a[aria-current='page'] {
+		position: relative;
+		padding-left: 16px;
+	}
+	.portfolio-menu a[aria-current='page']::before {
+		left: 2px;
 	}
 	.portfolio-contact {
 		display: none;

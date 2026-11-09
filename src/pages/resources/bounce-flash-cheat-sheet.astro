@@ -5,16 +5,88 @@
 import MainLayout from '../../layouts/MainLayout.astro';
 import PhotoSwipeLightbox from '../../components/PortfolioLightbox.astro';
 import body from '../../data/bounce-flash-cheat-sheet-body.html?raw';
+
+// The title and intro sit above the contents list; the list is built from the body's section
+// headings and setup panels, so it follows the cheat sheet whenever the script regenerates it.
+const headerEnd = body.indexOf('</header>');
+if (headerEnd < 0) throw new Error('Cheat sheet body has no <header>');
+const intro = body.slice(0, headerEnd + '</header>'.length);
+const rest = body.slice(headerEnd + '</header>'.length);
+
+type TocItem = { id: string; label: string; children: { id: string; label: string }[] };
+const plain = (html: string) => html.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+const toc: TocItem[] = [];
+for (const m of rest.matchAll(
+	/<h2[^>]*\bid="([^"]+)"[^>]*>([\s\S]*?)<\/h2>|<article class="setup"[^>]*\bid="([^"]+)"[^>]*>[\s\S]*?<h3[^>]*>([\s\S]*?)<\/h3>/g,
+)) {
+	if (m[1]) {
+		toc.push({ id: m[1], label: plain(m[2]), children: [] });
+		continue;
+	}
+	const parent = toc.at(-1);
+	if (!parent) throw new Error(`Setup ${m[3]} comes before any section`);
+	// Nested under "Butterfly lighting", "Butterfly forward" reads as "Forward".
+	const lead = `${parent.label.split(' ')[0]} `;
+	let label = plain(m[4]);
+	if (label.startsWith(lead)) label = label.slice(lead.length).replace(/^./, (c) => c.toUpperCase());
+	parent.children.push({ id: m[3], label });
+}
+if (toc.length < 2) throw new Error('Cheat sheet contents list found too few sections');
 ---
 
 <MainLayout
 	title="Bounce Flash Cheat Sheet"
+	socialCover="/resources/bounce-flash-cheat-sheet/img/butterfly-backward-wall-overview.png"
 	description="Notes from PhotoUno Portable Flash with Patricia Burmicky."
 	useArnoPro
 	photoFooter
 >
 	<div class="bfcs">
-		<div class="bfcs-wrap" set:html={body} />
+		<div class="bfcs-layout">
+			<div class="bfcs-wrap bfcs-intro" set:html={intro} />
+			<details class="bfcs-toc-compact" data-toc-compact>
+				<summary>On this page</summary>
+				<nav aria-label="On this page">
+					<ol>
+						{toc.map((item) => (
+							<li>
+								<a href={`#${item.id}`} data-toc-link={item.id}>{item.label}</a>
+								{item.children.length > 0 && (
+									<ol>
+										{item.children.map((child) => (
+											<li>
+												<a href={`#${child.id}`} data-toc-link={child.id} data-toc-parent={item.id}>{child.label}</a>
+											</li>
+										))}
+									</ol>
+								)}
+							</li>
+						))}
+					</ol>
+				</nav>
+			</details>
+			<nav class="bfcs-toc" aria-label="On this page">
+				<p class="bfcs-toc-heading">On this page</p>
+				<span class="bfcs-toc-marker" aria-hidden="true"></span>
+				<ol>
+					{toc.map((item) => (
+						<li>
+							<a href={`#${item.id}`} data-toc-link={item.id}>{item.label}</a>
+							{item.children.length > 0 && (
+								<ol>
+									{item.children.map((child) => (
+										<li>
+											<a href={`#${child.id}`} data-toc-link={child.id} data-toc-parent={item.id}>{child.label}</a>
+										</li>
+									))}
+								</ol>
+							)}
+						</li>
+					))}
+				</ol>
+			</nav>
+			<div class="bfcs-wrap bfcs-body" set:html={rest} />
+		</div>
 	</div>
 	<PhotoSwipeLightbox
 		gallerySelector=".bfcs"
@@ -22,6 +94,67 @@ import body from '../../data/bounce-flash-cheat-sheet-body.html?raw';
 		options={{ escKey: true }}
 	/>
 </MainLayout>
+
+<script>
+	// Marks the section in view in both contents lists. A section is current once its top passes
+	// 30% of the way down the screen; at the very bottom, the last section is current.
+	const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]'));
+	const ids = [...new Set(links.map((link) => link.dataset.tocLink ?? ''))];
+	const targets = ids
+		.map((id) => document.getElementById(id))
+		.filter((el): el is HTMLElement => el !== null);
+	let frame = 0;
+
+	function update() {
+		frame = 0;
+		const line = window.innerHeight * 0.3;
+		let current: string | undefined;
+		for (const target of targets) {
+			if (target.getBoundingClientRect().top > line) break;
+			current = target.id;
+		}
+		const atBottom =
+			window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+		if (atBottom) current = targets.at(-1)?.id;
+		const currentParent = links.find((link) => link.dataset.tocLink === current)?.dataset.tocParent;
+		for (const link of links) {
+			if (link.dataset.tocLink === current) link.setAttribute('aria-current', 'location');
+			else link.removeAttribute('aria-current');
+			link.classList.toggle('is-within', link.dataset.tocLink === currentParent);
+		}
+
+		// The marker glides to the current link in the side list.
+		const nav = document.querySelector<HTMLElement>('.bfcs-toc');
+		const marker = nav?.querySelector<HTMLElement>('.bfcs-toc-marker');
+		const active = nav?.querySelector<HTMLElement>('a[aria-current]');
+		if (!nav || !marker) return;
+		if (!active || !nav.offsetParent) {
+			marker.classList.remove('is-visible');
+			return;
+		}
+		const offset = active.getBoundingClientRect().top - nav.getBoundingClientRect().top + nav.scrollTop;
+		marker.style.transform = `translateY(${offset}px)`;
+		marker.style.height = `${active.offsetHeight}px`;
+		// Where the label's text starts, so the bead sits the same distance from a section name and
+		// from an indented setup name.
+		const textStart =
+			active.getBoundingClientRect().left -
+			nav.getBoundingClientRect().left +
+			parseFloat(getComputedStyle(active).paddingLeft);
+		marker.style.setProperty('--marker-x', `${textStart}px`);
+		marker.classList.add('is-visible');
+	}
+
+	addEventListener('scroll', () => (frame ||= requestAnimationFrame(update)), { passive: true });
+	addEventListener('resize', update);
+	update();
+	document.fonts?.ready.then(update);
+
+	const compact = document.querySelector<HTMLDetailsElement>('[data-toc-compact]');
+	compact?.addEventListener('click', (event) => {
+		if ((event.target as Element).closest('a')) compact.open = false;
+	});
+</script>
 
 <style is:global>
 	/* Bounce Flash Cheat Sheet in the site's type and colors: Newsreader headings, Arno reading
@@ -40,6 +173,217 @@ import body from '../../data/bounce-flash-cheat-sheet-body.html?raw';
 		max-width: 64rem;
 		margin: 0 auto;
 		padding: 0 max(1.25rem, env(safe-area-inset-left, 0px));
+	}
+	.bfcs [id] {
+		scroll-margin-top: calc(var(--portfolio-header-clearance) + 1.5rem);
+	}
+
+	/* Contents: a sticky list beside the text on wide screens, a dropdown under the intro below
+	   that. Instrument Sans like the page's other labels; Deep cornflower on hover, as on the
+	   site's editorial links. */
+	.bfcs-toc {
+		display: none;
+	}
+	.bfcs-toc-compact {
+		max-width: 64rem;
+		margin: 2.5rem auto 0;
+		padding: 0 max(1.25rem, env(safe-area-inset-left, 0px));
+		font-family: var(--sans);
+	}
+	.bfcs-toc-compact summary {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0.9rem 0;
+		border-top: 1px solid var(--ink);
+		border-bottom: 1px solid var(--hairline);
+		font-size: 0.8rem;
+		font-weight: 600;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--muted);
+		cursor: pointer;
+		list-style: none;
+	}
+	.bfcs-toc-compact summary::-webkit-details-marker {
+		display: none;
+	}
+	.bfcs-toc-compact summary::after {
+		content: '+';
+		font-size: 1.4rem;
+		font-weight: 400;
+		line-height: 1;
+		letter-spacing: 0;
+	}
+	.bfcs-toc-compact[open] summary::after {
+		content: '−';
+	}
+	.bfcs-toc-compact nav {
+		padding: 0.75rem 0 1rem;
+		border-bottom: 1px solid var(--hairline);
+	}
+	.bfcs .bfcs-toc-heading {
+		margin: 0 0 22px 20px;
+		font-family: var(--sans);
+		font-size: 11px;
+		font-weight: 600;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: #817768;
+	}
+	.bfcs-toc ol,
+	.bfcs-toc-compact ol {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.bfcs .bfcs-toc a,
+	.bfcs .bfcs-toc-compact a {
+		position: relative;
+		z-index: 1;
+		display: block;
+		font-family: var(--sans);
+		text-decoration: none;
+	}
+
+	/* Side list: section names in ink-brown, setups indented beneath them in a lighter brown, the
+	   section in view in deep red beside a gold catchlight (Jay's picks, 2026-11-09: Codex's
+	   grouping, spacing, and active text with Claude's catchlight). */
+	.bfcs-toc {
+		position: relative;
+	}
+	.bfcs-toc > ol > li {
+		margin-bottom: 10px;
+	}
+	.bfcs .bfcs-toc a {
+		padding: 6px 10px 6px 20px;
+		font-size: 16px;
+		line-height: 1.4;
+		color: #756f66;
+		transition: color 0.18s ease;
+	}
+	.bfcs .bfcs-toc > ol > li > a {
+		font-weight: 500;
+		color: #39342d;
+	}
+	.bfcs .bfcs-toc ol ol {
+		margin: 3px 0 14px 20px;
+	}
+	.bfcs .bfcs-toc ol ol a {
+		padding: 5px 8px 5px 16px;
+		font-size: 15px;
+		font-weight: 400;
+	}
+	.bfcs .bfcs-toc a[aria-current='location'] {
+		font-weight: 600;
+		color: #a92a24;
+	}
+	.bfcs .bfcs-toc a:hover {
+		color: #4478dd;
+	}
+	.bfcs .bfcs-toc a:focus-visible {
+		outline: 2px solid var(--bf-gold);
+		outline-offset: 2px;
+		border-radius: 0;
+	}
+	/* The catchlight, a gold bead with a white glint like the catchlight a flash puts in an eye,
+	   glides to the section in view; the script sets its position. The site header uses the same bead. */
+	.bfcs-toc-marker {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 0;
+		opacity: 0;
+		pointer-events: none;
+		transition:
+			transform 0.5s cubic-bezier(0.2, 0.75, 0.2, 1),
+			height 0.5s cubic-bezier(0.2, 0.75, 0.2, 1),
+			opacity 0.3s ease;
+	}
+	.bfcs-toc-marker.is-visible {
+		opacity: 1;
+	}
+	.bfcs-toc-marker::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: calc(var(--marker-x, 20px) - 15px);
+		width: 8px;
+		height: 8px;
+		margin-top: -4px;
+		border-radius: 50%;
+		background: radial-gradient(
+			circle at 33% 30%,
+			#fff 0 1.1px,
+			#f1d27e 1.9px,
+			#c89b34 60%,
+			#94701f 100%
+		);
+		box-shadow: 0 0 0 3px rgb(200 155 52 / 13%);
+		transition: left 0.5s cubic-bezier(0.2, 0.75, 0.2, 1);
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.bfcs-toc-marker,
+		.bfcs-toc-marker::before {
+			transition: opacity 0.2s ease;
+		}
+	}
+
+	/* Dropdown list on narrower screens. */
+	.bfcs .bfcs-toc-compact a {
+		padding: 0.4rem 0.75rem 0.4rem 1.15rem;
+		font-size: 1.0625rem;
+		line-height: 1.3;
+		color: var(--muted);
+		transition: color 0.25s ease;
+	}
+	.bfcs .bfcs-toc-compact ol ol a {
+		padding-left: 2.05rem;
+		font-size: 1rem;
+	}
+	.bfcs .bfcs-toc-compact a:hover,
+	.bfcs .bfcs-toc-compact a:focus-visible {
+		color: #4478dd;
+	}
+	.bfcs .bfcs-toc-compact a.is-within {
+		color: var(--ink);
+	}
+	.bfcs .bfcs-toc-compact a[aria-current='location'] {
+		font-weight: 500;
+		color: var(--ink);
+	}
+	@media (min-width: 1440px) {
+		.bfcs-layout {
+			display: grid;
+			grid-template-columns: 13rem minmax(0, 64rem);
+			column-gap: 7rem;
+			justify-content: center;
+		}
+		.bfcs-intro {
+			grid-column: 2;
+			grid-row: 1;
+			margin: 0;
+		}
+		.bfcs-body {
+			grid-column: 2;
+			grid-row: 2;
+			margin: 0;
+		}
+		.bfcs-toc {
+			display: block;
+			grid-column: 1;
+			grid-row: 2;
+			position: sticky;
+			top: calc(var(--portfolio-header-clearance) + 1.5rem);
+			align-self: start;
+			max-height: calc(100vh - var(--portfolio-header-clearance) - 3rem);
+			margin-top: 4rem;
+			overflow-y: auto;
+		}
+		.bfcs-toc-compact {
+			display: none;
+		}
 	}
 	.bfcs h1 {
 		margin: 0 0 1rem;

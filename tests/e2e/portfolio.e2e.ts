@@ -1136,3 +1136,43 @@ test('report homepage production JavaScript requests at phone and desktop widths
 		reports.map(({ width, gzippedBytes }) => ({ width, gzippedBytes })),
 	);
 });
+
+// Source fidelity catches the destructive derivative crop; visual review still checks faces.
+for (const viewport of [{ width: 1728, height: 1117 }, { width: 3008, height: 1692 }, { width: 390, height: 844 }]) {
+	test(`portrait previews preserve source pixels at ${viewport.width}`, async ({ page }) => {
+		await page.setViewportSize(viewport);
+		for (const sample of [
+			{ route: '/red-carpet/', selector: '.rc-img[alt="Daron Acemoglu"]', file: 'src/gallery/photos/events/nobel-prizes-2024/daron-acemoglu_nobel-lectures-stockholm_2024.jpg', uncropped: false },
+			{ route: '/red-carpet/daron-acemoglu/', selector: 'a[data-pswp-width] img', file: 'src/gallery/photos/events/nobel-prizes-2024/daron-acemoglu_nobel-lectures-stockholm_2024.jpg', uncropped: true },
+			{ route: '/popular/', selector: '.popular-card img[alt^="Anne Carson"]', file: 'src/gallery/photos/events/national-book-awards/anne-carson_national-book-awards_2024.jpg', uncropped: true },
+		]) {
+			await page.goto(sample.route);
+			const img = page.locator(sample.selector).first();
+			await img.scrollIntoViewIfNeeded();
+			await expect.poll(() => img.evaluate((e: HTMLImageElement) => e.complete && e.naturalWidth > 0)).toBe(true);
+			const src = await img.evaluate((e: HTMLImageElement) => e.currentSrc);
+			const response = await page.request.get(src);
+			expect(response.ok()).toBe(true);
+			const derivative = await sharp(await response.body()).metadata();
+			const source = await sharp(sample.file).metadata();
+			const ratio = source.width! / source.height!;
+			expect(Math.abs(derivative.width! / derivative.height! - ratio)).toBeLessThan(0.005);
+			if (sample.uncropped) {
+				const bounds = await img.boundingBox();
+				expect(Math.abs(bounds!.width / bounds!.height - ratio)).toBeLessThan(0.005);
+			}
+			await img.hover();
+			expect(await img.evaluate(e => getComputedStyle(e).transform)).toBe('none');
+		}
+		await page.goto('/red-carpet/conan-obrien/');
+		const first = page.locator('a[data-pswp-width]').first();
+		const fullSize = await first.getAttribute('href');
+		await first.click();
+		await expect.poll(() => page.evaluate(() => window.pswp?.opener.isOpen)).toBe(true);
+		await expect.poll(() => page.evaluate(() => window.pswp?.currSlide?.data.src)).toBe(fullSize);
+		await page.keyboard.press('ArrowRight');
+		await expect.poll(() => page.evaluate(() => window.pswp?.currIndex)).toBe(1);
+		await page.keyboard.press('Escape');
+		await expect(page.locator('.pswp')).toBeHidden();
+	});
+}

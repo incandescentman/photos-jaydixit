@@ -1,0 +1,9 @@
+---
+// The Studio gallery held red-carpet and festival portraits, not studio shots, and was renamed
+// Actors and Filmmakers on 2026-11-09. This keeps the old address working. Delete this file when a
+// real studio gallery is added at src/gallery/photos/portraits/studio/: a page file here takes
+// priority over the gallery route and would hide the new gallery.
+export const prerender = true;
+
+return Astro.redirect('/gallery/portraits/actors-and-filmmakers', 301);
+---

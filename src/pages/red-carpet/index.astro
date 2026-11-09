@@ -20,6 +20,14 @@ interface Person {
 
 const people = rawPeople as Person[];
 
+// Framing belongs to the selected photograph, never to the person whose cover may change.
+const coverFocalPoints: Record<string, string> = {
+	'judd-apatow_sxsw_2024.jpg': '50% 0%',
+	'emma-stone_nyff.jpg': '50% 0%',
+	'lisa-gilroy_sxsw_2025.jpg': '50% 0%',
+	'nicholas-braun_toronto-film-festival.jpg': '50% 0%',
+};
+
 const galleryImageModules = withRemotePhotos(
 	import.meta.glob<{ default: ImageMetadata }>(
 		'../../gallery/photos/**/*.{jpg,jpeg,png,webp,gif}',
@@ -162,6 +170,7 @@ const personEntries = people
 			...person,
 			photoCount: deduplicated.length + remotePhotos.length,
 			sampleImage: deduplicated[0]?.metadata,
+			coverPosition: coverFocalPoints[deduplicated[0]?.filename] ?? '50% 50%',
 			sampleRemote: remotePhotos[0],
 		};
 	})
@@ -233,17 +242,14 @@ const portraitsStructuredData = {
 								class="rc-card"
 								data-search={`${person.name} ${person.bio ?? ''}`.toLowerCase()}
 							>
-								<div class="rc-frame">
+								<div class="rc-frame" style={`--cover-position: ${person.coverPosition}`}>
 									{person.sampleImage ? (
 										<Image
 											src={person.sampleImage}
 											alt={person.name}
 											width={720}
-											height={960}
 											widths={[480, 720, 960, 1440, 1920]}
 											sizes="(min-width: 1025px) 33vw, (min-width: 768px) 50vw, 100vw"
-											fit="cover"
-											position="attention"
 											class="rc-img"
 											loading={i < 4 ? 'eager' : 'lazy'}
 											fetchpriority={i < 4 ? 'high' : undefined}
@@ -254,7 +260,6 @@ const portraitsStructuredData = {
 											srcset={cldSrcset(person.sampleRemote.publicId, [480, 720, 960, 1440, 1920])}
 											sizes="(min-width: 1025px) 33vw, (min-width: 768px) 50vw, 100vw"
 											width={720}
-											height={960}
 											alt={person.name}
 											class="rc-img"
 											loading={i < 4 ? 'eager' : 'lazy'}
@@ -404,12 +409,13 @@ const portraitsStructuredData = {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
+		object-position: var(--cover-position, 50% 50%);
 		display: block;
-		transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+		transition: filter 0.2s ease;
 	}
 
 	.rc-card:hover .rc-img {
-		transform: scale(1.04);
+		filter: brightness(1.04);
 	}
 
 	.rc-meta {

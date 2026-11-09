@@ -1,0 +1,20 @@
+---
+// Photo pages from the old Studio gallery, renamed Actors and Filmmakers on 2026-11-09. The
+// publication inventory and Commons descriptions link these addresses, so they redirect to the
+// photos' new pages. Keep this file when a real studio gallery is added: its photos will have
+// their own filenames, and these five names stay in Actors and Filmmakers.
+export const prerender = true;
+
+export function getStaticPaths() {
+	return [
+		'dave-franco_sundance_2025',
+		'group-portrait_ana-de-armas-sydney-sweeney-ron-howard_2024',
+		'himesh-patel',
+		'jeremy-strong_the-apprentice-premiere_2024',
+		'sebastian-stan',
+	].map((photo) => ({ params: { photo } }));
+}
+
+const { photo } = Astro.params;
+return Astro.redirect(`/gallery/photo/portraits/actors-and-filmmakers/${photo}`, 301);
+---
