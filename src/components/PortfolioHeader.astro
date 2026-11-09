@@ -7,18 +7,19 @@ interface NavLink {
 	href: string;
 	label: string;
 	external?: boolean;
+	/** Other path prefixes that mark this link as the current section. */
+	also?: string[];
 }
 const { mode = 'inner' } = Astro.props;
 const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
 const menuId = `portfolio-menu-${mode}`;
 export const navLinks: NavLink[] = [
-	{ href: '/concerts', label: 'Concerts' },
-	{ href: '/dance', label: 'Dance' },
 	{ href: '/before-and-after', label: 'Before & After' },
 	{ href: '/about', label: 'About Me' },
 	{ href: '/blog/wikiportraits-story', label: 'Why WikiPortraits' },
 	{ href: '/nobel-2024', label: 'Covering the Nobel Prizes' },
 	{ href: '/contact', label: 'Contact' },
+	{ href: '/galleries', label: 'Galleries', also: ['/gallery'] },
 	{ href: 'https://jaydixit.com', label: 'jaydixit.com', external: true },
 ];
 const socialLinks = [
@@ -26,10 +27,12 @@ const socialLinks = [
 	{ name: 'LinkedIn', url: 'https://linkedin.com/in/jaydixit' },
 	{ name: 'Instagram', url: 'https://instagram.com/jaydixit' },
 ];
-const isActive = (href: string) => {
+const isActive = (href: string, also: string[] = []) => {
 	if (href.startsWith('http')) return false;
-	const normalizedHref = href.replace(/\/+$/, '') || '/';
-	return currentPath === normalizedHref || currentPath.startsWith(`${normalizedHref}/`);
+	return [href, ...also].some((path) => {
+		const normalized = path.replace(/\/+$/, '') || '/';
+		return currentPath === normalized || currentPath.startsWith(`${normalized}/`);
+	});
 };
 ---
 
@@ -40,12 +43,12 @@ const isActive = (href: string) => {
 	>
 	<nav class="portfolio-nav-primary" aria-label="Primary navigation">
 		{
-			navLinks.map(({ href, label, external }) => (
+			navLinks.map(({ href, label, external, also }) => (
 				<a
 					href={href}
 					target={external ? '_blank' : undefined}
 					rel={external ? 'noopener noreferrer' : undefined}
-					aria-current={isActive(href) ? 'page' : undefined}
+					aria-current={isActive(href, also) ? 'page' : undefined}
 				>
 					{label} {external && <span aria-hidden="true">↗</span>}
 				</a>
@@ -68,13 +71,13 @@ const isActive = (href: string) => {
 	>
 	<nav class="portfolio-menu" id={menuId} data-portfolio-menu-panel aria-label="Site menu" hidden>
 		{
-			navLinks.map(({ href, label, external }) => (
+			navLinks.map(({ href, label, external, also }) => (
 				<a
 					href={href}
 					data-portfolio-menu-link
 					target={external ? '_blank' : undefined}
 					rel={external ? 'noopener noreferrer' : undefined}
-					aria-current={isActive(href) ? 'page' : undefined}
+					aria-current={isActive(href, also) ? 'page' : undefined}
 				>
 					{label} <span aria-hidden="true">{external ? '↗' : '→'}</span>
 				</a>

@@ -1,0 +1,369 @@
+---
+// The content is generated from the cheat sheet in portable-flash-guide by
+// /Users/jay/Dropbox/github/portable-flash-guide/scripts/build-photos-site-copy.py.
+// Edit the source page there and rerun the script; do not edit the body file here.
+import MainLayout from '../../layouts/MainLayout.astro';
+import PhotoSwipeLightbox from '../../components/PortfolioLightbox.astro';
+import body from '../../data/bounce-flash-cheat-sheet-body.html?raw';
+---
+
+<MainLayout
+	title="Bounce Flash Cheat Sheet"
+	description="Notes from PhotoUno Portable Flash with Patricia Burmicky."
+	useArnoPro
+	photoFooter
+>
+	<div class="bfcs">
+		<div class="bfcs-wrap" set:html={body} />
+	</div>
+	<PhotoSwipeLightbox
+		gallerySelector=".bfcs"
+		childrenSelector=".photo a"
+		options={{ escKey: true }}
+	/>
+</MainLayout>
+
+<style is:global>
+	/* Bounce Flash Cheat Sheet in the site's type and colors: Newsreader headings, Arno reading
+	   text at the site's 26px minimum, Instrument Sans labels and captions. Gold marks light in
+	   the diagrams; Chinagraph Red marks the flash head. */
+	.bfcs {
+		--bf-panel: #ffffff;
+		--bf-gold: #c89b34;
+		padding: calc(var(--portfolio-header-clearance) + 1.5rem) 0 clamp(4rem, 8vw, 8rem);
+		color: var(--ink);
+		font-family: var(--arno-text);
+		font-size: 26px;
+		line-height: 1.55;
+	}
+	.bfcs-wrap {
+		max-width: 64rem;
+		margin: 0 auto;
+		padding: 0 max(1.25rem, env(safe-area-inset-left, 0px));
+	}
+	.bfcs h1 {
+		margin: 0 0 1rem;
+		font-family: var(--serif);
+		font-size: clamp(3.75rem, 6.5vw, 6.5rem);
+		font-weight: 400;
+		line-height: 1;
+		letter-spacing: -0.01em;
+		text-wrap: balance;
+	}
+	.bfcs .lede {
+		margin: 0;
+		max-width: 40rem;
+		font-family: var(--arno-subhead);
+		font-size: 28px;
+		line-height: 1.4;
+		color: var(--muted);
+	}
+	.bfcs h2 {
+		margin: 4rem 0 1rem;
+		padding-top: 1rem;
+		border-top: 1px solid var(--ink);
+		font-family: var(--serif);
+		font-size: clamp(2rem, 3vw, 3.25rem);
+		font-weight: 400;
+		line-height: 1.05;
+		text-wrap: balance;
+	}
+	.bfcs #h-butterfly,
+	.bfcs #h-rembrandt,
+	.bfcs #h-choosing {
+		margin-top: 5rem;
+	}
+	.bfcs h3 {
+		margin: 0;
+		font-family: var(--serif);
+		font-size: clamp(1.75rem, 2.4vw, 2.25rem);
+		font-weight: 400;
+		line-height: 1.05;
+	}
+	.bfcs a {
+		color: inherit;
+		text-decoration: underline;
+		text-decoration-color: color-mix(in srgb, var(--muted) 60%, transparent);
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.18em;
+	}
+	.bfcs a:hover {
+		text-decoration-color: var(--ink);
+	}
+	.bfcs a:focus-visible {
+		outline: 2px solid var(--portfolio-red);
+		outline-offset: 3px;
+		border-radius: 2px;
+	}
+	.bfcs p {
+		margin: 0;
+	}
+	.bfcs .definition {
+		margin: 0 0 1.5rem;
+		max-width: 40rem;
+	}
+	.bfcs .condition {
+		margin: 0 0 1.25rem;
+		max-width: 40rem;
+		color: var(--muted);
+	}
+	.bfcs .notes {
+		max-width: 40rem;
+		margin-top: 1rem;
+	}
+	.bfcs .notes p {
+		margin: 0 0 1rem;
+	}
+	.bfcs .notes ol {
+		margin: -0.4rem 0 1rem;
+		padding-left: 1.6em;
+		list-style: decimal;
+	}
+	.bfcs .notes li + li {
+		margin-top: 0.15rem;
+	}
+	.bfcs figure {
+		margin: 0;
+	}
+	.bfcs figure svg {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+	.bfcs figcaption {
+		margin-top: 0.6rem;
+		font-family: var(--sans);
+		font-size: 1rem;
+		line-height: 1.45;
+		color: var(--muted);
+	}
+
+	/* At a glance */
+	.bfcs .table-wrap {
+		overflow-x: auto;
+		margin-top: 1rem;
+	}
+	.bfcs table {
+		width: 100%;
+		min-width: 44rem;
+		border-collapse: collapse;
+		font-size: 22px;
+		line-height: 1.35;
+	}
+	.bfcs th,
+	.bfcs td {
+		padding: 0.7rem 1rem 0.7rem 0;
+		text-align: left;
+		vertical-align: top;
+		border-bottom: 1px solid var(--hairline);
+	}
+	.bfcs thead th {
+		padding-bottom: 0.5rem;
+		font-family: var(--sans);
+		font-size: 0.8rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--muted);
+		border-bottom: 1px solid var(--ink);
+	}
+	.bfcs tbody th {
+		font-weight: 600;
+		white-space: nowrap;
+	}
+	.bfcs .mono {
+		white-space: nowrap;
+		font-variant-numeric: lining-nums tabular-nums;
+	}
+
+	/* Reading the settings */
+	.bfcs .legend-figs {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 26rem));
+		gap: 1.5rem 2.5rem;
+		margin-top: 1rem;
+	}
+	.bfcs .legend-notes {
+		margin: 1.25rem 0 0;
+		padding-left: 1.1em;
+		max-width: 40rem;
+		list-style: disc;
+	}
+
+	/* Setup panels */
+	.bfcs .setup {
+		margin-top: 1.5rem;
+		padding: 1.4rem 1.5rem 1.6rem;
+		background: var(--bf-panel);
+		border: 1px solid var(--hairline);
+		border-radius: 2px;
+	}
+	.bfcs .setup-top {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem 1.5rem;
+		padding-bottom: 1.1rem;
+		margin-bottom: 1.1rem;
+		border-bottom: 1px solid var(--hairline);
+	}
+	.bfcs .setup-gallery {
+		background: none;
+		border: 0;
+		padding: 0;
+	}
+	.bfcs .photos-note {
+		margin: 0 0 0.7rem;
+		font-family: var(--sans);
+		font-size: 1rem;
+		line-height: 1.45;
+		color: var(--muted);
+	}
+	.bfcs .photos-note strong {
+		font-weight: 600;
+		color: var(--ink);
+	}
+	.bfcs .readout {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem 2rem;
+	}
+	.bfcs .dial {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+	}
+	.bfcs .dial .swivel-dial {
+		display: block;
+		flex: none;
+		width: 7rem;
+		height: 7rem;
+	}
+	.bfcs .dial svg {
+		flex: none;
+		width: 4.25rem;
+		height: auto;
+	}
+	.bfcs .dial svg.dial-h {
+		width: auto;
+		height: 5.5rem;
+	}
+	.bfcs .dial-label {
+		display: block;
+		font-family: var(--sans);
+		font-size: 0.78rem;
+		font-weight: 600;
+		line-height: 1;
+		letter-spacing: 0.09em;
+		text-transform: uppercase;
+		color: var(--muted);
+	}
+	.bfcs .dial-value {
+		display: block;
+		margin-top: 0.35rem;
+		font-family: var(--serif);
+		font-size: 2rem;
+		line-height: 1;
+		white-space: nowrap;
+		font-variant-numeric: lining-nums;
+	}
+	.bfcs .setup-figs {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		align-items: stretch;
+		gap: 1.5rem 1.75rem;
+		margin: 1.25rem 0 0;
+	}
+	.bfcs .setup-figs + .setup-photos,
+	.bfcs .setup-figs + .photos-note {
+		margin-top: 1.4rem;
+	}
+	.bfcs .setup-figs figure {
+		flex: 0 1 auto;
+		display: flex;
+		flex-direction: column;
+	}
+	.bfcs .setup-figs figcaption {
+		margin-top: auto;
+		padding-top: 0.5rem;
+	}
+	.bfcs .fig-overview img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+	.bfcs .ov-square,
+	.bfcs .ov-wide {
+		width: 100%;
+	}
+	.bfcs .ov-square img {
+		aspect-ratio: 3 / 2;
+		object-fit: cover;
+	}
+	.bfcs #butterfly-forward .fig-overview img {
+		object-position: 50% 49%;
+	}
+	.bfcs #butterfly-backward .fig-overview img {
+		object-position: 50% 39%;
+	}
+	.bfcs #butterfly-backward-wall .fig-overview img {
+		object-position: 50% 40%;
+	}
+
+	/* Class photos */
+	.bfcs .photo-row {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1rem 1.25rem;
+	}
+	.bfcs .photo {
+		margin: 0;
+	}
+	.bfcs .photo a {
+		display: block;
+		cursor: zoom-in;
+	}
+	.bfcs .photo:only-child {
+		grid-column: 1 / -1;
+		justify-self: center;
+		width: calc(50% - 0.625rem);
+	}
+	.bfcs .photo img {
+		display: block;
+		width: 100%;
+		height: auto;
+		border-radius: 2px;
+	}
+	.bfcs .ambient-comparison {
+		margin: 1.5rem 0;
+		max-width: 100%;
+	}
+	.bfcs .ambient-comparison img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	@media (max-width: 760px) {
+		.bfcs h1 {
+			font-size: clamp(2.75rem, 12vw, 3.75rem);
+		}
+		.bfcs .legend-figs {
+			grid-template-columns: 1fr;
+		}
+		.bfcs .setup {
+			padding: 1.1rem 1rem 1.2rem;
+		}
+		.bfcs .setup-figs figure {
+			width: 100%;
+		}
+		.bfcs .photo-row {
+			grid-template-columns: minmax(0, 1fr);
+		}
+		.bfcs .photo:only-child {
+			width: 100%;
+		}
+	}
+</style>

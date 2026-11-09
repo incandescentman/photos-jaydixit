@@ -32,7 +32,7 @@ const routes: SmokeRoute[] = [
 	},
 	{
 		name: 'gallery index',
-		path: '/gallery/',
+		path: '/galleries/',
 		title: /Photo Galleries — Jay Dixit/,
 		heading: 'Photo Galleries',
 		minImages: 4,
@@ -216,7 +216,7 @@ test('gallery heading clears the fixed header across navigation breakpoints', as
 	page.on('pageerror', (error) => errors.push(error.message));
 	for (const width of [390, 820, 821, 1440, 1500, 1501, 1536, 1680, 2016, 2560]) {
 		await page.setViewportSize({ width, height: 1000 });
-		await page.goto('/gallery/');
+		await page.goto('/galleries/');
 		await page.evaluate(() => document.fonts.ready);
 		const bounds = await page.evaluate(() => {
 			const header = document.querySelector('[data-portfolio-header]')!;
@@ -724,7 +724,7 @@ for (const width of [390, 1440]) {
 		page.on('console', (message) => {
 			if (message.type() === 'error') errors.push(message.text());
 		});
-		await page.goto('/gallery/');
+		await page.goto('/galleries/');
 		await waitForInitialImages(page);
 		// Derivatives preserve originals; only desktop frames crop the display.
 		// A CSS-only check would miss a crop already baked into the derivative.

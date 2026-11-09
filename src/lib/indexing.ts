@@ -4,6 +4,7 @@ export function isPublicSearchPage(pathname: string) {
 	const path = pathname.replace(/\/+$/, '') || '/';
 	const excluded = new Set([
 		'/before-after',
+		'/gallery',
 		'/photo-wall',
 		'/prototype-documentary',
 		'/salient-photography-demo',
