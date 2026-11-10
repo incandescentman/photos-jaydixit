@@ -1,0 +1,2747 @@
+#+title: Bokeh Comparison Sources and Verification
+
+* Scope
+Personal photographic research only. Downloads are retained unchanged, with source SHA-256 hashes. No publication or redistribution. Photographs only; no video frames. Camera resolution and review-export resolution are distinguished in each record. A 100% view means one downloaded source pixel per display pixel; it cannot restore missing camera detail.
+
+* Collection
+- Individual photographs :: 51
+- Comparison pairs :: 12
+- Sigma 85mm f/1.4 DG DN Art :: 8 individual photographs
+- Sony FE 85mm f/1.4 GM II :: 10 individual photographs
+- Sigma 85mm f/1.2 DG Art :: 10 individual photographs
+- SongRaw AF 85mm f/1.2 MS (Sony E) :: 10 individual photographs
+- Sony FE 135mm f/1.8 GM :: 3 individual photographs
+- Sony FE 50mm f/1.2 GM :: 7 individual photographs
+- Sony FE 85mm f/1.8 :: 3 individual photographs
+
+* Evidence gaps
+No qualifying photographic same-scene bokeh comparison located for Sigma 85mm f/1.2 versus DG DN f/1.4, or Sigma 85mm f/1.2 versus Sony GM II. Abbott's Sigma f/1.2 cross-lens panels are sharpness chart comparisons, not background-rendering comparisons.
+
+No usable SongRaw-versus-Sigma matched-aperture photograph pair found. Video-only evidence was deliberately excluded.
+
+Five GM II/original GM scene pairs are 800 px web exports. They reveal background shapes but cannot support camera-pixel-level examination.
+
+SonyAlpha same-lens-model source captions were not enough to establish comparison suitability: four downloaded candidates are retained in excludedImages with the visual rejection reason and do not appear as A/B pairs.
+
+Sony 85mm f/1.8 baseline versus original GM: three wide-open pairs and three near-aperture pairs found. The source labels the stopped-down GM f/1.7, so these do not fulfill an exact f/1.8 match. All are 800 px web exports.
+
+* Comparisons
+
+** Garden statue — Sigma / GM II
+- Classification :: Approximate match
+- Section :: matched
+- Images :: abbott-statue-sony-gmii, abbott-statue-sigma-dg-dn
+Published still-image comparison composite, not a video grab. Both f/1.4, ISO 100, source-reported in embedded Lightroom labels. Sony 1/1600 s; Sigma 1/2000 s. Framing and foreground flower position differ. Display crops omit the upper label-covered strip; full original opens the unchanged composite. About 1004 x 605 source pixels per view, not full-resolution camera images. Camera position, focus distance and processing equality unverified.
+
+** Forest 4.0 m — GM II / original GM
+- Classification :: Approximate match
+- Section :: matched
+- Images :: reeve-forest-4p0-m-sony-85-gm-ii, reeve-forest-4p0-m-sony-85-gm
+Same-scene comparison published by Bastian Kratzke; Sony A7 III, f/1.4, stated focus distance 4.0 m. GM II has a wider field of view. These are the largest uncropped full-frame exports linked for this test (800 px), not full-resolution camera originals. Processing/exposure and precise camera position not fully documented; inspect differences cautiously.
+
+** Forest 4.7 m — GM II / original GM
+- Classification :: Approximate match
+- Section :: matched
+- Images :: reeve-forest-4p7-m-sony-85-gm-ii, reeve-forest-4p7-m-sony-85-gm
+Same-scene comparison published by Bastian Kratzke; Sony A7 III, f/1.4, stated focus distance 4.7 m. GM II has a wider field of view. These are the largest uncropped full-frame exports linked for this test (800 px), not full-resolution camera originals. Processing/exposure and precise camera position not fully documented; inspect differences cautiously.
+
+** Forest 4.5 m — GM II / original GM
+- Classification :: Approximate match
+- Section :: matched
+- Images :: reeve-forest-4p5-m-sony-85-gm-ii, reeve-forest-4p5-m-sony-85-gm
+Same-scene comparison published by Bastian Kratzke; Sony A7 III, f/1.4, stated focus distance 4.5 m. GM II has a wider field of view. These are the largest uncropped full-frame exports linked for this test (800 px), not full-resolution camera originals. Processing/exposure and precise camera position not fully documented; inspect differences cautiously.
+
+** City lights 2.3 m — GM II / original GM
+- Classification :: Approximate match
+- Section :: matched
+- Images :: reeve-city-lights-2p3-m-sony-85-gm-ii, reeve-city-lights-2p3-m-sony-85-gm
+Same-scene comparison published by Bastian Kratzke; Sony A7 III, f/1.4, stated focus distance 2.3 m. GM II has a wider field of view. These are the largest uncropped full-frame exports linked for this test (800 px), not full-resolution camera originals. Processing/exposure and precise camera position not fully documented; inspect differences cautiously.
+
+** City lights 5.3 m — GM II / original GM
+- Classification :: Approximate match
+- Section :: matched
+- Images :: reeve-city-lights-5p3-m-sony-85-gm-ii, reeve-city-lights-5p3-m-sony-85-gm
+Same-scene comparison published by Bastian Kratzke; Sony A7 III, f/1.4, stated focus distance 5.3 m. GM II has a wider field of view. These are the largest uncropped full-frame exports linked for this test (800 px), not full-resolution camera originals. Processing/exposure and precise camera position not fully documented; inspect differences cautiously.
+
+** Roses — Sony 85 f/1.8 / original GM wide open
+- Classification :: Approximate match
+- Section :: wide
+- Images :: peters-roses-1p8, peters-roses-1p4
+Source-labeled comparison scene: half-body portrait distance, busy close background and foreground branch. EXIF and source both identify the stopped-down GM aperture as f/1.7, not f/1.8. 800 px published full-frame web export, not camera-resolution original. Sony A7 II, ISO 100; exposure differs as recorded in EXIF. Precise camera position, focus distance and identical processing are not fully documented. Wide-open comparison: f/1.8 versus f/1.4; includes different blur quantity.
+
+** Roses — near aperture: f/1.8 / f/1.7
+- Classification :: Approximate match
+- Section :: matched
+- Images :: peters-roses-1p8, peters-roses-1p7
+Source-labeled comparison scene: half-body portrait distance, busy close background and foreground branch. EXIF and source both identify the stopped-down GM aperture as f/1.7, not f/1.8. 800 px published full-frame web export, not camera-resolution original. Sony A7 II, ISO 100; exposure differs as recorded in EXIF. Precise camera position, focus distance and identical processing are not fully documented. Near-aperture comparison only: f/1.8 versus source-reported f/1.7, NOT identical aperture.
+
+** Tree — Sony 85 f/1.8 / original GM wide open
+- Classification :: Approximate match
+- Section :: wide
+- Images :: peters-tree-1p8, peters-tree-1p4
+Source-labeled comparison scene: full-body portrait distance, structured foliage and transition zone. EXIF and source both identify the stopped-down GM aperture as f/1.7, not f/1.8. 800 px published full-frame web export, not camera-resolution original. Sony A7 II, ISO 100; exposure differs as recorded in EXIF. Precise camera position, focus distance and identical processing are not fully documented. Wide-open comparison: f/1.8 versus f/1.4; includes different blur quantity.
+
+** Tree — near aperture: f/1.8 / f/1.7
+- Classification :: Approximate match
+- Section :: matched
+- Images :: peters-tree-1p8, peters-tree-1p7
+Source-labeled comparison scene: full-body portrait distance, structured foliage and transition zone. EXIF and source both identify the stopped-down GM aperture as f/1.7, not f/1.8. 800 px published full-frame web export, not camera-resolution original. Sony A7 II, ISO 100; exposure differs as recorded in EXIF. Precise camera position, focus distance and identical processing are not fully documented. Near-aperture comparison only: f/1.8 versus source-reported f/1.7, NOT identical aperture.
+
+** Plant — Sony 85 f/1.8 / original GM wide open
+- Classification :: Approximate match
+- Section :: wide
+- Images :: peters-plant-1p8, peters-plant-1p4
+Source-labeled comparison scene: minimum focusing distance, plant close-up. EXIF and source both identify the stopped-down GM aperture as f/1.7, not f/1.8. 800 px published full-frame web export, not camera-resolution original. Sony A7 II, ISO 100; exposure differs as recorded in EXIF. Precise camera position, focus distance and identical processing are not fully documented. Wide-open comparison: f/1.8 versus f/1.4; includes different blur quantity.
+
+** Plant — near aperture: f/1.8 / f/1.7
+- Classification :: Approximate match
+- Section :: matched
+- Images :: peters-plant-1p8, peters-plant-1p7
+Source-labeled comparison scene: minimum focusing distance, plant close-up. EXIF and source both identify the stopped-down GM aperture as f/1.7, not f/1.8. 800 px published full-frame web export, not camera-resolution original. Sony A7 II, ISO 100; exposure differs as recorded in EXIF. Precise camera position, focus distance and identical processing are not fully documented. Near-aperture comparison only: f/1.8 versus source-reported f/1.7, NOT identical aperture.
+
+* Photograph records
+
+** reeve-forest-4p0-m-sony-85-gm-ii
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/comparisons/reeve-forest-4p0-m/sony-85-gm-ii.jpg][comparisons/reeve-forest-4p0-m/sony-85-gm-ii.jpg]]
+- Comparison group :: Forest 4.0 m — GM II / original GM
+- Lens :: Sony FE 85mm f/1.4 GM II
+- Aperture :: f/1.4
+- Resolution :: 800 × 533
+- Photographer / reviewer :: Bastian Kratzke
+- Source page :: [[https://phillipreeve.net/blog/review-sony-fe-85mm-1-4-gm-mk-ii-a-worthy-update/][Source page]]
+- Original image URL :: [[https://phillipreeve.net/blog/wp-content/uploads/2024/11/Bokeh_Comp_3_GMII_uncropped.jpg][Downloaded image]]
+- Verification :: Source-reported lens and aperture; EXIF unavailable or incomplete
+- SHA-256 :: ~7e8938b73ba24dab27a932d18e5873f1d6b33846cbce194a9c6ed376b0832f56~
+- EXIF ImageWidth :: 800
+- EXIF ImageHeight :: 533
+Same-scene comparison published by Bastian Kratzke; Sony A7 III, f/1.4, stated focus distance 4.0 m. GM II has a wider field of view. These are the largest uncropped full-frame exports linked for this test (800 px), not full-resolution camera originals. Processing/exposure and precise camera position not fully documented; inspect differences cautiously.
+
+** reeve-forest-4p0-m-sony-85-gm
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/comparisons/reeve-forest-4p0-m/sony-85-gm.jpg][comparisons/reeve-forest-4p0-m/sony-85-gm.jpg]]
+- Comparison group :: Forest 4.0 m — GM II / original GM
+- Lens :: Sony FE 85mm f/1.4 GM
+- Aperture :: f/1.4
+- Resolution :: 800 × 533
+- Photographer / reviewer :: Bastian Kratzke
+- Source page :: [[https://phillipreeve.net/blog/review-sony-fe-85mm-1-4-gm-mk-ii-a-worthy-update/][Source page]]
+- Original image URL :: [[https://phillipreeve.net/blog/wp-content/uploads/2024/11/Bokeh_Comp_3_GM.jpg][Downloaded image]]
+- Verification :: Source-reported lens and aperture; EXIF unavailable or incomplete
+- SHA-256 :: ~46bde31a4e52ed6b4dbafb925ce5d9f6c037f201549029b546b9d51a6d7504ef~
+- EXIF ImageWidth :: 800
+- EXIF ImageHeight :: 533
+Same-scene comparison published by Bastian Kratzke; Sony A7 III, f/1.4, stated focus distance 4.0 m. GM II has a wider field of view. These are the largest uncropped full-frame exports linked for this test (800 px), not full-resolution camera originals. Processing/exposure and precise camera position not fully documented; inspect differences cautiously.
+
+** reeve-forest-4p7-m-sony-85-gm-ii
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/comparisons/reeve-forest-4p7-m/sony-85-gm-ii.jpg][comparisons/reeve-forest-4p7-m/sony-85-gm-ii.jpg]]
+- Comparison group :: Forest 4.7 m — GM II / original GM
+- Lens :: Sony FE 85mm f/1.4 GM II
+- Aperture :: f/1.4
+- Resolution :: 800 × 533
+- Photographer / reviewer :: Bastian Kratzke
+- Source page :: [[https://phillipreeve.net/blog/review-sony-fe-85mm-1-4-gm-mk-ii-a-worthy-update/][Source page]]
+- Original image URL :: [[https://phillipreeve.net/blog/wp-content/uploads/2024/11/Bokeh_Comp_2_GMII_uncropped.jpg][Downloaded image]]
+- Verification :: Source-reported lens and aperture; EXIF unavailable or incomplete
+- SHA-256 :: ~d0e4ebcb1dbdee7da47275284f40bedae9a63ca4cd15eb3d3175cbe2e653905b~
+- EXIF ImageWidth :: 800
+- EXIF ImageHeight :: 533
+Same-scene comparison published by Bastian Kratzke; Sony A7 III, f/1.4, stated focus distance 4.7 m. GM II has a wider field of view. These are the largest uncropped full-frame exports linked for this test (800 px), not full-resolution camera originals. Processing/exposure and precise camera position not fully documented; inspect differences cautiously.
+
+** reeve-forest-4p7-m-sony-85-gm
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/comparisons/reeve-forest-4p7-m/sony-85-gm.jpg][comparisons/reeve-forest-4p7-m/sony-85-gm.jpg]]
+- Comparison group :: Forest 4.7 m — GM II / original GM
+- Lens :: Sony FE 85mm f/1.4 GM
+- Aperture :: f/1.4
+- Resolution :: 800 × 533
+- Photographer / reviewer :: Bastian Kratzke
+- Source page :: [[https://phillipreeve.net/blog/review-sony-fe-85mm-1-4-gm-mk-ii-a-worthy-update/][Source page]]
+- Original image URL :: [[https://phillipreeve.net/blog/wp-content/uploads/2024/11/Bokeh_Comp_2_GM.jpg][Downloaded image]]
+- Verification :: Source-reported lens and aperture; EXIF unavailable or incomplete
+- SHA-256 :: ~2ec734b5e488473714e5a3cad8c80dd2ebe3db5dda1fbd36e93bfc3e2982033e~
+- EXIF ImageWidth :: 800
+- EXIF ImageHeight :: 533
+Same-scene comparison published by Bastian Kratzke; Sony A7 III, f/1.4, stated focus distance 4.7 m. GM II has a wider field of view. These are the largest uncropped full-frame exports linked for this test (800 px), not full-resolution camera originals. Processing/exposure and precise camera position not fully documented; inspect differences cautiously.
+
+** reeve-forest-4p5-m-sony-85-gm-ii
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/comparisons/reeve-forest-4p5-m/sony-85-gm-ii.jpg][comparisons/reeve-forest-4p5-m/sony-85-gm-ii.jpg]]
+- Comparison group :: Forest 4.5 m — GM II / original GM
+- Lens :: Sony FE 85mm f/1.4 GM II
+- Aperture :: f/1.4
+- Resolution :: 800 × 533
+- Photographer / reviewer :: Bastian Kratzke
+- Source page :: [[https://phillipreeve.net/blog/review-sony-fe-85mm-1-4-gm-mk-ii-a-worthy-update/][Source page]]
+- Original image URL :: [[https://phillipreeve.net/blog/wp-content/uploads/2024/11/Bokeh_Comp_1_GMII_uncropped.jpg][Downloaded image]]
+- Verification :: Source-reported lens and aperture; EXIF unavailable or incomplete
+- SHA-256 :: ~aa23b36effc7465659d2d41f4a6e2f88af4fa15a83e24ed6ab5ce02b879c2678~
+- EXIF ImageWidth :: 800
+- EXIF ImageHeight :: 533
+Same-scene comparison published by Bastian Kratzke; Sony A7 III, f/1.4, stated focus distance 4.5 m. GM II has a wider field of view. These are the largest uncropped full-frame exports linked for this test (800 px), not full-resolution camera originals. Processing/exposure and precise camera position not fully documented; inspect differences cautiously.
+
+** reeve-forest-4p5-m-sony-85-gm
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/comparisons/reeve-forest-4p5-m/sony-85-gm.jpg][comparisons/reeve-forest-4p5-m/sony-85-gm.jpg]]
+- Comparison group :: Forest 4.5 m — GM II / original GM
+- Lens :: Sony FE 85mm f/1.4 GM
+- Aperture :: f/1.4
+- Resolution :: 800 × 533
+- Photographer / reviewer :: Bastian Kratzke
+- Source page :: [[https://phillipreeve.net/blog/review-sony-fe-85mm-1-4-gm-mk-ii-a-worthy-update/][Source page]]
+- Original image URL :: [[https://phillipreeve.net/blog/wp-content/uploads/2024/11/Bokeh_Comp_1_GM.jpg][Downloaded image]]
+- Verification :: Source-reported lens and aperture; EXIF unavailable or incomplete
+- SHA-256 :: ~e8ffb2a0eb200668403d3d088de257ecfc922652b7b8ed4606c45104c98e2db0~
+- EXIF ImageWidth :: 800
+- EXIF ImageHeight :: 533
+Same-scene comparison published by Bastian Kratzke; Sony A7 III, f/1.4, stated focus distance 4.5 m. GM II has a wider field of view. These are the largest uncropped full-frame exports linked for this test (800 px), not full-resolution camera originals. Processing/exposure and precise camera position not fully documented; inspect differences cautiously.
+
+** reeve-city-lights-2p3-m-sony-85-gm-ii
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/comparisons/reeve-city-lights-2p3-m/sony-85-gm-ii.jpg][comparisons/reeve-city-lights-2p3-m/sony-85-gm-ii.jpg]]
+- Comparison group :: City lights 2.3 m — GM II / original GM
+- Lens :: Sony FE 85mm f/1.4 GM II
+- Aperture :: f/1.4
+- Resolution :: 800 × 533
+- Photographer / reviewer :: Bastian Kratzke
+- Source page :: [[https://phillipreeve.net/blog/review-sony-fe-85mm-1-4-gm-mk-ii-a-worthy-update/][Source page]]
+- Original image URL :: [[https://phillipreeve.net/blog/wp-content/uploads/2024/11/Bokeh_Comp_7_GMII_uncropped.jpg][Downloaded image]]
+- Verification :: EXIF aperture; lens identified by source labels and EXIF
+- SHA-256 :: ~ed0c0c04883de2b46587e586efed9e465661c941bf97d32e61ddcd1fb046c88e~
+- EXIF LensModel :: FE 85mm F1.4 GM II
+- EXIF LensID :: FE 85mm F1.4 GM II
+- EXIF FNumber :: 1.4
+- EXIF Model :: ILCE-7M3
+- EXIF ExposureTime :: 1.6
+- EXIF ISO :: 100
+- EXIF FocalLength :: 85
+- EXIF DateTimeOriginal :: 2024:11:23 18:16:19
+- EXIF ImageWidth :: 800
+- EXIF ImageHeight :: 533
+- EXIF Software :: Adobe Photoshop Lightroom Classic 14.0.1 (Windows)
+Same-scene comparison published by Bastian Kratzke; Sony A7 III, f/1.4, stated focus distance 2.3 m. GM II has a wider field of view. These are the largest uncropped full-frame exports linked for this test (800 px), not full-resolution camera originals. Processing/exposure and precise camera position not fully documented; inspect differences cautiously.
+
+** reeve-city-lights-2p3-m-sony-85-gm
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/comparisons/reeve-city-lights-2p3-m/sony-85-gm.jpg][comparisons/reeve-city-lights-2p3-m/sony-85-gm.jpg]]
+- Comparison group :: City lights 2.3 m — GM II / original GM
+- Lens :: Sony FE 85mm f/1.4 GM
+- Aperture :: f/1.4
+- Resolution :: 800 × 533
+- Photographer / reviewer :: Bastian Kratzke
+- Source page :: [[https://phillipreeve.net/blog/review-sony-fe-85mm-1-4-gm-mk-ii-a-worthy-update/][Source page]]
+- Original image URL :: [[https://phillipreeve.net/blog/wp-content/uploads/2024/11/Bokeh_Comp_7_GMI.jpg][Downloaded image]]
+- Verification :: Source-reported lens and aperture; EXIF unavailable or incomplete
+- SHA-256 :: ~1ff3558ec87139bc698b4ceb7ba51083ef0095ace8a557212e159bed4143b8f9~
+- EXIF ImageWidth :: 800
+- EXIF ImageHeight :: 533
+Same-scene comparison published by Bastian Kratzke; Sony A7 III, f/1.4, stated focus distance 2.3 m. GM II has a wider field of view. These are the largest uncropped full-frame exports linked for this test (800 px), not full-resolution camera originals. Processing/exposure and precise camera position not fully documented; inspect differences cautiously.
+
+** reeve-city-lights-5p3-m-sony-85-gm-ii
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/comparisons/reeve-city-lights-5p3-m/sony-85-gm-ii.jpg][comparisons/reeve-city-lights-5p3-m/sony-85-gm-ii.jpg]]
+- Comparison group :: City lights 5.3 m — GM II / original GM
+- Lens :: Sony FE 85mm f/1.4 GM II
+- Aperture :: f/1.4
+- Resolution :: 800 × 533
+- Photographer / reviewer :: Bastian Kratzke
+- Source page :: [[https://phillipreeve.net/blog/review-sony-fe-85mm-1-4-gm-mk-ii-a-worthy-update/][Source page]]
+- Original image URL :: [[https://phillipreeve.net/blog/wp-content/uploads/2024/11/Bokeh_Comp_8_GMII_uncropped.jpg][Downloaded image]]
+- Verification :: EXIF aperture; lens identified by source labels and EXIF
+- SHA-256 :: ~12868d39a10b47071c7b5bb9bf4b05bc161768c1e9946670a40c531074b28820~
+- EXIF LensModel :: FE 85mm F1.4 GM II
+- EXIF LensID :: FE 85mm F1.4 GM II
+- EXIF FNumber :: 1.4
+- EXIF Model :: ILCE-7M3
+- EXIF ExposureTime :: 0.3333333333
+- EXIF ISO :: 100
+- EXIF FocalLength :: 85
+- EXIF DateTimeOriginal :: 2024:11:23 18:25:37
+- EXIF ImageWidth :: 800
+- EXIF ImageHeight :: 533
+- EXIF Software :: Adobe Photoshop Lightroom Classic 14.0.1 (Windows)
+Same-scene comparison published by Bastian Kratzke; Sony A7 III, f/1.4, stated focus distance 5.3 m. GM II has a wider field of view. These are the largest uncropped full-frame exports linked for this test (800 px), not full-resolution camera originals. Processing/exposure and precise camera position not fully documented; inspect differences cautiously.
+
+** reeve-city-lights-5p3-m-sony-85-gm
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/comparisons/reeve-city-lights-5p3-m/sony-85-gm.jpg][comparisons/reeve-city-lights-5p3-m/sony-85-gm.jpg]]
+- Comparison group :: City lights 5.3 m — GM II / original GM
+- Lens :: Sony FE 85mm f/1.4 GM
+- Aperture :: f/1.4
+- Resolution :: 800 × 533
+- Photographer / reviewer :: Bastian Kratzke
+- Source page :: [[https://phillipreeve.net/blog/review-sony-fe-85mm-1-4-gm-mk-ii-a-worthy-update/][Source page]]
+- Original image URL :: [[https://phillipreeve.net/blog/wp-content/uploads/2024/11/Bokeh_Comp_8_GMI.jpg][Downloaded image]]
+- Verification :: Source-reported lens and aperture; EXIF unavailable or incomplete
+- SHA-256 :: ~c856b4ca1cc67901409bbd51825aee6f6795efebf66e54830f3d131466b941e5~
+- EXIF ImageWidth :: 800
+- EXIF ImageHeight :: 533
+Same-scene comparison published by Bastian Kratzke; Sony A7 III, f/1.4, stated focus distance 5.3 m. GM II has a wider field of view. These are the largest uncropped full-frame exports linked for this test (800 px), not full-resolution camera originals. Processing/exposure and precise camera position not fully documented; inspect differences cautiously.
+
+** abbott-statue-sony-gmii
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/comparisons/abbott-sigma-gmii/source-composite.jpg][comparisons/abbott-sigma-gmii/source-composite.jpg]]
+- Comparison group :: Garden statue — Sigma / GM II
+- Lens :: Sony FE 85mm f/1.4 GM II
+- Aperture :: f/1.4
+- Resolution :: 2048 × 1152
+- Photographer / reviewer :: Dustin Abbott
+- Source page :: [[https://dustinabbott.net/2024/08/sony-fe-85mm-f1-4-gm-ii-review/][Source page]]
+- Original image URL :: [[https://dustinabbott.net/wp-content/uploads/2024/08/44-Sigma.jpg][Downloaded image]]
+- Verification :: Source-reported lens/aperture/shutter/ISO visible in published Lightroom comparison labels; not independently EXIF-verified
+- SHA-256 :: ~0714e141bce9781ae1e5f842f27ee8a902ec9983ba86b28b7b0b8baf86d8d94f~
+- Display-only source rectangle :: {"x": 8, "y": 130, "width": 1004, "height": 605}
+- EXIF ImageWidth :: 2048
+- EXIF ImageHeight :: 1152
+- EXIF Software :: Adobe Photoshop 25.11 (Windows)
+Published still-image comparison composite, not a video grab. Both f/1.4, ISO 100, source-reported in embedded Lightroom labels. Sony 1/1600 s; Sigma 1/2000 s. Framing and foreground flower position differ. Display crops omit the upper label-covered strip; full original opens the unchanged composite. About 1004 x 605 source pixels per view, not full-resolution camera images. Camera position, focus distance and processing equality unverified.
+
+** abbott-statue-sigma-dg-dn
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/comparisons/abbott-sigma-gmii/source-composite.jpg][comparisons/abbott-sigma-gmii/source-composite.jpg]]
+- Comparison group :: Garden statue — Sigma / GM II
+- Lens :: Sigma 85mm f/1.4 DG DN Art
+- Aperture :: f/1.4
+- Resolution :: 2048 × 1152
+- Photographer / reviewer :: Dustin Abbott
+- Source page :: [[https://dustinabbott.net/2024/08/sony-fe-85mm-f1-4-gm-ii-review/][Source page]]
+- Original image URL :: [[https://dustinabbott.net/wp-content/uploads/2024/08/44-Sigma.jpg][Downloaded image]]
+- Verification :: Source-reported lens/aperture/shutter/ISO visible in published Lightroom comparison labels; not independently EXIF-verified
+- SHA-256 :: ~0714e141bce9781ae1e5f842f27ee8a902ec9983ba86b28b7b0b8baf86d8d94f~
+- Display-only source rectangle :: {"x": 1038, "y": 130, "width": 1004, "height": 605}
+- EXIF ImageWidth :: 2048
+- EXIF ImageHeight :: 1152
+- EXIF Software :: Adobe Photoshop 25.11 (Windows)
+Published still-image comparison composite, not a video grab. Both f/1.4, ISO 100, source-reported in embedded Lightroom labels. Sony 1/1600 s; Sigma 1/2000 s. Framing and foreground flower position differ. Display crops omit the upper label-covered strip; full original opens the unchanged composite. About 1004 x 605 source pixels per view, not full-resolution camera images. Camera position, focus distance and processing equality unverified.
+
+** peters-roses-1p4
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/comparisons/peters-roses/sony-85-gm_f1.4.jpg][comparisons/peters-roses/sony-85-gm_f1.4.jpg]]
+- Comparison group :: Roses — Sony 85 f/1.8 / original GM wide open
+- Lens :: Sony FE 85mm f/1.4 GM
+- Aperture :: f/1.4
+- Resolution :: 800 × 533
+- Photographer / reviewer :: Jannik Peters
+- Source page :: [[https://phillipreeve.net/blog/sony-fe-1-885-vs-sony-fe-1-485-gm-the-big-shootout/][Source page]]
+- Original image URL :: [[https://phillipreeve.net/blog/wp-content/uploads/2017/08/Sony_FE_vs_GM-01147.jpg][Downloaded image]]
+- Verification :: EXIF-verified lens and aperture, consistent with source per-image caption
+- SHA-256 :: ~db24744894fac039dd49d494538b59ebce82ed5392b390a4841e2920b452138a~
+- EXIF LensModel :: FE 85mm F1.4 GM
+- EXIF LensID :: FE 85mm F1.4 GM
+- EXIF FNumber :: 1.4
+- EXIF Model :: ILCE-7M2
+- EXIF ExposureTime :: 0.001
+- EXIF ISO :: 100
+- EXIF FocalLength :: 85
+- EXIF DateTimeOriginal :: 2017:07:17 18:39:55
+- EXIF ImageWidth :: 800
+- EXIF ImageHeight :: 533
+- EXIF Software :: Adobe Photoshop Lightroom 6.12 (Windows)
+Source-labeled comparison scene: half-body portrait distance, busy close background and foreground branch. EXIF and source both identify the stopped-down GM aperture as f/1.7, not f/1.8. 800 px published full-frame web export, not camera-resolution original. Sony A7 II, ISO 100; exposure differs as recorded in EXIF. Precise camera position, focus distance and identical processing are not fully documented.
+
+** peters-roses-1p7
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/comparisons/peters-roses/sony-85-gm_f1.7.jpg][comparisons/peters-roses/sony-85-gm_f1.7.jpg]]
+- Comparison group :: Roses — near aperture: f/1.8 / f/1.7
+- Lens :: Sony FE 85mm f/1.4 GM
+- Aperture :: f/1.7
+- Resolution :: 800 × 533
+- Photographer / reviewer :: Jannik Peters
+- Source page :: [[https://phillipreeve.net/blog/sony-fe-1-885-vs-sony-fe-1-485-gm-the-big-shootout/][Source page]]
+- Original image URL :: [[https://phillipreeve.net/blog/wp-content/uploads/2017/08/Sony_FE_vs_GM-01148.jpg][Downloaded image]]
+- Verification :: EXIF-verified lens and aperture, consistent with source per-image caption
+- SHA-256 :: ~0fc0e96d06f371df8663eb9da3a98ddeee6f4216f6ace6fe14f93ab75a6441b9~
+- EXIF LensModel :: FE 85mm F1.4 GM
+- EXIF LensID :: FE 85mm F1.4 GM
+- EXIF FNumber :: 1.7
+- EXIF Model :: ILCE-7M2
+- EXIF ExposureTime :: 0.002
+- EXIF ISO :: 100
+- EXIF FocalLength :: 85
+- EXIF DateTimeOriginal :: 2017:07:17 18:40:03
+- EXIF ImageWidth :: 800
+- EXIF ImageHeight :: 533
+- EXIF Software :: Adobe Photoshop Lightroom 6.12 (Windows)
+Source-labeled comparison scene: half-body portrait distance, busy close background and foreground branch. EXIF and source both identify the stopped-down GM aperture as f/1.7, not f/1.8. 800 px published full-frame web export, not camera-resolution original. Sony A7 II, ISO 100; exposure differs as recorded in EXIF. Precise camera position, focus distance and identical processing are not fully documented.
+
+** peters-roses-1p8
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/comparisons/peters-roses/sony-85-f18_f1.8.jpg][comparisons/peters-roses/sony-85-f18_f1.8.jpg]]
+- Comparison group :: Roses — Sony 85 f/1.8 / original GM wide open; Roses — near aperture: f/1.8 / f/1.7
+- Lens :: Sony FE 85mm f/1.8
+- Aperture :: f/1.8
+- Resolution :: 800 × 533
+- Photographer / reviewer :: Jannik Peters
+- Source page :: [[https://phillipreeve.net/blog/sony-fe-1-885-vs-sony-fe-1-485-gm-the-big-shootout/][Source page]]
+- Original image URL :: [[https://phillipreeve.net/blog/wp-content/uploads/2017/08/Sony_FE_vs_GM-01149.jpg][Downloaded image]]
+- Verification :: EXIF-verified lens and aperture, consistent with source per-image caption
+- SHA-256 :: ~4df00ffe80ff0f6a4bfb5df2e1fddb50bfa1fa31f250351e794652222ae34cfc~
+- EXIF LensModel :: FE 85mm F1.8
+- EXIF LensID :: FE 85mm F1.8
+- EXIF FNumber :: 1.8
+- EXIF Model :: ILCE-7M2
+- EXIF ExposureTime :: 0.0015625
+- EXIF ISO :: 100
+- EXIF FocalLength :: 85
+- EXIF DateTimeOriginal :: 2017:07:17 18:40:22
+- EXIF ImageWidth :: 800
+- EXIF ImageHeight :: 533
+- EXIF Software :: Adobe Photoshop Lightroom 6.12 (Windows)
+Source-labeled comparison scene: half-body portrait distance, busy close background and foreground branch. EXIF and source both identify the stopped-down GM aperture as f/1.7, not f/1.8. 800 px published full-frame web export, not camera-resolution original. Sony A7 II, ISO 100; exposure differs as recorded in EXIF. Precise camera position, focus distance and identical processing are not fully documented.
+
+** peters-tree-1p4
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/comparisons/peters-tree/sony-85-gm_f1.4.jpg][comparisons/peters-tree/sony-85-gm_f1.4.jpg]]
+- Comparison group :: Tree — Sony 85 f/1.8 / original GM wide open
+- Lens :: Sony FE 85mm f/1.4 GM
+- Aperture :: f/1.4
+- Resolution :: 800 × 533
+- Photographer / reviewer :: Jannik Peters
+- Source page :: [[https://phillipreeve.net/blog/sony-fe-1-885-vs-sony-fe-1-485-gm-the-big-shootout/][Source page]]
+- Original image URL :: [[https://phillipreeve.net/blog/wp-content/uploads/2017/08/Sony_FE_vs_GM-01196.jpg][Downloaded image]]
+- Verification :: EXIF-verified lens and aperture, consistent with source per-image caption
+- SHA-256 :: ~483dfecb4ac5782c2a03d994bde9daf56b139e27a8db7f8a6600a294cdb3d0bd~
+- EXIF LensModel :: FE 85mm F1.4 GM
+- EXIF LensID :: FE 85mm F1.4 GM
+- EXIF FNumber :: 1.4
+- EXIF Model :: ILCE-7M2
+- EXIF ExposureTime :: 0.000625
+- EXIF ISO :: 100
+- EXIF FocalLength :: 85
+- EXIF DateTimeOriginal :: 2017:07:17 19:05:12
+- EXIF ImageWidth :: 800
+- EXIF ImageHeight :: 533
+- EXIF Software :: Adobe Photoshop Lightroom 6.12 (Windows)
+Source-labeled comparison scene: full-body portrait distance, structured foliage and transition zone. EXIF and source both identify the stopped-down GM aperture as f/1.7, not f/1.8. 800 px published full-frame web export, not camera-resolution original. Sony A7 II, ISO 100; exposure differs as recorded in EXIF. Precise camera position, focus distance and identical processing are not fully documented.
+
+** peters-tree-1p7
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/comparisons/peters-tree/sony-85-gm_f1.7.jpg][comparisons/peters-tree/sony-85-gm_f1.7.jpg]]
+- Comparison group :: Tree — near aperture: f/1.8 / f/1.7
+- Lens :: Sony FE 85mm f/1.4 GM
+- Aperture :: f/1.7
+- Resolution :: 800 × 533
+- Photographer / reviewer :: Jannik Peters
+- Source page :: [[https://phillipreeve.net/blog/sony-fe-1-885-vs-sony-fe-1-485-gm-the-big-shootout/][Source page]]
+- Original image URL :: [[https://phillipreeve.net/blog/wp-content/uploads/2017/08/Sony_FE_vs_GM-01197.jpg][Downloaded image]]
+- Verification :: EXIF-verified lens and aperture, consistent with source per-image caption
+- SHA-256 :: ~e8109d2093ecf3d8fc435ddf73c05c073c67b7662e55fcbe8f647d1abab33ff3~
+- EXIF LensModel :: FE 85mm F1.4 GM
+- EXIF LensID :: FE 85mm F1.4 GM
+- EXIF FNumber :: 1.7
+- EXIF Model :: ILCE-7M2
+- EXIF ExposureTime :: 0.00125
+- EXIF ISO :: 100
+- EXIF FocalLength :: 85
+- EXIF DateTimeOriginal :: 2017:07:17 19:05:17
+- EXIF ImageWidth :: 800
+- EXIF ImageHeight :: 533
+- EXIF Software :: Adobe Photoshop Lightroom 6.12 (Windows)
+Source-labeled comparison scene: full-body portrait distance, structured foliage and transition zone. EXIF and source both identify the stopped-down GM aperture as f/1.7, not f/1.8. 800 px published full-frame web export, not camera-resolution original. Sony A7 II, ISO 100; exposure differs as recorded in EXIF. Precise camera position, focus distance and identical processing are not fully documented.
+
+** peters-tree-1p8
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/comparisons/peters-tree/sony-85-f18_f1.8.jpg][comparisons/peters-tree/sony-85-f18_f1.8.jpg]]
+- Comparison group :: Tree — Sony 85 f/1.8 / original GM wide open; Tree — near aperture: f/1.8 / f/1.7
+- Lens :: Sony FE 85mm f/1.8
+- Aperture :: f/1.8
+- Resolution :: 800 × 533
+- Photographer / reviewer :: Jannik Peters
+- Source page :: [[https://phillipreeve.net/blog/sony-fe-1-885-vs-sony-fe-1-485-gm-the-big-shootout/][Source page]]
+- Original image URL :: [[https://phillipreeve.net/blog/wp-content/uploads/2017/08/Sony_FE_vs_GM-01198.jpg][Downloaded image]]
+- Verification :: EXIF-verified lens and aperture, consistent with source per-image caption
+- SHA-256 :: ~9eb66c241de6285089f549a59357de994ecdba5830b4aac68d2b5cc3ca35e77e~
+- EXIF LensModel :: FE 85mm F1.8
+- EXIF LensID :: FE 85mm F1.8
+- EXIF FNumber :: 1.8
+- EXIF Model :: ILCE-7M2
+- EXIF ExposureTime :: 0.0015625
+- EXIF ISO :: 100
+- EXIF FocalLength :: 85
+- EXIF DateTimeOriginal :: 2017:07:17 19:05:45
+- EXIF ImageWidth :: 800
+- EXIF ImageHeight :: 533
+- EXIF Software :: Adobe Photoshop Lightroom 6.12 (Windows)
+Source-labeled comparison scene: full-body portrait distance, structured foliage and transition zone. EXIF and source both identify the stopped-down GM aperture as f/1.7, not f/1.8. 800 px published full-frame web export, not camera-resolution original. Sony A7 II, ISO 100; exposure differs as recorded in EXIF. Precise camera position, focus distance and identical processing are not fully documented.
+
+** peters-plant-1p4
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/comparisons/peters-plant/sony-85-gm_f1.4.jpg][comparisons/peters-plant/sony-85-gm_f1.4.jpg]]
+- Comparison group :: Plant — Sony 85 f/1.8 / original GM wide open
+- Lens :: Sony FE 85mm f/1.4 GM
+- Aperture :: f/1.4
+- Resolution :: 800 × 533
+- Photographer / reviewer :: Jannik Peters
+- Source page :: [[https://phillipreeve.net/blog/sony-fe-1-885-vs-sony-fe-1-485-gm-the-big-shootout/][Source page]]
+- Original image URL :: [[https://phillipreeve.net/blog/wp-content/uploads/2017/08/Sony_FE_vs_GM-01158.jpg][Downloaded image]]
+- Verification :: EXIF-verified lens and aperture, consistent with source per-image caption
+- SHA-256 :: ~06127d5767b9095cf6a83c325a29d68a8de47aa962120073ebdd84b7504e9b02~
+- EXIF LensModel :: FE 85mm F1.4 GM
+- EXIF LensID :: FE 85mm F1.4 GM
+- EXIF FNumber :: 1.4
+- EXIF Model :: ILCE-7M2
+- EXIF ExposureTime :: 0.0015625
+- EXIF ISO :: 100
+- EXIF FocalLength :: 85
+- EXIF DateTimeOriginal :: 2017:07:17 18:48:34
+- EXIF ImageWidth :: 800
+- EXIF ImageHeight :: 533
+- EXIF Software :: Adobe Photoshop Lightroom 6.12 (Windows)
+Source-labeled comparison scene: minimum focusing distance, plant close-up. EXIF and source both identify the stopped-down GM aperture as f/1.7, not f/1.8. 800 px published full-frame web export, not camera-resolution original. Sony A7 II, ISO 100; exposure differs as recorded in EXIF. Precise camera position, focus distance and identical processing are not fully documented.
+
+** peters-plant-1p7
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/comparisons/peters-plant/sony-85-gm_f1.7.jpg][comparisons/peters-plant/sony-85-gm_f1.7.jpg]]
+- Comparison group :: Plant — near aperture: f/1.8 / f/1.7
+- Lens :: Sony FE 85mm f/1.4 GM
+- Aperture :: f/1.7
+- Resolution :: 800 × 533
+- Photographer / reviewer :: Jannik Peters
+- Source page :: [[https://phillipreeve.net/blog/sony-fe-1-885-vs-sony-fe-1-485-gm-the-big-shootout/][Source page]]
+- Original image URL :: [[https://phillipreeve.net/blog/wp-content/uploads/2017/08/Sony_FE_vs_GM-01159.jpg][Downloaded image]]
+- Verification :: EXIF-verified lens and aperture, consistent with source per-image caption
+- SHA-256 :: ~cf74d58727dac30b0cf1f8e41053ec88f871aa20b396cbd9a1ac46958b17c364~
+- EXIF LensModel :: FE 85mm F1.4 GM
+- EXIF LensID :: FE 85mm F1.4 GM
+- EXIF FNumber :: 1.7
+- EXIF Model :: ILCE-7M2
+- EXIF ExposureTime :: 0.003125
+- EXIF ISO :: 100
+- EXIF FocalLength :: 85
+- EXIF DateTimeOriginal :: 2017:07:17 18:48:40
+- EXIF ImageWidth :: 800
+- EXIF ImageHeight :: 533
+- EXIF Software :: Adobe Photoshop Lightroom 6.12 (Windows)
+Source-labeled comparison scene: minimum focusing distance, plant close-up. EXIF and source both identify the stopped-down GM aperture as f/1.7, not f/1.8. 800 px published full-frame web export, not camera-resolution original. Sony A7 II, ISO 100; exposure differs as recorded in EXIF. Precise camera position, focus distance and identical processing are not fully documented.
+
+** peters-plant-1p8
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/comparisons/peters-plant/sony-85-f18_f1.8.jpg][comparisons/peters-plant/sony-85-f18_f1.8.jpg]]
+- Comparison group :: Plant — Sony 85 f/1.8 / original GM wide open; Plant — near aperture: f/1.8 / f/1.7
+- Lens :: Sony FE 85mm f/1.8
+- Aperture :: f/1.8
+- Resolution :: 800 × 533
+- Photographer / reviewer :: Jannik Peters
+- Source page :: [[https://phillipreeve.net/blog/sony-fe-1-885-vs-sony-fe-1-485-gm-the-big-shootout/][Source page]]
+- Original image URL :: [[https://phillipreeve.net/blog/wp-content/uploads/2017/08/Sony_FE_vs_GM-01160.jpg][Downloaded image]]
+- Verification :: EXIF-verified lens and aperture, consistent with source per-image caption
+- SHA-256 :: ~f4736ac784a56754a7a405e7bf24b5828118dd7aac6be13c80d9a2880db666fa~
+- EXIF LensModel :: FE 85mm F1.8
+- EXIF LensID :: FE 85mm F1.8
+- EXIF FNumber :: 1.8
+- EXIF Model :: ILCE-7M2
+- EXIF ExposureTime :: 0.0025
+- EXIF ISO :: 100
+- EXIF FocalLength :: 85
+- EXIF DateTimeOriginal :: 2017:07:17 18:49:07
+- EXIF ImageWidth :: 800
+- EXIF ImageHeight :: 533
+- EXIF Software :: Adobe Photoshop Lightroom 6.12 (Windows)
+Source-labeled comparison scene: minimum focusing distance, plant close-up. EXIF and source both identify the stopped-down GM aperture as f/1.7, not f/1.8. 800 px published full-frame web export, not camera-resolution original. Sony A7 II, ISO 100; exposure differs as recorded in EXIF. Precise camera position, focus distance and identical processing are not fully documented.
+
+** sigma-85-f14-dg-dn-50246827628
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sigma-85-f14-dg-dn/sigma-85-f14-dg-dn_f1.4_alhadeff-50246827628.jpg][samples/sigma-85-f14-dg-dn/sigma-85-f14-dg-dn_f1.4_alhadeff-50246827628.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sigma 85mm f/1.4 DG DN Art
+- Aperture :: f/1.4
+- Resolution :: 9504 × 6336
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/50246827628/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/65535/50246827628_78a43d5572_o.jpg][Downloaded image]]
+- Verification :: EXIF lens and aperture
+- SHA-256 :: ~5892aa38b7aafef502b472687cfec95d96767f5ec45a79b255603f5726ab208b~
+- EXIF LensModel :: 85mm F1.4 DG DN | Art 020
+- EXIF FNumber :: 1.4
+- EXIF ImageWidth :: 9504
+- EXIF ImageHeight :: 6336
+- EXIF Model :: ILCE-7RM4
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/1600
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Marc Alhadeff
+- EXIF Software :: Adobe Photoshop Lightroom Classic 9.4 (Macintosh)
+Individual sample; no matched counterpart. Public Flickr original; download enabled.
+
+** sigma-85-f14-dg-dn-50246827038
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sigma-85-f14-dg-dn/sigma-85-f14-dg-dn_f1.4_alhadeff-50246827038.jpg][samples/sigma-85-f14-dg-dn/sigma-85-f14-dg-dn_f1.4_alhadeff-50246827038.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sigma 85mm f/1.4 DG DN Art
+- Aperture :: f/1.4
+- Resolution :: 6336 × 9504
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/50246827038/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/65535/50246827038_c0a6230c47_o.jpg][Downloaded image]]
+- Verification :: EXIF lens and aperture
+- SHA-256 :: ~d766c00c2d5e581ea004eecfee448bf936e7d1255ff12b2284a7dc807e73ae5c~
+- EXIF LensModel :: 85mm F1.4 DG DN | Art 020
+- EXIF FNumber :: 1.4
+- EXIF ImageWidth :: 6336
+- EXIF ImageHeight :: 9504
+- EXIF Model :: ILCE-7RM4
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/1600
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Marc Alhadeff
+- EXIF Software :: Adobe Photoshop Lightroom Classic 9.4 (Macintosh)
+Individual sample; no matched counterpart. Public Flickr original; download enabled.
+
+** sigma-85-f14-dg-dn-50247466076
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sigma-85-f14-dg-dn/sigma-85-f14-dg-dn_f1.4_alhadeff-50247466076.jpg][samples/sigma-85-f14-dg-dn/sigma-85-f14-dg-dn_f1.4_alhadeff-50247466076.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sigma 85mm f/1.4 DG DN Art
+- Aperture :: f/1.4
+- Resolution :: 9504 × 6336
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/50247466076/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/65535/50247466076_8d70046116_o.jpg][Downloaded image]]
+- Verification :: EXIF lens and aperture
+- SHA-256 :: ~6cdecbc433b5151b08a11652b00bc4a478aba6091fbedbaf8f3eb2f9e172447f~
+- EXIF LensModel :: 85mm F1.4 DG DN | Art 020
+- EXIF FNumber :: 1.4
+- EXIF ImageWidth :: 9504
+- EXIF ImageHeight :: 6336
+- EXIF Model :: ILCE-7RM4
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/1600
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Marc Alhadeff
+- EXIF Software :: Adobe Photoshop Lightroom Classic 9.4 (Macintosh)
+Individual sample; no matched counterpart. Public Flickr original; download enabled.
+
+** sigma-85-f14-dg-dn-50247461606
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sigma-85-f14-dg-dn/sigma-85-f14-dg-dn_f1.4_alhadeff-50247461606.jpg][samples/sigma-85-f14-dg-dn/sigma-85-f14-dg-dn_f1.4_alhadeff-50247461606.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sigma 85mm f/1.4 DG DN Art
+- Aperture :: f/1.4
+- Resolution :: 6336 × 9504
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/50247461606/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/65535/50247461606_01083598e3_o.jpg][Downloaded image]]
+- Verification :: EXIF lens and aperture
+- SHA-256 :: ~a86939944fc7e7dcec33fcc06866c5625422a54ab06a3d5071a9fa9a9621ce78~
+- EXIF LensModel :: 85mm F1.4 DG DN | Art 020
+- EXIF FNumber :: 1.4
+- EXIF ImageWidth :: 6336
+- EXIF ImageHeight :: 9504
+- EXIF Model :: ILCE-7RM4
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/2000
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Marc Alhadeff
+- EXIF Software :: Adobe Photoshop Lightroom Classic 9.4 (Macintosh)
+Individual sample; no matched counterpart. Public Flickr original; download enabled.
+
+** sigma-85-f14-dg-dn-50247665962
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sigma-85-f14-dg-dn/sigma-85-f14-dg-dn_f1.4_alhadeff-50247665962.jpg][samples/sigma-85-f14-dg-dn/sigma-85-f14-dg-dn_f1.4_alhadeff-50247665962.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sigma 85mm f/1.4 DG DN Art
+- Aperture :: f/1.4
+- Resolution :: 9504 × 6336
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/50247665962/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/65535/50247665962_cd2ae48d4e_o.jpg][Downloaded image]]
+- Verification :: EXIF lens and aperture
+- SHA-256 :: ~974f31d0a20bd7064395c72fff011ad8cd9cbc832fa8f33b17fa4443c61df906~
+- EXIF LensModel :: 85mm F1.4 DG DN | Art 020
+- EXIF FNumber :: 1.4
+- EXIF ImageWidth :: 9504
+- EXIF ImageHeight :: 6336
+- EXIF Model :: ILCE-7RM4
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/2000
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Marc Alhadeff
+- EXIF Software :: Adobe Photoshop Lightroom Classic 9.4 (Macintosh)
+Individual sample; no matched counterpart. Public Flickr original; download enabled.
+
+** sigma-85-f14-dg-dn-50246819763
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sigma-85-f14-dg-dn/sigma-85-f14-dg-dn_f1.4_alhadeff-50246819763.jpg][samples/sigma-85-f14-dg-dn/sigma-85-f14-dg-dn_f1.4_alhadeff-50246819763.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sigma 85mm f/1.4 DG DN Art
+- Aperture :: f/1.4
+- Resolution :: 6336 × 9504
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/50246819763/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/65535/50246819763_3c399359c9_o.jpg][Downloaded image]]
+- Verification :: EXIF lens and aperture
+- SHA-256 :: ~59c1be07e809f1b77a626bd71ac7141c7210e48f6fea227acd1cd805c874f220~
+- EXIF LensModel :: 85mm F1.4 DG DN | Art 020
+- EXIF FNumber :: 1.4
+- EXIF ImageWidth :: 6336
+- EXIF ImageHeight :: 9504
+- EXIF Model :: ILCE-7RM4
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/2000
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Marc Alhadeff
+- EXIF Software :: Adobe Photoshop Lightroom Classic 9.4 (Macintosh)
+Individual sample; no matched counterpart. Public Flickr original; download enabled.
+
+** sigma-85-f14-dg-dn-50246819273
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sigma-85-f14-dg-dn/sigma-85-f14-dg-dn_f1.4_alhadeff-50246819273.jpg][samples/sigma-85-f14-dg-dn/sigma-85-f14-dg-dn_f1.4_alhadeff-50246819273.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sigma 85mm f/1.4 DG DN Art
+- Aperture :: f/1.4
+- Resolution :: 9504 × 6336
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/50246819273/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/65535/50246819273_c81412614b_o.jpg][Downloaded image]]
+- Verification :: EXIF lens and aperture
+- SHA-256 :: ~c553ee1b820c469c7aded5ee7a056ea950ae99e967f601ac97f5a01a9eea2727~
+- EXIF LensModel :: 85mm F1.4 DG DN | Art 020
+- EXIF FNumber :: 1.4
+- EXIF ImageWidth :: 9504
+- EXIF ImageHeight :: 6336
+- EXIF Model :: ILCE-7RM4
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/2000
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Marc Alhadeff
+- EXIF Software :: Adobe Photoshop Lightroom Classic 9.4 (Macintosh)
+Individual sample; no matched counterpart. Public Flickr original; download enabled.
+
+** sigma-85-f14-dg-dn-50247664182
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sigma-85-f14-dg-dn/sigma-85-f14-dg-dn_f1.4_alhadeff-50247664182.jpg][samples/sigma-85-f14-dg-dn/sigma-85-f14-dg-dn_f1.4_alhadeff-50247664182.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sigma 85mm f/1.4 DG DN Art
+- Aperture :: f/1.4
+- Resolution :: 9504 × 6336
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/50247664182/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/65535/50247664182_174bc79875_o.jpg][Downloaded image]]
+- Verification :: EXIF lens and aperture
+- SHA-256 :: ~d5e997208786b77ed89d3c561ccf46c86c82358ea55587ea860df3f925014b3b~
+- EXIF LensModel :: 85mm F1.4 DG DN | Art 020
+- EXIF FNumber :: 1.4
+- EXIF ImageWidth :: 9504
+- EXIF ImageHeight :: 6336
+- EXIF Model :: ILCE-7RM4
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/2000
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Marc Alhadeff
+- EXIF Software :: Adobe Photoshop Lightroom Classic 9.4 (Macintosh)
+Individual sample; no matched counterpart. Public Flickr original; download enabled.
+
+** sony-85-f14-gm-ii-54006328653
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sony-85-f14-gm-ii/sony-85-f14-gm-ii_f1.4_alhadeff-54006328653.jpg][samples/sony-85-f14-gm-ii/sony-85-f14-gm-ii_f1.4_alhadeff-54006328653.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sony FE 85mm f/1.4 GM II
+- Aperture :: f/1.4
+- Resolution :: 9504 × 6336
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/54006328653/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/65535/54006328653_b29a81a79b_o.jpg][Downloaded image]]
+- Verification :: EXIF lens and aperture
+- SHA-256 :: ~9024d124aeebb93f16e569fee724e650d38351ac97a8b545cd59b267ac694d1a~
+- EXIF LensModel :: FE 85mm F1.4 GM II
+- EXIF FNumber :: 1.4
+- EXIF ImageWidth :: 9504
+- EXIF ImageHeight :: 6336
+- EXIF Model :: ILCE-7RM5
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/15
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Marc Alhadeff
+- EXIF Software :: Adobe Photoshop Lightroom Classic 13.5.1 (Macintosh)
+Individual sample; no matched counterpart. Public Flickr original; download enabled.
+
+** sony-85-f14-gm-ii-54006524860
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sony-85-f14-gm-ii/sony-85-f14-gm-ii_f1.4_alhadeff-54006524860.jpg][samples/sony-85-f14-gm-ii/sony-85-f14-gm-ii_f1.4_alhadeff-54006524860.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sony FE 85mm f/1.4 GM II
+- Aperture :: f/1.4
+- Resolution :: 9504 × 6336
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/54006524860/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/65535/54006524860_9b5d1b4e21_o.jpg][Downloaded image]]
+- Verification :: EXIF lens and aperture
+- SHA-256 :: ~8abbf26fb27d7cce4ccb6db9f75c8286cf7c2724dea14c2a77851be670836965~
+- EXIF LensModel :: FE 85mm F1.4 GM II
+- EXIF FNumber :: 1.4
+- EXIF ImageWidth :: 9504
+- EXIF ImageHeight :: 6336
+- EXIF Model :: ILCE-7RM5
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/250
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Marc Alhadeff
+- EXIF Software :: Adobe Photoshop Lightroom Classic 13.5.1 (Macintosh)
+Individual sample; no matched counterpart. Public Flickr original; download enabled.
+
+** sony-85-f14-gm-ii-54006524870
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sony-85-f14-gm-ii/sony-85-f14-gm-ii_f1.4_alhadeff-54006524870.jpg][samples/sony-85-f14-gm-ii/sony-85-f14-gm-ii_f1.4_alhadeff-54006524870.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sony FE 85mm f/1.4 GM II
+- Aperture :: f/1.4
+- Resolution :: 6336 × 9504
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/54006524870/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/65535/54006524870_bac255eab4_o.jpg][Downloaded image]]
+- Verification :: EXIF lens and aperture
+- SHA-256 :: ~3fc14ff520cdafb5b28f9d10db55a95583b44a0143f4d98415ee4afd12d58947~
+- EXIF LensModel :: FE 85mm F1.4 GM II
+- EXIF FNumber :: 1.4
+- EXIF ImageWidth :: 6336
+- EXIF ImageHeight :: 9504
+- EXIF Model :: ILCE-7RM5
+- EXIF ISO :: 125
+- EXIF ExposureTime :: 1/250
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Marc Alhadeff
+- EXIF Software :: Adobe Photoshop Lightroom Classic 13.5.1 (Macintosh)
+Individual sample; no matched counterpart. Public Flickr original; download enabled.
+
+** sony-85-f14-gm-ii-54006101686
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sony-85-f14-gm-ii/sony-85-f14-gm-ii_f1.4_alhadeff-54006101686.jpg][samples/sony-85-f14-gm-ii/sony-85-f14-gm-ii_f1.4_alhadeff-54006101686.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sony FE 85mm f/1.4 GM II
+- Aperture :: f/1.4
+- Resolution :: 9504 × 6336
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/54006101686/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/65535/54006101686_7be5ebe42d_o.jpg][Downloaded image]]
+- Verification :: EXIF lens and aperture
+- SHA-256 :: ~dec3ce6a01194931cf502b46a9762cc8c5a4348247695675c914c940d2a403b1~
+- EXIF LensModel :: FE 85mm F1.4 GM II
+- EXIF FNumber :: 1.4
+- EXIF ImageWidth :: 9504
+- EXIF ImageHeight :: 6336
+- EXIF Model :: ILCE-7RM5
+- EXIF ISO :: 160
+- EXIF ExposureTime :: 1/250
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Marc Alhadeff
+- EXIF Software :: Adobe Photoshop Lightroom Classic 13.5.1 (Macintosh)
+Individual sample; no matched counterpart. Public Flickr original; download enabled.
+
+** sony-85-f14-gm-ii-54006429854
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sony-85-f14-gm-ii/sony-85-f14-gm-ii_f1.4_alhadeff-54006429854.jpg][samples/sony-85-f14-gm-ii/sony-85-f14-gm-ii_f1.4_alhadeff-54006429854.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sony FE 85mm f/1.4 GM II
+- Aperture :: f/1.4
+- Resolution :: 5451 × 8177
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/54006429854/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/65535/54006429854_6f067172fd_o.jpg][Downloaded image]]
+- Verification :: EXIF lens and aperture
+- SHA-256 :: ~e93c90d4f25ccb28264039525cf2cfd765c42f4979b6d1c8f00ff58da4e2f5cc~
+- EXIF LensModel :: FE 85mm F1.4 GM II
+- EXIF FNumber :: 1.4
+- EXIF ImageWidth :: 5451
+- EXIF ImageHeight :: 8177
+- EXIF Model :: ILCE-7RM5
+- EXIF ISO :: 160
+- EXIF ExposureTime :: 1/250
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Marc Alhadeff
+- EXIF Software :: Adobe Photoshop Lightroom Classic 13.5.1 (Macintosh)
+Individual sample; no matched counterpart. Public Flickr original; download enabled.
+
+** sony-85-f14-gm-ii-54006429744
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sony-85-f14-gm-ii/sony-85-f14-gm-ii_f1.4_alhadeff-54006429744.jpg][samples/sony-85-f14-gm-ii/sony-85-f14-gm-ii_f1.4_alhadeff-54006429744.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sony FE 85mm f/1.4 GM II
+- Aperture :: f/1.4
+- Resolution :: 9504 × 6336
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/54006429744/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/65535/54006429744_ebc82ae672_o.jpg][Downloaded image]]
+- Verification :: EXIF lens and aperture
+- SHA-256 :: ~fa19d1e11eede7d437818276edd4d76dfa3b0e664ae4351b5bdd32d90f11248e~
+- EXIF LensModel :: FE 85mm F1.4 GM II
+- EXIF FNumber :: 1.4
+- EXIF ImageWidth :: 9504
+- EXIF ImageHeight :: 6336
+- EXIF Model :: ILCE-7RM5
+- EXIF ISO :: 200
+- EXIF ExposureTime :: 1/250
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Marc Alhadeff
+- EXIF Software :: Adobe Photoshop Lightroom Classic 13.5.1 (Macintosh)
+Individual sample; no matched counterpart. Public Flickr original; download enabled.
+
+** sony-85-f14-gm-ii-54005188097
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sony-85-f14-gm-ii/sony-85-f14-gm-ii_f1.4_alhadeff-54005188097.jpg][samples/sony-85-f14-gm-ii/sony-85-f14-gm-ii_f1.4_alhadeff-54005188097.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sony FE 85mm f/1.4 GM II
+- Aperture :: f/1.4
+- Resolution :: 9504 × 6336
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/54005188097/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/65535/54005188097_4862bf82a5_o.jpg][Downloaded image]]
+- Verification :: EXIF lens and aperture
+- SHA-256 :: ~df5d0d4f6f82d8df9805bd840d85bf71bc3111a5c53e6fa985a86bffabf76030~
+- EXIF LensModel :: FE 85mm F1.4 GM II
+- EXIF FNumber :: 1.4
+- EXIF ImageWidth :: 9504
+- EXIF ImageHeight :: 6336
+- EXIF Model :: ILCE-7RM5
+- EXIF ISO :: 200
+- EXIF ExposureTime :: 1/250
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Marc Alhadeff
+- EXIF Software :: Adobe Photoshop Lightroom Classic 13.5.1 (Macintosh)
+Individual sample; no matched counterpart. Public Flickr original; download enabled.
+
+** sony-85-f14-gm-ii-54006098491
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sony-85-f14-gm-ii/sony-85-f14-gm-ii_f1.4_alhadeff-54006098491.jpg][samples/sony-85-f14-gm-ii/sony-85-f14-gm-ii_f1.4_alhadeff-54006098491.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sony FE 85mm f/1.4 GM II
+- Aperture :: f/1.4
+- Resolution :: 9504 × 6336
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/54006098491/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/65535/54006098491_cb90e1330d_o.jpg][Downloaded image]]
+- Verification :: EXIF lens and aperture
+- SHA-256 :: ~95c8f2c3818bad8a08c6becd0860513899e1ab9fe0d36dec530044457f5e1d82~
+- EXIF LensModel :: FE 85mm F1.4 GM II
+- EXIF FNumber :: 1.4
+- EXIF ImageWidth :: 9504
+- EXIF ImageHeight :: 6336
+- EXIF Model :: ILCE-7RM5
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/640
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Marc Alhadeff
+- EXIF Software :: Adobe Photoshop Lightroom Classic 13.5.1 (Macintosh)
+Individual sample; no matched counterpart. Public Flickr original; download enabled.
+
+** sony-85-f14-gm-ii-54006325333
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sony-85-f14-gm-ii/sony-85-f14-gm-ii_f1.4_alhadeff-54006325333.jpg][samples/sony-85-f14-gm-ii/sony-85-f14-gm-ii_f1.4_alhadeff-54006325333.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sony FE 85mm f/1.4 GM II
+- Aperture :: f/1.4
+- Resolution :: 6004 × 9006
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/54006325333/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/65535/54006325333_a6e1649e90_o.jpg][Downloaded image]]
+- Verification :: EXIF lens and aperture
+- SHA-256 :: ~d6de36aae75ba8d03067a9011dd8340ed5385b6bed455f37d89958756ecb7d4c~
+- EXIF LensModel :: FE 85mm F1.4 GM II
+- EXIF FNumber :: 1.4
+- EXIF ImageWidth :: 6004
+- EXIF ImageHeight :: 9006
+- EXIF Model :: ILCE-7RM5
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/640
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Marc Alhadeff
+- EXIF Software :: Adobe Photoshop Lightroom Classic 13.5.1 (Macintosh)
+Individual sample; no matched counterpart. Public Flickr original; download enabled.
+
+** sony-85-f14-gm-ii-54006521190
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sony-85-f14-gm-ii/sony-85-f14-gm-ii_f1.4_alhadeff-54006521190.jpg][samples/sony-85-f14-gm-ii/sony-85-f14-gm-ii_f1.4_alhadeff-54006521190.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sony FE 85mm f/1.4 GM II
+- Aperture :: f/1.4
+- Resolution :: 9504 × 6336
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/54006521190/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/65535/54006521190_8cc43f47da_o.jpg][Downloaded image]]
+- Verification :: EXIF lens and aperture
+- SHA-256 :: ~8fde97e68bad37c97cbb6af358f0ef3fa1c51187c05c34051698893e8ecc1205~
+- EXIF LensModel :: FE 85mm F1.4 GM II
+- EXIF FNumber :: 1.4
+- EXIF ImageWidth :: 9504
+- EXIF ImageHeight :: 6336
+- EXIF Model :: ILCE-7RM5
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/800
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Marc Alhadeff
+- EXIF Software :: Adobe Photoshop Lightroom Classic 13.5.1 (Macintosh)
+Individual sample; no matched counterpart. Public Flickr original; download enabled.
+
+** sigma-f12-11-bokeh-1-of-3
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sigma-85-f12/sigma-85-f12_abbott-11-bokeh-1-of-3.jpg][samples/sigma-85-f12/sigma-85-f12_abbott-11-bokeh-1-of-3.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sigma 85mm f/1.2 DG Art
+- Aperture :: f/1.2
+- Resolution :: 2048 × 1152
+- Photographer / reviewer :: Dustin Abbott
+- Source page :: [[https://dustinabbott.net/2026/09/sigma-85mm-f1-2-dg-art-review/][Source page]]
+- Original image URL :: [[https://dustinabbott.net/wp-content/uploads/2026/08/11-Bokeh-1-of-3.jpg][Downloaded image]]
+- Verification :: EXIF lens and aperture
+- SHA-256 :: ~629a6f4c74ac73cfe64b25142d25473afd737431956e63cf886a4124dffc49a3~
+- EXIF LensModel :: 85mm F1.2 DG | Art 026
+- EXIF FNumber :: 1.2
+- EXIF ImageWidth :: 2048
+- EXIF ImageHeight :: 1152
+- EXIF Model :: ILCE-1M2
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/200
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Dustin Abbott
+- EXIF Copyright :: © 2026 Thousand Word Image by Dustin Abbott
+- EXIF Software :: Adobe Photoshop Lightroom Classic 15.5 (Windows)
+Individual sample; no matched counterpart. Largest linked JPEG on review page, not full sensor resolution.
+
+** sigma-f12-11-bokeh-3-of-3
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sigma-85-f12/sigma-85-f12_abbott-11-bokeh-3-of-3.jpg][samples/sigma-85-f12/sigma-85-f12_abbott-11-bokeh-3-of-3.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sigma 85mm f/1.2 DG Art
+- Aperture :: f/2.8
+- Resolution :: 2048 × 1152
+- Photographer / reviewer :: Dustin Abbott
+- Source page :: [[https://dustinabbott.net/2026/09/sigma-85mm-f1-2-dg-art-review/][Source page]]
+- Original image URL :: [[https://dustinabbott.net/wp-content/uploads/2026/08/11-Bokeh-3-of-3.jpg][Downloaded image]]
+- Verification :: EXIF lens and aperture
+- SHA-256 :: ~3a0d3efc7e8bc396176ec766b0f72cd29456f9d2d27feeb922d25fc8c577d41c~
+- EXIF LensModel :: 85mm F1.2 DG | Art 026
+- EXIF FNumber :: 2.8
+- EXIF ImageWidth :: 2048
+- EXIF ImageHeight :: 1152
+- EXIF Model :: ILCE-1M2
+- EXIF ISO :: 400
+- EXIF ExposureTime :: 1/100
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Dustin Abbott
+- EXIF Copyright :: © 2026 Thousand Word Image by Dustin Abbott
+- EXIF Software :: Adobe Photoshop Lightroom Classic 15.5 (Windows)
+Individual sample; no matched counterpart. Largest linked JPEG on review page, not full sensor resolution.
+
+** sigma-f12-40-isolation-1-of-1
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sigma-85-f12/sigma-85-f12_abbott-40-isolation-1-of-1.jpg][samples/sigma-85-f12/sigma-85-f12_abbott-40-isolation-1-of-1.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sigma 85mm f/1.2 DG Art
+- Aperture :: f/1.2
+- Resolution :: 1365 × 2048
+- Photographer / reviewer :: Dustin Abbott
+- Source page :: [[https://dustinabbott.net/2026/09/sigma-85mm-f1-2-dg-art-review/][Source page]]
+- Original image URL :: [[https://dustinabbott.net/wp-content/uploads/2026/08/40-Isolation-1-of-1.jpg][Downloaded image]]
+- Verification :: EXIF lens and aperture
+- SHA-256 :: ~e2b2187bf863b6db977a54f180d73f5a5b1f12c17c00234159618b5f86da1723~
+- EXIF LensModel :: 85mm F1.2 DG | Art 026
+- EXIF FNumber :: 1.2
+- EXIF ImageWidth :: 1365
+- EXIF ImageHeight :: 2048
+- EXIF Model :: ILCE-1M2
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/3200
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Dustin Abbott
+- EXIF Copyright :: © 2026 Thousand Word Image by Dustin Abbott
+- EXIF Software :: Adobe Photoshop Lightroom Classic 15.5 (Windows)
+Individual sample; no matched counterpart. Largest linked JPEG on review page, not full sensor resolution.
+
+** sigma-f12-41-f28-portrait-1-of-1
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sigma-85-f12/sigma-85-f12_abbott-41-f28-portrait-1-of-1.jpg][samples/sigma-85-f12/sigma-85-f12_abbott-41-f28-portrait-1-of-1.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sigma 85mm f/1.2 DG Art
+- Aperture :: f/2.8
+- Resolution :: 1365 × 2048
+- Photographer / reviewer :: Dustin Abbott
+- Source page :: [[https://dustinabbott.net/2026/09/sigma-85mm-f1-2-dg-art-review/][Source page]]
+- Original image URL :: [[https://dustinabbott.net/wp-content/uploads/2026/08/41-F28-portrait-1-of-1.jpg][Downloaded image]]
+- Verification :: EXIF lens and aperture
+- SHA-256 :: ~f8183d6358112661a410a8ca3f9a6a049342c53baf5ef381424f38ec6f7c60ba~
+- EXIF LensModel :: 85mm F1.2 DG | Art 026
+- EXIF FNumber :: 2.8
+- EXIF ImageWidth :: 1365
+- EXIF ImageHeight :: 2048
+- EXIF Model :: ILCE-1M2
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/400
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Dustin Abbott
+- EXIF Copyright :: © 2026 Thousand Word Image by Dustin Abbott
+- EXIF Software :: Adobe Photoshop Lightroom Classic 15.5 (Windows)
+Individual sample; no matched counterpart. Largest linked JPEG on review page, not full sensor resolution.
+
+** sigma-f12-42-shallow-1-of-1
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sigma-85-f12/sigma-85-f12_abbott-42-shallow-1-of-1.jpg][samples/sigma-85-f12/sigma-85-f12_abbott-42-shallow-1-of-1.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sigma 85mm f/1.2 DG Art
+- Aperture :: f/1.2
+- Resolution :: 2048 × 1365
+- Photographer / reviewer :: Dustin Abbott
+- Source page :: [[https://dustinabbott.net/2026/09/sigma-85mm-f1-2-dg-art-review/][Source page]]
+- Original image URL :: [[https://dustinabbott.net/wp-content/uploads/2026/08/42-Shallow-1-of-1.jpg][Downloaded image]]
+- Verification :: EXIF lens and aperture
+- SHA-256 :: ~d85cfd6bd871930e9b799e597cda87a7b6f1f2df9fd971d690b4ae7e93f11b81~
+- EXIF LensModel :: 85mm F1.2 DG | Art 026
+- EXIF FNumber :: 1.2
+- EXIF ImageWidth :: 2048
+- EXIF ImageHeight :: 1365
+- EXIF Model :: ILCE-1M2
+- EXIF ISO :: 400
+- EXIF ExposureTime :: 1/250
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Dustin Abbott
+- EXIF Copyright :: © 2026 Thousand Word Image by Dustin Abbott
+- EXIF Software :: Adobe Photoshop Lightroom Classic 15.5 (Windows)
+Individual sample; no matched counterpart. Largest linked JPEG on review page, not full sensor resolution.
+
+** sigma-f12-43-busier-1-of-1
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sigma-85-f12/sigma-85-f12_abbott-43-busier-1-of-1.jpg][samples/sigma-85-f12/sigma-85-f12_abbott-43-busier-1-of-1.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sigma 85mm f/1.2 DG Art
+- Aperture :: f/1.2
+- Resolution :: 2048 × 1365
+- Photographer / reviewer :: Dustin Abbott
+- Source page :: [[https://dustinabbott.net/2026/09/sigma-85mm-f1-2-dg-art-review/][Source page]]
+- Original image URL :: [[https://dustinabbott.net/wp-content/uploads/2026/08/43-Busier-1-of-1.jpg][Downloaded image]]
+- Verification :: EXIF lens and aperture
+- SHA-256 :: ~fae3791f07e9afa79421a0f7ebd6a2a0267f523f27c14dd9f579672f2b14bf7d~
+- EXIF LensModel :: 85mm F1.2 DG | Art 026
+- EXIF FNumber :: 1.2
+- EXIF ImageWidth :: 2048
+- EXIF ImageHeight :: 1365
+- EXIF Model :: ILCE-1M2
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/1600
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Dustin Abbott
+- EXIF Copyright :: © 2026 Thousand Word Image by Dustin Abbott
+- EXIF Software :: Adobe Photoshop Lightroom Classic 15.5 (Windows)
+Individual sample; no matched counterpart. Largest linked JPEG on review page, not full sensor resolution.
+
+** sigma-f12-46-sun-1-of-1
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sigma-85-f12/sigma-85-f12_abbott-46-sun-1-of-1.jpg][samples/sigma-85-f12/sigma-85-f12_abbott-46-sun-1-of-1.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sigma 85mm f/1.2 DG Art
+- Aperture :: f/2.8
+- Resolution :: 1365 × 2048
+- Photographer / reviewer :: Dustin Abbott
+- Source page :: [[https://dustinabbott.net/2026/09/sigma-85mm-f1-2-dg-art-review/][Source page]]
+- Original image URL :: [[https://dustinabbott.net/wp-content/uploads/2026/08/46-Sun-1-of-1.jpg][Downloaded image]]
+- Verification :: EXIF lens and aperture
+- SHA-256 :: ~ff1c48c064d3d9357130d6dff4cbf921e4dd54428d4e2d41641032e25be50b76~
+- EXIF LensModel :: 85mm F1.2 DG | Art 026
+- EXIF FNumber :: 2.8
+- EXIF ImageWidth :: 1365
+- EXIF ImageHeight :: 2048
+- EXIF Model :: ILCE-1M2
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/400
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Dustin Abbott
+- EXIF Copyright :: © 2026 Thousand Word Image by Dustin Abbott
+- EXIF Software :: Adobe Photoshop Lightroom Classic 15.5 (Windows)
+Individual sample; no matched counterpart. Largest linked JPEG on review page, not full sensor resolution.
+
+** sigma-f12-44-depth-1-of-2
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sigma-85-f12/sigma-85-f12_abbott-44-depth-1-of-2.jpg][samples/sigma-85-f12/sigma-85-f12_abbott-44-depth-1-of-2.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sigma 85mm f/1.2 DG Art
+- Aperture :: f/1.2
+- Resolution :: 1365 × 2048
+- Photographer / reviewer :: Dustin Abbott
+- Source page :: [[https://dustinabbott.net/2026/09/sigma-85mm-f1-2-dg-art-review/][Source page]]
+- Original image URL :: [[https://dustinabbott.net/wp-content/uploads/2026/08/44-Depth-1-of-2.jpg][Downloaded image]]
+- Verification :: EXIF lens and aperture
+- SHA-256 :: ~57b873f9bd450d44f2df5feea012089a78346629cd0141e68fcc30c19d7ea5e1~
+- EXIF LensModel :: 85mm F1.2 DG | Art 026
+- EXIF FNumber :: 1.2
+- EXIF ImageWidth :: 1365
+- EXIF ImageHeight :: 2048
+- EXIF Model :: ILCE-1M2
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/200
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Dustin Abbott
+- EXIF Copyright :: © 2026 Thousand Word Image by Dustin Abbott
+- EXIF Software :: Adobe Photoshop Lightroom Classic 15.5 (Windows)
+Individual sample; no matched counterpart. Largest linked JPEG on review page, not full sensor resolution.
+
+** sigma-f12-44-depth-2-of-2
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sigma-85-f12/sigma-85-f12_abbott-44-depth-2-of-2.jpg][samples/sigma-85-f12/sigma-85-f12_abbott-44-depth-2-of-2.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sigma 85mm f/1.2 DG Art
+- Aperture :: f/1.2
+- Resolution :: 1365 × 2048
+- Photographer / reviewer :: Dustin Abbott
+- Source page :: [[https://dustinabbott.net/2026/09/sigma-85mm-f1-2-dg-art-review/][Source page]]
+- Original image URL :: [[https://dustinabbott.net/wp-content/uploads/2026/08/44-Depth-2-of-2.jpg][Downloaded image]]
+- Verification :: EXIF lens and aperture
+- SHA-256 :: ~28d9b43e500c730b8b7628474f21a72f8bc23c54c3d6cb882662d7f333519702~
+- EXIF LensModel :: 85mm F1.2 DG | Art 026
+- EXIF FNumber :: 1.2
+- EXIF ImageWidth :: 1365
+- EXIF ImageHeight :: 2048
+- EXIF Model :: ILCE-1M2
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/250
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Dustin Abbott
+- EXIF Copyright :: © 2026 Thousand Word Image by Dustin Abbott
+- EXIF Software :: Adobe Photoshop Lightroom Classic 15.5 (Windows)
+Individual sample; no matched counterpart. Largest linked JPEG on review page, not full sensor resolution.
+
+** sigma-f12-45-classic-1-of-1
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sigma-85-f12/sigma-85-f12_abbott-45-classic-1-of-1.jpg][samples/sigma-85-f12/sigma-85-f12_abbott-45-classic-1-of-1.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sigma 85mm f/1.2 DG Art
+- Aperture :: f/2.0
+- Resolution :: 2048 × 2048
+- Photographer / reviewer :: Dustin Abbott
+- Source page :: [[https://dustinabbott.net/2026/09/sigma-85mm-f1-2-dg-art-review/][Source page]]
+- Original image URL :: [[https://dustinabbott.net/wp-content/uploads/2026/08/45-Classic-1-of-1.jpg][Downloaded image]]
+- Verification :: EXIF lens and aperture
+- SHA-256 :: ~e3baa159db79beebfb57af8efce66d7b8c7de9177130d39b4728cd90e9232a5d~
+- EXIF LensModel :: 85mm F1.2 DG | Art 026
+- EXIF FNumber :: 2.0
+- EXIF ImageWidth :: 2048
+- EXIF ImageHeight :: 2048
+- EXIF Model :: ILCE-1M2
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/400
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Dustin Abbott
+- EXIF Copyright :: © 2026 Thousand Word Image by Dustin Abbott
+- EXIF Software :: Adobe Photoshop Lightroom Classic 15.5 (Windows)
+Individual sample; no matched counterpart. Largest linked JPEG on review page, not full sensor resolution.
+
+** songraw-romain-1
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/songraw-85-f12/songraw-85-f12_romain-sample-1.jpg][samples/songraw-85-f12/songraw-85-f12_romain-sample-1.jpg]]
+- Comparison group :: Individual sample
+- Lens :: SongRaw AF 85mm f/1.2 MS (Sony E)
+- Aperture :: f/1.2
+- Resolution :: 3651 × 5477
+- Photographer / reviewer :: Romain Clercq-Roques
+- Source page :: [[https://romaincr.myportfolio.com/songraw-85mm][Source page]]
+- Original image URL :: [[https://cdn.myportfolio.com/bd37f228-68bc-43de-8145-4c3d62c2d760/17d25b86-b701-403c-827d-77932f6cc513.jpg?h=d2031fdda54a5359021b8d9b2c48bf5f][Downloaded image]]
+- Verification :: EXIF lens and aperture; MS version identified by photographer in forum post
+- SHA-256 :: ~12aeee81c2361fb22d37b005e361de308fd9be31e50a8965dcdff9d272616d15~
+- EXIF LensModel :: SongRaw 85mm F1.2 FE
+- EXIF FNumber :: 1.2
+- EXIF ImageWidth :: 3651
+- EXIF ImageHeight :: 5477
+- EXIF Model :: ILCE-7RM5
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/1600
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: clercq-roques romain
+- EXIF Software :: Adobe Photoshop Lightroom Classic 15.6 (Macintosh)
+Individual sample; HDR processing differs from other reviewers. MS identification: https://www.fredmiranda.com/forum/topic/1957512/ (Oct 5 owner post). Public original JPEG preserved. Selected for park plants and distant foliage.
+
+** songraw-romain-10
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/songraw-85-f12/songraw-85-f12_romain-sample-10.jpg][samples/songraw-85-f12/songraw-85-f12_romain-sample-10.jpg]]
+- Comparison group :: Individual sample
+- Lens :: SongRaw AF 85mm f/1.2 MS (Sony E)
+- Aperture :: f/2.8
+- Resolution :: 3651 × 5477
+- Photographer / reviewer :: Romain Clercq-Roques
+- Source page :: [[https://romaincr.myportfolio.com/songraw-85mm][Source page]]
+- Original image URL :: [[https://cdn.myportfolio.com/bd37f228-68bc-43de-8145-4c3d62c2d760/eae3c261-c62a-4b54-af8b-e0aa0d9df282.jpg?h=65405f9fab1e53ebbd77c7ee34e76273][Downloaded image]]
+- Verification :: EXIF lens and aperture; MS version identified by photographer in forum post
+- SHA-256 :: ~54a5d4f73cc5e5e766b9bdf52cfd1714b1aa73ba96807f5e56d15e34286d1bcf~
+- EXIF LensModel :: SongRaw 85mm F1.2 FE
+- EXIF FNumber :: 2.8
+- EXIF ImageWidth :: 3651
+- EXIF ImageHeight :: 5477
+- EXIF Model :: ILCE-7RM5
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/160
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: clercq-roques romain
+- EXIF Software :: Adobe Photoshop Lightroom Classic 15.6 (Macintosh)
+Individual sample; HDR processing differs from other reviewers. MS identification: https://www.fredmiranda.com/forum/topic/1957512/ (Oct 5 owner post). Public original JPEG preserved. Selected for cactus spines and smooth background.
+
+** songraw-romain-13
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/songraw-85-f12/songraw-85-f12_romain-sample-13.jpg][samples/songraw-85-f12/songraw-85-f12_romain-sample-13.jpg]]
+- Comparison group :: Individual sample
+- Lens :: SongRaw AF 85mm f/1.2 MS (Sony E)
+- Aperture :: f/1.2
+- Resolution :: 5086 × 3931
+- Photographer / reviewer :: Romain Clercq-Roques
+- Source page :: [[https://romaincr.myportfolio.com/songraw-85mm][Source page]]
+- Original image URL :: [[https://cdn.myportfolio.com/bd37f228-68bc-43de-8145-4c3d62c2d760/228a0451-101c-4f3e-835b-8b032771a196.jpg?h=d14833c90d1e847ef9f5d748e1117a85][Downloaded image]]
+- Verification :: EXIF lens and aperture; MS version identified by photographer in forum post
+- SHA-256 :: ~11ce99bc80e178ef10c2f178aafb37021e38fe1d2e874320ecc7aa03823265e6~
+- EXIF LensModel :: SongRaw 85mm F1.2 FE
+- EXIF FNumber :: 1.2
+- EXIF ImageWidth :: 5086
+- EXIF ImageHeight :: 3931
+- EXIF Model :: ILCE-7RM5
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/640
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: clercq-roques romain
+- EXIF Software :: Adobe Photoshop Lightroom Classic 15.6 (Macintosh)
+Individual sample; HDR processing differs from other reviewers. MS identification: https://www.fredmiranda.com/forum/topic/1957512/ (Oct 5 owner post). Public original JPEG preserved. Selected for compact car on a tree-lined street.
+
+** songraw-romain-31
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/songraw-85-f12/songraw-85-f12_romain-sample-31.jpg][samples/songraw-85-f12/songraw-85-f12_romain-sample-31.jpg]]
+- Comparison group :: Individual sample
+- Lens :: SongRaw AF 85mm f/1.2 MS (Sony E)
+- Aperture :: f/1.2
+- Resolution :: 3651 × 5477
+- Photographer / reviewer :: Romain Clercq-Roques
+- Source page :: [[https://romaincr.myportfolio.com/songraw-85mm][Source page]]
+- Original image URL :: [[https://cdn.myportfolio.com/bd37f228-68bc-43de-8145-4c3d62c2d760/657800cf-6229-4df1-b341-890293930257.jpg?h=728804f923f469389b3e11b74b788ecd][Downloaded image]]
+- Verification :: EXIF lens and aperture; MS version identified by photographer in forum post
+- SHA-256 :: ~c4a574a7e7ca682f2a291e5412ca67f26f2316a8940e1f63bcf939c462e98bb9~
+- EXIF LensModel :: SongRaw 85mm F1.2 FE
+- EXIF FNumber :: 1.2
+- EXIF ImageWidth :: 3651
+- EXIF ImageHeight :: 5477
+- EXIF Model :: ILCE-7RM5
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/1000
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: clercq-roques romain
+- EXIF Software :: Adobe Photoshop Lightroom Classic 15.6 (Macintosh)
+Individual sample; HDR processing differs from other reviewers. MS identification: https://www.fredmiranda.com/forum/topic/1957512/ (Oct 5 owner post). Public original JPEG preserved. Selected for red flowers against foliage highlights.
+
+** songraw-romain-34
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/songraw-85-f12/songraw-85-f12_romain-sample-34.jpg][samples/songraw-85-f12/songraw-85-f12_romain-sample-34.jpg]]
+- Comparison group :: Individual sample
+- Lens :: SongRaw AF 85mm f/1.2 MS (Sony E)
+- Aperture :: f/1.2
+- Resolution :: 4494 × 4450
+- Photographer / reviewer :: Romain Clercq-Roques
+- Source page :: [[https://romaincr.myportfolio.com/songraw-85mm][Source page]]
+- Original image URL :: [[https://cdn.myportfolio.com/bd37f228-68bc-43de-8145-4c3d62c2d760/ac0a9cc0-d863-4d3e-83fc-e07e361e6688.jpg?h=ed7159bf30bca976c4056da7d0c1a388][Downloaded image]]
+- Verification :: EXIF lens and aperture; MS version identified by photographer in forum post
+- SHA-256 :: ~8a410ff274aa519e999adfb57124602b4383b682e627914a71716abac627e38a~
+- EXIF LensModel :: SongRaw 85mm F1.2 FE
+- EXIF FNumber :: 1.2
+- EXIF ImageWidth :: 4494
+- EXIF ImageHeight :: 4450
+- EXIF Model :: ILCE-7RM5
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/50
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: clercq-roques romain
+- EXIF Software :: Adobe Photoshop Lightroom Classic 15.6 (Macintosh)
+Individual sample; HDR processing differs from other reviewers. MS identification: https://www.fredmiranda.com/forum/topic/1957512/ (Oct 5 owner post). Public original JPEG preserved. Selected for lamp and indoor leaves.
+
+** songraw-romain-4
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/songraw-85-f12/songraw-85-f12_romain-sample-4.jpg][samples/songraw-85-f12/songraw-85-f12_romain-sample-4.jpg]]
+- Comparison group :: Individual sample
+- Lens :: SongRaw AF 85mm f/1.2 MS (Sony E)
+- Aperture :: f/1.2
+- Resolution :: 3651 × 5477
+- Photographer / reviewer :: Romain Clercq-Roques
+- Source page :: [[https://romaincr.myportfolio.com/songraw-85mm][Source page]]
+- Original image URL :: [[https://cdn.myportfolio.com/bd37f228-68bc-43de-8145-4c3d62c2d760/74cbbd37-a0f0-424a-aba5-3a575a09e03f.jpg?h=87bf8c658c648a0dc53252c7507223af][Downloaded image]]
+- Verification :: EXIF lens and aperture; MS version identified by photographer in forum post
+- SHA-256 :: ~6c94d95d54ee0d6c59985ae6d570a07dc58420b3db9c11e705b0ab517f188106~
+- EXIF LensModel :: SongRaw 85mm F1.2 FE
+- EXIF FNumber :: 1.2
+- EXIF ImageWidth :: 3651
+- EXIF ImageHeight :: 5477
+- EXIF Model :: ILCE-7RM5
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/800
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: clercq-roques romain
+- EXIF Software :: Adobe Photoshop Lightroom Classic 15.6 (Macintosh)
+Individual sample; HDR processing differs from other reviewers. MS identification: https://www.fredmiranda.com/forum/topic/1957512/ (Oct 5 owner post). Public original JPEG preserved. Selected for tree trunk with layered foliage.
+
+** songraw-romain-40
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/songraw-85-f12/songraw-85-f12_romain-sample-40.jpg][samples/songraw-85-f12/songraw-85-f12_romain-sample-40.jpg]]
+- Comparison group :: Individual sample
+- Lens :: SongRaw AF 85mm f/1.2 MS (Sony E)
+- Aperture :: f/1.2
+- Resolution :: 3651 × 5477
+- Photographer / reviewer :: Romain Clercq-Roques
+- Source page :: [[https://romaincr.myportfolio.com/songraw-85mm][Source page]]
+- Original image URL :: [[https://cdn.myportfolio.com/bd37f228-68bc-43de-8145-4c3d62c2d760/22b18fa6-71a8-4a30-a4b2-de55d2be8285.jpg?h=cd95c0e7352cfa6ec295f38f34d4a4b4][Downloaded image]]
+- Verification :: EXIF lens and aperture; MS version identified by photographer in forum post
+- SHA-256 :: ~85fb0beb789e1160782029355632b2ab536e9a94e4b06c08ed4a6adfe380c8ed~
+- EXIF LensModel :: SongRaw 85mm F1.2 FE
+- EXIF FNumber :: 1.2
+- EXIF ImageWidth :: 3651
+- EXIF ImageHeight :: 5477
+- EXIF Model :: ILCE-7RM5
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/1250
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: clercq-roques romain
+- EXIF Software :: Adobe Photoshop Lightroom Classic 15.6 (Macintosh)
+Individual sample; HDR processing differs from other reviewers. MS identification: https://www.fredmiranda.com/forum/topic/1957512/ (Oct 5 owner post). Public original JPEG preserved. Selected for woodland hut through foliage.
+
+** songraw-romain-43
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/songraw-85-f12/songraw-85-f12_romain-sample-43.jpg][samples/songraw-85-f12/songraw-85-f12_romain-sample-43.jpg]]
+- Comparison group :: Individual sample
+- Lens :: SongRaw AF 85mm f/1.2 MS (Sony E)
+- Aperture :: f/1.3
+- Resolution :: 3651 × 5477
+- Photographer / reviewer :: Romain Clercq-Roques
+- Source page :: [[https://romaincr.myportfolio.com/songraw-85mm][Source page]]
+- Original image URL :: [[https://cdn.myportfolio.com/bd37f228-68bc-43de-8145-4c3d62c2d760/ae40d7d8-fc7f-4aa7-8795-2278e3163611.jpg?h=94b161b2b4c496cf80ab17396e0ca56d][Downloaded image]]
+- Verification :: EXIF lens and aperture; MS version identified by photographer in forum post
+- SHA-256 :: ~1d1346779299820fecfbb7f4283744e323d868ea33dc319a8cebd7f12830bfbc~
+- EXIF LensModel :: SongRaw 85mm F1.2 FE
+- EXIF FNumber :: 1.3
+- EXIF ImageWidth :: 3651
+- EXIF ImageHeight :: 5477
+- EXIF Model :: ILCE-7RM5
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/800
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: clercq-roques romain
+- EXIF Software :: Adobe Photoshop Lightroom Classic 15.6 (Macintosh)
+Individual sample; HDR processing differs from other reviewers. MS identification: https://www.fredmiranda.com/forum/topic/1957512/ (Oct 5 owner post). Public original JPEG preserved. Selected for portrait against forest background.
+
+** songraw-romain-46
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/songraw-85-f12/songraw-85-f12_romain-sample-46.jpg][samples/songraw-85-f12/songraw-85-f12_romain-sample-46.jpg]]
+- Comparison group :: Individual sample
+- Lens :: SongRaw AF 85mm f/1.2 MS (Sony E)
+- Aperture :: f/1.2
+- Resolution :: 4712 × 4244
+- Photographer / reviewer :: Romain Clercq-Roques
+- Source page :: [[https://romaincr.myportfolio.com/songraw-85mm][Source page]]
+- Original image URL :: [[https://cdn.myportfolio.com/bd37f228-68bc-43de-8145-4c3d62c2d760/e1753c8c-90c6-4f43-badb-e454def8e3a1.jpg?h=94479000645b2f867909304df0a6ceff][Downloaded image]]
+- Verification :: EXIF lens and aperture; MS version identified by photographer in forum post
+- SHA-256 :: ~b0001cb276673731d96af93e0fc1b176f90826e0aa65730ed0dae59d90a5599f~
+- EXIF LensModel :: SongRaw 85mm F1.2 FE
+- EXIF FNumber :: 1.2
+- EXIF ImageWidth :: 4712
+- EXIF ImageHeight :: 4244
+- EXIF Model :: ILCE-7RM5
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/200
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: clercq-roques romain
+- EXIF Software :: Adobe Photoshop Lightroom Classic 15.6 (Macintosh)
+Individual sample; HDR processing differs from other reviewers. MS identification: https://www.fredmiranda.com/forum/topic/1957512/ (Oct 5 owner post). Public original JPEG preserved. Selected for walking portrait on woodland path.
+
+** songraw-romain-7
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/songraw-85-f12/songraw-85-f12_romain-sample-7.jpg][samples/songraw-85-f12/songraw-85-f12_romain-sample-7.jpg]]
+- Comparison group :: Individual sample
+- Lens :: SongRaw AF 85mm f/1.2 MS (Sony E)
+- Aperture :: f/1.2
+- Resolution :: 4609 × 4338
+- Photographer / reviewer :: Romain Clercq-Roques
+- Source page :: [[https://romaincr.myportfolio.com/songraw-85mm][Source page]]
+- Original image URL :: [[https://cdn.myportfolio.com/bd37f228-68bc-43de-8145-4c3d62c2d760/4e4ab567-7a12-428d-85f7-c278bbb3be65.jpg?h=bc824eaf3520cfaafa7b0c7202d5fd76][Downloaded image]]
+- Verification :: EXIF lens and aperture; MS version identified by photographer in forum post
+- SHA-256 :: ~9f802d6181cecb01209140f663a3eda5192324567d7a7add9a47534785ea85af~
+- EXIF LensModel :: SongRaw 85mm F1.2 FE
+- EXIF FNumber :: 1.2
+- EXIF ImageWidth :: 4609
+- EXIF ImageHeight :: 4338
+- EXIF Model :: ILCE-7RM5
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/500
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: clercq-roques romain
+- EXIF Software :: Adobe Photoshop Lightroom Classic 15.6 (Macintosh)
+Individual sample; HDR processing differs from other reviewers. MS identification: https://www.fredmiranda.com/forum/topic/1957512/ (Oct 5 owner post). Public original JPEG preserved. Selected for gravestones with foliage and highlights.
+
+** sony-135-f18-gm-40681704773
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sony-135-f18-gm/sony-135-f18-gm-40681704773.jpg][samples/sony-135-f18-gm/sony-135-f18-gm-40681704773.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sony FE 135mm f/1.8 GM
+- Aperture :: f/1.8
+- Resolution :: 7435 × 4959
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/40681704773/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/65535/40681704773_a6c1fd9cdc_o.jpg][Downloaded image]]
+- Verification :: EXIF-verified lens and aperture; corroborated by reviewer album and photo title.
+- SHA-256 :: ~ca52d7a834fe2ee5c4fbb1bbfe18c8e3d1e0f60208e28885192a5f16328aa118~
+- EXIF Model :: ILCE-7RM3
+- EXIF LensModel :: FE 135mm F1.8 GM
+- EXIF LensID :: FE 135mm F1.8 GM
+- EXIF FNumber :: 1.8
+- EXIF ExposureTime :: 1/125
+- EXIF ISO :: 100
+- EXIF FocalLength :: 135.0 mm
+- EXIF ImageWidth :: 7435
+- EXIF ImageHeight :: 4959
+- EXIF Artist :: Marc Alhadeff
+- EXIF Software :: Adobe Photoshop Lightroom Classic 8.2.1 (Macintosh)
+Group portrait against pedestrians and street detail. Original public Flickr download; canDownload=true. Unrelated to other lenses, individual sample only. Reviewer processing retained.
+
+** sony-135-f18-gm-46732662675
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sony-135-f18-gm/sony-135-f18-gm-46732662675.jpg][samples/sony-135-f18-gm/sony-135-f18-gm-46732662675.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sony FE 135mm f/1.8 GM
+- Aperture :: f/1.8
+- Resolution :: 7762 × 5177
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/46732662675/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/65535/46732662675_30450c7957_o.jpg][Downloaded image]]
+- Verification :: EXIF-verified lens and aperture; corroborated by reviewer album and photo title.
+- SHA-256 :: ~5d58908825ab9e1004a1a0542d371b64506bbd87a09eccedb92e41f76bd64eaf~
+- EXIF Model :: ILCE-7RM3
+- EXIF LensModel :: FE 135mm F1.8 GM
+- EXIF LensID :: FE 135mm F1.8 GM
+- EXIF FNumber :: 1.8
+- EXIF ExposureTime :: 1/125
+- EXIF ISO :: 100
+- EXIF FocalLength :: 135.0 mm
+- EXIF ImageWidth :: 7762
+- EXIF ImageHeight :: 5177
+- EXIF Artist :: Marc Alhadeff
+- EXIF Software :: Adobe Photoshop Lightroom Classic 8.2.1 (Macintosh)
+Portrait with flowers and pedestrians behind. Original public Flickr download; canDownload=true. Unrelated to other lenses, individual sample only. Reviewer processing retained.
+
+** sony-135-f18-gm-46732664355
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sony-135-f18-gm/sony-135-f18-gm-46732664355.jpg][samples/sony-135-f18-gm/sony-135-f18-gm-46732664355.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sony FE 135mm f/1.8 GM
+- Aperture :: f/1.8
+- Resolution :: 7952 × 5304
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/46732664355/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/65535/46732664355_12de8eb04d_o.jpg][Downloaded image]]
+- Verification :: EXIF-verified lens and aperture; corroborated by reviewer album and photo title.
+- SHA-256 :: ~43547ef92f73eecb28314907cdc3e5e91c128415ea697bb2747c5cab3daeddb1~
+- EXIF Model :: ILCE-7RM3
+- EXIF LensModel :: FE 135mm F1.8 GM
+- EXIF LensID :: FE 135mm F1.8 GM
+- EXIF FNumber :: 1.8
+- EXIF ExposureTime :: 1/125
+- EXIF ISO :: 100
+- EXIF FocalLength :: 135.0 mm
+- EXIF ImageWidth :: 7952
+- EXIF ImageHeight :: 5304
+- EXIF Artist :: Marc Alhadeff
+- EXIF Software :: Adobe Photoshop Lightroom Classic 8.2.1 (Macintosh)
+Wooden chair edge with defocused shop detail and highlights. Original public Flickr download; canDownload=true. Unrelated to other lenses, individual sample only. Reviewer processing retained.
+
+** sony-50-f12-gm-51171505937
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sony-50-f12-gm/sony-50-f12-gm-51171505937.jpg][samples/sony-50-f12-gm/sony-50-f12-gm-51171505937.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sony FE 50mm f/1.2 GM
+- Aperture :: f/1.2
+- Resolution :: 8640 × 5760
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/51171505937/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/65535/51171505937_faf904a874_o.jpg][Downloaded image]]
+- Verification :: EXIF-verified lens and aperture; corroborated by reviewer album and photo title.
+- SHA-256 :: ~9f5fa97a259d0e3dc29c0bc1be0e417b5ee20b8d5af531ed57b5884a8a6f5dfb~
+- EXIF Model :: ILCE-1
+- EXIF LensModel :: FE 50mm F1.2 GM
+- EXIF LensID :: FE 50mm F1.2 GM
+- EXIF FNumber :: 1.2
+- EXIF ExposureTime :: 1/1000
+- EXIF ISO :: 100
+- EXIF FocalLength :: 50.0 mm
+- EXIF ImageWidth :: 8640
+- EXIF ImageHeight :: 5760
+- EXIF Artist :: Marc Alhadeff
+- EXIF Software :: Adobe Photoshop Lightroom Classic 10.2 (Macintosh)
+String light with foliage and other lights behind. Original public Flickr download; canDownload=true. Unrelated to other lenses, individual sample only. Reviewer processing retained.
+
+** sony-50-f12-gm-51172174206
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sony-50-f12-gm/sony-50-f12-gm-51172174206.jpg][samples/sony-50-f12-gm/sony-50-f12-gm-51172174206.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sony FE 50mm f/1.2 GM
+- Aperture :: f/1.2
+- Resolution :: 8640 × 5760
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/51172174206/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/65535/51172174206_5d04627642_o.jpg][Downloaded image]]
+- Verification :: EXIF-verified lens and aperture; corroborated by reviewer album and photo title.
+- SHA-256 :: ~46edf938f0a7446c64bbc89edaf1fa7508264d4a4683fdf987103b5da47c5a87~
+- EXIF Model :: ILCE-1
+- EXIF LensModel :: FE 50mm F1.2 GM
+- EXIF LensID :: FE 50mm F1.2 GM
+- EXIF FNumber :: 1.2
+- EXIF ExposureTime :: 1/640
+- EXIF ISO :: 100
+- EXIF FocalLength :: 50.0 mm
+- EXIF ImageWidth :: 8640
+- EXIF ImageHeight :: 5760
+- EXIF Artist :: Marc Alhadeff
+- EXIF Software :: Adobe Photoshop Lightroom Classic 10.2 (Macintosh)
+Two-person environmental portrait with street detail behind. Original public Flickr download; canDownload=true. Unrelated to other lenses, individual sample only. Reviewer processing retained.
+
+** sony-50-f12-gm-51172409773
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sony-50-f12-gm/sony-50-f12-gm-51172409773.jpg][samples/sony-50-f12-gm/sony-50-f12-gm-51172409773.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sony FE 50mm f/1.2 GM
+- Aperture :: f/1.2
+- Resolution :: 5225 × 7891
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/51172409773/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/65535/51172409773_7653639efb_o.jpg][Downloaded image]]
+- Verification :: EXIF-verified lens and aperture; corroborated by reviewer album and photo title.
+- SHA-256 :: ~9cbd8016cdad0cbffccdba8421ce8f673587264e29d8504b98ed82eb8127eae8~
+- EXIF Model :: ILCE-1
+- EXIF LensModel :: FE 50mm F1.2 GM
+- EXIF LensID :: FE 50mm F1.2 GM
+- EXIF FNumber :: 1.2
+- EXIF ExposureTime :: 1/1000
+- EXIF ISO :: 100
+- EXIF FocalLength :: 50.0 mm
+- EXIF ImageWidth :: 5225
+- EXIF ImageHeight :: 7891
+- EXIF Artist :: Marc Alhadeff
+- EXIF Software :: Adobe Photoshop Lightroom Classic 10.2 (Macintosh)
+Portrait in a busy urban setting. Original public Flickr download; canDownload=true. Unrelated to other lenses, individual sample only. Reviewer processing retained.
+
+** sony-50-f12-gm-51172410158
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sony-50-f12-gm/sony-50-f12-gm-51172410158.jpg][samples/sony-50-f12-gm/sony-50-f12-gm-51172410158.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sony FE 50mm f/1.2 GM
+- Aperture :: f/1.2
+- Resolution :: 8640 × 5760
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/51172410158/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/65535/51172410158_43e135ba4e_o.jpg][Downloaded image]]
+- Verification :: EXIF-verified lens and aperture; corroborated by reviewer album and photo title.
+- SHA-256 :: ~2421bd67846d1e045c1996049fd63320443cf2a436b25864e0195e68a84294b1~
+- EXIF Model :: ILCE-1
+- EXIF LensModel :: FE 50mm F1.2 GM
+- EXIF LensID :: FE 50mm F1.2 GM
+- EXIF FNumber :: 1.2
+- EXIF ExposureTime :: 1/1000
+- EXIF ISO :: 100
+- EXIF FocalLength :: 50.0 mm
+- EXIF ImageWidth :: 8640
+- EXIF ImageHeight :: 5760
+- EXIF Artist :: Marc Alhadeff
+- EXIF Software :: Adobe Photoshop Lightroom Classic 10.2 (Macintosh)
+Railing with defocused trees and grass. Original public Flickr download; canDownload=true. Unrelated to other lenses, individual sample only. Reviewer processing retained.
+
+** sony-50-f12-gm-51172413558
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sony-50-f12-gm/sony-50-f12-gm-51172413558.jpg][samples/sony-50-f12-gm/sony-50-f12-gm-51172413558.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sony FE 50mm f/1.2 GM
+- Aperture :: f/1.2
+- Resolution :: 8298 × 5532
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/51172413558/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/65535/51172413558_630a4328f7_o.jpg][Downloaded image]]
+- Verification :: EXIF-verified lens and aperture; corroborated by reviewer album and photo title.
+- SHA-256 :: ~5fc2ce69f3639fa07a99eba0d5468152f7dc1fcb2b7e2ab28718b853a76ae53b~
+- EXIF Model :: ILCE-1
+- EXIF LensModel :: FE 50mm F1.2 GM
+- EXIF LensID :: FE 50mm F1.2 GM
+- EXIF FNumber :: 1.2
+- EXIF ExposureTime :: 1/800
+- EXIF ISO :: 100
+- EXIF FocalLength :: 50.0 mm
+- EXIF ImageWidth :: 8298
+- EXIF ImageHeight :: 5532
+- EXIF Artist :: Marc Alhadeff
+- EXIF Software :: Adobe Photoshop Lightroom Classic 10.2 (Macintosh)
+Flowers and foliage at several distances. Original public Flickr download; canDownload=true. Unrelated to other lenses, individual sample only. Reviewer processing retained.
+
+** sony-50-f12-gm-51173277160
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sony-50-f12-gm/sony-50-f12-gm-51173277160.jpg][samples/sony-50-f12-gm/sony-50-f12-gm-51173277160.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sony FE 50mm f/1.2 GM
+- Aperture :: f/1.8
+- Resolution :: 8640 × 5760
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/51173277160/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/65535/51173277160_14786fac6c_o.jpg][Downloaded image]]
+- Verification :: EXIF-verified lens and aperture; corroborated by reviewer album and photo title.
+- SHA-256 :: ~a87857559ce16a793dd7815b090040660867aad86e1fb0f009a9c3a8254aa51d~
+- EXIF Model :: ILCE-1
+- EXIF LensModel :: FE 50mm F1.2 GM
+- EXIF LensID :: FE 50mm F1.2 GM
+- EXIF FNumber :: 1.8
+- EXIF ExposureTime :: 1/800
+- EXIF ISO :: 100
+- EXIF FocalLength :: 50.0 mm
+- EXIF ImageWidth :: 8640
+- EXIF ImageHeight :: 5760
+- EXIF Artist :: Marc Alhadeff
+- EXIF Software :: Adobe Photoshop Lightroom Classic 10.2 (Macintosh)
+Portrait with street detail; f/1.8 reference. Original public Flickr download; canDownload=true. Unrelated to other lenses, individual sample only. Reviewer processing retained.
+
+** sony-50-f12-gm-51173281015
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sony-50-f12-gm/sony-50-f12-gm-51173281015.jpg][samples/sony-50-f12-gm/sony-50-f12-gm-51173281015.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sony FE 50mm f/1.2 GM
+- Aperture :: f/1.2
+- Resolution :: 8640 × 5760
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/51173281015/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/65535/51173281015_cf0de00210_o.jpg][Downloaded image]]
+- Verification :: EXIF-verified lens and aperture; corroborated by reviewer album and photo title.
+- SHA-256 :: ~47289bce46752c516e9a2a81b4d84a61b3913814f27186cae4bd136b952e9ca0~
+- EXIF Model :: ILCE-1
+- EXIF LensModel :: FE 50mm F1.2 GM
+- EXIF LensID :: FE 50mm F1.2 GM
+- EXIF FNumber :: 1.2
+- EXIF ExposureTime :: 1/640
+- EXIF ISO :: 100
+- EXIF FocalLength :: 50.0 mm
+- EXIF ImageWidth :: 8640
+- EXIF ImageHeight :: 5760
+- EXIF Artist :: Marc Alhadeff
+- EXIF Software :: Adobe Photoshop Lightroom Classic 10.2 (Macintosh)
+Close foliage with a tree trunk and layered background. Original public Flickr download; canDownload=true. Unrelated to other lenses, individual sample only. Reviewer processing retained.
+
+** sony-85-f18-33039141070
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sony-85-f18/sony-85-f18-33039141070.jpg][samples/sony-85-f18/sony-85-f18-33039141070.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sony FE 85mm f/1.8
+- Aperture :: f/1.8
+- Resolution :: 4240 × 2832
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/33039141070/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/3915/33039141070_f2dc1d8dee_o.jpg][Downloaded image]]
+- Verification :: EXIF-verified lens and aperture; corroborated by reviewer album and photo title.
+- SHA-256 :: ~3ec945ce78a307a7cf560acf43e661c54df9c017e24ad7cf31866f1ddc3a935e~
+- EXIF Model :: ILCE-7SM2
+- EXIF LensModel :: FE 85mm F1.8
+- EXIF LensID :: Sony FE 85mm F1.8
+- EXIF FNumber :: 1.8
+- EXIF ExposureTime :: 1/100
+- EXIF ISO :: 200
+- EXIF FocalLength :: 85.0 mm
+- EXIF ImageWidth :: 4240
+- EXIF ImageHeight :: 2832
+- EXIF Artist :: Marc Alhadeff
+- EXIF Software :: ILCE-7SM2 v2.20
+Two-person portrait in a busy indoor setting. Source processed in black and white; color rendering cannot be assessed. Original public Flickr download; canDownload=true. Unrelated to other lenses, individual sample only. Reviewer processing retained.
+
+** sony-85-f18-33266513302
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sony-85-f18/sony-85-f18-33266513302.jpg][samples/sony-85-f18/sony-85-f18-33266513302.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sony FE 85mm f/1.8
+- Aperture :: f/1.8
+- Resolution :: 7952 × 5304
+- Photographer / reviewer :: Marc Alhadeff
+- Source page :: [[https://www.flickr.com/photos/sonyalphablog/33266513302/][Source page]]
+- Original image URL :: [[https://live.staticflickr.com/658/33266513302_166d145c3a_o.jpg][Downloaded image]]
+- Verification :: EXIF-verified lens and aperture; corroborated by reviewer album and photo title.
+- SHA-256 :: ~54c7516ab92b605d60a7d589fa782c3a59d01d1ea92df245c19a01eced8a875f~
+- EXIF Model :: ILCE-7RM2
+- EXIF LensModel :: FE 85mm F1.8
+- EXIF LensID :: Sony FE 85mm F1.8
+- EXIF FNumber :: 1.8
+- EXIF ExposureTime :: 1/100
+- EXIF ISO :: 250
+- EXIF FocalLength :: 85.0 mm
+- EXIF ImageWidth :: 7952
+- EXIF ImageHeight :: 5304
+- EXIF Software :: ILCE-7RM2 v3.30
+Indoor portrait with bright trade-show lights and people at intermediate distances. Original public Flickr download; canDownload=true. Unrelated to other lenses, individual sample only. Reviewer processing retained.
+
+** sony-85-f18-sony-647
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sony-85-f18/sony-85-f18_sony-647.jpg][samples/sony-85-f18/sony-85-f18_sony-647.jpg]]
+- Comparison group :: Individual sample
+- Lens :: Sony FE 85mm f/1.8
+- Aperture :: f/1.8
+- Resolution :: 7952 × 5304
+- Photographer / reviewer :: Sony sample gallery; individual photographer not credited on source page
+- Source page :: [[https://www.sony.co.jp/en/Products/di_photo-gallery/photo/post-647.html][Source page]]
+- Original image URL :: [[https://www.sony.co.jp/en/Products/di_photo-gallery/images/post/647.jpg][Downloaded image]]
+- Verification :: EXIF-verified lens and aperture; also explicitly reported by Sony sample gallery.
+- SHA-256 :: ~0f090897912beb2fe3a6c9475adeae2e394b22c97af3903bfe872b88a7a3e35c~
+- EXIF Model :: ILCE-7RM2
+- EXIF LensModel :: FE 85mm F1.8
+- EXIF FNumber :: 1.8
+- EXIF ExposureTime :: 1/320
+- EXIF ISO :: 100
+- EXIF FocalLength :: 85.0 mm
+- EXIF ImageWidth :: 7952
+- EXIF ImageHeight :: 5304
+- EXIF Software :: ILCE-7RM2 v3.30
+Hat on a bush: foreground leaves, focused felt, and layered foliage behind. Manufacturer sample, not independent review; processing settings unknown. Full-resolution linked photo-page image retained unchanged.
+
+* Excluded downloads retained for provenance
+These photographs are excluded from the gallery. The reasons below prevent later pooling from treating them as usable matched pairs.
+
+** alhadeff-lights-sigma-85-dg-dn
+- id :: alhadeff-lights-sigma-85-dg-dn
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/comparisons/alhadeff-lights/sigma-85-dg-dn.jpg][comparisons/alhadeff-lights/sigma-85-dg-dn.jpg]]
+- lens :: Sigma 85mm f/1.4 DG DN Art
+- aperture :: f/1.4
+- width :: 800
+- height :: 533
+- sourcePage :: [[https://sonyalpha.blog/2024/09/30/sony-fe-85mm-f1-4-gm-ii/][sourcePage]]
+- imageUrl :: [[https://i0.wp.com/sonyalpha.blog/wp-content/uploads/2020/08/85mm-F1.4-DG-DN-Art-020-at-85-mm-1-60-s-a-f-14-a-ISO-100-028.jpg?ssl=1][imageUrl]]
+- photographer :: Marc Alhadeff
+- verification :: Source-reported lens and aperture; EXIF unavailable or incomplete
+- notes :: Source-reported f/1.4 and lens; 800 px web export without camera EXIF. Excluded from A/B: similar toy still life, but background light geometry and subject distance visibly differ substantially across review years.
+- sha256 :: 223c8ba7961ec0678b7a4b10d23b60ad9992c48709d69971737aa4659675ef7e
+- EXIF ImageWidth :: 800
+- EXIF ImageHeight :: 533
+- excludedReason :: Excluded from A/B: similar toy still life, but background light geometry and subject distance visibly differ substantially across review years.
+
+** alhadeff-lights-sony-85-gm-ii
+- id :: alhadeff-lights-sony-85-gm-ii
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/comparisons/alhadeff-lights/sony-85-gm-ii.jpg][comparisons/alhadeff-lights/sony-85-gm-ii.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: f/1.4
+- width :: 800
+- height :: 533
+- sourcePage :: [[https://sonyalpha.blog/2024/09/30/sony-fe-85mm-f1-4-gm-ii/][sourcePage]]
+- imageUrl :: [[https://i0.wp.com/sonyalpha.blog/wp-content/uploads/2024/09/FE-85mm-F1.4-GM-II-at-85-mm-1-15-s-a-f-14-a-ISO-100-019.jpg?ssl=1][imageUrl]]
+- photographer :: Marc Alhadeff
+- verification :: Source-reported lens and aperture; EXIF unavailable or incomplete
+- notes :: Source-reported f/1.4 and lens; 800 px web export without camera EXIF. Excluded from A/B: similar toy still life, but background light geometry and subject distance visibly differ substantially across review years.
+- sha256 :: a1714898676322ca1f5785b9deefb4eb7709ea30a1f060b509478c03197bac17
+- EXIF ImageWidth :: 800
+- EXIF ImageHeight :: 533
+- excludedReason :: Excluded from A/B: similar toy still life, but background light geometry and subject distance visibly differ substantially across review years.
+
+** alhadeff-portrait-sigma-85-dg-dn
+- id :: alhadeff-portrait-sigma-85-dg-dn
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/comparisons/alhadeff-portrait/sigma-85-dg-dn.jpg][comparisons/alhadeff-portrait/sigma-85-dg-dn.jpg]]
+- lens :: Sigma 85mm f/1.4 DG DN Art
+- aperture :: f/1.4
+- width :: 800
+- height :: 534
+- sourcePage :: [[https://sonyalpha.blog/2024/09/30/sony-fe-85mm-f1-4-gm-ii/][sourcePage]]
+- imageUrl :: [[https://i0.wp.com/sonyalpha.blog/wp-content/uploads/2024/09/85mm-F1.4-DG-DN-Art-020-at-85-mm-1-2500-s-a-f-14-a-ISO-100-045.jpg?ssl=1][imageUrl]]
+- photographer :: Marc Alhadeff
+- verification :: Source-reported lens and aperture; EXIF unavailable or incomplete
+- notes :: Source-reported f/1.4 and lens; 800 px web export without camera EXIF. Excluded from A/B: unrelated flare scenes, not portrait comparisons.
+- sha256 :: 79b304be5542b714b74d9dd2ef9b05e3620a12d4d130d45af30bac60b6f7c061
+- EXIF ImageWidth :: 800
+- EXIF ImageHeight :: 534
+- excludedReason :: Excluded from A/B: unrelated flare scenes, not portrait comparisons.
+
+** alhadeff-portrait-sony-85-gm-ii
+- id :: alhadeff-portrait-sony-85-gm-ii
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/comparisons/alhadeff-portrait/sony-85-gm-ii.jpg][comparisons/alhadeff-portrait/sony-85-gm-ii.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: f/1.4
+- width :: 800
+- height :: 533
+- sourcePage :: [[https://sonyalpha.blog/2024/09/30/sony-fe-85mm-f1-4-gm-ii/][sourcePage]]
+- imageUrl :: [[https://i0.wp.com/sonyalpha.blog/wp-content/uploads/2024/09/FE-85mm-F1.4-GM-II-at-85-mm-1-8000-s-a-f-14-a-ISO-100-059-2.jpg?ssl=1][imageUrl]]
+- photographer :: Marc Alhadeff
+- verification :: Source-reported lens and aperture; EXIF unavailable or incomplete
+- notes :: Source-reported f/1.4 and lens; 800 px web export without camera EXIF. Excluded from A/B: unrelated flare scenes, not portrait comparisons.
+- sha256 :: 5a4b040115a999d9ff7ce4e93a32e26014f0574aec04f43790b72dc005af4f66
+- EXIF ImageWidth :: 800
+- EXIF ImageHeight :: 533
+- excludedReason :: Excluded from A/B: unrelated flare scenes, not portrait comparisons.
+
+** songraw-romain-16
+- id :: songraw-romain-16
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/songraw-85-f12/songraw-85-f12_romain-sample-16.jpg][samples/songraw-85-f12/songraw-85-f12_romain-sample-16.jpg]]
+- lens :: SongRaw AF 85mm f/1.2 MS (Sony E)
+- aperture :: 2.8
+- width :: 5477
+- height :: 3651
+- sourcePage :: [[https://romaincr.myportfolio.com/songraw-85mm][sourcePage]]
+- imageUrl :: [[https://cdn.myportfolio.com/bd37f228-68bc-43de-8145-4c3d62c2d760/452219d2-1a9a-44fb-b41d-5d1d4c102aa9.jpg?h=df2676ef4c0d948f54a4906b2dba3d79][imageUrl]]
+- photographer :: Romain Clercq-Roques
+- verification :: EXIF lens and aperture; MS version identified by photographer in forum post
+- notes :: Individual sample; HDR processing differs from other reviewers. MS identification: https://www.fredmiranda.com/forum/topic/1957512/ (Oct 5 owner post). Public original JPEG preserved. Excluded from selected gallery: less useful background challenge or redundant scenery.
+- sha256 :: 63d6697a7f08d8be4cbe19c8160f5ca9ba0a81dd9e3e8b0d0b401f3d9a5df3e2
+- EXIF LensModel :: SongRaw 85mm F1.2 FE
+- EXIF FNumber :: 2.8
+- EXIF ImageWidth :: 5477
+- EXIF ImageHeight :: 3651
+- EXIF Model :: ILCE-7RM5
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/1250
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: clercq-roques romain
+- EXIF Software :: Adobe Photoshop Lightroom Classic 15.6 (Macintosh)
+- included :: False
+- title :: Additional sample retained outside selected gallery
+
+** songraw-romain-19
+- id :: songraw-romain-19
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/songraw-85-f12/songraw-85-f12_romain-sample-19.jpg][samples/songraw-85-f12/songraw-85-f12_romain-sample-19.jpg]]
+- lens :: SongRaw AF 85mm f/1.2 MS (Sony E)
+- aperture :: 9.0
+- width :: 3651
+- height :: 5477
+- sourcePage :: [[https://romaincr.myportfolio.com/songraw-85mm][sourcePage]]
+- imageUrl :: [[https://cdn.myportfolio.com/bd37f228-68bc-43de-8145-4c3d62c2d760/534dfccb-df97-4481-a434-0ed96683fa27.jpg?h=f8b36f515dd6396cf02f91a47c3ef864][imageUrl]]
+- photographer :: Romain Clercq-Roques
+- verification :: EXIF lens and aperture; MS version identified by photographer in forum post
+- notes :: Individual sample; HDR processing differs from other reviewers. MS identification: https://www.fredmiranda.com/forum/topic/1957512/ (Oct 5 owner post). Public original JPEG preserved. Excluded from selected gallery: less useful background challenge or redundant scenery.
+- sha256 :: 5432514fadf218cd8143384606ccb1d6c45c523a06baaeeff84746fdc2dcfe3b
+- EXIF LensModel :: SongRaw 85mm F1.2 FE
+- EXIF FNumber :: 9.0
+- EXIF ImageWidth :: 3651
+- EXIF ImageHeight :: 5477
+- EXIF Model :: ILCE-7RM5
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/200
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: clercq-roques romain
+- EXIF Software :: Adobe Photoshop Lightroom Classic 15.6 (Macintosh)
+- included :: False
+- title :: Additional sample retained outside selected gallery
+
+** songraw-romain-22
+- id :: songraw-romain-22
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/songraw-85-f12/songraw-85-f12_romain-sample-22.jpg][samples/songraw-85-f12/songraw-85-f12_romain-sample-22.jpg]]
+- lens :: SongRaw AF 85mm f/1.2 MS (Sony E)
+- aperture :: 1.2
+- width :: 3651
+- height :: 5477
+- sourcePage :: [[https://romaincr.myportfolio.com/songraw-85mm][sourcePage]]
+- imageUrl :: [[https://cdn.myportfolio.com/bd37f228-68bc-43de-8145-4c3d62c2d760/a86b7751-747c-4676-95af-dacf08731b1d.jpg?h=e389ba55084366723d51708b27f53661][imageUrl]]
+- photographer :: Romain Clercq-Roques
+- verification :: EXIF lens and aperture; MS version identified by photographer in forum post
+- notes :: Individual sample; HDR processing differs from other reviewers. MS identification: https://www.fredmiranda.com/forum/topic/1957512/ (Oct 5 owner post). Public original JPEG preserved. Excluded from selected gallery: less useful background challenge or redundant scenery.
+- sha256 :: 1e9ea306f4babfd7ee2b372c048873093e96a96a7f3ad5745d0b41e9275c024c
+- EXIF LensModel :: SongRaw 85mm F1.2 FE
+- EXIF FNumber :: 1.2
+- EXIF ImageWidth :: 3651
+- EXIF ImageHeight :: 5477
+- EXIF Model :: ILCE-7RM5
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/8000
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: clercq-roques romain
+- EXIF Software :: Adobe Photoshop Lightroom Classic 15.6 (Macintosh)
+- included :: False
+- title :: Additional sample retained outside selected gallery
+
+** songraw-romain-25
+- id :: songraw-romain-25
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/songraw-85-f12/songraw-85-f12_romain-sample-25.jpg][samples/songraw-85-f12/songraw-85-f12_romain-sample-25.jpg]]
+- lens :: SongRaw AF 85mm f/1.2 MS (Sony E)
+- aperture :: 1.2
+- width :: 5125
+- height :: 3901
+- sourcePage :: [[https://romaincr.myportfolio.com/songraw-85mm][sourcePage]]
+- imageUrl :: [[https://cdn.myportfolio.com/bd37f228-68bc-43de-8145-4c3d62c2d760/4184ffb7-9caf-47dc-a341-c92047ed526a.jpg?h=cf1a1882da0371b7cccf1840876de8a7][imageUrl]]
+- photographer :: Romain Clercq-Roques
+- verification :: EXIF lens and aperture; MS version identified by photographer in forum post
+- notes :: Individual sample; HDR processing differs from other reviewers. MS identification: https://www.fredmiranda.com/forum/topic/1957512/ (Oct 5 owner post). Public original JPEG preserved. Excluded from selected gallery: less useful background challenge or redundant scenery.
+- sha256 :: 87dd13fe9022f507dfe54075023a70118f3d876b4c8f280f0431cce35c4a601d
+- EXIF LensModel :: SongRaw 85mm F1.2 FE
+- EXIF FNumber :: 1.2
+- EXIF ImageWidth :: 5125
+- EXIF ImageHeight :: 3901
+- EXIF Model :: ILCE-7RM5
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/2000
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: clercq-roques romain
+- EXIF Software :: Adobe Photoshop Lightroom Classic 15.6 (Macintosh)
+- included :: False
+- title :: Additional sample retained outside selected gallery
+
+** songraw-romain-28
+- id :: songraw-romain-28
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/songraw-85-f12/songraw-85-f12_romain-sample-28.jpg][samples/songraw-85-f12/songraw-85-f12_romain-sample-28.jpg]]
+- lens :: SongRaw AF 85mm f/1.2 MS (Sony E)
+- aperture :: 1.2
+- width :: 3651
+- height :: 5477
+- sourcePage :: [[https://romaincr.myportfolio.com/songraw-85mm][sourcePage]]
+- imageUrl :: [[https://cdn.myportfolio.com/bd37f228-68bc-43de-8145-4c3d62c2d760/a32f353a-a994-47c0-b9e1-66b38bcee116.jpg?h=258d30736aed6bee8e5751e193348e4d][imageUrl]]
+- photographer :: Romain Clercq-Roques
+- verification :: EXIF lens and aperture; MS version identified by photographer in forum post
+- notes :: Individual sample; HDR processing differs from other reviewers. MS identification: https://www.fredmiranda.com/forum/topic/1957512/ (Oct 5 owner post). Public original JPEG preserved. Excluded from selected gallery: less useful background challenge or redundant scenery.
+- sha256 :: 8cfb66c37dc23d05616d1c3096a51414c2d343b5f9c6478d61f7779a9a848ecc
+- EXIF LensModel :: SongRaw 85mm F1.2 FE
+- EXIF FNumber :: 1.2
+- EXIF ImageWidth :: 3651
+- EXIF ImageHeight :: 5477
+- EXIF Model :: ILCE-7RM5
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/250
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: clercq-roques romain
+- EXIF Software :: Adobe Photoshop Lightroom Classic 15.6 (Macintosh)
+- included :: False
+- title :: Additional sample retained outside selected gallery
+
+** songraw-romain-37
+- id :: songraw-romain-37
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/songraw-85-f12/songraw-85-f12_romain-sample-37.jpg][samples/songraw-85-f12/songraw-85-f12_romain-sample-37.jpg]]
+- lens :: SongRaw AF 85mm f/1.2 MS (Sony E)
+- aperture :: 1.2
+- width :: 3651
+- height :: 5477
+- sourcePage :: [[https://romaincr.myportfolio.com/songraw-85mm][sourcePage]]
+- imageUrl :: [[https://cdn.myportfolio.com/bd37f228-68bc-43de-8145-4c3d62c2d760/9df31000-cccb-4fe2-8baf-c6a07212dc5e.jpg?h=fb85a3a45be9016d5f3ebfc65fbe5fca][imageUrl]]
+- photographer :: Romain Clercq-Roques
+- verification :: EXIF lens and aperture; MS version identified by photographer in forum post
+- notes :: Individual sample; HDR processing differs from other reviewers. MS identification: https://www.fredmiranda.com/forum/topic/1957512/ (Oct 5 owner post). Public original JPEG preserved. Excluded from selected gallery: less useful background challenge or redundant scenery.
+- sha256 :: f11b14b8287fb3d4e1cc58e2d187c5aff647bcb0f839346a6ec9f9fdc2f48962
+- EXIF LensModel :: SongRaw 85mm F1.2 FE
+- EXIF FNumber :: 1.2
+- EXIF ImageWidth :: 3651
+- EXIF ImageHeight :: 5477
+- EXIF Model :: ILCE-7RM5
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/3200
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: clercq-roques romain
+- EXIF Software :: Adobe Photoshop Lightroom Classic 15.6 (Macintosh)
+- included :: False
+- title :: Additional sample retained outside selected gallery
+
+** songraw-romain-49
+- id :: songraw-romain-49
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/songraw-85-f12/songraw-85-f12_romain-sample-49.jpg][samples/songraw-85-f12/songraw-85-f12_romain-sample-49.jpg]]
+- lens :: SongRaw AF 85mm f/1.2 MS (Sony E)
+- aperture :: 2.0
+- width :: 3651
+- height :: 5477
+- sourcePage :: [[https://romaincr.myportfolio.com/songraw-85mm][sourcePage]]
+- imageUrl :: [[https://cdn.myportfolio.com/bd37f228-68bc-43de-8145-4c3d62c2d760/e633de08-727d-45be-8e30-52d2f11aa9ce.jpg?h=4ace1953db1480bc7c697c5fc3a2c419][imageUrl]]
+- photographer :: Romain Clercq-Roques
+- verification :: EXIF lens and aperture; MS version identified by photographer in forum post
+- notes :: Individual sample; HDR processing differs from other reviewers. MS identification: https://www.fredmiranda.com/forum/topic/1957512/ (Oct 5 owner post). Public original JPEG preserved. Excluded from selected gallery: less useful background challenge or redundant scenery.
+- sha256 :: 0bd81dfedeca8a8df518fa536aa72fa9babed9e95d742ce62caa86f03751dcf5
+- EXIF LensModel :: SongRaw 85mm F1.2 FE
+- EXIF FNumber :: 2.0
+- EXIF ImageWidth :: 3651
+- EXIF ImageHeight :: 5477
+- EXIF Model :: ILCE-7RM5
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/2500
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: clercq-roques romain
+- EXIF Software :: Adobe Photoshop Lightroom Classic 15.6 (Macintosh)
+- included :: False
+- title :: Additional sample retained outside selected gallery
+
+** sigma-f12-11-bokeh-2-of-3
+- id :: sigma-f12-11-bokeh-2-of-3
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sigma-85-f12/sigma-85-f12_abbott-11-bokeh-2-of-3.jpg][samples/sigma-85-f12/sigma-85-f12_abbott-11-bokeh-2-of-3.jpg]]
+- lens :: Sigma 85mm f/1.2 DG Art
+- imageUrl :: [[https://dustinabbott.net/wp-content/uploads/2026/08/11-Bokeh-2-of-3.jpg][imageUrl]]
+- sourcePage :: [[https://dustinabbott.net/2026/09/sigma-85mm-f1-2-dg-art-review/][sourcePage]]
+- photographer :: Dustin Abbott
+- title :: 11-Bokeh-2-of-3
+- notes :: Individual sample; no matched counterpart. Largest linked JPEG on review page, not full sensor resolution.
+- EXIF LensModel :: 85mm F1.2 DG | Art 026
+- EXIF FNumber :: 2.0
+- EXIF ImageWidth :: 2048
+- EXIF ImageHeight :: 1152
+- EXIF Model :: ILCE-1M2
+- EXIF ISO :: 200
+- EXIF ExposureTime :: 1/100
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Dustin Abbott
+- EXIF Copyright :: © 2026 Thousand Word Image by Dustin Abbott
+- EXIF Software :: Adobe Photoshop Lightroom Classic 15.5 (Windows)
+- aperture :: 2.0
+- width :: 2048
+- height :: 1152
+- sha256 :: 756f0cacf6f3fb24ce40c0f30c2773ccdc96a8c587caf6ef0396aa8b0f109ec6
+- verification :: EXIF lens and aperture
+- included :: False
+
+** songraw-official-dsc01419-excluded
+- id :: songraw-official-dsc01419-excluded
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/songraw-85-f12/songraw-85-f12_official-dsc01419.jpg][samples/songraw-85-f12/songraw-85-f12_official-dsc01419.jpg]]
+- lens :: SongRaw 85mm f/1.2 (Sony E; exact version unverified)
+- aperture :: None
+- width :: 2000
+- height :: 3000
+- imageUrl :: [[https://cdn.shopify.com/s/files/1/0728/3002/5960/files/DSC01419_1_1.jpg?v=1790231452][imageUrl]]
+- sourcePage :: [[https://songrawlens.com/blogs/%E6%96%B0%E9%97%BB/85mm-e-mount-samples][sourcePage]]
+- photographer :: Not credited on source page
+- verification :: Lens source-reported; aperture unknown; no EXIF
+- notes :: EXCLUDED: aperture cannot be verified. Not a gallery or pooling candidate.
+- included :: False
+- sha256 :: 5e846879ad0e1e8952e94fcb25f9f3f45406a2fa58970a3df096f753f7abaabd
+
+** sigma-f12-isolation-duplicate-excluded
+- id :: sigma-f12-isolation-duplicate-excluded
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sigma-85-f12/sigma-85-f12_abbott-40-isolation.jpg][samples/sigma-85-f12/sigma-85-f12_abbott-40-isolation.jpg]]
+- lens :: Sigma 85mm f/1.2 DG Art
+- imageUrl :: [[https://dustinabbott.net/wp-content/uploads/2026/08/40-Isolation-1-of-1.jpg][imageUrl]]
+- sourcePage :: [[https://dustinabbott.net/2026/09/sigma-85mm-f1-2-dg-art-review/][sourcePage]]
+- photographer :: Dustin Abbott
+- title :: 40-Isolation-1-of-1
+- notes :: EXCLUDED exact duplicate initial inspection download; gallery uses sigma-85-f12_abbott-40-isolation-1-of-1.jpg.
+- EXIF LensModel :: 85mm F1.2 DG | Art 026
+- EXIF FNumber :: 1.2
+- EXIF ImageWidth :: 1365
+- EXIF ImageHeight :: 2048
+- EXIF Model :: ILCE-1M2
+- EXIF ISO :: 100
+- EXIF ExposureTime :: 1/3200
+- EXIF FocalLength :: 85.0 mm
+- EXIF Artist :: Dustin Abbott
+- EXIF Copyright :: © 2026 Thousand Word Image by Dustin Abbott
+- EXIF Software :: Adobe Photoshop Lightroom Classic 15.5 (Windows)
+- aperture :: 1.2
+- width :: 1365
+- height :: 2048
+- sha256 :: e2b2187bf863b6db977a54f180d73f5a5b1f12c17c00234159618b5f86da1723
+- verification :: EXIF lens and aperture
+- included :: False
+
+** sigma-85-f14-dg-dn-50246827628-selection-preview
+- id :: sigma-85-f14-dg-dn-50246827628-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sigma-85-f14-dg-dn-50246827628.jpg][samples/selection-previews/sigma-85-f14-dg-dn-50246827628.jpg]]
+- lens :: Sigma 85mm f/1.4 DG DN Art
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/50246827628_2856bdc5a0.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/50246827628/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Full-resolution original selected separately.
+- included :: False
+- sha256 :: dd0fcd4f70e546d045b5475ee899195e37a7022efe6f25c7cad81e7e4fad872a
+
+** sigma-85-f14-dg-dn-50246827038-selection-preview
+- id :: sigma-85-f14-dg-dn-50246827038-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sigma-85-f14-dg-dn-50246827038.jpg][samples/selection-previews/sigma-85-f14-dg-dn-50246827038.jpg]]
+- lens :: Sigma 85mm f/1.4 DG DN Art
+- aperture :: 1.4
+- width :: 333
+- height :: 499
+- imageUrl :: [[https://live.staticflickr.com/65535/50246827038_9c6e5bac14.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/50246827038/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Full-resolution original selected separately.
+- included :: False
+- sha256 :: 224ca763e98f01dc78597e9d73d78e05e1e8684ad8e148d9b3855e8ece1449aa
+
+** sigma-85-f14-dg-dn-50247466896-selection-preview
+- id :: sigma-85-f14-dg-dn-50247466896-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sigma-85-f14-dg-dn-50247466896.jpg][samples/selection-previews/sigma-85-f14-dg-dn-50247466896.jpg]]
+- lens :: Sigma 85mm f/1.4 DG DN Art
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/50247466896_c1efe2e096.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/50247466896/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Not selected: redundant subject/background or less useful bokeh challenge.
+- included :: False
+- sha256 :: 0b64a7cbe20afeb62be0b32cef16613ce0d2e03b2ddadc0bc825b772bd03d209
+
+** sigma-85-f14-dg-dn-50247466076-selection-preview
+- id :: sigma-85-f14-dg-dn-50247466076-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sigma-85-f14-dg-dn-50247466076.jpg][samples/selection-previews/sigma-85-f14-dg-dn-50247466076.jpg]]
+- lens :: Sigma 85mm f/1.4 DG DN Art
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/50247466076_c442b7b24a.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/50247466076/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Full-resolution original selected separately.
+- included :: False
+- sha256 :: 34b5fc919a8e5f6c14d612c634f687f644c38468a14caad185563b1b69e29f0c
+
+** sigma-85-f14-dg-dn-50247461606-selection-preview
+- id :: sigma-85-f14-dg-dn-50247461606-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sigma-85-f14-dg-dn-50247461606.jpg][samples/selection-previews/sigma-85-f14-dg-dn-50247461606.jpg]]
+- lens :: Sigma 85mm f/1.4 DG DN Art
+- aperture :: 1.4
+- width :: 333
+- height :: 499
+- imageUrl :: [[https://live.staticflickr.com/65535/50247461606_9f50b468a1.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/50247461606/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Full-resolution original selected separately.
+- included :: False
+- sha256 :: 0b8cac7c3f871655e1a63fe4f7909e40f8af4497e3df659ab6aecd4693db14ac
+
+** sigma-85-f14-dg-dn-50247665962-selection-preview
+- id :: sigma-85-f14-dg-dn-50247665962-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sigma-85-f14-dg-dn-50247665962.jpg][samples/selection-previews/sigma-85-f14-dg-dn-50247665962.jpg]]
+- lens :: Sigma 85mm f/1.4 DG DN Art
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/50247665962_5d6dbe7e14.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/50247665962/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Full-resolution original selected separately.
+- included :: False
+- sha256 :: bbb336bfda4df0621da4cebe62f90038df13f09b512f6b911c489f31978cc29f
+
+** sigma-85-f14-dg-dn-50246819763-selection-preview
+- id :: sigma-85-f14-dg-dn-50246819763-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sigma-85-f14-dg-dn-50246819763.jpg][samples/selection-previews/sigma-85-f14-dg-dn-50246819763.jpg]]
+- lens :: Sigma 85mm f/1.4 DG DN Art
+- aperture :: 1.4
+- width :: 333
+- height :: 499
+- imageUrl :: [[https://live.staticflickr.com/65535/50246819763_98bd1780ee.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/50246819763/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Full-resolution original selected separately.
+- included :: False
+- sha256 :: fff668550b242ed82d4a0ddde613e883e69578bbdd27388be418c9ba93b76b43
+
+** sigma-85-f14-dg-dn-50246819273-selection-preview
+- id :: sigma-85-f14-dg-dn-50246819273-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sigma-85-f14-dg-dn-50246819273.jpg][samples/selection-previews/sigma-85-f14-dg-dn-50246819273.jpg]]
+- lens :: Sigma 85mm f/1.4 DG DN Art
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/50246819273_49bec2cfbe.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/50246819273/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Full-resolution original selected separately.
+- included :: False
+- sha256 :: 41dafca20f296e793acd000ec9b6d833b3254dc868880e9bc8b79b2115cc0d06
+
+** sigma-85-f14-dg-dn-50247664182-selection-preview
+- id :: sigma-85-f14-dg-dn-50247664182-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sigma-85-f14-dg-dn-50247664182.jpg][samples/selection-previews/sigma-85-f14-dg-dn-50247664182.jpg]]
+- lens :: Sigma 85mm f/1.4 DG DN Art
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/50247664182_3863604feb.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/50247664182/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Full-resolution original selected separately.
+- included :: False
+- sha256 :: 520340bb831e53176d96eee2f714c96fcecdc98a60f14dd4d04c273306d8e865
+
+** sony-85-f14-gm-ii-54006328763-selection-preview
+- id :: sony-85-f14-gm-ii-54006328763-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006328763.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006328763.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/54006328763_7f46a9abf5.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006328763/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Not selected: redundant subject/background or less useful bokeh challenge.
+- included :: False
+- sha256 :: a366fb9dc8ec3af4582182079b1e324196953403426c851aee2aefb1da142746
+
+** sony-85-f14-gm-ii-54006328773-selection-preview
+- id :: sony-85-f14-gm-ii-54006328773-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006328773.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006328773.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/54006328773_4f7c00a8a0.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006328773/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Not selected: redundant subject/background or less useful bokeh challenge.
+- included :: False
+- sha256 :: c4fc0133c2ed7de2b10eeadb67c529cc7b1910aa222858cb0cc6fe0cb3b521ab
+
+** sony-85-f14-gm-ii-54006328653-selection-preview
+- id :: sony-85-f14-gm-ii-54006328653-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006328653.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006328653.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/54006328653_05b90749d1.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006328653/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Full-resolution original selected separately.
+- included :: False
+- sha256 :: 233bcdaced79a0a13eb0fc9c596bee1df50689409897780784937f445a5ed3cd
+
+** sony-85-f14-gm-ii-54006524860-selection-preview
+- id :: sony-85-f14-gm-ii-54006524860-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006524860.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006524860.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/54006524860_a5f1a8dd3f.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006524860/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Full-resolution original selected separately.
+- included :: False
+- sha256 :: 3735325cdefb2d90380a92550ac4777b5c93edb1f1393ce486222853c2b3cef3
+
+** sony-85-f14-gm-ii-54006429939-selection-preview
+- id :: sony-85-f14-gm-ii-54006429939-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006429939.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006429939.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/54006429939_45d331b42c.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006429939/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Not selected: redundant subject/background or less useful bokeh challenge.
+- included :: False
+- sha256 :: 8d39e0f4aab99a3b415b3e3ca949a85894c37dc272276a6c4c03549d8ad269b9
+
+** sony-85-f14-gm-ii-54006524870-selection-preview
+- id :: sony-85-f14-gm-ii-54006524870-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006524870.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006524870.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 333
+- height :: 499
+- imageUrl :: [[https://live.staticflickr.com/65535/54006524870_6294b3a82d.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006524870/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Full-resolution original selected separately.
+- included :: False
+- sha256 :: e2c5d821f28d116bdf4bfe64dfe5e56480d2095e4ff243f2f58cacbdd5655e79
+
+** sony-85-f14-gm-ii-54006101686-selection-preview
+- id :: sony-85-f14-gm-ii-54006101686-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006101686.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006101686.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/54006101686_467f9110fb.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006101686/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Full-resolution original selected separately.
+- included :: False
+- sha256 :: 1ae2a429abb0c2fb6c91c2125503153209fc1fcd4fb37fbf3aacd7cf17d73527
+
+** sony-85-f14-gm-ii-54006429854-selection-preview
+- id :: sony-85-f14-gm-ii-54006429854-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006429854.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006429854.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 333
+- height :: 499
+- imageUrl :: [[https://live.staticflickr.com/65535/54006429854_40caf262f8.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006429854/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Full-resolution original selected separately.
+- included :: False
+- sha256 :: 9cb7f4acf11f5a3836c96fe82faffe6310bfa30331e0588c880f4a6685bb5f0a
+
+** sony-85-f14-gm-ii-54006328493-selection-preview
+- id :: sony-85-f14-gm-ii-54006328493-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006328493.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006328493.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 333
+- height :: 499
+- imageUrl :: [[https://live.staticflickr.com/65535/54006328493_955204daf9.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006328493/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Not selected: redundant subject/background or less useful bokeh challenge.
+- included :: False
+- sha256 :: 83b553ae505b153a9b1f59adcbaef4a7d9d4a4738ebf51e6bacc36795dc05725
+
+** sony-85-f14-gm-ii-54006524685-selection-preview
+- id :: sony-85-f14-gm-ii-54006524685-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006524685.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006524685.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/54006524685_e8b26ccf7d.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006524685/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Not selected: redundant subject/background or less useful bokeh challenge.
+- included :: False
+- sha256 :: ffff586c3712bdf8640e85b28d3c90692e5b9a51b225c337644f2e4c70025a45
+
+** sony-85-f14-gm-ii-54006429769-selection-preview
+- id :: sony-85-f14-gm-ii-54006429769-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006429769.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006429769.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/54006429769_fdb4c3c88b.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006429769/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Not selected: redundant subject/background or less useful bokeh challenge.
+- included :: False
+- sha256 :: 8f5b4367babcde96a668054792a293ca6062549156edc5fca2ed3218cb9740fe
+
+** sony-85-f14-gm-ii-54006429744-selection-preview
+- id :: sony-85-f14-gm-ii-54006429744-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006429744.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006429744.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/54006429744_8b23c6bb35.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006429744/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Full-resolution original selected separately.
+- included :: False
+- sha256 :: 58bc00148936d36419c6d55a6829e2552a7f58c95848b0f0084c4953077117ef
+
+** sony-85-f14-gm-ii-54005188097-selection-preview
+- id :: sony-85-f14-gm-ii-54005188097-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54005188097.jpg][samples/selection-previews/sony-85-f14-gm-ii-54005188097.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/54005188097_782b87e3d5.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54005188097/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Full-resolution original selected separately.
+- included :: False
+- sha256 :: 57bd0234a9e8b96e2a1279f764b982d2b043bce5131e811c3e60bfab9c2b8165
+
+** sony-85-f14-gm-ii-54006101451-selection-preview
+- id :: sony-85-f14-gm-ii-54006101451-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006101451.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006101451.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/54006101451_18613be61d.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006101451/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Not selected: redundant subject/background or less useful bokeh challenge.
+- included :: False
+- sha256 :: dd2be06d02f497f791eba4adccf85d433fc1451867710d4547d68b66da0565a5
+
+** sony-85-f14-gm-ii-54006429634-selection-preview
+- id :: sony-85-f14-gm-ii-54006429634-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006429634.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006429634.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 333
+- height :: 499
+- imageUrl :: [[https://live.staticflickr.com/65535/54006429634_e55c7a07ca.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006429634/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Not selected: redundant subject/background or less useful bokeh challenge.
+- included :: False
+- sha256 :: 70c24818009a0880adc816d8b6d97bc1e1eb48aa86b9bfffc39be7c55ea38514
+
+** sony-85-f14-gm-ii-54006098546-selection-preview
+- id :: sony-85-f14-gm-ii-54006098546-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006098546.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006098546.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/54006098546_b94c9cc00a.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006098546/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Not selected: redundant subject/background or less useful bokeh challenge.
+- included :: False
+- sha256 :: d7269b68f4dd0beedb3c8bc97bce0cda68a987a5b0095a8fcc588fb0e068e511
+
+** sony-85-f14-gm-ii-54006521655-selection-preview
+- id :: sony-85-f14-gm-ii-54006521655-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006521655.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006521655.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/54006521655_2f1841f8cd.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006521655/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Not selected: redundant subject/background or less useful bokeh challenge.
+- included :: False
+- sha256 :: ec762d3967fb5ddb9966a858d3259c785e6847badfc59b86a3de8c9354b08e6c
+
+** sony-85-f14-gm-ii-54006521660-selection-preview
+- id :: sony-85-f14-gm-ii-54006521660-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006521660.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006521660.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/54006521660_89557460c6.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006521660/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Not selected: redundant subject/background or less useful bokeh challenge.
+- included :: False
+- sha256 :: ec3bf51c41f84074e98bd54521ca7dd0e2e25cda8ee7651fdb370e249a343556
+
+** sony-85-f14-gm-ii-54006426564-selection-preview
+- id :: sony-85-f14-gm-ii-54006426564-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006426564.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006426564.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/54006426564_9d12c2287b.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006426564/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Not selected: redundant subject/background or less useful bokeh challenge.
+- included :: False
+- sha256 :: 34375cac5b13d9f5c679261f61d34955294a8a1961842f768fe6502319d69a6b
+
+** sony-85-f14-gm-ii-54006098491-selection-preview
+- id :: sony-85-f14-gm-ii-54006098491-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006098491.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006098491.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/54006098491_0a3fc26c84.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006098491/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Full-resolution original selected separately.
+- included :: False
+- sha256 :: 5380f2fe5ad089d983f74729e755e62a130dd0473d381055f0103b67a300a7cf
+
+** sony-85-f14-gm-ii-54006521640-selection-preview
+- id :: sony-85-f14-gm-ii-54006521640-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006521640.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006521640.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/54006521640_c88e147ae0.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006521640/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Not selected: redundant subject/background or less useful bokeh challenge.
+- included :: False
+- sha256 :: b8b1d0f6fc84470d4994c6ba3318795eb75f4cb770aa26bf24d6b662619e5986
+
+** sony-85-f14-gm-ii-54006098426-selection-preview
+- id :: sony-85-f14-gm-ii-54006098426-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006098426.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006098426.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/54006098426_a59a5a6063.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006098426/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Not selected: redundant subject/background or less useful bokeh challenge.
+- included :: False
+- sha256 :: 6a29c411781dfec1a40529992cf2ec94d9dffd0c47ae181f61e263746ea31a73
+
+** sony-85-f14-gm-ii-54006325378-selection-preview
+- id :: sony-85-f14-gm-ii-54006325378-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006325378.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006325378.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/54006325378_f0b3730687.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006325378/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Not selected: redundant subject/background or less useful bokeh challenge.
+- included :: False
+- sha256 :: 72aaa109676dafa83e0125968983c6d4ed5ff9d022926d7db6914f8a100be67f
+
+** sony-85-f14-gm-ii-54006426324-selection-preview
+- id :: sony-85-f14-gm-ii-54006426324-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006426324.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006426324.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/54006426324_c9af93c418.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006426324/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Not selected: redundant subject/background or less useful bokeh challenge.
+- included :: False
+- sha256 :: e8dabeb2f7d74cd87e3a4184dead2ed85f2566071e49fb7eb3ac449506ef9999
+
+** sony-85-f14-gm-ii-54006325333-selection-preview
+- id :: sony-85-f14-gm-ii-54006325333-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006325333.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006325333.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 333
+- height :: 499
+- imageUrl :: [[https://live.staticflickr.com/65535/54006325333_bd3fac30f2.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006325333/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Full-resolution original selected separately.
+- included :: False
+- sha256 :: 3e1fb5d80e2fc3f8d7ed34726fab7d92242fab3db03d983778438af6347d8092
+
+** sony-85-f14-gm-ii-54006098141-selection-preview
+- id :: sony-85-f14-gm-ii-54006098141-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006098141.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006098141.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/54006098141_767bb11742.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006098141/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Not selected: redundant subject/background or less useful bokeh challenge.
+- included :: False
+- sha256 :: 98280fcd8bf8649d5f50054baf2acdbb2575e6f9dd761a12113bf0e9925ca993
+
+** sony-85-f14-gm-ii-54006325183-selection-preview
+- id :: sony-85-f14-gm-ii-54006325183-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006325183.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006325183.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 333
+- height :: 499
+- imageUrl :: [[https://live.staticflickr.com/65535/54006325183_75d6201c2e.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006325183/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Not selected: redundant subject/background or less useful bokeh challenge.
+- included :: False
+- sha256 :: 46b6bf6a0c85b0e561bd8a60d21d5faeb5b199ef1f78a7cd957ba14e4308d780
+
+** sony-85-f14-gm-ii-54006325193-selection-preview
+- id :: sony-85-f14-gm-ii-54006325193-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006325193.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006325193.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 333
+- height :: 499
+- imageUrl :: [[https://live.staticflickr.com/65535/54006325193_a8a6e3a732.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006325193/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Not selected: redundant subject/background or less useful bokeh challenge.
+- included :: False
+- sha256 :: d56dae5cbcb6f6d38f409aa098133cb03c43bb3d82f8bcf5d6d1a04db61f74b7
+
+** sony-85-f14-gm-ii-54005184507-selection-preview
+- id :: sony-85-f14-gm-ii-54005184507-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54005184507.jpg][samples/selection-previews/sony-85-f14-gm-ii-54005184507.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 333
+- height :: 499
+- imageUrl :: [[https://live.staticflickr.com/65535/54005184507_b604c20652.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54005184507/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Not selected: redundant subject/background or less useful bokeh challenge.
+- included :: False
+- sha256 :: b66eb91c99c359478e45677a49a2c1840681d1b8738fa0cd191fc9e41253b431
+
+** sony-85-f14-gm-ii-54006426069-selection-preview
+- id :: sony-85-f14-gm-ii-54006426069-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006426069.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006426069.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/54006426069_927f2777e8.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006426069/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Not selected: redundant subject/background or less useful bokeh challenge.
+- included :: False
+- sha256 :: b33e7b716f8fe97db42287f4e19002953fd5cddf21bb69ae52acaa80cd196789
+
+** sony-85-f14-gm-ii-54005184457-selection-preview
+- id :: sony-85-f14-gm-ii-54005184457-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54005184457.jpg][samples/selection-previews/sony-85-f14-gm-ii-54005184457.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/54005184457_9576280b9c.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54005184457/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Not selected: redundant subject/background or less useful bokeh challenge.
+- included :: False
+- sha256 :: 440deb116a7ae8ec9cb959b4294a1a8c20fda0f63048d618bee2b25bfcebde24
+
+** sony-85-f14-gm-ii-54006097981-selection-preview
+- id :: sony-85-f14-gm-ii-54006097981-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006097981.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006097981.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/54006097981_1f3d3a40da.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006097981/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Not selected: redundant subject/background or less useful bokeh challenge.
+- included :: False
+- sha256 :: fe4754eb910cfef9c96389cc25624bd6f643c712ed13dbd7a919caeac32b70b9
+
+** sony-85-f14-gm-ii-54006521195-selection-preview
+- id :: sony-85-f14-gm-ii-54006521195-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006521195.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006521195.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/54006521195_b7389eb9c6.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006521195/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Not selected: redundant subject/background or less useful bokeh challenge.
+- included :: False
+- sha256 :: 0fe851611c450239c8be5ebb090256de4af9842a922cbda283b6b87a9d339efb
+
+** sony-85-f14-gm-ii-54006521185-selection-preview
+- id :: sony-85-f14-gm-ii-54006521185-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006521185.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006521185.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/54006521185_f7865679de.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006521185/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Not selected: redundant subject/background or less useful bokeh challenge.
+- included :: False
+- sha256 :: 01d3604041bcafa79128704158710ff85f3f2bf67ddbecdd5bb20cc3061e6604
+
+** sony-85-f14-gm-ii-54006325008-selection-preview
+- id :: sony-85-f14-gm-ii-54006325008-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006325008.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006325008.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/54006325008_0a5971f943.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006325008/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Not selected: redundant subject/background or less useful bokeh challenge.
+- included :: False
+- sha256 :: d3643a36c20ff8da774e4a4630d9d3ae299197208becfbb9635b1c0ee5233f33
+
+** sony-85-f14-gm-ii-54006521190-selection-preview
+- id :: sony-85-f14-gm-ii-54006521190-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006521190.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006521190.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/54006521190_c84a607137.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006521190/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Full-resolution original selected separately.
+- included :: False
+- sha256 :: 3c1523bf6df17817730c9061d74ef4219d741a5936df2fabac2841909a6dff87
+
+** sony-85-f14-gm-ii-54006097951-selection-preview
+- id :: sony-85-f14-gm-ii-54006097951-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006097951.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006097951.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 499
+- height :: 333
+- imageUrl :: [[https://live.staticflickr.com/65535/54006097951_9bbd1afae5.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006097951/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Not selected: redundant subject/background or less useful bokeh challenge.
+- included :: False
+- sha256 :: 36387bac31f42398b38fdd286aeab5023b0e0e38f2ecff38ef3aaf83c9ced46a
+
+** sony-85-f14-gm-ii-54006097876-selection-preview
+- id :: sony-85-f14-gm-ii-54006097876-selection-preview
+- Local file :: [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/selection-previews/sony-85-f14-gm-ii-54006097876.jpg][samples/selection-previews/sony-85-f14-gm-ii-54006097876.jpg]]
+- lens :: Sony FE 85mm f/1.4 GM II
+- aperture :: 1.4
+- width :: 333
+- height :: 499
+- imageUrl :: [[https://live.staticflickr.com/65535/54006097876_4beb9481f3.jpg][imageUrl]]
+- sourcePage :: [[https://www.flickr.com/photos/sonyalphablog/54006097876/][sourcePage]]
+- photographer :: Marc Alhadeff
+- verification :: Source title reports lens and f/1.4; thumbnail inspected only for selection
+- notes :: EXCLUDED publisher thumbnail used for visual selection; never use in gallery/pooling. Not selected: redundant subject/background or less useful bokeh challenge.
+- included :: False
+- sha256 :: 268965796a6acf309b7186c402709908bf9437ec67f46e53439e086b5c681e49
+
+* Pooling and cleanup
+Use the image URL and SHA-256 together when pooling collections. Comparison membership is evidence, not a filename similarity: preserve all quality labels and aperture differences.
+
+* Exact duplicate awaiting approval
+The governing instruction is: “Whenever an exact duplicate is verified, always recommend deleting one. Name both full paths, recommend which copy to keep and why, and wait for Jay’s approval; the recommendation does not authorize deletion.”
+Keep [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sigma-85-f12/sigma-85-f12_abbott-40-isolation-1-of-1.jpg][/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sigma-85-f12/sigma-85-f12_abbott-40-isolation-1-of-1.jpg]] because the gallery manifest references it. The acquisition review recommends deleting the identical inspection copy [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sigma-85-f12/sigma-85-f12_abbott-40-isolation.jpg][/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/samples/sigma-85-f12/sigma-85-f12_abbott-40-isolation.jpg]] after approval. It remains on disk and is excluded from the gallery.

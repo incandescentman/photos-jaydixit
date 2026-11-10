@@ -1,0 +1,31 @@
+{
+  "id": "sony-85-f14-gm-ii-54006524860",
+  "path": "samples/sony-85-f14-gm-ii/sony-85-f14-gm-ii_f1.4_alhadeff-54006524860.jpg",
+  "lens": "Sony FE 85mm f/1.4 GM II",
+  "imageUrl": "https://live.staticflickr.com/65535/54006524860_9b5d1b4e21_o.jpg",
+  "sourcePage": "https://www.flickr.com/photos/sonyalphablog/54006524860/",
+  "photographer": "Marc Alhadeff",
+  "title": "FE 85mm F1.4 GM II at 85 mm - 1-250 s a\u0300 f - 1,4 a\u0300 ISO 100-035",
+  "notes": "Individual sample; no matched counterpart. Public Flickr original; download enabled.",
+  "previewUrl": "https://live.staticflickr.com/65535/54006524860_a5f1a8dd3f.jpg",
+  "slug": "sony-85-f14-gm-ii",
+  "included": true,
+  "exif": {
+    "SourceFile": "bokeh-comparison/_codex/samples/sony-85-f14-gm-ii/sony-85-f14-gm-ii_f1.4_alhadeff-54006524860.jpg",
+    "LensModel": "FE 85mm F1.4 GM II",
+    "FNumber": 1.4,
+    "ImageWidth": 9504,
+    "ImageHeight": 6336,
+    "Model": "ILCE-7RM5",
+    "ISO": 100,
+    "ExposureTime": "1/250",
+    "FocalLength": "85.0 mm",
+    "Artist": "Marc Alhadeff",
+    "Software": "Adobe Photoshop Lightroom Classic 13.5.1 (Macintosh)"
+  },
+  "aperture": 1.4,
+  "width": 9504,
+  "height": 6336,
+  "sha256": "8abbf26fb27d7cce4ccb6db9f75c8286cf7c2724dea14c2a77851be670836965",
+  "verification": "EXIF lens and aperture"
+}

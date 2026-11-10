@@ -1,0 +1,29 @@
+[
+  {
+    "id": "sony-85-f18-sony-647",
+    "path": "samples/sony-85-f18/sony-85-f18_sony-647.jpg",
+    "lens": "Sony FE 85mm f/1.8",
+    "aperture": "f/1.8",
+    "width": 7952,
+    "height": 5304,
+    "sourcePage": "https://www.sony.co.jp/en/Products/di_photo-gallery/photo/post-647.html",
+    "imageUrl": "https://www.sony.co.jp/en/Products/di_photo-gallery/images/post/647.jpg",
+    "photographer": "Sony sample gallery; individual photographer not credited on source page",
+    "verification": "EXIF-verified lens and aperture; also explicitly reported by Sony sample gallery.",
+    "notes": "Hat on a bush: foreground leaves, focused felt, and layered foliage behind. Manufacturer sample, not independent review; processing settings unknown. Full-resolution linked photo-page image retained unchanged.",
+    "sha256": "0f090897912beb2fe3a6c9475adeae2e394b22c97af3903bfe872b88a7a3e35c",
+    "exif": {
+      "Model": "ILCE-7RM2",
+      "LensModel": "FE 85mm F1.8",
+      "FNumber": 1.8,
+      "ExposureTime": "1/320",
+      "ISO": 100,
+      "FocalLength": "85.0 mm",
+      "ImageWidth": 7952,
+      "ImageHeight": 5304,
+      "Software": "ILCE-7RM2 v3.30"
+    },
+    "sample": true,
+    "title": "Hat among autumn leaves"
+  }
+]

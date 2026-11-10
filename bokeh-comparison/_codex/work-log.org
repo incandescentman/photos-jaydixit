@@ -1,0 +1,20 @@
+#+title: Bokeh Gallery Work Log
+
+* 2026-11-09 — Independent Codex collection
+Created the private offline gallery under this folder, with 51 individual samples across all seven requested lens models and 12 approximate comparison pairs. Nine pairs use identical or near apertures; three compare different maximum apertures. No pair is labeled controlled. The f/1.7 versus f/1.8 differences are explicit. The Sigma DG DN / GM II comparison uses display-only extracts from a preserved published still-image composite. No video material was used.
+
+Preserved downloaded JPEG bytes and metadata. Source hashes, provenance, exclusions, processing caveats, and evidence gaps are recorded in [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/sources.org][sources.org]] and [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/manifest.json][manifest.json]]. Retained acquisition records support later pooling with the separate collection. No commit, push, publication, or paid service was used.
+
+Verified all 71 selected source files by full JPEG decoding and hash checks. Browser checks covered both desktop sizes and phone, A/B, blind mode, side-by-side, 100% zoom, pan, and offline file opening. The viewer retains only current images in its preload cache. See [[file:/Users/jay/Dropbox/github/photos-jaydixit/bokeh-comparison/_codex/verification.json][verification.json]].
+
+* 2026-11-10 — Native image context menu
+Enabled pointer events on photo layers so right-click targets the photograph rather than its container. Verified browser hit testing and uncanceled context-menu events on both ordinary photographs and composite canvases. Blind mode continues suppressing the menu to avoid exposing filenames before reveal. Original JPEGs are unchanged.
+
+* 2026-11-10 — Illustrated conversation archive
+Created [[file:bokeh-conversation.html][the local conversation archive]] from the preserved Markdown export, retaining all 83 turns. Included only the 25 referenced bokeh uploads, plus the user-identified SongRaw sunrise in an additional-image section. Excluded other image attachments. Verified all 26 photos decode in Chromium, desktop and phone layouts fit, and image enlargement and Escape work.
+
+* 2026-11-10 — PhotoSwipe and ChatGPT theme
+Replaced the conversation archive viewer with locally bundled PhotoSwipe 5.4.4. All 26 images share navigation, zoom, and Escape dismissal. Copied the Socratic app’s shared theme from [[file:/Users/jay/Library/CloudStorage/Dropbox/github/astro-monorepo/packages/astro-utils/src/styles/chatgpt-theme.css][chatgpt-theme.css]] and applied its white background, typography, colors, and gray user blocks. Verified image opening, next navigation, and Escape at both desktop widths and phone width without browser errors.
+
+* 2026-11-10 — Local commit scope
+User authorized keeping downloaded photos local. Added scoped ignore rules for image files and the raw conversation export. Created [[file:conversation-source-sanitized.md][a sanitized transcript]] with local attachment paths and made the HTML generator use it. The conversation text is unchanged.
