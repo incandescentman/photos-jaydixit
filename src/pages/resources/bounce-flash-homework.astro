@@ -1,0 +1,187 @@
+---
+// The content is generated from the homework page in portable-flash-guide by
+// /Users/jay/Dropbox/github/portable-flash-guide/scripts/build-photos-site-copy.py.
+// Edit the source page there and rerun the script; do not edit the body file here.
+// The photos are served from Cloudinary (resources/bounce-flash-homework/), uploaded from that
+// page's img folder; each img/NAME.jpg in the body becomes its Cloudinary URL below.
+import MainLayout from '../../layouts/MainLayout.astro';
+import PhotoSwipeLightbox from '../../components/PortfolioLightbox.astro';
+import { cldSrcset, cldUrl } from '../../lib/cloudinary';
+import source from '../../data/bounce-flash-homework-body.html?raw';
+import '../../styles/bounce-flash.css';
+
+const FOLDER = 'resources/bounce-flash-homework/';
+// Each photo fills its setup panel: 934px at the widest, the screen less the page and panel
+// gutters below that.
+const SIZES =
+	'(min-width: 1024px) 934px, (min-width: 761px) calc(100vw - 5.5rem), calc(100vw - 4.5rem)';
+
+let mapped = 0;
+const body = source.replace(
+	/<a href="img\/([^"]+)\.jpg"([^>]*)><img src="img\/\1\.jpg"/g,
+	(_match, name: string, attrs: string) => {
+		mapped++;
+		const id = FOLDER + name;
+		return `<a href="${cldUrl(id)}"${attrs}><img src="${cldUrl(id, 1600)}" srcset="${cldSrcset(id)}" sizes="${SIZES}"`;
+	},
+);
+if (mapped === 0 || body.includes('"img/'))
+	throw new Error('Homework photos were not all mapped to Cloudinary');
+---
+
+<MainLayout
+	title="Bounce Flash Homework"
+	socialCover={cldUrl(`${FOLDER}5-rembrandt-level-06767`, 1600)}
+	description="Homework for PhotoUno Portable Flash with Patricia Burmicky."
+	useArnoPro
+	photoFooter
+>
+	<div class="bfcs bfcs-homework">
+		<div class="bfcs-wrap" set:html={body} />
+	</div>
+	<PhotoSwipeLightbox
+		gallerySelector=".bfcs"
+		childrenSelector=".photo a"
+		options={{ escKey: true }}
+	/>
+</MainLayout>
+
+<style is:global>
+	/* Homework only; the rest comes from the cheat sheet's styles in src/styles/bounce-flash.css.
+	   Settings lines in Instrument Sans like the cheat sheet's captions, one photo per row. */
+	.bfcs-homework .card-settings {
+		display: grid;
+		gap: 0.3rem;
+	}
+	.bfcs-homework .flash-settings,
+	.bfcs-homework .camera-settings {
+		margin: 0;
+		font-family: var(--sans);
+		font-size: 1rem;
+		line-height: 1.45;
+		color: var(--muted);
+		font-variant-numeric: lining-nums tabular-nums;
+	}
+	.bfcs-homework .camera-settings + .photo-row {
+		margin-top: 0.75rem;
+	}
+	.bfcs-homework .photo-row {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 1.5rem;
+	}
+	/* The cheat sheet centers a lone photo at half width; here every photo takes the full row. */
+	.bfcs-homework .photo:only-child {
+		justify-self: stretch;
+		width: auto;
+	}
+	.bfcs-homework .photo {
+		scroll-margin-top: calc(var(--portfolio-header-clearance) + 1rem);
+	}
+	.bfcs-homework .photo a {
+		position: relative;
+	}
+	.bfcs-homework .photo figcaption .settings {
+		display: block;
+		font-variant-numeric: lining-nums tabular-nums;
+	}
+
+	/* Enlarge hint, directly above the first photo: "Click" with a mouse, "Tap" on touch screens. */
+	.bfcs-homework .enlarge-hint {
+		margin: 0 0 0.6rem;
+		font-family: var(--sans);
+		font-size: 1rem;
+		line-height: 1.45;
+		color: var(--muted);
+		text-align: center;
+	}
+	.bfcs-homework .hint-tap {
+		display: none;
+	}
+	@media (hover: none) {
+		.bfcs-homework .hint-click {
+			display: none;
+		}
+		.bfcs-homework .hint-tap {
+			display: inline;
+		}
+	}
+
+	/* An always-visible cue on the first photo introduces the lightbox. */
+	.bfcs-homework #photo-06711 a::after {
+		content: '';
+		position: absolute;
+		top: 0.65rem;
+		right: 0.65rem;
+		width: 2rem;
+		height: 2rem;
+		border-radius: 4px;
+		pointer-events: none;
+		background-color: rgb(244 243 240 / 88%);
+		background-image:
+			linear-gradient(var(--ink), var(--ink)), linear-gradient(var(--ink), var(--ink)),
+			linear-gradient(var(--ink), var(--ink)), linear-gradient(var(--ink), var(--ink)),
+			linear-gradient(var(--ink), var(--ink)), linear-gradient(var(--ink), var(--ink)),
+			linear-gradient(var(--ink), var(--ink)), linear-gradient(var(--ink), var(--ink));
+		background-size:
+			6px 1.5px,
+			1.5px 6px,
+			6px 1.5px,
+			1.5px 6px,
+			6px 1.5px,
+			1.5px 6px,
+			6px 1.5px,
+			1.5px 6px;
+		background-position:
+			left 8px top 8px,
+			left 8px top 8px,
+			right 8px top 8px,
+			right 8px top 8px,
+			left 8px bottom 8px,
+			left 8px bottom 8px,
+			right 8px bottom 8px,
+			right 8px bottom 8px;
+		background-repeat: no-repeat;
+	}
+
+	/* Phones: tilt and swivel share one compact row, leaving the space to the photos. */
+	@media (max-width: 600px) {
+		.bfcs-homework .setup-top {
+			gap: 0.6rem;
+			padding-bottom: 0.8rem;
+		}
+		.bfcs-homework .readout {
+			flex-wrap: nowrap;
+			gap: 1rem;
+		}
+		.bfcs-homework .dial {
+			gap: 0.4rem;
+			min-width: 0;
+		}
+		.bfcs-homework .dial > div {
+			min-width: 0;
+		}
+		/* The tilt value is short enough to stay on one line; the swivel value wraps instead. */
+		.bfcs-homework .dial:first-child {
+			flex: none;
+		}
+		.bfcs-homework .dial svg.dial-h {
+			height: 3.5rem;
+		}
+		.bfcs-homework .dial .swivel-dial {
+			width: 4.5rem;
+			height: 4.5rem;
+		}
+		.bfcs-homework .dial-label {
+			font-size: 0.65rem;
+		}
+		.bfcs-homework .dial-value {
+			margin-top: 0.25rem;
+			font-size: 1.3rem;
+			line-height: 1.15;
+			white-space: normal;
+		}
+		.bfcs-homework .dial:first-child .dial-value {
+			white-space: nowrap;
+		}
+	}
+</style>
