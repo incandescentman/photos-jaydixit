@@ -160,7 +160,7 @@ function normalizeCommonsFilename(value) {
 		.trim();
 }
 
-function buildCommonsDescription(photo) {
+export function buildCommonsDescription(photo) {
 	const categories = photo.destinations.commons.categories
 		.map((category) => `[[Category:${category}]]`)
 		.join('\n');
@@ -177,7 +177,7 @@ function buildCommonsDescription(photo) {
 == {{int:license-header}} ==
 ${photo.destinations.commons.license}
 
-${photo.destinations.commons.campaign_wikitext || ''}
+${photo.destinations.commons.campaign_wikitext?.trim() || '{{WikiPortraits}}'}
 
 ${categories}
 `;
@@ -271,6 +271,7 @@ function buildPlanRecord(record, options, digest) {
 				replacement_comment: options.commonsReplacementComment || '',
 				categories,
 				license: options.license,
+				campaign_wikitext: '{{WikiPortraits}}',
 				gallery_urls: commonsGalleryUrls,
 			},
 			cloudinary: {

@@ -3106,3 +3106,8 @@ Deleted the 23 explicitly approved scratch files from [[file:/Users/jay/Dropbox/
 
 * 2026-11-14 — DOC NYC publication completed
 Published 12 full-size photographs, verified 17 Commons depicts statements, and replaced frame 06885 with the approved crop. Applied and reread the approved Bart Simpson and Art Spiegelman Wikidata image edits. Verified the Wikipedia placements Jay made himself, recording exact revisions and UTC timestamps in [[file:/Users/jay/Dropbox/roam/photography/20260902015339-photo_publication_inventory.org][the publication inventory]]. Retained the execution manifest and depicts receipts in [[file:/Users/jay/Dropbox/github/exwalker/output/doc-nyc-2026-11-13-review/][the batch folder]].
+
+* 2026-11-14 — WikiPortraits default for Commons uploads
+New publication plans record bare ~{{WikiPortraits}}~; the shared description builder used by preview and execution also supplies it for absent or blank campaign fields. An explicit event template replaces the default. Documented the default and manual verification in [[file:/Users/jay/Dropbox/github/photos-jaydixit/instructions.org][the publication protocol]]. Five regression cases cover missing, empty, and whitespace-only campaign fields plus TIFF and SXSW overrides. All ten Commons and remote-publication tests passed, along with ESLint and Prettier.
+
+Added the approved bare template to all 12 DOC NYC file pages and reread each through the Commons API, confirming the transcluded personality-rights notice and Other portraits by WikiPortraits photographers category. Per-file revision receipts are retained in [[file:/Users/jay/Dropbox/github/exwalker/output/doc-nyc-2026-11-13-review/reexport-publication-plan.json][the existing execution manifest]].
