@@ -1,0 +1,77 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+
+// Each resource page exports the same metadata it passes to MainLayout.
+const pages = import.meta.glob<{ resource?: { title: string; cover?: string } }>(
+	['./**/*.astro', '!./index.astro'],
+	{ eager: true },
+);
+const resources = Object.entries(pages)
+	.filter(([path]) => !path.includes('['))
+	.map(([path, page]) => {
+		if (!page.resource?.title) throw new Error(`Resource page ${path} must export resource.title`);
+		const slug = path.slice(2).replace(/(?:\/index)?\.astro$/, '');
+		return { ...page.resource, href: `/resources/${slug}/` };
+	})
+	.sort((a, b) => a.title.localeCompare(b.title, 'en'));
+---
+
+<MainLayout title="Resources for Photographers" canonical="/resources/" useArnoPro photoFooter>
+	<section class="resources-page">
+		<h1>Resources for Photographers</h1>
+		<ul>
+			{
+				resources.map((resource) => (
+					<li>
+						<a href={resource.href}>
+							{resource.cover && <img src={resource.cover} alt="" loading="lazy" />}
+							<span>{resource.title}</span>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+</MainLayout>
+
+<style>
+	.resources-page {
+		max-width: 960px;
+		margin-inline: auto;
+		padding: calc(var(--nav-clearance) + 3rem) 1.5rem 5rem;
+	}
+	h1 {
+		font-size: clamp(3rem, 6vw, 5rem);
+		margin-bottom: 2rem;
+	}
+	ul {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+		gap: 2rem;
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+	li {
+		padding-block: 1rem;
+		border-bottom: 1px solid var(--portfolio-red, #c0261f);
+	}
+	a {
+		display: block;
+		font-size: 26px;
+		line-height: 1.5;
+		text-underline-offset: 0.2em;
+	}
+	img {
+		display: block;
+		width: 100%;
+		height: auto;
+		aspect-ratio: 3 / 2;
+		object-fit: contain;
+		margin-bottom: 1rem;
+	}
+	a:hover,
+	a:focus-visible {
+		color: var(--portfolio-red);
+	}
+</style>

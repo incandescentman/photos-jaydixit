@@ -7,6 +7,11 @@ import PhotoSwipeLightbox from '../../components/PortfolioLightbox.astro';
 import body from '../../data/bounce-flash-cheat-sheet-body.html?raw';
 import '../../styles/bounce-flash.css';
 
+export const resource = {
+	title: 'Bounce Flash Cheat Sheet',
+	cover: '/resources/bounce-flash-cheat-sheet/img/butterfly-backward-wall-overview.png',
+};
+
 // The title and intro sit above the contents list; the list is built from the body's section
 // headings and setup panels, so it follows the cheat sheet whenever the script regenerates it.
 const headerEnd = body.indexOf('</header>');
@@ -36,8 +41,8 @@ if (toc.length < 2) throw new Error('Cheat sheet contents list found too few sec
 ---
 
 <MainLayout
-	title="Bounce Flash Cheat Sheet"
-	socialCover="/resources/bounce-flash-cheat-sheet/img/butterfly-backward-wall-overview.png"
+	title={resource.title}
+	socialCover={resource.cover}
 	description="Notes from PhotoUno Portable Flash with Patricia Burmicky."
 	useArnoPro
 	photoFooter

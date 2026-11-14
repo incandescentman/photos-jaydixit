@@ -10,6 +10,11 @@ import { cldSrcset, cldUrl } from '../../lib/cloudinary';
 import source from '../../data/bounce-flash-homework-body.html?raw';
 import '../../styles/bounce-flash.css';
 
+export const resource = {
+	title: 'Bounce Flash Homework',
+	cover: cldUrl('resources/bounce-flash-homework/5-rembrandt-level-06767', 1600),
+};
+
 const FOLDER = 'resources/bounce-flash-homework/';
 // Each photo fills its setup panel: 934px at the widest, the screen less the page and panel
 // gutters below that.
@@ -30,8 +35,8 @@ if (mapped === 0 || body.includes('"img/'))
 ---
 
 <MainLayout
-	title="Bounce Flash Homework"
-	socialCover={cldUrl(`${FOLDER}5-rembrandt-level-06767`, 1600)}
+	title={resource.title}
+	socialCover={resource.cover}
 	description="Homework for PhotoUno Portable Flash with Patricia Burmicky."
 	useArnoPro
 	photoFooter
