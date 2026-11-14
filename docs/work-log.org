@@ -3086,3 +3086,23 @@ Both existing resources now share their existing social covers with the director
 
 ** Resource preview alignment correction
 The initial directory let each cover's natural aspect ratio set its height, leaving the titles misaligned. Jay: “the layout is fucked up”. Fixed the preview frames to 3:2 with ~object-fit: contain~, retaining complete images and aligning the titles. Inspected desktop and phone renderings, including hover/focus; desktop title positions match at both 1728 and 3008 pixels, with no overflow on phone. Existing guidance already says “Assess the actual work in its intended context”; the prior review failed to apply that to the cards as a pair. This is a local review failure, not a missing instruction requiring another rule.
+
+** 2026-11-14 — Final title and local checkpoint
+Jay's final heading and browser title are “Resources for Photographers”; the URL remains ~/resources/~. The directory, resource metadata, and preview alignment fix were committed as ~7e74031~. The automatic listing contract is documented above; publication remains pending.
+
+* 2026-11-14 — Required Commons photographer category
+Added the approved requirement to include ~Category:Photographs by Jay Dixit~ in every Commons upload plan, alongside subject and event categories, in [[file:/Users/jay/Dropbox/github/photos-jaydixit/instructions.org][the publisher instructions]]. The publisher code is unchanged.
+
+** Reviewed publication preparation rules
+Added the approved requirements for approval tied to the publisher’s actual execution manifest, visual consistency checks that flag discrepancies without establishing identity, and Wikipedia/Wikidata preparation with separate authorization for public edits. Readable approval views must derive directly from the publisher preview. The Spokenly proposal was dropped.
+
+** Commons export-size acknowledgment
+Added a 3,000-pixel-or-less long-edge warning to publisher plans and read-only previews. Execution rereads actual source dimensions before any publication and requires ~review.commons_small_image_acknowledged: true~ for flagged Commons photographs; missing dimensions fail inspection. New plans reset acknowledgment. Documented the gate in [[file:/Users/jay/Dropbox/github/photos-jaydixit/instructions.org][the publication protocol]].
+
+Validation passed for portrait and landscape thresholds below, at, and above 3,000 pixels, explicit acknowledgment, missing dimensions, and disabled Commons destinations. All 12 original export dimensions retained in the publisher preview were flagged. The four full-size re-exports present during testing measured 5,411–8,241 pixels and passed. Direct installed Prettier, ESLint, Node syntax, and scoped diff checks passed; pnpm exec attempted an install and refused a noninteractive modules purge, so installed binaries were used without changing dependencies.
+
+** Approved batch artifact cleanup
+Deleted the 23 explicitly approved scratch files from [[file:/Users/jay/Dropbox/github/exwalker/output/doc-nyc-2026-11-13-review/][the DOC NYC batch folder]], retaining the execution manifest and depicts receipts unchanged. Added the approved batch-artifact cleanup rule to [[file:/Users/jay/Dropbox/github/photos-jaydixit/instructions.org][the publication protocol]].
+
+* 2026-11-14 — DOC NYC publication completed
+Published 12 full-size photographs, verified 17 Commons depicts statements, and replaced frame 06885 with the approved crop. Applied and reread the approved Bart Simpson and Art Spiegelman Wikidata image edits. Verified the Wikipedia placements Jay made himself, recording exact revisions and UTC timestamps in [[file:/Users/jay/Dropbox/roam/photography/20260902015339-photo_publication_inventory.org][the publication inventory]]. Retained the execution manifest and depicts receipts in [[file:/Users/jay/Dropbox/github/exwalker/output/doc-nyc-2026-11-13-review/][the batch folder]].

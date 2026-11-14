@@ -32,6 +32,40 @@ const PORTFOLIO_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.gif']);
 const QUALITY_VALUES = new Set(['unreviewed', 'reject', 'fine', 'great']);
 const HOMEPAGE_SIZE_VALUES = new Set(['portrait', 'landscape', 'xlportrait']);
 
+export function commonsSizeReview(photo, dimensions) {
+	const { width, height } = dimensions || {};
+	const known = Number.isFinite(width) && width > 0 && Number.isFinite(height) && height > 0;
+	const longEdge = known ? Math.max(width, height) : null;
+	const enabled = photo.destinations.commons.enabled;
+	const acknowledgmentRequired = enabled && known && longEdge <= 3000;
+	return {
+		width: width ?? null,
+		height: height ?? null,
+		long_edge: longEdge,
+		acknowledgment_required: acknowledgmentRequired,
+		acknowledged: photo.review?.commons_small_image_acknowledged === true,
+		warning: !enabled
+			? null
+			: !known
+				? 'Cannot verify Commons image dimensions.'
+				: acknowledgmentRequired
+					? 'Long edge is 3,000 pixels or less. Check Resize to Fit; a small crop may be intentional. Explicit acknowledgment is required before upload.'
+					: null,
+	};
+}
+
+export function validateCommonsImageSize(photo, dimensions) {
+	const review = commonsSizeReview(photo, dimensions);
+	if (!photo.destinations.commons.enabled) return;
+	if (review.long_edge === null)
+		throw new Error(`Cannot verify Commons image dimensions: ${photo.source}`);
+	if (review.acknowledgment_required && !review.acknowledged) {
+		throw new Error(
+			`Commons image is ${review.long_edge}px on its long edge: ${photo.source}. Obtain Jay's explicit acknowledgment and set review.commons_small_image_acknowledged = true, or re-export at full size.`,
+		);
+	}
+}
+
 function now() {
 	return new Date().toISOString();
 }
@@ -171,6 +205,7 @@ function buildPlanRecord(record, options, digest) {
 	};
 	const review = {
 		approved: false,
+		commons_small_image_acknowledged: false,
 		quality: 'unreviewed',
 		favorite: false,
 		event_date_approved: captureDate === eventDate,
@@ -254,6 +289,7 @@ function buildPlanRecord(record, options, digest) {
 		},
 		receipts: {},
 	};
+	result.commons_size_review = commonsSizeReview(result, record.dimensions);
 	result.destinations.commons.description = buildCommonsDescription(result);
 	return result;
 }
@@ -302,6 +338,10 @@ async function planCommand(source, options) {
 	};
 	const output = await writeJsonAtomic(options.output, manifest);
 	console.log(`Publication plan: ${output}`);
+	for (const photo of photos) {
+		if (photo.commons_size_review?.warning)
+			console.log(`Size warning: ${photo.source}: ${photo.commons_size_review.warning}`);
+	}
 	console.log(`Ready without review: ${manifest.batch.ready_count}/${manifest.batch.photo_count}`);
 	console.log(
 		'No files were copied or uploaded. Every photograph still requires review.approved = true.',
@@ -1246,6 +1286,7 @@ async function previewCommand(manifestPath) {
 		if (currentHash !== photo.sha256) {
 			throw new Error(`Source changed after planning: ${photo.source}`);
 		}
+		const dimensions = await localImageInfo(photo.source);
 		const commons = photo.destinations.commons;
 		const remote = commons.enabled ? await queryCommons(commons.filename) : null;
 		if (commons.enabled && (commons.mode || 'new') === 'new-version' && !remote) {
@@ -1255,7 +1296,8 @@ async function previewCommand(manifestPath) {
 			source: photo.source,
 			asset_id: photo.asset_id,
 			source_sha256: currentHash,
-			local_image: await localImageInfo(photo.source),
+			local_image: dimensions,
+			commons_size_review: commonsSizeReview(photo, dimensions),
 			date_review: {
 				capture_date: photo.metadata.capture_date,
 				event_date: photo.metadata.event_date,
@@ -1354,6 +1396,9 @@ async function executeCommand(manifestPath, options) {
 			const currentHash = await sha256(photo.source);
 			if (currentHash !== photo.sha256)
 				throw new Error(`Source changed after planning: ${photo.source}`);
+			if (photo.destinations.commons.enabled) {
+				validateCommonsImageSize(photo, await localImageInfo(photo.source));
+			}
 		}
 		if (hasCommons) {
 			await verifyCredentialSafety();
