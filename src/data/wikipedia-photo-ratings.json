@@ -141,9 +141,9 @@
 	},
 	{
 		"person": "Margaret Qualley",
-		"quality": "bad",
+		"quality": "fine",
 		"rated": "2026-11-16",
-		"note": "Jay rated the page's photo (TIFF 2024 frame 2) bad. (He first said fine, then corrected it: 'i meant qualley rating bad'.)",
+		"note": "Jay rated the page's photo (TIFF 2024 frame 2) fine. (He said fine, then bad, then settled on fine: 'actually, let's make qualley rating fine.')",
 		"files": [
 			"File:Margaret Qualley at the 2024 Toronto International Film Festival 2.jpg",
 			"File:Margaret Qualley at the 2024 Toronto International Film Festival 2 (cropped).jpg"
@@ -157,6 +157,24 @@
 		"files": [
 			"File:2024-03-08 SXSW-2024 Variety-comedy-awards 05109.jpg",
 			"File:Diablo Cody in 2024.jpg"
+		]
+	},
+	{
+		"person": "Coralie Fargeat",
+		"quality": "fine",
+		"rated": "2026-11-16",
+		"note": "Jay rated the page's photo fine.",
+		"files": [
+			"File:Coralie Fargeat at the 2024 Toronto International Film Festival.jpg"
+		]
+	},
+	{
+		"person": "John Hopfield",
+		"quality": "great",
+		"rated": "2026-11-16",
+		"note": "Jay rated the page's photo (delivering his Nobel lecture) great.",
+		"files": [
+			"File:John J. Hopfield delivering his lecture at the 2024 Nobel Prize Lectures in Stockholm.jpg"
 		]
 	}
 ]

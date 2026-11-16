@@ -1,5 +1,5 @@
 {
-	"generated": "2026-11-16T23:08:33.090Z",
+	"generated": "2026-11-16T23:09:10.682Z",
 	"sources": {
 		"jayCommonsFiles": 699,
 		"derivativeFiles": 161,
@@ -1859,7 +1859,7 @@
 				"Urdu"
 			],
 			"languageCount": 13,
-			"quality": "unreviewed",
+			"quality": "fine",
 			"articles": [
 				{
 					"language": "German",
@@ -4142,7 +4142,7 @@
 				"Korean"
 			],
 			"languageCount": 6,
-			"quality": "unreviewed",
+			"quality": "great",
 			"articles": [
 				{
 					"language": "English",
@@ -5020,19 +5020,39 @@
 			"current": true,
 			"source": "commons-usage",
 			"article": {
-				"url": "https://eu.wikipedia.org/wiki/Margaret_Qualley",
-				"language": "Basque"
+				"url": "https://en.wikipedia.org/wiki/Margaret_Qualley",
+				"language": "English"
 			},
 			"languages": [
+				"English",
+				"Dutch",
 				"Basque",
+				"Indonesian",
+				"Simple English",
 				"Slovak"
 			],
-			"languageCount": 2,
-			"quality": "unreviewed",
+			"languageCount": 5,
+			"quality": "fine",
 			"articles": [
+				{
+					"language": "English",
+					"url": "https://en.wikipedia.org/wiki/Margaret_Qualley"
+				},
+				{
+					"language": "Dutch",
+					"url": "https://nl.wikipedia.org/wiki/Margaret_Qualley"
+				},
 				{
 					"language": "Basque",
 					"url": "https://eu.wikipedia.org/wiki/Margaret_Qualley"
+				},
+				{
+					"language": "Indonesian",
+					"url": "https://id.wikipedia.org/wiki/Margaret_Qualley"
+				},
+				{
+					"language": "Simple English",
+					"url": "https://simple.wikipedia.org/wiki/Margaret_Qualley"
 				},
 				{
 					"language": "Slovak",
@@ -5040,16 +5060,16 @@
 				}
 			],
 			"photo": {
-				"file": "File:The cast of The Substance at TIFF (cropped).jpg",
-				"byJay": false,
-				"commonsUrl": "https://commons.wikimedia.org/wiki/File:The_cast_of_The_Substance_at_TIFF_(cropped).jpg",
-				"thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/78/The_cast_of_The_Substance_at_TIFF_%28cropped%29.jpg/960px-The_cast_of_The_Substance_at_TIFF_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+				"file": "File:Margaret Qualley at the 2024 Toronto International Film Festival 2.jpg",
+				"byJay": true,
+				"commonsUrl": "https://commons.wikimedia.org/wiki/File:Margaret_Qualley_at_the_2024_Toronto_International_Film_Festival_2.jpg",
+				"thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/Margaret_Qualley_at_the_2024_Toronto_International_Film_Festival_2.jpg/960px-Margaret_Qualley_at_the_2024_Toronto_International_Film_Festival_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
 				"thumbWidth": 960,
-				"thumbHeight": 663,
-				"srcset": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/78/The_cast_of_The_Substance_at_TIFF_%28cropped%29.jpg/500px-The_cast_of_The_Substance_at_TIFF_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail 480w, https://thumb.wikimedia.org/wikipedia/commons/thumb/7/78/The_cast_of_The_Substance_at_TIFF_%28cropped%29.jpg/960px-The_cast_of_The_Substance_at_TIFF_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail 960w",
-				"full": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/78/The_cast_of_The_Substance_at_TIFF_%28cropped%29.jpg/1920px-The_cast_of_The_Substance_at_TIFF_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+				"thumbHeight": 1200,
+				"srcset": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/Margaret_Qualley_at_the_2024_Toronto_International_Film_Festival_2.jpg/500px-Margaret_Qualley_at_the_2024_Toronto_International_Film_Festival_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail 480w, https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/Margaret_Qualley_at_the_2024_Toronto_International_Film_Festival_2.jpg/960px-Margaret_Qualley_at_the_2024_Toronto_International_Film_Festival_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail 960w",
+				"full": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/Margaret_Qualley_at_the_2024_Toronto_International_Film_Festival_2.jpg/1920px-Margaret_Qualley_at_the_2024_Toronto_International_Film_Festival_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
 				"fullWidth": 1920,
-				"fullHeight": 1326
+				"fullHeight": 2400
 			}
 		},
 		{
