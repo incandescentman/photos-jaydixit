@@ -28,9 +28,10 @@ interface WikipediaPortrait {
 	position?: string;
 }
 
-// Photos Jay rated great come first (Jay, 2026-11-16: "all great photos should go before it").
-// Within that and the rest, the biggest names lead, by fame (Jay: "you can choose the biggest
-// names by fame yourself"); everyone else follows alphabetically. Names must match the data.
+// The biggest names lead, by fame (Jay, 2026-11-16: "you can choose the biggest names by fame
+// yourself"); everyone else follows alphabetically. Ratings don't lift a photo, but a photo Jay
+// rated fine goes below every photo he rated great (Jay: "a fine photo should go below every
+// great photo"). Names must match the data.
 const leadOrder = [
 	'Anne Hathaway',
 	'Sydney Sweeney',
@@ -83,13 +84,16 @@ const leadRank = new Map(leadOrder.map((name, i) => [name, i]));
 const missingLead = leadOrder.filter((name) => !data.people.some((p) => p.name === name));
 if (missingLead.length) console.warn(`wikipedia.astro: lead names not in the data: ${missingLead.join(', ')}`);
 
-const tier = (p: WikipediaPortrait) => ((p as WikipediaPortrait & { quality?: string }).quality === 'great' ? 0 : 1);
-const people = (data.people as WikipediaPortrait[]).slice().sort((a, b) => {
-	if (tier(a) !== tier(b)) return tier(a) - tier(b);
+const quality = (p: WikipediaPortrait) => (p as WikipediaPortrait & { quality?: string }).quality ?? 'unreviewed';
+const byFame = (data.people as WikipediaPortrait[]).slice().sort((a, b) => {
 	const ra = leadRank.get(a.name) ?? Infinity;
 	const rb = leadRank.get(b.name) ?? Infinity;
 	return ra !== rb ? ra - rb : a.sortName.localeCompare(b.sortName);
 });
+const lastGreat = byFame.map(quality).lastIndexOf('great');
+const fineAboveGreat = byFame.filter((p, i) => quality(p) === 'fine' && i < lastGreat);
+const people = byFame.filter((p) => !fineAboveGreat.includes(p));
+people.splice(people.indexOf(byFame[lastGreat]) + 1, 0, ...fineAboveGreat);
 
 // Jay's intro line (2026-11-16); the numbers come from the data so a refresh keeps them true.
 const fmt = (n: number) => n.toLocaleString('en-US');
