@@ -202,50 +202,60 @@ const mobilePreservedHiddenWallIds = new Set([
 	imageData(8).publicId,
 	imageData(31).publicId,
 ]);
+// The photo wall, in document order. `image` is the index into homepage-images.js.
+// Above 1180px the wall is a 12-column dense grid: portrait and tall cards span 3,
+// feature and landscape cards span 6, and full landscapes span the whole row. Keep
+// the spans of the cards before the full landscapes summing to a multiple of 12,
+// or the wall gets an empty quarter or half row: a single new portrait leaves a
+// hole, so add portraits in fours or as features. `wall-portrait-feature` keeps a
+// feature's 4 / 5 frame on phones, where plain features switch to 3 / 2. `focus`
+// sets the photograph's object-position when the frame crops it.
+const wallEntries: { image: number; layout: string; focus?: string }[] = [
+	{ image: 2, layout: 'wall-feature' }, // Vanessa Kirby
+	{ image: 0, layout: 'wall-portrait' }, // John Hopfield
+	{ image: 9, layout: 'wall-landscape' }, // Ana de Armas, Sydney Sweeney, and Ron Howard
+	{ image: 22, layout: 'wall-portrait' }, // Sydney Sweeney
+	{ image: 8, layout: 'wall-tall' }, // Jude Law
+	{ image: 3, layout: 'wall-portrait' }, // Jeremy Strong
+	{ image: 18, layout: 'wall-tall' }, // Jason Collett
+	{ image: 10, layout: 'wall-landscape' }, // Vinod Khosla
+	{ image: 24, layout: 'wall-feature' }, // Ana de Armas and Sydney Sweeney
+	{ image: 19, layout: 'wall-portrait' }, // Kieran Culkin
+	{ image: 5, layout: 'wall-portrait' }, // Dave Franco
+	{ image: 25, layout: 'wall-tall' }, // Willem Dafoe
+	{ image: 32, layout: 'wall-landscape' }, // Jason Bateman and Jude Law
+	{ image: 11, layout: 'wall-portrait' }, // Emma Stone
+	{ image: 31, layout: 'wall-portrait' }, // Jason Bateman
+	{ image: 17, layout: 'wall-tall' }, // Gabriel LaBelle
+	{ image: 33, layout: 'wall-landscape' }, // Jason Bateman and Jude Law, 09836
+	{ image: 4, layout: 'wall-portrait' }, // Lisa Gilroy
+	{ image: 40, layout: 'wall-feature wall-portrait-feature' }, // Seth Rogen
+	{ image: 35, layout: 'wall-portrait' }, // Stephen Root
+	{ image: 13, layout: 'wall-portrait' }, // Ella Hunt
+	{ image: 36, layout: 'wall-landscape' }, // Demis Hassabis
+	{ image: 41, layout: 'wall-feature wall-portrait-feature', focus: '50% 20%' }, // Anna Kendrick
+	{ image: 39, layout: 'wall-landscape wall-full-landscape' }, // Jack Johnson
+	{ image: 37, layout: 'wall-landscape wall-full-landscape' }, // Oslo torchlight procession 21
+	{ image: 38, layout: 'wall-landscape wall-full-landscape' }, // Oslo torchlight procession 15
+];
 let mobileWallPosition = 0;
-const wallPhotos = [
-	2, 0, 9, 22, 8, 3, 18, 10, 24, 19, 5, 25, 32, 11, 31, 17, 33, 4, 35, 13, 36, 39, 37, 38,
-].map((imageIndex) => {
-	const photo = imageData(imageIndex);
+const wallPhotos = wallEntries.map(({ image, layout, focus }) => {
+	const photo = imageData(image);
 	const mobileDuplicate =
 		heroPublicIds.has(photo.publicId) || mobilePreservedHiddenWallIds.has(photo.publicId);
 	const mobilePosition = mobileDuplicate ? null : ++mobileWallPosition;
 
 	return {
 		...photo,
+		layout,
+		focus,
 		mobileDuplicate,
 		mobilePosition,
 	};
 });
-const wallLayouts = [
-	'wall-feature',
-	'wall-portrait',
-	'wall-landscape',
-	'wall-portrait',
-	'wall-tall',
-	'wall-portrait',
-	'wall-tall',
-	'wall-landscape',
-	'wall-feature',
-	'wall-portrait',
-	'wall-portrait',
-	'wall-tall',
-	'wall-landscape',
-	'wall-portrait',
-	'wall-portrait',
-	'wall-tall',
-	'wall-landscape',
-	'wall-portrait',
-	'wall-portrait',
-	'wall-portrait',
-	'wall-landscape',
-	'wall-landscape wall-full-landscape',
-	'wall-landscape wall-full-landscape',
-	'wall-landscape wall-full-landscape',
-];
 
 const wallImageSizes = (index: number) => {
-	const layout = wallLayouts[index];
+	const layout = wallPhotos[index].layout;
 	const isFull = layout.includes('wall-full-landscape');
 	const isWide = layout.includes('wall-feature') || layout.includes('wall-landscape');
 
@@ -469,7 +479,7 @@ const description =
 				{
 					wallPhotos.map((photo, index) => (
 						<article
-							class={`wall-card ${wallLayouts[index]}`}
+							class={`wall-card ${photo.layout}`}
 							data-wall-card
 							data-mobile-duplicate={photo.mobileDuplicate ? 'true' : undefined}
 							data-mobile-position={photo.mobilePosition ?? undefined}
@@ -497,6 +507,7 @@ const description =
 										alt={photo.caption}
 										width={photo.size === 'landscape' ? 1200 : 800}
 										height={photo.size === 'landscape' ? 800 : 1200}
+										style={photo.focus ? `object-position: ${photo.focus}` : undefined}
 										loading="lazy"
 										decoding="async"
 									/>
@@ -1837,6 +1848,10 @@ const description =
 		.wall-card.wall-feature .wall-media,
 		.wall-card.wall-landscape .wall-media {
 			aspect-ratio: 3 / 2;
+		}
+
+		.wall-card.wall-feature.wall-portrait-feature .wall-media {
+			aspect-ratio: 4 / 5;
 		}
 
 		.wall-card.wall-final-portrait {

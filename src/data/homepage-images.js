@@ -225,4 +225,14 @@ export const images = [
 		size: 'landscape',
 		caption: 'Jack Johnson at SXSW 2026',
 	},
+	{
+		filename: 'seth-rogen_tiff_2026_8.jpg',
+		size: 'xlportrait', // 2400x3000 (0.8 ratio - portrait, featured)
+		caption: 'Seth Rogen at the Toronto International Film Festival world premiere of Babies.',
+	},
+	{
+		filename: 'anna-kendrick_tiff_2026_04298.jpg',
+		size: 'xlportrait', // 2000x3000 (0.67 ratio - portrait, featured)
+		caption: 'Anna Kendrick at the Toronto International Film Festival world premiere of Babies.',
+	},
 ];

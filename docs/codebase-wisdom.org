@@ -1,6 +1,28 @@
 #+TITLE: Codebase Wisdom
 #+DATE: 2025-10-03
 
+* 2026-11-16 - Production Builds Need Node 24, Called By Absolute Path
+
+** Trigger
+~astro build~ crashed partway through with ~ERR_INVALID_STATE~ (a FileHandle closed during garbage collection) under Node 26. Rerunning with Node 24 put first on an exported ~PATH~ still crashed the same way.
+
+** Mechanism
+The repo's ~.nvmrc~ says 24, and builds under Node 24 pass. In these agent shells ~node~ is a shell function, so an exported ~PATH~ does not change which Node runs. Why Node 26 crashes is unknown.
+
+** Actionable insight
+Build with the absolute path: ~/Users/jay/.nvm/versions/node/v24.22.1/bin/node node_modules/astro/bin/astro.mjs build~. If a build dies with a FileHandle error, check the Node version before debugging code.
+
+* 2026-11-16 - A Failing Gallery Generator Test Deletes A Tracked Fixture
+
+** Trigger
+After ~vitest run~, git showed ~src/data/__tests__/gallery/gallery.yaml~ as deleted, although no one had touched it.
+
+** Mechanism
+~src/data/__tests__/galleryGenerator.test.ts~ removes that file before generating it again. When the generator fails, as it did on 2026-11-16 with ~ERR_INVALID_ARG_TYPE~ in ~gallery-generator.ts~, the tracked fixture stays deleted.
+
+** Actionable insight
+After running the unit tests, check ~git status~ and restore the fixture with ~git checkout -- src/data/__tests__/gallery/gallery.yaml~ before committing, so a test failure does not become a committed deletion.
+
 * 2026-08-22 - The Dev Server Can Serve A Page Whose PhotoSwipe Silently Fails
 
 ** Trigger

@@ -256,7 +256,7 @@ test('mobile homepage does not repeat hero photographs in the wall', async ({ pa
 		links.map((link) => link.getAttribute('data-full-src')),
 	);
 
-	await expect(mobileWallLinks).toHaveCount(14);
+	await expect(mobileWallLinks).toHaveCount(16);
 	expect(
 		await page
 			.locator('[data-wall-card][data-mobile-duplicate="true"]')
@@ -265,12 +265,20 @@ test('mobile homepage does not repeat hero photographs in the wall', async ({ pa
 	expect(wallSources.filter((source) => heroSources.includes(source))).toEqual([]);
 	await expect(
 		page.locator('[data-wall-card]:not([data-mobile-duplicate="true"]) .wall-number-mobile'),
-	).toHaveText(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14']);
+	).toHaveText(Array.from({ length: 16 }, (_, index) => String(index + 1)));
 
 	for (const [index, caption] of [
-		[11, 'Jack Johnson at SXSW 2026'],
-		[12, 'Nobel Peace Prize Torchlight Procession in Oslo, 2024'],
-		[13, 'Nobel Peace Prize Torchlight Procession in Oslo, 2024'],
+		[8, 'Seth Rogen at the Toronto International Film Festival world premiere of Babies.'],
+		[12, 'Anna Kendrick at the Toronto International Film Festival world premiere of Babies.'],
+	] as const) {
+		await expect(mobileWallCards.nth(index)).toHaveClass(/wall-portrait-feature/);
+		await expect(mobileWallLinks.nth(index)).toHaveAttribute('data-pswp-caption', caption);
+	}
+
+	for (const [index, caption] of [
+		[13, 'Jack Johnson at SXSW 2026'],
+		[14, 'Nobel Peace Prize Torchlight Procession in Oslo, 2024'],
+		[15, 'Nobel Peace Prize Torchlight Procession in Oslo, 2024'],
 	] as const) {
 		await expect(mobileWallCards.nth(index)).toHaveClass(/wall-full-landscape/);
 		await expect(mobileWallLinks.nth(index)).toHaveAttribute('data-pswp-caption', caption);
@@ -279,7 +287,7 @@ test('mobile homepage does not repeat hero photographs in the wall', async ({ pa
 	await mobileWallLinks.first().scrollIntoViewIfNeeded();
 	await expect(mobileWallLinks.first()).toBeVisible();
 	await mobileWallLinks.first().click();
-	await expect(page.locator('.pswp__counter')).toHaveText('1 / 14');
+	await expect(page.locator('.pswp__counter')).toHaveText('1 / 16');
 });
 
 for (const route of ['/', '/gallery/red-carpet/sundance/']) {

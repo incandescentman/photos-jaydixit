@@ -74,7 +74,7 @@ The manifest keeps ~metadata.capture_date~ from EXIF separate from the approved 
 
 For each photograph, the agent asks only for missing facts and judgments. The three independent review dimensions are:
 
-- Quality :: ~unreviewed~, ~reject~, ~fine~, or ~great~
+- Quality :: ~unreviewed~, ~bad~, ~fine~, or ~great~
 - Favorite :: ~true~ or ~false~; a favorite must also be ~great~
 - Publication destinations :: local portfolio, Wikimedia Commons, Cloudinary, homepage highlight, and any Commons Gallery albums
 
@@ -748,6 +748,11 @@ npm run dev
 - Added filename and slug guidance; added tags.json slug notes
 
 * Instruction Work Log
+** 2026-11-16 — Quality value ~reject~ renamed ~bad~
+Jay found ~reject~ confusing and renamed it ~bad~. Prior wording:
+
+- Quality :: ~unreviewed~, ~reject~, ~fine~, or ~great~
+
 ** 2026-11-07 — Prior default, replaced by future Cloudinary delivery
 Repeat ~--commons-category~ and ~--commons-gallery~ for multiple values. A planned photograph defaults to the local portfolio, Wikimedia Commons, and Cloudinary; any destination can be disabled in the reviewed manifest. Planning never copies or uploads a file.
 

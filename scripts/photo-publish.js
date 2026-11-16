@@ -29,7 +29,8 @@ const DEFAULT_INVENTORY =
 const PUBLICATION_INVENTORY_SCRIPT = path.join(REPO_ROOT, 'scripts/publication-inventory.js');
 const MANIFEST_VERSION = 1;
 const PORTFOLIO_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.gif']);
-const QUALITY_VALUES = new Set(['unreviewed', 'reject', 'fine', 'great']);
+// Jay renamed 'reject' to 'bad' on 2026-11-16 because 'reject' was confusing.
+const QUALITY_VALUES = new Set(['unreviewed', 'bad', 'fine', 'great']);
 const HOMEPAGE_SIZE_VALUES = new Set(['portrait', 'landscape', 'xlportrait']);
 
 export function commonsSizeReview(photo, dimensions) {
@@ -1153,10 +1154,10 @@ function validateExecutionManifest(manifest) {
 		) {
 			throw new Error(`Capture date and event-local date differ without approval: ${photo.source}`);
 		}
-		if (photo.review.quality === 'reject' && hasDestination) {
-			throw new Error(`Rejected photograph still has a publication destination: ${photo.source}`);
+		if (photo.review.quality === 'bad' && hasDestination) {
+			throw new Error(`Photograph rated bad still has a publication destination: ${photo.source}`);
 		}
-		if (photo.review.quality === 'reject') continue;
+		if (photo.review.quality === 'bad') continue;
 		if (photo.issues?.length)
 			throw new Error(`Photograph still has issues: ${photo.source}: ${photo.issues.join('; ')}`);
 		const commons = photo.destinations.commons;
