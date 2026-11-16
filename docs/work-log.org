@@ -3152,3 +3152,4 @@ Jay ruled that photos he rates ~bad~ are left off the page, and rated Kirsten Du
 * 2026-11-16 — Wikipedia collection linked from Galleries
 Added My Photos on Wikipedia before Concerts and Dance in the existing collection links on [[file+emacs:/Users/jay/Dropbox/github/photos-jaydixit/src/pages/galleries/index.astro][the Galleries page]], as requested. Checked desktop and phone rendering, link order, and the destination returning HTTP 200; code whitespace check passed.
 - Jay rated Ron Howard's page photo ~great~; he now sits fourth, after the great photos of more famous names.
+- Jay rated Sebastian Stan's page photo ~great~.
