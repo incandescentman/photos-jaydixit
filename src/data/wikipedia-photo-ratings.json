@@ -141,12 +141,22 @@
 	},
 	{
 		"person": "Margaret Qualley",
-		"quality": "fine",
+		"quality": "bad",
 		"rated": "2026-11-16",
-		"note": "Jay rated the page's photo (TIFF 2024 frame 2) fine.",
+		"note": "Jay rated the page's photo (TIFF 2024 frame 2) bad. (He first said fine, then corrected it: 'i meant qualley rating bad'.)",
 		"files": [
 			"File:Margaret Qualley at the 2024 Toronto International Film Festival 2.jpg",
 			"File:Margaret Qualley at the 2024 Toronto International Film Festival 2 (cropped).jpg"
+		]
+	},
+	{
+		"person": "Diablo Cody",
+		"quality": "bad",
+		"rated": "2026-11-16",
+		"note": "Jay rated the page's photo (SXSW 2024 Variety Comedy Awards frame 05109) bad; 'Diablo Cody in 2024' is a crop of the same frame.",
+		"files": [
+			"File:2024-03-08 SXSW-2024 Variety-comedy-awards 05109.jpg",
+			"File:Diablo Cody in 2024.jpg"
 		]
 	}
 ]

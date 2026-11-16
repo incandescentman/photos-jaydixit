@@ -1,5 +1,5 @@
 {
-	"generated": "2026-11-16T23:07:32.566Z",
+	"generated": "2026-11-16T23:08:33.090Z",
 	"sources": {
 		"jayCommonsFiles": 699,
 		"derivativeFiles": 161,
@@ -2280,116 +2280,6 @@
 				"full": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d5/Demis_Hassabis_at_the_2024_Nobel_Lectures_in_Stockholm_-_photographed_by_Jay_Dixit_-_01232.jpg/1920px-Demis_Hassabis_at_the_2024_Nobel_Lectures_in_Stockholm_-_photographed_by_Jay_Dixit_-_01232.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
 				"fullWidth": 1920,
 				"fullHeight": 1536
-			}
-		},
-		{
-			"name": "Diablo Cody",
-			"sortName": "Diablo Cody",
-			"qid": "Q230795",
-			"slug": null,
-			"current": true,
-			"source": "commons-usage",
-			"article": {
-				"url": "https://de.wikipedia.org/wiki/Diablo_Cody",
-				"language": "German"
-			},
-			"languages": [
-				"German",
-				"Spanish",
-				"Russian",
-				"Swedish",
-				"Egyptian Arabic",
-				"Catalan",
-				"Danish",
-				"Basque",
-				"Hausa",
-				"Hungarian",
-				"Korean",
-				"Malagasy",
-				"Norwegian",
-				"Romanian",
-				"Turkish",
-				"Urdu"
-			],
-			"languageCount": 16,
-			"quality": "unreviewed",
-			"articles": [
-				{
-					"language": "German",
-					"url": "https://de.wikipedia.org/wiki/Diablo_Cody"
-				},
-				{
-					"language": "Spanish",
-					"url": "https://es.wikipedia.org/wiki/Diablo_Cody"
-				},
-				{
-					"language": "Russian",
-					"url": "https://ru.wikipedia.org/wiki/%D0%94%D0%B8%D0%B0%D0%B1%D0%BB%D0%BE_%D0%9A%D0%BE%D0%B4%D0%B8"
-				},
-				{
-					"language": "Swedish",
-					"url": "https://sv.wikipedia.org/wiki/Diablo_Cody"
-				},
-				{
-					"language": "Egyptian Arabic",
-					"url": "https://arz.wikipedia.org/wiki/%D8%AF%D9%8A%D8%A7%D8%A8%D9%84%D9%88_%D9%83%D9%88%D8%AF%D9%89"
-				},
-				{
-					"language": "Catalan",
-					"url": "https://ca.wikipedia.org/wiki/Diablo_Cody"
-				},
-				{
-					"language": "Danish",
-					"url": "https://da.wikipedia.org/wiki/Diablo_Cody"
-				},
-				{
-					"language": "Basque",
-					"url": "https://eu.wikipedia.org/wiki/Diablo_Cody"
-				},
-				{
-					"language": "Hausa",
-					"url": "https://ha.wikipedia.org/wiki/Diablo_Cody"
-				},
-				{
-					"language": "Hungarian",
-					"url": "https://hu.wikipedia.org/wiki/Diablo_Cody"
-				},
-				{
-					"language": "Korean",
-					"url": "https://ko.wikipedia.org/wiki/%EB%94%94%EC%95%84%EB%B8%94%EB%A1%9C_%EC%BD%94%EB%94%94"
-				},
-				{
-					"language": "Malagasy",
-					"url": "https://mg.wikipedia.org/wiki/Diablo_Cody"
-				},
-				{
-					"language": "Norwegian",
-					"url": "https://no.wikipedia.org/wiki/Diablo_Cody"
-				},
-				{
-					"language": "Romanian",
-					"url": "https://ro.wikipedia.org/wiki/Diablo_Cody"
-				},
-				{
-					"language": "Turkish",
-					"url": "https://tr.wikipedia.org/wiki/Diablo_Cody"
-				},
-				{
-					"language": "Urdu",
-					"url": "https://ur.wikipedia.org/wiki/%DA%88%DB%8C%D8%A7%D8%A8%D9%84%D9%88_%DA%A9%D9%88%DA%88%DB%8C"
-				}
-			],
-			"photo": {
-				"file": "File:2024-03-08 SXSW-2024 Variety-comedy-awards 05109.jpg",
-				"byJay": true,
-				"commonsUrl": "https://commons.wikimedia.org/wiki/File:2024-03-08_SXSW-2024_Variety-comedy-awards_05109.jpg",
-				"thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2b/2024-03-08_SXSW-2024_Variety-comedy-awards_05109.jpg/960px-2024-03-08_SXSW-2024_Variety-comedy-awards_05109.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-				"thumbWidth": 960,
-				"thumbHeight": 1440,
-				"srcset": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2b/2024-03-08_SXSW-2024_Variety-comedy-awards_05109.jpg/500px-2024-03-08_SXSW-2024_Variety-comedy-awards_05109.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail 480w, https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2b/2024-03-08_SXSW-2024_Variety-comedy-awards_05109.jpg/960px-2024-03-08_SXSW-2024_Variety-comedy-awards_05109.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail 960w",
-				"full": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2b/2024-03-08_SXSW-2024_Variety-comedy-awards_05109.jpg/1920px-2024-03-08_SXSW-2024_Variety-comedy-awards_05109.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-				"fullWidth": 1920,
-				"fullHeight": 2880
 			}
 		},
 		{
@@ -5130,39 +5020,19 @@
 			"current": true,
 			"source": "commons-usage",
 			"article": {
-				"url": "https://en.wikipedia.org/wiki/Margaret_Qualley",
-				"language": "English"
+				"url": "https://eu.wikipedia.org/wiki/Margaret_Qualley",
+				"language": "Basque"
 			},
 			"languages": [
-				"English",
-				"Dutch",
 				"Basque",
-				"Indonesian",
-				"Simple English",
 				"Slovak"
 			],
-			"languageCount": 5,
-			"quality": "fine",
+			"languageCount": 2,
+			"quality": "unreviewed",
 			"articles": [
-				{
-					"language": "English",
-					"url": "https://en.wikipedia.org/wiki/Margaret_Qualley"
-				},
-				{
-					"language": "Dutch",
-					"url": "https://nl.wikipedia.org/wiki/Margaret_Qualley"
-				},
 				{
 					"language": "Basque",
 					"url": "https://eu.wikipedia.org/wiki/Margaret_Qualley"
-				},
-				{
-					"language": "Indonesian",
-					"url": "https://id.wikipedia.org/wiki/Margaret_Qualley"
-				},
-				{
-					"language": "Simple English",
-					"url": "https://simple.wikipedia.org/wiki/Margaret_Qualley"
 				},
 				{
 					"language": "Slovak",
@@ -5170,16 +5040,16 @@
 				}
 			],
 			"photo": {
-				"file": "File:Margaret Qualley at the 2024 Toronto International Film Festival 2.jpg",
-				"byJay": true,
-				"commonsUrl": "https://commons.wikimedia.org/wiki/File:Margaret_Qualley_at_the_2024_Toronto_International_Film_Festival_2.jpg",
-				"thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/Margaret_Qualley_at_the_2024_Toronto_International_Film_Festival_2.jpg/960px-Margaret_Qualley_at_the_2024_Toronto_International_Film_Festival_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+				"file": "File:The cast of The Substance at TIFF (cropped).jpg",
+				"byJay": false,
+				"commonsUrl": "https://commons.wikimedia.org/wiki/File:The_cast_of_The_Substance_at_TIFF_(cropped).jpg",
+				"thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/78/The_cast_of_The_Substance_at_TIFF_%28cropped%29.jpg/960px-The_cast_of_The_Substance_at_TIFF_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
 				"thumbWidth": 960,
-				"thumbHeight": 1200,
-				"srcset": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/Margaret_Qualley_at_the_2024_Toronto_International_Film_Festival_2.jpg/500px-Margaret_Qualley_at_the_2024_Toronto_International_Film_Festival_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail 480w, https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/Margaret_Qualley_at_the_2024_Toronto_International_Film_Festival_2.jpg/960px-Margaret_Qualley_at_the_2024_Toronto_International_Film_Festival_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail 960w",
-				"full": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/Margaret_Qualley_at_the_2024_Toronto_International_Film_Festival_2.jpg/1920px-Margaret_Qualley_at_the_2024_Toronto_International_Film_Festival_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+				"thumbHeight": 663,
+				"srcset": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/78/The_cast_of_The_Substance_at_TIFF_%28cropped%29.jpg/500px-The_cast_of_The_Substance_at_TIFF_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail 480w, https://thumb.wikimedia.org/wikipedia/commons/thumb/7/78/The_cast_of_The_Substance_at_TIFF_%28cropped%29.jpg/960px-The_cast_of_The_Substance_at_TIFF_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail 960w",
+				"full": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/78/The_cast_of_The_Substance_at_TIFF_%28cropped%29.jpg/1920px-The_cast_of_The_Substance_at_TIFF_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
 				"fullWidth": 1920,
-				"fullHeight": 2400
+				"fullHeight": 1326
 			}
 		},
 		{
